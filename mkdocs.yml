@@ -1,0 +1,80 @@
+site_name: numerary
+site_description: Python hacks for bridging type checking and the numeric tower
+site_url: https://posita.github.io/numerary/
+site_author: Matt Bogosian
+copyright: <i>Copyright and other protections apply.
+  Please see the accompanying <tt>LICENSE</tt> file for rights and restrictions governing use of this software.
+  All rights not expressly waived or licensed are reserved.
+  If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.</i>
+repo_url: https://github.com/posita/numerary
+
+nav:
+  - Introduction: index.md
+  - Release notes: notes.md
+  - Contributing: contrib.md
+  - License: license.md
+  - API:
+    - <tt>numerary</tt>: numerary.md
+    - <tt>numerary.types</tt>: numerary.types.md
+
+# See:
+# * <https://squidfunk.github.io/mkdocs-material/reference/admonitions/>, etc.
+# * <https://mkdocstrings.github.io/>
+# * <https://www.mkdocs.org/>
+
+extra:
+  version:
+    provider: mike
+
+extra_javascript:
+  - js/site.js
+
+markdown_extensions:
+  - admonition
+  - def_list
+  - footnotes
+  # ---- BEGIN MathJax config ----
+  - pymdownx.arithmatex:
+      generic: true
+  # ----- END MathJax config -----
+  - pymdownx.emoji
+  - pymdownx.highlight:
+      linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      check_paths: true
+  - pymdownx.superfences
+  - pymdownx.tilde
+
+plugins:
+  - exclude:
+      # TODO(posita): See <https://github.com/apenwarr/mkdocs-exclude/pull/9>
+      # gitignore: true
+      glob:
+        - "Makefile"
+        - "*.py"
+  - mike:
+      version_selector: true
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_if_no_docstring: true
+            show_root_full_path: false
+            show_signature_annotations: true
+      watch:
+        - numerary
+  - search
+
+theme:
+  name: "material"  # required by arithmatex and mkdocstrings
+  features:
+    - content.code.annotate
+    - navigation.expand
+    - navigation.sections
+    - toc.integrate
+  palette:
+    - scheme: default
+      primary: deep-orange
+      accent: deep-orange

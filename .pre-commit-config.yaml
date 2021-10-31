@@ -1,0 +1,36 @@
+repos:
+  - repo: meta
+    hooks:
+    - id: check-hooks-apply
+    - id: check-useless-excludes
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+    - id: end-of-file-fixer
+      exclude: ^docs/numerary-encumbered\.svg$
+    - id: mixed-line-ending
+    - id: trailing-whitespace
+      exclude: ^docs/numerary-encumbered\.svg$
+    - id: check-added-large-files
+    - id: check-case-conflict
+    - id: check-merge-conflict
+    - id: check-shebang-scripts-are-executable
+    - id: check-symlinks
+    - id: check-vcs-permalinks
+    - id: destroyed-symlinks
+    - id: detect-private-key
+    - id: check-toml
+    - id: check-xml
+    - id: check-yaml
+  - repo: https://github.com/psf/black
+    rev: 21.9b0
+    hooks:
+    - id: black
+  - repo: https://github.com/pycqa/isort
+    rev: 5.9.3
+    hooks:
+    - id: isort
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+    - id: flake8
