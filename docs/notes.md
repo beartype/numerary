@@ -15,6 +15,9 @@
 
 # ``numerary`` release notes
 
-## [0.0.1](https://github.com/posita/numerary/releases/tag/v0.0.1)
+## [0.0.3](https://github.com/posita/numerary/releases/tag/v0.0.3)
 
-* ``numerary`` leaves the [``dyce``](https://github.com/posita/dyce/) nest to become its own library!
+* ``numerary`` *finally* leaves the [``dyce``](https://github.com/posita/dyce/) nest to become its own library!
+  It didn’t *quite* leave before because its maintainer is a bonehead.
+  No, it stuck around most weekends to do laundry while eating all of ``dyce``’s food.
+  *Now* it has *officially* left the nest.
