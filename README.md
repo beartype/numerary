@@ -410,7 +410,7 @@ I mean, I get *casting* as a rare case, but who builds *sophisticated deception 
 How can you trust *anything* anymore?!
 Shouldn’t that be a pretty strong hint that maybe you should step back and rethink your approach?
 
-Astute readers may note [``beartype``](https://pypi.org/project/beartype/) could help restore truth for us.
+Astute readers may note [``beartype``](https://pypi.org/project/beartype/) could help restore Truth for us.
 
 ``` python
 from beartype import beartype
@@ -420,14 +420,20 @@ SupportsRealComparisonsNotComplexLies = Annotated[
   SupportsRealComparisons, Is[lambda arg: not isinstance(arg, complex)]
 ]
 @beartype
-def require_real(arg: SupportsRealComparisons) -> None:
-  assert isinstance(arg, SupportsRealComparisons)
+def require_real(arg: SupportsRealComparisonsNotComplexLies) -> None:
+  assert isinstance(arg, SupportsRealComparisonsNotComplexLies)
 ```
 
 That’s because Bear is hip to the scene.
 Bear is *down*.
 Bear knows what’s what.
-If you have a typing problem, if no one else can help, and if you can find them (which should be easy; I just gave you the [link](https://pypi.org/project/beartype/); twice), maybe you can hire the Bear-Team.
+If you have a typing problem, if no one else can help, and if you can find them[^2], maybe you can hire the Bear-Team.
+
+[^2]:
+
+    That should be easy
+    I just gave you the [link](https://pypi.org/project/beartype/).
+    *Twice*.
 
 I digress.
 
@@ -465,10 +471,17 @@ AssertionError
 
 ```
 
-Note that the above would still (properly) result in a type checking error as well as a runtime failure for [SymPy](https://www.sympy.org/) versions prior to 1.9, because, until 1.9, ``sympy.core.numbers.Integer`` [lacked the requisite bitwise operators](https://github.com/sympy/sympy/issues/19311).
+!!! note
+
+    Until 1.9, ``sympy.core.numbers.Integer`` [lacked the requisite bitwise operators](https://github.com/sympy/sympy/issues/19311).
+    ``numerary`` catches that!
+    The above properly results in both a type checking error as well as a runtime failure for [SymPy](https://www.sympy.org/) versions prior to 1.9.
 
 By default, [protocols frustrate runtime type checking performance](https://bugs.python.org/issue30505).
-``numerary`` applies two layered optimization strategies: cached ``__instancecheck__`` results for ``numerary``-defined protocols and short-circuit type enumerations.
+``numerary`` applies two distinct, layered optimization strategies:
+
+1. Cached ``__instancecheck__`` results for ``numerary``-defined protocols; and
+2. Short-circuit type enumerations.
 
 ### Cached ``__instancecheck__`` results
 
@@ -484,10 +497,10 @@ Although, in retrospect, that warning probably should have been presented more p
 If the interface is to be used most often with native types (``int``s, ``float``s, ``bool``s) or those registered with the numeric tower, there is an optimization to be had at runtime by short-circuiting protocol type checking.
 These come in two flavors.
 
-1. ``…T`` objects which are ``Union``s for defining types.
-2. ``…Ts`` tuples, which are identical to the corresponding ``Union`` arguments and useful for runtime ``isinstance`` checking.
+1. ``…T`` objects which are ``Union``s for compliant types.
+2. ``…Ts`` tuples, which are identical to the corresponding ``Union`` arguments. These are useful for runtime checks (e.g., as the second argument to ``isinstance``).
 
-Following our ``SupportsIntegralOps`` example from above, ``numerary`` defines two additional interfaces (some details and safeguards omitted).
+For example, for the aforementioned ``SupportsIntegralOps``, ``numerary`` defines two additional interfaces (some details and safeguards omitted).
 
 ``` python
 SupportsIntegralOpsT = Union[int, bool, Integral, SupportsIntegralOps]
@@ -496,15 +509,15 @@ SupportsIntegralOpsTs = (int, bool, Integral, SupportsIntegralOps)
 
 ``` python
 >>> from numerary.types import SupportsIntegralOpsT  # for type annotations
+>>> from numerary.types import SupportsIntegralOpsTs  # for runtime checking
 >>> def shift_left_one(arg: SupportsIntegralOpsT) -> SupportsIntegralOpsT:
-...   from numerary.types import SupportsIntegralOpsTs  # for runtime checking
 ...   assert isinstance(arg, SupportsIntegralOpsTs)
 ...   return arg << 1
 >>> shift_left_one(1)
 2
 >>> shift_left_one(sympify("1"))
 2
->>> shift_left_one("1")  # type: ignore
+>>> shift_left_one(Fraction(1, 2))  # type: ignore
 Traceback (most recent call last):
   ...
 AssertionError
@@ -518,14 +531,14 @@ Because you can’t do this:
 isinstance(1, Union[int, Integral])  # syntax error
 ```
 
-And because Mypy is confused by this[^2]:
+And because Mypy is confused by this[^3]:
 
 ``` python
 def my_func(arg: (int, Integral)):  # Mypy "syntax" error
   pass
 ```
 
-[^2]:
+[^3]:
 
     Even though the syntax is legal and [``beartype``](https://pypi.org/project/beartype/) gladly does the right thing by treating the tuple literal as a ``Union``.
     Not sure if this is a bug or a feature, but my vote is for feature.
@@ -539,12 +552,22 @@ Because *[``beartype``](https://pypi.org/project/beartype/)*.
 ``beartype`` is *awesome*.
 Its author is even *awesomer*.
 More generally, runtime checkers that inspect and enforce annotations face problems similar to ``isinstance``.
-Defining a ``Union`` provides an annotation-based short-circuit opportunity to those checkers.
+Defining a ``Union`` provides an annotation analog for short-circuiting.
 
-There’s a downside, though.
-(Isn’t there always?)
-Short-circuiting trusts implementations when they register themselves in the numeric tower.
-But sometimes, out there in the real world, they *lie*.
+### Limitations
+
+There are some downsides, though.
+(Aren’t there always?)
+
+#### Protocols lose fidelity
+
+Protocols match *names*, not *signatures*.
+*TODO(@posita): Add detail.*
+
+#### Short-circuiting is too trusting
+
+Short-circuiting trusts numeric tower registrations.
+But sometimes, out there in the real world, implementations *lie*.
 
 Consider:
 
@@ -566,24 +589,25 @@ True
 
 ### Shut up and take my money!
 
-All that being said, if all you deal with are integrals and reals and what you want is arithmetic operator compatibility, this should probably get you most of where you likely want to go:
+If all you deal with are integrals and reals and what you want is arithmetic operator compatibility, this should probably get you most of where you likely want to go:
 
 ``` python
 >>> from numerary import IntegralLike, RealLike
->>> def deeper_thought(arg: RealLike) -> IntegralLike:
+>>> def deeper_thot(arg: RealLike) -> IntegralLike:
 ...   assert arg != 0 and arg ** 0 == 1
 ...   return arg // arg + 42
 
 ```
 
-… or, if you prefer the short-circuiting versions …
+… or, if your performance requirements demand the short-circuiting versions …
 
 ``` python
 >>> from numerary import IntegralLikeT, IntegralLikeTs, RealLikeT, RealLikeTs
+>>> # ...
 
 ```
 
-Much more coming soon.
+More examples coming soon.
 I *promise*!
 No, really.
 Not a PEP promise.
@@ -631,9 +655,9 @@ It has the following runtime dependencies:
 * [``beartype``](https://pypi.org/project/beartype/) for yummy runtime type-checking goodness (0.8+)
   [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
-If you use ``beartype`` for type checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for performance reasons), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^3] value before ``numerary`` is loaded.
+If you use ``beartype`` for type checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for performance reasons), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^4] value before ``numerary`` is loaded.
 
-[^3]:
+[^4]:
     I.E., one of: ``0``, ``off``, ``f``, ``false``, and ``no``.
 
 See the [hacking quick-start](https://posita.github.io/numerary/latest/contrib/#hacking-quick-start) for additional development and testing dependencies.
