@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsTrunc, SupportsTruncT, SupportsTruncTs, trunc
+from numerary.types import SupportsTrunc, SupportsTruncSCT, SupportsTruncSCU, trunc
 
 from .numberwang import (
     Numberwang,
@@ -38,8 +38,8 @@ def func(arg: SupportsTrunc):
 
 
 @beartype
-def func_t(arg: SupportsTruncT):
-    assert isinstance(arg, SupportsTruncTs), f"{arg!r}"
+def func_t(arg: SupportsTruncSCU):
+    assert isinstance(arg, SupportsTruncSCT), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -60,7 +60,7 @@ def test_trunc() -> None:
         WangernumbRegistered(-273.15),
     ):
         assert isinstance(good_val, SupportsTrunc), f"{good_val!r}"
-        assert isinstance(good_val, SupportsTruncTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsTruncSCT), f"{good_val!r}"
         assert trunc(good_val), f"{good_val!r}"
 
     for bad_val in (
@@ -68,7 +68,7 @@ def test_trunc() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsTrunc), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsTruncTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsTruncSCT), f"{bad_val!r}"
 
 
 def test_trunc_beartype() -> None:
@@ -88,7 +88,7 @@ def test_trunc_beartype() -> None:
         WangernumbRegistered(-273.15),
     ):
         func(cast(SupportsTrunc, good_val))
-        func_t(cast(SupportsTruncT, good_val))
+        func_t(cast(SupportsTruncSCU, good_val))
 
     for bad_val in (
         complex(-273.15),
@@ -98,7 +98,7 @@ def test_trunc_beartype() -> None:
             func(cast(SupportsTrunc, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsTruncT, bad_val))
+            func_t(cast(SupportsTruncSCU, bad_val))
 
 
 def test_trunc_numpy() -> None:
@@ -108,7 +108,7 @@ def test_trunc_numpy() -> None:
     # other numpy.float* types
     for good_val in (numpy.float64(-273.15),):
         assert isinstance(good_val, SupportsTrunc), f"{good_val!r}"
-        assert isinstance(good_val, SupportsTruncTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsTruncSCT), f"{good_val!r}"
         assert trunc(good_val), f"{good_val!r}"
 
     for lying_val in (
@@ -128,7 +128,7 @@ def test_trunc_numpy() -> None:
         assert not isinstance(lying_val, SupportsTrunc), f"{lying_val!r}"
 
         # The short-circuiting approach does not
-        assert isinstance(lying_val, SupportsTruncTs), f"{lying_val!r}"
+        assert isinstance(lying_val, SupportsTruncSCT), f"{lying_val!r}"
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -136,7 +136,7 @@ def test_trunc_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsTrunc), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsTruncTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsTruncSCT), f"{bad_val!r}"
 
 
 def test_trunc_numpy_beartype() -> None:
@@ -147,7 +147,7 @@ def test_trunc_numpy_beartype() -> None:
     # other numpy.float* types
     for good_val in (numpy.float64(-273.15),):
         func(cast(SupportsTrunc, good_val))
-        func_t(cast(SupportsTruncT, good_val))
+        func_t(cast(SupportsTruncSCU, good_val))
 
     for lying_val in (
         numpy.uint8(2),
@@ -165,7 +165,7 @@ def test_trunc_numpy_beartype() -> None:
         with pytest.raises(roar.BeartypeException):
             func(cast(SupportsTrunc, lying_val))
 
-        func_t(cast(SupportsTruncT, lying_val))
+        func_t(cast(SupportsTruncSCU, lying_val))
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -176,7 +176,7 @@ def test_trunc_numpy_beartype() -> None:
             func(cast(SupportsTrunc, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsTruncT, bad_val))
+            func_t(cast(SupportsTruncSCU, bad_val))
 
 
 def test_trunc_sympy() -> None:
@@ -188,12 +188,12 @@ def test_trunc_sympy() -> None:
         sympy.Rational(-27315, 100),
     ):
         assert isinstance(good_val, SupportsTrunc), f"{good_val!r}"
-        assert isinstance(good_val, SupportsTruncTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsTruncSCT), f"{good_val!r}"
         assert trunc(good_val), f"{good_val!r}"
 
     for lying_val in (sympy.symbols("x"),):
         assert isinstance(lying_val, SupportsTrunc), f"{lying_val!r}"
-        assert isinstance(lying_val, SupportsTruncTs), f"{lying_val!r}"
+        assert isinstance(lying_val, SupportsTruncSCT), f"{lying_val!r}"
 
         # Relationals have, but don't implement this function
         # TODO(posita): Can we fix this?
@@ -211,8 +211,8 @@ def test_trunc_sympy_beartype() -> None:
         sympy.Rational(-27315, 100),
     ):
         func(cast(SupportsTrunc, good_val))
-        func_t(cast(SupportsTruncT, good_val))
+        func_t(cast(SupportsTruncSCU, good_val))
 
     for lying_val in (sympy.symbols("x"),):
         func(cast(SupportsTrunc, good_val))
-        func_t(cast(SupportsTruncT, good_val))
+        func_t(cast(SupportsTruncSCU, good_val))

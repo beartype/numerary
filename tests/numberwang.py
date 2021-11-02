@@ -38,7 +38,7 @@ from operator import (
 from typing import Iterable, Optional, Union, overload
 
 from numerary.bt import beartype
-from numerary.types import SupportsIntT
+from numerary.types import SupportsIntSCU
 
 __all__ = (
     "Numberwang",
@@ -64,7 +64,7 @@ class NumberwangBase:
     __slots__: Union[str, Iterable[str]] = ("val",)
 
     @beartype
-    def __init__(self, arg: SupportsIntT = 0):
+    def __init__(self, arg: SupportsIntSCU = 0):
         self.val: int = int(arg)
 
     @beartype

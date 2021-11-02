@@ -20,14 +20,14 @@ from .bt import beartype
 
 __all__ = (
     "IntegralLike",
-    "IntegralLikeT",
-    "IntegralLikeTs",
+    "IntegralLikeSCU",
+    "IntegralLikeSCT",
     "RationalLike",
-    "RationalLikeT",
-    "RationalLikeTs",
+    "RationalLikeSCU",
+    "RationalLikeSCT",
     "RealLike",
-    "RealLikeT",
-    "RealLikeTs",
+    "RealLikeSCU",
+    "RealLikeSCT",
     "denominator",
     "numerator",
 )
@@ -163,9 +163,9 @@ class SupportsAbs(
 
 SupportsAbs.__doc__ = _SupportsAbs.__doc__
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsAbs)
-SupportsAbsT = Union[int, float, bool, Complex, SupportsAbs]
-SupportsAbsTs = (int, float, bool, Complex, SupportsAbs)
-assert SupportsAbsT.__args__ == SupportsAbsTs  # type: ignore
+SupportsAbsSCU = Union[int, float, bool, Complex, SupportsAbs]
+SupportsAbsSCT = (int, float, bool, Complex, SupportsAbs)
+assert SupportsAbsSCU.__args__ == SupportsAbsSCT  # type: ignore
 
 
 @runtime_checkable
@@ -179,9 +179,9 @@ class SupportsComplex(
 
 SupportsComplex.__doc__ = _SupportsComplex.__doc__
 _assert_isinstance(Decimal, Fraction, target_t=SupportsComplex)
-SupportsComplexT = Union[Complex, SupportsComplex]
-SupportsComplexTs = (Complex, SupportsComplex)
-assert SupportsComplexT.__args__ == SupportsComplexTs  # type: ignore
+SupportsComplexSCU = Union[Complex, SupportsComplex]
+SupportsComplexSCT = (Complex, SupportsComplex)
+assert SupportsComplexSCU.__args__ == SupportsComplexSCT  # type: ignore
 
 
 @runtime_checkable
@@ -195,9 +195,9 @@ class SupportsFloat(
 
 SupportsFloat.__doc__ = _SupportsFloat.__doc__
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloat)
-SupportsFloatT = Union[int, float, bool, Real, SupportsFloat]
-SupportsFloatTs = (int, float, bool, Real, SupportsFloat)
-assert SupportsFloatT.__args__ == SupportsFloatTs  # type: ignore
+SupportsFloatSCU = Union[int, float, bool, Real, SupportsFloat]
+SupportsFloatSCT = (int, float, bool, Real, SupportsFloat)
+assert SupportsFloatSCU.__args__ == SupportsFloatSCT  # type: ignore
 
 
 @runtime_checkable
@@ -211,9 +211,9 @@ class SupportsInt(
 
 SupportsInt.__doc__ = _SupportsInt.__doc__
 _assert_isinstance(int, float, bool, target_t=SupportsInt)
-SupportsIntT = Union[int, float, bool, Integral, SupportsInt]
-SupportsIntTs = (int, float, bool, Integral, SupportsInt)
-assert SupportsIntT.__args__ == SupportsIntTs  # type: ignore
+SupportsIntSCU = Union[int, float, bool, Integral, SupportsInt]
+SupportsIntSCT = (int, float, bool, Integral, SupportsInt)
+assert SupportsIntSCU.__args__ == SupportsIntSCT  # type: ignore
 
 
 @runtime_checkable
@@ -227,9 +227,9 @@ class SupportsIndex(
 
 SupportsIndex.__doc__ = _SupportsIndex.__doc__
 _assert_isinstance(int, bool, target_t=SupportsIndex)
-SupportsIndexT = Union[int, bool, Integral, SupportsIndex]
-SupportsIndexTs = (int, bool, Integral, SupportsIndex)
-assert SupportsIndexT.__args__ == SupportsIndexTs  # type: ignore
+SupportsIndexSCU = Union[int, bool, Integral, SupportsIndex]
+SupportsIndexSCT = (int, bool, Integral, SupportsIndex)
+assert SupportsIndexSCU.__args__ == SupportsIndexSCT  # type: ignore
 
 
 @runtime_checkable
@@ -243,9 +243,9 @@ class SupportsRound(
 
 SupportsRound.__doc__ = _SupportsRound.__doc__
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRound)
-SupportsRoundT = Union[int, float, bool, Real, SupportsRound]
-SupportsRoundTs = (int, float, bool, Real, SupportsRound)
-assert SupportsRoundT.__args__ == SupportsRoundTs  # type: ignore
+SupportsRoundSCU = Union[int, float, bool, Real, SupportsRound]
+SupportsRoundSCT = (int, float, bool, Real, SupportsRound)
+assert SupportsRoundSCU.__args__ == SupportsRoundSCT  # type: ignore
 
 
 @runtime_checkable
@@ -263,9 +263,9 @@ class SupportsConjugate(Protocol[_T_co], metaclass=CachingProtocolMeta):
 _assert_isinstance(
     int, float, bool, complex, Decimal, Fraction, target_t=SupportsConjugate
 )
-SupportsConjugateT = Union[int, float, bool, complex, Complex, SupportsConjugate]
-SupportsConjugateTs = (int, float, bool, complex, Complex, SupportsConjugate)
-assert SupportsConjugateT.__args__ == SupportsConjugateTs  # type: ignore
+SupportsConjugateSCU = Union[int, float, bool, complex, Complex, SupportsConjugate]
+SupportsConjugateSCT = (int, float, bool, complex, Complex, SupportsConjugate)
+assert SupportsConjugateSCU.__args__ == SupportsConjugateSCT  # type: ignore
 
 
 @runtime_checkable
@@ -285,9 +285,9 @@ class SupportsRealImag(Protocol[_T_co], metaclass=CachingProtocolMeta):
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealImag)
-SupportsRealImagT = Union[int, float, bool, Complex, SupportsRealImag]
-SupportsRealImagTs = (int, float, bool, Complex, SupportsRealImag)
-assert SupportsRealImagT.__args__ == SupportsRealImagTs  # type: ignore
+SupportsRealImagSCU = Union[int, float, bool, Complex, SupportsRealImag]
+SupportsRealImagSCT = (int, float, bool, Complex, SupportsRealImag)
+assert SupportsRealImagSCU.__args__ == SupportsRealImagSCT  # type: ignore
 
 
 @runtime_checkable
@@ -303,9 +303,9 @@ class SupportsTrunc(Protocol[_T_co], metaclass=CachingProtocolMeta):
 
 
 _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
-SupportsTruncT = Union[int, float, bool, Real, SupportsTrunc]
-SupportsTruncTs = (int, float, bool, Real, SupportsTrunc)
-assert SupportsTruncT.__args__ == SupportsTruncTs  # type: ignore
+SupportsTruncSCU = Union[int, float, bool, Real, SupportsTrunc]
+SupportsTruncSCT = (int, float, bool, Real, SupportsTrunc)
+assert SupportsTruncSCU.__args__ == SupportsTruncSCT  # type: ignore
 
 
 @runtime_checkable
@@ -325,9 +325,9 @@ _assert_isinstance(int, bool, Decimal, Fraction, target_t=SupportsFloor)
 if sys.version_info >= (3, 9):
     _assert_isinstance(float, target_t=SupportsFloor)
 
-SupportsFloorT = Union[int, float, bool, Real, SupportsFloor]
-SupportsFloorTs = (int, float, bool, Real, SupportsFloor)
-assert SupportsFloorT.__args__ == SupportsFloorTs  # type: ignore
+SupportsFloorSCU = Union[int, float, bool, Real, SupportsFloor]
+SupportsFloorSCT = (int, float, bool, Real, SupportsFloor)
+assert SupportsFloorSCU.__args__ == SupportsFloorSCT  # type: ignore
 
 
 @runtime_checkable
@@ -347,9 +347,9 @@ _assert_isinstance(int, bool, Decimal, Fraction, target_t=SupportsCeil)
 if sys.version_info >= (3, 9):
     _assert_isinstance(float, target_t=SupportsCeil)
 
-SupportsCeilT = Union[int, float, bool, Real, SupportsCeil]
-SupportsCeilTs = (int, float, bool, Real, SupportsCeil)
-assert SupportsCeilT.__args__ == SupportsCeilTs  # type: ignore
+SupportsCeilSCU = Union[int, float, bool, Real, SupportsCeil]
+SupportsCeilSCT = (int, float, bool, Real, SupportsCeil)
+assert SupportsCeilSCU.__args__ == SupportsCeilSCT  # type: ignore
 
 
 @runtime_checkable
@@ -369,9 +369,9 @@ class SupportsDivmod(Protocol[_T_co], metaclass=CachingProtocolMeta):
 
 
 _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsDivmod)
-SupportsDivmodT = Union[int, float, bool, Real, SupportsDivmod]
-SupportsDivmodTs = (int, float, bool, Real, SupportsDivmod)
-assert SupportsDivmodT.__args__ == SupportsDivmodTs  # type: ignore
+SupportsDivmodSCU = Union[int, float, bool, Real, SupportsDivmod]
+SupportsDivmodSCT = (int, float, bool, Real, SupportsDivmod)
+assert SupportsDivmodSCU.__args__ == SupportsDivmodSCT  # type: ignore
 
 
 @runtime_checkable
@@ -391,9 +391,11 @@ class SupportsNumeratorDenominator(Protocol[_T_co], metaclass=CachingProtocolMet
 
 
 _assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominator)
-SupportsNumeratorDenominatorT = Union[int, bool, Rational, SupportsNumeratorDenominator]
-SupportsNumeratorDenominatorTs = (int, bool, Rational, SupportsNumeratorDenominator)
-assert SupportsNumeratorDenominatorT.__args__ == SupportsNumeratorDenominatorTs  # type: ignore
+SupportsNumeratorDenominatorSCU = Union[
+    int, bool, Rational, SupportsNumeratorDenominator
+]
+SupportsNumeratorDenominatorSCT = (int, bool, Rational, SupportsNumeratorDenominator)
+assert SupportsNumeratorDenominatorSCU.__args__ == SupportsNumeratorDenominatorSCT  # type: ignore
 
 
 @runtime_checkable
@@ -448,9 +450,9 @@ class SupportsComplexOps(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexOps)
-SupportsComplexOpsT = Union[int, float, bool, Complex, SupportsComplexOps]
-SupportsComplexOpsTs = (int, float, bool, Complex, SupportsComplexOps)
-assert SupportsComplexOpsT.__args__ == SupportsComplexOpsTs  # type: ignore
+SupportsComplexOpsSCU = Union[int, float, bool, Complex, SupportsComplexOps]
+SupportsComplexOpsSCT = (int, float, bool, Complex, SupportsComplexOps)
+assert SupportsComplexOpsSCU.__args__ == SupportsComplexOpsSCT  # type: ignore
 
 
 @runtime_checkable
@@ -473,9 +475,9 @@ class SupportsComplexPow(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexPow)
-SupportsComplexPowT = Union[int, float, bool, Complex, SupportsComplexPow]
-SupportsComplexPowTs = (int, float, bool, Complex, SupportsComplexPow)
-assert SupportsComplexPowT.__args__ == SupportsComplexPowTs  # type: ignore
+SupportsComplexPowSCU = Union[int, float, bool, Complex, SupportsComplexPow]
+SupportsComplexPowSCT = (int, float, bool, Complex, SupportsComplexPow)
+assert SupportsComplexPowSCU.__args__ == SupportsComplexPowSCT  # type: ignore
 
 
 @runtime_checkable
@@ -522,9 +524,9 @@ class SupportsRealOps(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealOps)
-SupportsRealOpsT = Union[int, float, bool, Real, SupportsRealOps]
-SupportsRealOpsTs = (int, float, bool, Real, SupportsRealOps)
-assert SupportsRealOpsT.__args__ == SupportsRealOpsTs  # type: ignore
+SupportsRealOpsSCU = Union[int, float, bool, Real, SupportsRealOps]
+SupportsRealOpsSCT = (int, float, bool, Real, SupportsRealOps)
+assert SupportsRealOpsSCU.__args__ == SupportsRealOpsSCT  # type: ignore
 
 
 @runtime_checkable
@@ -583,9 +585,9 @@ class SupportsIntegralOps(
 
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralOps)
-SupportsIntegralOpsT = Union[int, bool, Integral, SupportsIntegralOps]
-SupportsIntegralOpsTs = (int, bool, Integral, SupportsIntegralOps)
-assert SupportsIntegralOpsT.__args__ == SupportsIntegralOpsTs  # type: ignore
+SupportsIntegralOpsSCU = Union[int, bool, Integral, SupportsIntegralOps]
+SupportsIntegralOpsSCT = (int, bool, Integral, SupportsIntegralOps)
+assert SupportsIntegralOpsSCU.__args__ == SupportsIntegralOpsSCT  # type: ignore
 
 
 @runtime_checkable
@@ -608,9 +610,9 @@ class SupportsIntegralPow(
 
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralPow)
-SupportsIntegralPowT = Union[int, bool, Integral, SupportsIntegralPow]
-SupportsIntegralPowTs = (int, bool, Integral, SupportsIntegralPow)
-assert SupportsIntegralPowT.__args__ == SupportsIntegralPowTs  # type: ignore
+SupportsIntegralPowSCU = Union[int, bool, Integral, SupportsIntegralPow]
+SupportsIntegralPowSCT = (int, bool, Integral, SupportsIntegralPow)
+assert SupportsIntegralPowSCU.__args__ == SupportsIntegralPowSCT  # type: ignore
 
 
 @runtime_checkable
@@ -639,9 +641,9 @@ class RealLike(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=RealLike)
-RealLikeT = Union[int, float, bool, Real, RealLike]
-RealLikeTs = (int, float, bool, Real, RealLike)
-assert RealLikeT.__args__ == RealLikeTs  # type: ignore
+RealLikeSCU = Union[int, float, bool, Real, RealLike]
+RealLikeSCT = (int, float, bool, Real, RealLike)
+assert RealLikeSCU.__args__ == RealLikeSCT  # type: ignore
 
 
 @runtime_checkable
@@ -671,19 +673,19 @@ class RationalLike(
 
 
 _assert_isinstance(int, bool, Fraction, target_t=RationalLike)
-RationalLikeT = Union[
+RationalLikeSCU = Union[
     int,
     bool,
     Rational,
     RationalLike,
 ]
-RationalLikeTs = (
+RationalLikeSCT = (
     int,
     bool,
     Rational,
     RationalLike,
 )
-assert RationalLikeT.__args__ == RationalLikeTs  # type: ignore
+assert RationalLikeSCU.__args__ == RationalLikeSCT  # type: ignore
 
 
 @runtime_checkable
@@ -715,9 +717,9 @@ class IntegralLike(
 
 
 _assert_isinstance(int, bool, target_t=IntegralLike)
-IntegralLikeT = Union[int, bool, Integral, IntegralLike]
-IntegralLikeTs = (int, bool, Integral, IntegralLike)
-assert IntegralLikeT.__args__ == IntegralLikeTs  # type: ignore
+IntegralLikeSCU = Union[int, bool, Integral, IntegralLike]
+IntegralLikeSCT = (int, bool, Integral, IntegralLike)
+assert IntegralLikeSCU.__args__ == IntegralLikeSCT  # type: ignore
 
 
 # ---- Functions -----------------------------------------------------------------------

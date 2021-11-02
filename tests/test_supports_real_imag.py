@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsRealImag, SupportsRealImagT, SupportsRealImagTs
+from numerary.types import SupportsRealImag, SupportsRealImagSCT, SupportsRealImagSCU
 
 from .numberwang import (
     Numberwang,
@@ -38,8 +38,8 @@ def func(arg: SupportsRealImag):
 
 
 @beartype
-def func_t(arg: SupportsRealImagT):
-    assert isinstance(arg, SupportsRealImagTs), f"{arg!r}"
+def func_t(arg: SupportsRealImagSCU):
+    assert isinstance(arg, SupportsRealImagSCT), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -58,7 +58,7 @@ def test_supports_real_imag() -> None:
         WangernumbDerived(-273.15),
     ):
         assert isinstance(good_val, SupportsRealImag), f"{good_val!r}"
-        assert isinstance(good_val, SupportsRealImagTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsRealImagSCT), f"{good_val!r}"
         assert hasattr(good_val, "real"), f"{good_val!r}"
         assert hasattr(good_val, "imag"), f"{good_val!r}"
 
@@ -72,7 +72,7 @@ def test_supports_real_imag() -> None:
         assert not isinstance(lying_val, SupportsRealImag), f"{lying_val!r}"
 
         # The short-circuiting approach does not
-        assert isinstance(lying_val, SupportsRealImagTs), f"{lying_val!r}"
+        assert isinstance(lying_val, SupportsRealImagSCT), f"{lying_val!r}"
 
     for bad_val in (
         Numberwang(-273),
@@ -80,7 +80,7 @@ def test_supports_real_imag() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsRealImag), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsRealImagTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsRealImagSCT), f"{bad_val!r}"
 
 
 def test_supports_real_imag_beartype() -> None:
@@ -98,7 +98,7 @@ def test_supports_real_imag_beartype() -> None:
         WangernumbDerived(-273.15),
     ):
         func(cast(SupportsRealImag, good_val))
-        func_t(cast(SupportsRealImagT, good_val))
+        func_t(cast(SupportsRealImagSCU, good_val))
 
     for lying_val in (
         # These have lied about supporting this interface when they registered
@@ -109,7 +109,7 @@ def test_supports_real_imag_beartype() -> None:
         with pytest.raises(roar.BeartypeException):
             func(cast(SupportsRealImag, lying_val))
 
-        func_t(cast(SupportsRealImagT, lying_val))
+        func_t(cast(SupportsRealImagSCU, lying_val))
 
     for bad_val in (
         Numberwang(-273),
@@ -120,7 +120,7 @@ def test_supports_real_imag_beartype() -> None:
             func(cast(SupportsRealImag, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsRealImagT, bad_val))
+            func_t(cast(SupportsRealImagSCU, bad_val))
 
 
 def test_supports_real_imag_numpy() -> None:
@@ -144,7 +144,7 @@ def test_supports_real_imag_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert isinstance(good_val, SupportsRealImag), f"{good_val!r}"
-        assert isinstance(good_val, SupportsRealImagTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsRealImagSCT), f"{good_val!r}"
         assert hasattr(good_val, "real"), f"{good_val!r}"
         assert hasattr(good_val, "imag"), f"{good_val!r}"
 
@@ -171,7 +171,7 @@ def test_supports_real_imag_numpy_beartype() -> None:
         numpy.clongdouble(-273.15),
     ):
         func(cast(SupportsRealImag, good_val))
-        func_t(cast(SupportsRealImagT, good_val))
+        func_t(cast(SupportsRealImagSCU, good_val))
 
 
 def test_supports_real_imag_sympy() -> None:
@@ -188,11 +188,11 @@ def test_supports_real_imag_sympy() -> None:
         assert not isinstance(lying_val, SupportsRealImag), f"{lying_val!r}"
 
         # The short-circuiting approach does not
-        assert isinstance(lying_val, SupportsRealImagTs), f"{lying_val!r}"
+        assert isinstance(lying_val, SupportsRealImagSCT), f"{lying_val!r}"
 
     for bad_val in (sympy.symbols("x"),):
         assert not isinstance(bad_val, SupportsRealImag), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsRealImagTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsRealImagSCT), f"{bad_val!r}"
 
 
 def test_supports_real_imag_sympy_beartype() -> None:
@@ -209,11 +209,11 @@ def test_supports_real_imag_sympy_beartype() -> None:
         with pytest.raises(roar.BeartypeException):
             func(cast(SupportsRealImag, lying_val))
 
-        func_t(cast(SupportsRealImagT, lying_val))
+        func_t(cast(SupportsRealImagSCU, lying_val))
 
     for bad_val in (sympy.symbols("x"),):
         with pytest.raises(roar.BeartypeException):
             func(cast(SupportsRealImag, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsRealImagT, bad_val))
+            func_t(cast(SupportsRealImagSCU, bad_val))

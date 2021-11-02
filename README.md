@@ -497,21 +497,21 @@ Although, in retrospect, that warning probably should have been presented more p
 If the interface is to be used most often with native types (``int``s, ``float``s, ``bool``s) or those registered with the numeric tower, there is an optimization to be had at runtime by short-circuiting protocol type checking.
 These come in two flavors.
 
-1. ``…T`` objects which are ``Union``s for compliant types.
-2. ``…Ts`` tuples, which are identical to the corresponding ``Union`` arguments. These are useful for runtime checks (e.g., as the second argument to ``isinstance``).
+1. ``…SCU`` objects which are ``Union``s for compliant types.
+2. ``…SCT`` tuples, which are identical to the corresponding ``Union`` arguments. These are useful for runtime checks (e.g., as the second argument to ``isinstance``).
 
 For example, for the aforementioned ``SupportsIntegralOps``, ``numerary`` defines two additional interfaces (some details and safeguards omitted).
 
 ``` python
-SupportsIntegralOpsT = Union[int, bool, Integral, SupportsIntegralOps]
-SupportsIntegralOpsTs = (int, bool, Integral, SupportsIntegralOps)
+SupportsIntegralOpsSCU = Union[int, bool, Integral, SupportsIntegralOps]
+SupportsIntegralOpsSCT = (int, bool, Integral, SupportsIntegralOps)
 ```
 
 ``` python
->>> from numerary.types import SupportsIntegralOpsT  # for type annotations
->>> from numerary.types import SupportsIntegralOpsTs  # for runtime checking
->>> def shift_left_one(arg: SupportsIntegralOpsT) -> SupportsIntegralOpsT:
-...   assert isinstance(arg, SupportsIntegralOpsTs)
+>>> from numerary.types import SupportsIntegralOpsSCU  # for type annotations
+>>> from numerary.types import SupportsIntegralOpsSCT  # for runtime checking
+>>> def shift_left_one(arg: SupportsIntegralOpsSCU) -> SupportsIntegralOpsSCU:
+...   assert isinstance(arg, SupportsIntegralOpsSCT)
 ...   return arg << 1
 >>> shift_left_one(1)
 2
@@ -572,7 +572,7 @@ But sometimes, out there in the real world, implementations *lie*.
 Consider:
 
 ``` python
->>> from numerary.types import SupportsRealImag, SupportsRealImagTs
+>>> from numerary.types import SupportsRealImag, SupportsRealImagSCT
 >>> hasattr(Integral, "real") and hasattr(Integral, "imag")
 True
 >>> one = sympify("1")
@@ -582,7 +582,7 @@ True
 False
 >>> isinstance(one, SupportsRealImag)  # detects the lie
 False
->>> isinstance(one, SupportsRealImagTs)  # trusts the registration
+>>> isinstance(one, SupportsRealImagSCT)  # trusts the registration
 True
 
 ```
@@ -602,7 +602,7 @@ If all you deal with are integrals and reals and what you want is arithmetic ope
 … or, if your performance requirements demand the short-circuiting versions …
 
 ``` python
->>> from numerary import IntegralLikeT, IntegralLikeTs, RealLikeT, RealLikeTs
+>>> from numerary import IntegralLikeSCU, IntegralLikeSCT, RealLikeSCU, RealLikeSCT
 >>> # ...
 
 ```

@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsConjugate, SupportsConjugateT, SupportsConjugateTs
+from numerary.types import SupportsConjugate, SupportsConjugateSCT, SupportsConjugateSCU
 
 from .numberwang import (
     Numberwang,
@@ -38,8 +38,8 @@ def func(arg: SupportsConjugate):
 
 
 @beartype
-def func_t(arg: SupportsConjugateT):
-    assert isinstance(arg, SupportsConjugateTs), f"{arg!r}"
+def func_t(arg: SupportsConjugateSCU):
+    assert isinstance(arg, SupportsConjugateSCT), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -58,7 +58,7 @@ def test_supports_conjugate() -> None:
         WangernumbDerived(-273.15),
     ):
         assert isinstance(good_val, SupportsConjugate), f"{good_val!r}"
-        assert isinstance(good_val, SupportsConjugateTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsConjugateSCT), f"{good_val!r}"
         assert good_val.conjugate(), f"{good_val!r}"
 
     for lying_val in (
@@ -71,7 +71,7 @@ def test_supports_conjugate() -> None:
         assert not isinstance(lying_val, SupportsConjugate), f"{lying_val!r}"
 
         # The short-circuiting approach does not
-        assert isinstance(lying_val, SupportsConjugateTs), f"{lying_val!r}"
+        assert isinstance(lying_val, SupportsConjugateSCT), f"{lying_val!r}"
 
     for bad_val in (
         Numberwang(-273),
@@ -79,7 +79,7 @@ def test_supports_conjugate() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsConjugate), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsConjugateTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsConjugateSCT), f"{bad_val!r}"
 
 
 def test_supports_conjugate_beartype() -> None:
@@ -97,7 +97,7 @@ def test_supports_conjugate_beartype() -> None:
         WangernumbDerived(-273.15),
     ):
         func(cast(SupportsConjugate, good_val))
-        func_t(cast(SupportsConjugateT, good_val))
+        func_t(cast(SupportsConjugateSCU, good_val))
 
     for lying_val in (
         # These have lied about supporting this interface when they registered
@@ -108,7 +108,7 @@ def test_supports_conjugate_beartype() -> None:
         with pytest.raises(roar.BeartypeException):
             func(cast(SupportsConjugate, lying_val))
 
-        func_t(cast(SupportsConjugateT, lying_val))
+        func_t(cast(SupportsConjugateSCU, lying_val))
 
     for bad_val in (
         Numberwang(-273),
@@ -119,7 +119,7 @@ def test_supports_conjugate_beartype() -> None:
             func(cast(SupportsConjugate, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsConjugateT, bad_val))
+            func_t(cast(SupportsConjugateSCU, bad_val))
 
 
 def test_supports_conjugate_numpy() -> None:
@@ -143,7 +143,7 @@ def test_supports_conjugate_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert isinstance(good_val, SupportsConjugate), f"{good_val!r}"
-        assert isinstance(good_val, SupportsConjugateTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsConjugateSCT), f"{good_val!r}"
         assert good_val.conjugate(), f"{good_val!r}"
 
 
@@ -169,7 +169,7 @@ def test_supports_conjugate_numpy_beartype() -> None:
         numpy.clongdouble(-273.15),
     ):
         func(cast(SupportsConjugate, good_val))
-        func_t(cast(SupportsConjugateT, good_val))
+        func_t(cast(SupportsConjugateSCU, good_val))
 
 
 def test_supports_conjugate_sympy() -> None:
@@ -182,7 +182,7 @@ def test_supports_conjugate_sympy() -> None:
         sympy.symbols("x"),
     ):
         assert isinstance(good_val, SupportsConjugate), f"{good_val!r}"
-        assert isinstance(good_val, SupportsConjugateTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsConjugateSCT), f"{good_val!r}"
         assert good_val.conjugate(), f"{good_val!r}"
 
 
@@ -197,4 +197,4 @@ def test_supports_conjugate_sympy_beartype() -> None:
         sympy.symbols("x"),
     ):
         func(cast(SupportsConjugate, good_val))
-        func_t(cast(SupportsConjugateT, good_val))
+        func_t(cast(SupportsConjugateSCU, good_val))

@@ -17,11 +17,11 @@ import pytest
 from numerary.bt import beartype
 from numerary.types import (
     SupportsIntegralOps,
-    SupportsIntegralOpsT,
-    SupportsIntegralOpsTs,
+    SupportsIntegralOpsSCT,
+    SupportsIntegralOpsSCU,
     SupportsIntegralPow,
-    SupportsIntegralPowT,
-    SupportsIntegralPowTs,
+    SupportsIntegralPowSCT,
+    SupportsIntegralPowSCU,
 )
 
 from .numberwang import (
@@ -45,8 +45,8 @@ def ops_func(arg: SupportsIntegralOps):
 
 
 @beartype
-def ops_func_t(arg: SupportsIntegralOpsT):
-    assert isinstance(arg, SupportsIntegralOpsTs), f"{arg!r}"
+def ops_func_t(arg: SupportsIntegralOpsSCU):
+    assert isinstance(arg, SupportsIntegralOpsSCT), f"{arg!r}"
 
 
 @beartype
@@ -55,8 +55,8 @@ def pow_func(arg: SupportsIntegralPow):
 
 
 @beartype
-def pow_func_t(arg: SupportsIntegralPowT):
-    assert isinstance(arg, SupportsIntegralPowTs), f"{arg!r}"
+def pow_func_t(arg: SupportsIntegralPowSCU):
+    assert isinstance(arg, SupportsIntegralPowSCT), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -71,13 +71,13 @@ def test_supports_integral_ops_pow() -> None:
         NumberwangRegistered(-273),
     ):
         assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsIntegralOpsTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
         assert good_val >> 0 == good_val, f"{good_val!r}"
         assert good_val << 0 == good_val, f"{good_val!r}"
         assert good_val & 0 == 0, f"{good_val!r}"
         assert good_val | 0 == good_val, f"{good_val!r}"
         assert isinstance(good_val, SupportsIntegralPow), f"{good_val!r}"
-        assert isinstance(good_val, SupportsIntegralPowTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsIntegralPowSCT), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
     for bad_val in (
@@ -91,7 +91,7 @@ def test_supports_integral_ops_pow() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsIntegralOps), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsIntegralOpsTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsIntegralOpsSCT), f"{bad_val!r}"
 
 
 def test_supports_integral_ops_pow_beartype() -> None:
@@ -105,7 +105,7 @@ def test_supports_integral_ops_pow_beartype() -> None:
         NumberwangRegistered(-273),
     ):
         ops_func(cast(SupportsIntegralOps, good_val))
-        ops_func_t(cast(SupportsIntegralOpsT, good_val))
+        ops_func_t(cast(SupportsIntegralOpsSCU, good_val))
 
     for bad_val in (
         -273.15,
@@ -121,7 +121,7 @@ def test_supports_integral_ops_pow_beartype() -> None:
             ops_func(cast(SupportsIntegralOps, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ops_func_t(cast(SupportsIntegralOpsT, bad_val))
+            ops_func_t(cast(SupportsIntegralOpsSCU, bad_val))
 
 
 def test_supports_integral_ops_pow_numpy() -> None:
@@ -138,7 +138,7 @@ def test_supports_integral_ops_pow_numpy() -> None:
         numpy.int64(-273),
     ):
         assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsIntegralOpsTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
 
         # I have no idea why numpy.uint64 is special in this regard
         if isinstance(good_val, numpy.uint64):
@@ -153,7 +153,7 @@ def test_supports_integral_ops_pow_numpy() -> None:
             assert good_val | 0 == good_val, f"{good_val!r}"
 
         assert isinstance(good_val, SupportsIntegralPow), f"{good_val!r}"
-        assert isinstance(good_val, SupportsIntegralPowTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsIntegralPowSCT), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
     for lying_val in (
@@ -166,7 +166,7 @@ def test_supports_integral_ops_pow_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsIntegralOpsTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
 
         # These have, but don't implement these functions
         # TODO(posita): Can we fix this?
@@ -198,7 +198,7 @@ def test_supports_integral_ops_pow_numpy_beartype() -> None:
         numpy.int64(-273),
     ):
         ops_func(cast(SupportsIntegralOps, good_val))
-        ops_func_t(cast(SupportsIntegralOpsT, good_val))
+        ops_func_t(cast(SupportsIntegralOpsSCU, good_val))
 
     for lying_val in (
         numpy.float16(-1.8),
@@ -210,7 +210,7 @@ def test_supports_integral_ops_pow_numpy_beartype() -> None:
         numpy.clongdouble(-273.15),
     ):
         ops_func(cast(SupportsIntegralOps, good_val))
-        ops_func_t(cast(SupportsIntegralOpsT, good_val))
+        ops_func_t(cast(SupportsIntegralOpsSCU, good_val))
 
 
 def test_supports_integral_ops_pow_sympy() -> None:
@@ -218,18 +218,18 @@ def test_supports_integral_ops_pow_sympy() -> None:
 
     for good_val in (sympy.Integer(-273),):
         assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsIntegralOpsTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
         assert good_val >> 0 == good_val, f"{good_val!r}"
         assert good_val << 0 == good_val, f"{good_val!r}"
         assert good_val & 0 == 0, f"{good_val!r}"
         assert good_val | 0 == good_val, f"{good_val!r}"
         assert isinstance(good_val, SupportsIntegralPow), f"{good_val!r}"
-        assert isinstance(good_val, SupportsIntegralPowTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsIntegralPowSCT), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
     for lying_val in (sympy.symbols("x"),):
         assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsIntegralOpsTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
 
         # Relationals have, but don't implement this function
         # TODO(posita): Can we fix this?
@@ -241,7 +241,7 @@ def test_supports_integral_ops_pow_sympy() -> None:
         sympy.Rational(-27315, 100),
     ):
         assert not isinstance(bad_val, SupportsIntegralOps), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsIntegralOpsTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsIntegralOpsSCT), f"{bad_val!r}"
 
 
 def test_supports_integral_ops_pow_sympy_beartype() -> None:
@@ -250,11 +250,11 @@ def test_supports_integral_ops_pow_sympy_beartype() -> None:
 
     for good_val in (sympy.Integer(-273),):
         ops_func(cast(SupportsIntegralOps, good_val))
-        ops_func_t(cast(SupportsIntegralOpsT, good_val))
+        ops_func_t(cast(SupportsIntegralOpsSCU, good_val))
 
     for lying_val in (sympy.symbols("x"),):
         ops_func(cast(SupportsIntegralOps, lying_val))
-        ops_func_t(cast(SupportsIntegralOpsT, lying_val))
+        ops_func_t(cast(SupportsIntegralOpsSCU, lying_val))
 
     for bad_val in (
         sympy.Float(-273.15),
@@ -264,4 +264,4 @@ def test_supports_integral_ops_pow_sympy_beartype() -> None:
             ops_func(cast(SupportsIntegralOps, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ops_func_t(cast(SupportsIntegralOpsT, bad_val))
+            ops_func_t(cast(SupportsIntegralOpsSCU, bad_val))

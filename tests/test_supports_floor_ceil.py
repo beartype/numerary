@@ -18,11 +18,11 @@ import pytest
 from numerary.bt import beartype
 from numerary.types import (
     SupportsCeil,
-    SupportsCeilT,
-    SupportsCeilTs,
+    SupportsCeilSCT,
+    SupportsCeilSCU,
     SupportsFloor,
-    SupportsFloorT,
-    SupportsFloorTs,
+    SupportsFloorSCT,
+    SupportsFloorSCU,
     ceil,
     floor,
 )
@@ -48,8 +48,8 @@ def ceil_func(arg: SupportsCeil):
 
 
 @beartype
-def ceil_func_t(arg: SupportsCeilT):
-    assert isinstance(arg, SupportsCeilTs), f"{arg!r}"
+def ceil_func_t(arg: SupportsCeilSCU):
+    assert isinstance(arg, SupportsCeilSCT), f"{arg!r}"
 
 
 @beartype
@@ -58,8 +58,8 @@ def floor_func(arg: SupportsFloor):
 
 
 @beartype
-def floor_func_t(arg: SupportsFloorT):
-    assert isinstance(arg, SupportsFloorTs), f"{arg!r}"
+def floor_func_t(arg: SupportsFloorSCU):
+    assert isinstance(arg, SupportsFloorSCT), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -79,10 +79,10 @@ def test_floor_ceil() -> None:
         WangernumbRegistered(-273.15),
     ):
         assert isinstance(good_val, SupportsFloor), f"{good_val!r}"
-        assert isinstance(good_val, SupportsFloorTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsFloorSCT), f"{good_val!r}"
         assert floor(good_val), f"{good_val!r}"
         assert isinstance(good_val, SupportsCeil), f"{good_val!r}"
-        assert isinstance(good_val, SupportsCeilTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsCeilSCT), f"{good_val!r}"
         assert ceil(good_val), f"{good_val!r}"
 
     for out_of_spec_val in (-273.15,):
@@ -103,17 +103,17 @@ def test_floor_ceil() -> None:
 
         # The short-circuiting approach inadvertently (in this case correctly) sweeps in
         # floats, even though they're out-of-spec
-        assert isinstance(out_of_spec_val, SupportsFloorTs), f"{out_of_spec_val!r}"
-        assert isinstance(out_of_spec_val, SupportsCeilTs), f"{out_of_spec_val!r}"
+        assert isinstance(out_of_spec_val, SupportsFloorSCT), f"{out_of_spec_val!r}"
+        assert isinstance(out_of_spec_val, SupportsCeilSCT), f"{out_of_spec_val!r}"
 
     for bad_val in (
         complex(-273.15),
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsFloor), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsFloorTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsFloorSCT), f"{bad_val!r}"
         assert not isinstance(bad_val, SupportsCeil), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsCeilTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsCeilSCT), f"{bad_val!r}"
 
 
 def test_floor_ceil_beartype() -> None:
@@ -132,9 +132,9 @@ def test_floor_ceil_beartype() -> None:
         WangernumbRegistered(-273.15),
     ):
         floor_func(cast(SupportsFloor, good_val))
-        floor_func_t(cast(SupportsFloorT, good_val))
+        floor_func_t(cast(SupportsFloorSCU, good_val))
         ceil_func(cast(SupportsCeil, good_val))
-        ceil_func_t(cast(SupportsCeilT, good_val))
+        ceil_func_t(cast(SupportsCeilSCU, good_val))
 
     for out_of_spec_val in (-273.15,):
         # Prior to Python 3.9, floats didn't have explicit __floor__ or __ceil__
@@ -153,8 +153,8 @@ def test_floor_ceil_beartype() -> None:
 
         # The short-circuiting approach inadvertently (in this case correctly) sweeps in
         # floats, even though they're out-of-spec
-        floor_func_t(cast(SupportsFloorT, out_of_spec_val))
-        ceil_func_t(cast(SupportsCeilT, out_of_spec_val))
+        floor_func_t(cast(SupportsFloorSCU, out_of_spec_val))
+        ceil_func_t(cast(SupportsCeilSCU, out_of_spec_val))
 
     for bad_val in (
         complex(-273.15),
@@ -164,13 +164,13 @@ def test_floor_ceil_beartype() -> None:
             floor_func(cast(SupportsFloor, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            floor_func_t(cast(SupportsFloorT, bad_val))
+            floor_func_t(cast(SupportsFloorSCU, bad_val))
 
         with pytest.raises(roar.BeartypeException):
             ceil_func(cast(SupportsCeil, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ceil_func_t(cast(SupportsCeilT, bad_val))
+            ceil_func_t(cast(SupportsCeilSCU, bad_val))
 
 
 def test_floor_ceil_numpy() -> None:
@@ -196,8 +196,8 @@ def test_floor_ceil_numpy() -> None:
 
         # The short-circuiting approach inadvertently (in this case correctly) sweeps in
         # floats, even though they're out-of-spec
-        assert isinstance(out_of_spec_val, SupportsFloorTs), f"{out_of_spec_val!r}"
-        assert isinstance(out_of_spec_val, SupportsCeilTs), f"{out_of_spec_val!r}"
+        assert isinstance(out_of_spec_val, SupportsFloorSCT), f"{out_of_spec_val!r}"
+        assert isinstance(out_of_spec_val, SupportsCeilSCT), f"{out_of_spec_val!r}"
 
     for lying_val in (
         numpy.uint8(2),
@@ -217,8 +217,8 @@ def test_floor_ceil_numpy() -> None:
         assert not isinstance(lying_val, SupportsCeil), f"{lying_val!r}"
 
         # The short-circuiting approach does not
-        assert isinstance(lying_val, SupportsFloorTs), f"{lying_val!r}"
-        assert isinstance(lying_val, SupportsCeilTs), f"{lying_val!r}"
+        assert isinstance(lying_val, SupportsFloorSCT), f"{lying_val!r}"
+        assert isinstance(lying_val, SupportsCeilSCT), f"{lying_val!r}"
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -226,9 +226,9 @@ def test_floor_ceil_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsFloor), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsFloorTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsFloorSCT), f"{bad_val!r}"
         assert not isinstance(bad_val, SupportsCeil), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsCeilTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsCeilSCT), f"{bad_val!r}"
 
 
 def test_floor_ceil_numpy_beartype() -> None:
@@ -268,12 +268,12 @@ def test_floor_ceil_numpy_beartype() -> None:
         with pytest.raises(roar.BeartypeException):
             floor_func(cast(SupportsFloor, lying_val))
 
-        floor_func_t(cast(SupportsFloorT, lying_val))
+        floor_func_t(cast(SupportsFloorSCU, lying_val))
 
         with pytest.raises(roar.BeartypeException):
             ceil_func(cast(SupportsCeil, lying_val))
 
-        ceil_func_t(cast(SupportsCeilT, lying_val))
+        ceil_func_t(cast(SupportsCeilSCU, lying_val))
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -284,13 +284,13 @@ def test_floor_ceil_numpy_beartype() -> None:
             floor_func(cast(SupportsFloor, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            floor_func_t(cast(SupportsFloorT, bad_val))
+            floor_func_t(cast(SupportsFloorSCU, bad_val))
 
         with pytest.raises(roar.BeartypeException):
             ceil_func(cast(SupportsCeil, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ceil_func_t(cast(SupportsCeilT, bad_val))
+            ceil_func_t(cast(SupportsCeilSCU, bad_val))
 
 
 def test_floor_ceil_sympy() -> None:
@@ -302,17 +302,17 @@ def test_floor_ceil_sympy() -> None:
         sympy.Rational(-27315, 100),
     ):
         assert isinstance(good_val, SupportsFloor), f"{good_val!r}"
-        assert isinstance(good_val, SupportsFloorTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsFloorSCT), f"{good_val!r}"
         assert floor(good_val), f"{good_val!r}"
         assert isinstance(good_val, SupportsCeil), f"{good_val!r}"
-        assert isinstance(good_val, SupportsCeilTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsCeilSCT), f"{good_val!r}"
         assert ceil(good_val), f"{good_val!r}"
 
     for bad_val in (sympy.symbols("x"),):
         assert not isinstance(bad_val, SupportsFloor), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsFloorTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsFloorSCT), f"{bad_val!r}"
         assert not isinstance(bad_val, SupportsCeil), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsCeilTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsCeilSCT), f"{bad_val!r}"
 
 
 def test_floor_ceil_sympy_beartype() -> None:
@@ -325,19 +325,19 @@ def test_floor_ceil_sympy_beartype() -> None:
         sympy.Rational(-27315, 100),
     ):
         floor_func(cast(SupportsFloor, good_val))
-        floor_func_t(cast(SupportsFloorT, good_val))
+        floor_func_t(cast(SupportsFloorSCU, good_val))
         ceil_func(cast(SupportsCeil, good_val))
-        ceil_func_t(cast(SupportsCeilT, good_val))
+        ceil_func_t(cast(SupportsCeilSCU, good_val))
 
     for bad_val in (sympy.symbols("x"),):
         with pytest.raises(roar.BeartypeException):
             floor_func(cast(SupportsFloor, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            floor_func_t(cast(SupportsFloorT, bad_val))
+            floor_func_t(cast(SupportsFloorSCU, bad_val))
 
         with pytest.raises(roar.BeartypeException):
             ceil_func(cast(SupportsCeil, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ceil_func_t(cast(SupportsCeilT, bad_val))
+            ceil_func_t(cast(SupportsCeilSCU, bad_val))

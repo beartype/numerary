@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsDivmod, SupportsDivmodT, SupportsDivmodTs
+from numerary.types import SupportsDivmod, SupportsDivmodSCT, SupportsDivmodSCU
 
 from .numberwang import (
     Numberwang,
@@ -38,8 +38,8 @@ def func(arg: SupportsDivmod):
 
 
 @beartype
-def func_t(arg: SupportsDivmodT):
-    assert isinstance(arg, SupportsDivmodTs), f"{arg!r}"
+def func_t(arg: SupportsDivmodSCU):
+    assert isinstance(arg, SupportsDivmodSCT), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -56,7 +56,7 @@ def test_supports_divmod() -> None:
         WangernumbDerived(-273.15),
     ):
         assert isinstance(good_val, SupportsDivmod), f"{good_val!r}"
-        assert isinstance(good_val, SupportsDivmodTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsDivmodSCT), f"{good_val!r}"
         assert divmod(good_val, good_val), f"{good_val!r}"
 
     for lying_val in (
@@ -69,7 +69,7 @@ def test_supports_divmod() -> None:
         assert not isinstance(lying_val, SupportsDivmod), f"{lying_val!r}"
 
         # The short-circuiting approach does not
-        assert isinstance(lying_val, SupportsDivmodTs), f"{lying_val!r}"
+        assert isinstance(lying_val, SupportsDivmodSCT), f"{lying_val!r}"
 
     for bad_val in (
         # TODO(posita): fix this
@@ -79,7 +79,7 @@ def test_supports_divmod() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsDivmod), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsDivmodTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsDivmodSCT), f"{bad_val!r}"
 
 
 def test_supports_divmod_beartype() -> None:
@@ -95,7 +95,7 @@ def test_supports_divmod_beartype() -> None:
         WangernumbDerived(-273.15),
     ):
         func(cast(SupportsDivmod, good_val))
-        func_t(cast(SupportsDivmodT, good_val))
+        func_t(cast(SupportsDivmodSCU, good_val))
 
     for lying_val in (
         # These have lied about supporting this interface when they registered
@@ -106,7 +106,7 @@ def test_supports_divmod_beartype() -> None:
         with pytest.raises(roar.BeartypeException):
             func(cast(SupportsDivmod, lying_val))
 
-        func_t(cast(SupportsDivmodT, lying_val))
+        func_t(cast(SupportsDivmodSCU, lying_val))
 
     for bad_val in (
         # TODO(posita): fix this
@@ -119,7 +119,7 @@ def test_supports_divmod_beartype() -> None:
             func(cast(SupportsDivmod, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsDivmodT, bad_val))
+            func_t(cast(SupportsDivmodSCU, bad_val))
 
 
 def test_supports_divmod_numpy() -> None:
@@ -140,7 +140,7 @@ def test_supports_divmod_numpy() -> None:
         numpy.float128(-273.15),
     ):
         assert isinstance(good_val, SupportsDivmod), f"{good_val!r}"
-        assert isinstance(good_val, SupportsDivmodTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsDivmodSCT), f"{good_val!r}"
         assert divmod(good_val, good_val), f"{good_val!r}"
 
     for bad_val in (
@@ -151,7 +151,7 @@ def test_supports_divmod_numpy() -> None:
         "-273.15",  # TODO(posita): remove me
     ):
         assert not isinstance(bad_val, SupportsDivmod), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsDivmodTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsDivmodSCT), f"{bad_val!r}"
 
 
 def test_supports_divmod_numpy_beartype() -> None:
@@ -173,7 +173,7 @@ def test_supports_divmod_numpy_beartype() -> None:
         numpy.float128(-273.15),
     ):
         func(cast(SupportsDivmod, good_val))
-        func_t(cast(SupportsDivmodT, good_val))
+        func_t(cast(SupportsDivmodSCU, good_val))
 
     for bad_val in (
         # TODO(posita): fix these
@@ -186,7 +186,7 @@ def test_supports_divmod_numpy_beartype() -> None:
             func(cast(SupportsDivmod, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsDivmodT, bad_val))
+            func_t(cast(SupportsDivmodSCU, bad_val))
 
 
 def test_supports_divmod_sympy() -> None:
@@ -199,7 +199,7 @@ def test_supports_divmod_sympy() -> None:
         sympy.symbols("x"),
     ):
         assert isinstance(good_val, SupportsDivmod), f"{good_val!r}"
-        assert isinstance(good_val, SupportsDivmodTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsDivmodSCT), f"{good_val!r}"
 
         # Symbolic relationals can't be reduced to a boolean
         if isinstance(good_val, sympy.core.symbol.Symbol):
@@ -219,4 +219,4 @@ def test_supports_divmod_sympy_beartype() -> None:
         sympy.symbols("x"),
     ):
         func(cast(SupportsDivmod, good_val))
-        func_t(cast(SupportsDivmodT, good_val))
+        func_t(cast(SupportsDivmodSCU, good_val))

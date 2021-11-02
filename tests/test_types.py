@@ -12,7 +12,7 @@ from typing import Tuple
 
 import pytest
 
-from numerary import IntegralLikeT, RealLikeT
+from numerary import IntegralLikeSCU, RealLikeSCU
 from numerary.bt import beartype
 
 __all__ = ()
@@ -25,14 +25,14 @@ def test_beartype_detection() -> None:
     roar = pytest.importorskip("beartype.roar", reason="requires beartype")
 
     @beartype
-    def _real_like_identity(arg: RealLikeT) -> RealLikeT:
+    def _real_like_identity(arg: RealLikeSCU) -> RealLikeSCU:
         return arg
 
     with pytest.raises(roar.BeartypeException):
         _real_like_identity("-273")  # type: ignore
 
     @beartype
-    def _lies_all_lies(arg: RealLikeT) -> Tuple[str]:
+    def _lies_all_lies(arg: RealLikeSCU) -> Tuple[str]:
         return (arg,)  # type: ignore
 
     with pytest.raises(roar.BeartypeException):
@@ -45,10 +45,10 @@ def test_beartype_validators() -> None:
 
     from numerary.types import Annotated
 
-    NonZero = Annotated[IntegralLikeT, Is[lambda x: x != 0]]
+    NonZero = Annotated[IntegralLikeSCU, Is[lambda x: x != 0]]
 
     @beartype
-    def _divide_it(n: IntegralLikeT, d: NonZero) -> RealLikeT:
+    def _divide_it(n: IntegralLikeSCU, d: NonZero) -> RealLikeSCU:
         return n / d
 
     with pytest.raises(roar.BeartypeException):

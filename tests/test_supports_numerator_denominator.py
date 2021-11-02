@@ -18,8 +18,8 @@ from numerary import denominator, numerator
 from numerary.bt import beartype
 from numerary.types import (
     SupportsNumeratorDenominator,
-    SupportsNumeratorDenominatorT,
-    SupportsNumeratorDenominatorTs,
+    SupportsNumeratorDenominatorSCT,
+    SupportsNumeratorDenominatorSCU,
 )
 
 from .numberwang import (
@@ -63,8 +63,8 @@ def func(arg: SupportsNumeratorDenominator):
 
 
 @beartype
-def func_t(arg: SupportsNumeratorDenominatorT):
-    assert isinstance(arg, SupportsNumeratorDenominatorTs), f"{arg!r}"
+def func_t(arg: SupportsNumeratorDenominatorSCU):
+    assert isinstance(arg, SupportsNumeratorDenominatorSCT), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -81,7 +81,7 @@ def test_numerator_denominator() -> None:
         SageMathLikeFraction(-27315, 100),
     ):
         assert isinstance(good_val, SupportsNumeratorDenominator), f"{good_val!r}"
-        assert isinstance(good_val, SupportsNumeratorDenominatorTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsNumeratorDenominatorSCT), f"{good_val!r}"
         assert numerator(good_val), f"{good_val!r}"
         assert denominator(good_val), f"{good_val!r}"
 
@@ -95,7 +95,7 @@ def test_numerator_denominator() -> None:
         "-273",
     ):
         assert not isinstance(bad_val, SupportsNumeratorDenominator), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsNumeratorDenominatorTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsNumeratorDenominatorSCT), f"{bad_val!r}"
 
 
 def test_numerator_denominator_beartype() -> None:
@@ -111,7 +111,7 @@ def test_numerator_denominator_beartype() -> None:
         SageMathLikeFraction(-27315, 100),
     ):
         func(cast(SupportsNumeratorDenominator, good_val))
-        func_t(cast(SupportsNumeratorDenominatorT, good_val))
+        func_t(cast(SupportsNumeratorDenominatorSCU, good_val))
 
     for bad_val in (
         -273.15,
@@ -126,7 +126,7 @@ def test_numerator_denominator_beartype() -> None:
             func(cast(SupportsNumeratorDenominator, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsNumeratorDenominatorT, bad_val))
+            func_t(cast(SupportsNumeratorDenominatorSCU, bad_val))
 
 
 def test_numerator_denominator_numpy() -> None:
@@ -143,7 +143,7 @@ def test_numerator_denominator_numpy() -> None:
         numpy.int64(-273),
     ):
         assert isinstance(good_val, SupportsNumeratorDenominator), f"{good_val!r}"
-        assert isinstance(good_val, SupportsNumeratorDenominatorTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsNumeratorDenominatorSCT), f"{good_val!r}"
         assert numerator(good_val), f"{good_val!r}"
         assert denominator(good_val), f"{good_val!r}"
 
@@ -157,7 +157,7 @@ def test_numerator_denominator_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsNumeratorDenominator), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsNumeratorDenominatorTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsNumeratorDenominatorSCT), f"{bad_val!r}"
 
 
 def test_numerator_denominator_numpy_beartype() -> None:
@@ -175,7 +175,7 @@ def test_numerator_denominator_numpy_beartype() -> None:
         numpy.int64(-273),
     ):
         func(cast(SupportsNumeratorDenominator, good_val))
-        func_t(cast(SupportsNumeratorDenominatorT, good_val))
+        func_t(cast(SupportsNumeratorDenominatorSCU, good_val))
 
     for bad_val in (
         numpy.float16(-1.8),
@@ -190,7 +190,7 @@ def test_numerator_denominator_numpy_beartype() -> None:
             func(cast(SupportsNumeratorDenominator, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsNumeratorDenominatorT, bad_val))
+            func_t(cast(SupportsNumeratorDenominatorSCU, bad_val))
 
 
 def test_numerator_denominator_sympy() -> None:
@@ -201,7 +201,7 @@ def test_numerator_denominator_sympy() -> None:
         sympy.Integer(-273),
     ):
         assert isinstance(good_val, SupportsNumeratorDenominator), f"{good_val!r}"
-        assert isinstance(good_val, SupportsNumeratorDenominatorTs), f"{good_val!r}"
+        assert isinstance(good_val, SupportsNumeratorDenominatorSCT), f"{good_val!r}"
         assert numerator(good_val), f"{good_val!r}"
         assert denominator(good_val), f"{good_val!r}"
 
@@ -210,7 +210,7 @@ def test_numerator_denominator_sympy() -> None:
         sympy.symbols("x"),
     ):
         assert not isinstance(bad_val, SupportsNumeratorDenominator), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsNumeratorDenominatorTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsNumeratorDenominatorSCT), f"{bad_val!r}"
 
 
 def test_numerator_denominator_sympy_beartype() -> None:
@@ -222,7 +222,7 @@ def test_numerator_denominator_sympy_beartype() -> None:
         sympy.Integer(-273),
     ):
         func(cast(SupportsNumeratorDenominator, good_val))
-        func_t(cast(SupportsNumeratorDenominatorT, good_val))
+        func_t(cast(SupportsNumeratorDenominatorSCU, good_val))
 
     for bad_val in (
         sympy.Float(-273.15),
@@ -232,4 +232,4 @@ def test_numerator_denominator_sympy_beartype() -> None:
             func(cast(SupportsNumeratorDenominator, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsNumeratorDenominatorT, bad_val))
+            func_t(cast(SupportsNumeratorDenominatorSCU, bad_val))

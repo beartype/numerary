@@ -15,7 +15,7 @@ from typing import cast
 
 import pytest
 
-from numerary import RealLike, RealLikeT, RealLikeTs
+from numerary import RealLike, RealLikeSCT, RealLikeSCU
 from numerary.bt import beartype
 
 from .numberwang import (
@@ -39,8 +39,8 @@ def func(arg: RealLike):
 
 
 @beartype
-def func_t(arg: RealLikeT):
-    assert isinstance(arg, RealLikeTs), f"{arg!r}"
+def func_t(arg: RealLikeSCU):
+    assert isinstance(arg, RealLikeSCT), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -61,7 +61,7 @@ def test_real_like() -> None:
         WangernumbRegistered(-273.15),
     ):
         assert isinstance(good_val, RealLike), f"{good_val!r}"
-        assert isinstance(good_val, RealLikeTs), f"{good_val!r}"
+        assert isinstance(good_val, RealLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -82,7 +82,7 @@ def test_real_like() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, RealLike), f"{bad_val!r}"
-        assert not isinstance(bad_val, RealLikeTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, RealLikeSCT), f"{bad_val!r}"
 
 
 def test_real_like_beartype() -> None:
@@ -102,7 +102,7 @@ def test_real_like_beartype() -> None:
         WangernumbRegistered(-273.15),
     ):
         func(cast(RealLike, good_val))
-        func_t(cast(RealLikeT, good_val))
+        func_t(cast(RealLikeSCU, good_val))
 
     for bad_val in (
         # TODO(posita): fix this
@@ -113,7 +113,7 @@ def test_real_like_beartype() -> None:
             func(cast(RealLike, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(RealLikeT, bad_val))
+            func_t(cast(RealLikeSCU, bad_val))
 
 
 def test_real_like_numpy() -> None:
@@ -134,7 +134,7 @@ def test_real_like_numpy() -> None:
         numpy.float128(-273.15),
     ):
         assert isinstance(good_val, RealLike), f"{good_val!r}"
-        assert isinstance(good_val, RealLikeTs), f"{good_val!r}"
+        assert isinstance(good_val, RealLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -161,7 +161,7 @@ def test_real_like_numpy() -> None:
         "-273.15",  # TODO(posita): remove me
     ):
         assert not isinstance(bad_val, RealLike), f"{bad_val!r}"
-        assert not isinstance(bad_val, RealLikeTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, RealLikeSCT), f"{bad_val!r}"
 
 
 def test_real_like_numpy_beartype() -> None:
@@ -183,7 +183,7 @@ def test_real_like_numpy_beartype() -> None:
         numpy.float128(-273.15),
     ):
         func(cast(RealLike, good_val))
-        func_t(cast(RealLikeT, good_val))
+        func_t(cast(RealLikeSCU, good_val))
 
     for bad_val in (
         # TODO(posita): fix these
@@ -196,7 +196,7 @@ def test_real_like_numpy_beartype() -> None:
             func(cast(RealLike, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(RealLikeT, bad_val))
+            func_t(cast(RealLikeSCU, bad_val))
 
 
 def test_real_like_sympy() -> None:
@@ -209,7 +209,7 @@ def test_real_like_sympy() -> None:
         sympy.symbols("x"),
     ):
         assert isinstance(good_val, RealLike), f"{good_val!r}"
-        assert isinstance(good_val, RealLikeTs), f"{good_val!r}"
+        assert isinstance(good_val, RealLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -244,4 +244,4 @@ def test_real_like_sympy_beartype() -> None:
         sympy.symbols("x"),
     ):
         func(cast(RealLike, good_val))
-        func_t(cast(RealLikeT, good_val))
+        func_t(cast(RealLikeSCU, good_val))

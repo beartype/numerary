@@ -16,7 +16,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import RationalLike, RationalLikeT, RationalLikeTs
+from numerary.types import RationalLike, RationalLikeSCT, RationalLikeSCU
 
 from .numberwang import (
     Numberwang,
@@ -39,8 +39,8 @@ def func(arg: RationalLike):
 
 
 @beartype
-def func_t(arg: RationalLikeT):
-    assert isinstance(arg, RationalLikeTs), f"{arg!r}"
+def func_t(arg: RationalLikeSCU):
+    assert isinstance(arg, RationalLikeSCT), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -56,7 +56,7 @@ def test_rational_like() -> None:
         NumberwangRegistered(-273),
     ):
         assert isinstance(good_val, RationalLike), f"{good_val!r}"
-        assert isinstance(good_val, RationalLikeTs), f"{good_val!r}"
+        assert isinstance(good_val, RationalLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -83,7 +83,7 @@ def test_rational_like() -> None:
         "-273",
     ):
         assert not isinstance(bad_val, RationalLike), f"{bad_val!r}"
-        assert not isinstance(bad_val, RationalLikeTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, RationalLikeSCT), f"{bad_val!r}"
 
 
 def test_rational_like_beartype() -> None:
@@ -98,7 +98,7 @@ def test_rational_like_beartype() -> None:
         NumberwangRegistered(-273),
     ):
         func(cast(RationalLike, good_val))
-        func_t(cast(RationalLikeT, good_val))
+        func_t(cast(RationalLikeSCU, good_val))
 
     for bad_val in (
         -273.15,
@@ -113,7 +113,7 @@ def test_rational_like_beartype() -> None:
             func(cast(RationalLike, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(RationalLikeT, bad_val))
+            func_t(cast(RationalLikeSCU, bad_val))
 
 
 def test_rational_like_numpy() -> None:
@@ -130,7 +130,7 @@ def test_rational_like_numpy() -> None:
         numpy.int64(-273),
     ):
         assert isinstance(good_val, RationalLike), f"{good_val!r}"
-        assert isinstance(good_val, RationalLikeTs), f"{good_val!r}"
+        assert isinstance(good_val, RationalLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -153,7 +153,7 @@ def test_rational_like_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, RationalLike), f"{bad_val!r}"
-        assert not isinstance(bad_val, RationalLikeTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, RationalLikeSCT), f"{bad_val!r}"
 
 
 def test_rational_like_numpy_beartype() -> None:
@@ -171,7 +171,7 @@ def test_rational_like_numpy_beartype() -> None:
         numpy.int64(-273),
     ):
         func(cast(RationalLike, good_val))
-        func_t(cast(RationalLikeT, good_val))
+        func_t(cast(RationalLikeSCU, good_val))
 
     for bad_val in (
         numpy.float16(-1.8),
@@ -186,7 +186,7 @@ def test_rational_like_numpy_beartype() -> None:
             func(cast(RationalLike, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(RationalLikeT, bad_val))
+            func_t(cast(RationalLikeSCU, bad_val))
 
 
 def test_rational_like_sympy() -> None:
@@ -197,7 +197,7 @@ def test_rational_like_sympy() -> None:
         sympy.Integer(-273),
     ):
         assert isinstance(good_val, RationalLike), f"{good_val!r}"
-        assert isinstance(good_val, RationalLikeTs), f"{good_val!r}"
+        assert isinstance(good_val, RationalLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -219,7 +219,7 @@ def test_rational_like_sympy() -> None:
         sympy.symbols("x"),
     ):
         assert not isinstance(bad_val, RationalLike), f"{bad_val!r}"
-        assert not isinstance(bad_val, RationalLikeTs), f"{bad_val!r}"
+        assert not isinstance(bad_val, RationalLikeSCT), f"{bad_val!r}"
 
 
 def test_rational_like_sympy_beartype() -> None:
@@ -231,7 +231,7 @@ def test_rational_like_sympy_beartype() -> None:
         sympy.Integer(-273),
     ):
         func(cast(RationalLike, good_val))
-        func_t(cast(RationalLikeT, good_val))
+        func_t(cast(RationalLikeSCU, good_val))
 
     for bad_val in (
         sympy.Float(-273.15),
@@ -241,4 +241,4 @@ def test_rational_like_sympy_beartype() -> None:
             func(cast(RationalLike, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(RationalLikeT, bad_val))
+            func_t(cast(RationalLikeSCU, bad_val))
