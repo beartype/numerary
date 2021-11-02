@@ -300,6 +300,33 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    Limitations
+  </a>
+  
+    <nav class="md-nav" aria-label="Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#protocols-lose-fidelity" class="md-nav__link">
+    Protocols lose fidelity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-circuiting-is-too-trusting" class="md-nav__link">
+    Short-circuiting is too trusting
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#shut-up-and-take-my-money" class="md-nav__link">
     Shut up and take my money!
   </a>
@@ -499,11 +526,11 @@ Please see the accompanying <code>LICENSE</code> file for rights and restriction
 All rights not expressly waived or licensed are reserved.
 If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.</em></p>
 <p><a href="https://github.com/posita/numerary/actions/workflows/unit-tests.yaml"><img alt="Tests" src="https://github.com/posita/numerary/actions/workflows/unit-tests.yaml/badge.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.0.1/"><img alt="Version" src="https://img.shields.io/pypi/v/numerary/0.0.1.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.0.1/"><img alt="Development Stage" src="https://img.shields.io/pypi/status/numerary/0.0.1.svg" /></a>
-<a href="https://github.com/me-shaon/GLWTPL/blob/master/NSFW_LICENSE"><img alt="License" src="https://img.shields.io/pypi/l/numerary/0.0.1.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.0.1/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/numerary/0.0.1.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.0.1/"><img alt="Supported Python Implementations" src="https://img.shields.io/pypi/implementation/numerary/0.0.1.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.0.2/"><img alt="Version" src="https://img.shields.io/pypi/v/numerary/0.0.2.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.0.2/"><img alt="Development Stage" src="https://img.shields.io/pypi/status/numerary/0.0.2.svg" /></a>
+<a href="https://github.com/me-shaon/GLWTPL/blob/master/NSFW_LICENSE"><img alt="License" src="https://img.shields.io/pypi/l/numerary/0.0.2.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.0.2/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/numerary/0.0.2.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.0.2/"><img alt="Supported Python Implementations" src="https://img.shields.io/pypi/implementation/numerary/0.0.2.svg" /></a>
 <a href="https://github.com/pre-commit/pre-commit"><img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&amp;logoColor=white" /></a>
 <a href="https://beartype.rtfd.io/"><img alt="Bear-ified™" src="https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg" /></a></p>
 <p>Are you defining a numeric interface that should work with more than just <code>int</code>s and <code>float</code>s?
@@ -530,7 +557,7 @@ It should be considered experimental for now, but should settle down quickly.
 See the <a href="https://posita.github.io/numerary/0.0/notes/">release notes</a> for a summary of version-to-version changes.
 Source code is <a href="https://github.com/posita/numerary">available on GitHub</a>.</p>
 <p>If you find it lacking in any way, please don’t hesitate to <a href="https://posita.github.io/numerary/0.0/contrib/">bring it to my attention</a>.</p>
-<h2 id="customers">Customers <a href="https://posita.github.io/numerary/"><img alt="numerary-encumbered!" src="https://raw.githubusercontent.com/posita/numerary/v0.0.1/docs/numerary-encumbered.svg" /></a></h2>
+<h2 id="customers">Customers <a href="https://posita.github.io/numerary/"><img alt="numerary-encumbered!" src="https://raw.githubusercontent.com/posita/numerary/v0.0.2/docs/numerary-encumbered.svg" /></a></h2>
 <ul>
 <li><a href="https://pypi.org/project/dycelib/"><code>dyce</code></a> - a pure-Python library for modeling arbitrarily complex dice mechanics and <del>mother</del> <em>birthing code base</em> 🙄 of <code>numerary</code>!</li>
 <li>The next one could be <em>you</em>! 👋</li>
@@ -933,7 +960,7 @@ Do you see now why we can’t have nice things?!
 I mean, I get <em>casting</em> as a rare case, but who builds <em>sophisticated deception tooling</em> into the very fabric a type definition mechanism to claim that non-compliant native primitives comply?
 How can you trust <em>anything</em> anymore?!
 Shouldn’t that be a pretty strong hint that maybe you should step back and rethink your approach?</p>
-<p>Astute readers may note <a href="https://pypi.org/project/beartype/"><code>beartype</code></a> could help restore truth for us.</p>
+<p>Astute readers may note <a href="https://pypi.org/project/beartype/"><code>beartype</code></a> could help restore Truth for us.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -949,14 +976,14 @@ Shouldn’t that be a pretty strong hint that maybe you should step back and ret
   <span class="n">SupportsRealComparisons</span><span class="p">,</span> <span class="n">Is</span><span class="p">[</span><span class="k">lambda</span> <span class="n">arg</span><span class="p">:</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)]</span>
 <span class="p">]</span>
 <span class="nd">@beartype</span>
-<span class="k">def</span> <span class="nf">require_real</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsRealComparisons</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-  <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsRealComparisons</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">require_real</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsRealComparisonsNotComplexLies</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+  <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsRealComparisonsNotComplexLies</span><span class="p">)</span>
 </code></pre></div>
 </td></tr></table>
 <p>That’s because Bear is hip to the scene.
 Bear is <em>down</em>.
 Bear knows what’s what.
-If you have a typing problem, if no one else can help, and if you can find them (which should be easy; I just gave you the <a href="https://pypi.org/project/beartype/">link</a>; twice), maybe you can hire the Bear-Team.</p>
+If you have a typing problem, if no one else can help, and if you can find them<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>, maybe you can hire the Bear-Team.</p>
 <p>I digress.</p>
 <p>Okay.
 Can we still work with any of this shit <em>and</em> have type checking?
@@ -1002,9 +1029,18 @@ It expands on the <a href="https://docs.python.org/3/library/typing.html#protoco
 <span class="ne">AssertionError</span>
 </code></pre></div>
 </td></tr></table>
-<p>Note that the above would still (properly) result in a type checking error as well as a runtime failure for <a href="https://www.sympy.org/">SymPy</a> versions prior to 1.9, because, until 1.9, <code>sympy.core.numbers.Integer</code> <a href="https://github.com/sympy/sympy/issues/19311">lacked the requisite bitwise operators</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Until 1.9, <code>sympy.core.numbers.Integer</code> <a href="https://github.com/sympy/sympy/issues/19311">lacked the requisite bitwise operators</a>.
+<code>numerary</code> catches that!
+The above properly results in both a type checking error as well as a runtime failure for <a href="https://www.sympy.org/">SymPy</a> versions prior to 1.9.</p>
+</div>
 <p>By default, <a href="https://bugs.python.org/issue30505">protocols frustrate runtime type checking performance</a>.
-<code>numerary</code> applies two layered optimization strategies: cached <code>__instancecheck__</code> results for <code>numerary</code>-defined protocols and short-circuit type enumerations.</p>
+<code>numerary</code> applies two distinct, layered optimization strategies:</p>
+<ol>
+<li>Cached <code>__instancecheck__</code> results for <code>numerary</code>-defined protocols; and</li>
+<li>Short-circuit type enumerations.</li>
+</ol>
 <h3 id="cached-__instancecheck__-results">Cached <code>__instancecheck__</code> results</h3>
 <p>It caches, so it’s faster.
 <a href="https://youtu.be/cCmNYP1k12w">Bang. Done.</a>
@@ -1015,13 +1051,13 @@ Although, in retrospect, that warning probably should have been presented more p
 <p>If the interface is to be used most often with native types (<code>int</code>s, <code>float</code>s, <code>bool</code>s) or those registered with the numeric tower, there is an optimization to be had at runtime by short-circuiting protocol type checking.
 These come in two flavors.</p>
 <ol>
-<li><code>…T</code> objects which are <code>Union</code>s for defining types.</li>
-<li><code>…Ts</code> tuples, which are identical to the corresponding <code>Union</code> arguments and useful for runtime <code>isinstance</code> checking.</li>
+<li><code>…SCU</code> objects which are <code>Union</code>s for compliant types.</li>
+<li><code>…SCT</code> tuples, which are identical to the corresponding <code>Union</code> arguments. These are useful for runtime checks (e.g., as the second argument to <code>isinstance</code>).</li>
 </ol>
-<p>Following our <code>SupportsIntegralOps</code> example from above, <code>numerary</code> defines two additional interfaces (some details and safeguards omitted).</p>
+<p>For example, for the aforementioned <code>SupportsIntegralOps</code>, <code>numerary</code> defines two additional interfaces (some details and safeguards omitted).</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">SupportsIntegralOpsT</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">SupportsIntegralOps</span><span class="p">]</span>
-<span class="n">SupportsIntegralOpsTs</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">SupportsIntegralOps</span><span class="p">)</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">SupportsIntegralOpsSCU</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">SupportsIntegralOps</span><span class="p">]</span>
+<span class="n">SupportsIntegralOpsSCT</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">SupportsIntegralOps</span><span class="p">)</span>
 </code></pre></div>
 </td></tr></table>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
@@ -1036,16 +1072,16 @@ These come in two flavors.</p>
 <span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
-<span class="normal">13</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsIntegralOpsT</span>  <span class="c1"># for type annotations</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">shift_left_one</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsIntegralOpsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SupportsIntegralOpsT</span><span class="p">:</span>
-<span class="o">...</span>   <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsIntegralOpsTs</span>  <span class="c1"># for runtime checking</span>
-<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsIntegralOpsTs</span><span class="p">)</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsIntegralOpsSCU</span>  <span class="c1"># for type annotations</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsIntegralOpsSCT</span>  <span class="c1"># for runtime checking</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">shift_left_one</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsIntegralOpsSCU</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SupportsIntegralOpsSCU</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsIntegralOpsSCT</span><span class="p">)</span>
 <span class="o">...</span>   <span class="k">return</span> <span class="n">arg</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">shift_left_one</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="mi">2</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">shift_left_one</span><span class="p">(</span><span class="n">sympify</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">))</span>
 <span class="mi">2</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">shift_left_one</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">shift_left_one</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
   <span class="o">...</span>
 <span class="ne">AssertionError</span>
@@ -1056,7 +1092,7 @@ Because you can’t do this:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nb">isinstance</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Integral</span><span class="p">])</span>  <span class="c1"># syntax error</span>
 </code></pre></div>
 </td></tr></table>
-<p>And because Mypy is confused by this<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>:</p>
+<p>And because Mypy is confused by this<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">my_func</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">Integral</span><span class="p">)):</span>  <span class="c1"># Mypy &quot;syntax&quot; error</span>
   <span class="k">pass</span>
@@ -1070,11 +1106,16 @@ Because <em><a href="https://pypi.org/project/beartype/"><code>beartype</code></
 <code>beartype</code> is <em>awesome</em>.
 Its author is even <em>awesomer</em>.
 More generally, runtime checkers that inspect and enforce annotations face problems similar to <code>isinstance</code>.
-Defining a <code>Union</code> provides an annotation-based short-circuit opportunity to those checkers.</p>
-<p>There’s a downside, though.
-(Isn’t there always?)
-Short-circuiting trusts implementations when they register themselves in the numeric tower.
-But sometimes, out there in the real world, they <em>lie</em>.</p>
+Defining a <code>Union</code> provides an annotation analog for short-circuiting.</p>
+<h3 id="limitations">Limitations</h3>
+<p>There are some downsides, though.
+(Aren’t there always?)</p>
+<h4 id="protocols-lose-fidelity">Protocols lose fidelity</h4>
+<p>Protocols match <em>names</em>, not <em>signatures</em>.
+<em>TODO(@posita): Add detail.</em></p>
+<h4 id="short-circuiting-is-too-trusting">Short-circuiting is too trusting</h4>
+<p>Short-circuiting trusts numeric tower registrations.
+But sometimes, out there in the real world, implementations <em>lie</em>.</p>
 <p>Consider:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1087,7 +1128,7 @@ But sometimes, out there in the real world, they <em>lie</em>.</p>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
-<span class="normal">12</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsRealImag</span><span class="p">,</span> <span class="n">SupportsRealImagTs</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsRealImag</span><span class="p">,</span> <span class="n">SupportsRealImagSCT</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Integral</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Integral</span><span class="p">,</span> <span class="s2">&quot;imag&quot;</span><span class="p">)</span>
 <span class="kc">True</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">one</span> <span class="o">=</span> <span class="n">sympify</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
@@ -1097,26 +1138,28 @@ But sometimes, out there in the real world, they <em>lie</em>.</p>
 <span class="kc">False</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">SupportsRealImag</span><span class="p">)</span>  <span class="c1"># detects the lie</span>
 <span class="kc">False</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">SupportsRealImagTs</span><span class="p">)</span>  <span class="c1"># trusts the registration</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">SupportsRealImagSCT</span><span class="p">)</span>  <span class="c1"># trusts the registration</span>
 <span class="kc">True</span>
 </code></pre></div>
 </td></tr></table>
 <h3 id="shut-up-and-take-my-money">Shut up and take my money!</h3>
-<p>All that being said, if all you deal with are integrals and reals and what you want is arithmetic operator compatibility, this should probably get you most of where you likely want to go:</p>
+<p>If all you deal with are integrals and reals and what you want is arithmetic operator compatibility, this should probably get you most of where you likely want to go:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary</span> <span class="kn">import</span> <span class="n">IntegralLike</span><span class="p">,</span> <span class="n">RealLike</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">deeper_thought</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">RealLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IntegralLike</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">deeper_thot</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">RealLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IntegralLike</span><span class="p">:</span>
 <span class="o">...</span>   <span class="k">assert</span> <span class="n">arg</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">arg</span> <span class="o">**</span> <span class="mi">0</span> <span class="o">==</span> <span class="mi">1</span>
 <span class="o">...</span>   <span class="k">return</span> <span class="n">arg</span> <span class="o">//</span> <span class="n">arg</span> <span class="o">+</span> <span class="mi">42</span>
 </code></pre></div>
 </td></tr></table>
-<p>… or, if you prefer the short-circuiting versions …</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary</span> <span class="kn">import</span> <span class="n">IntegralLikeT</span><span class="p">,</span> <span class="n">IntegralLikeTs</span><span class="p">,</span> <span class="n">RealLikeT</span><span class="p">,</span> <span class="n">RealLikeTs</span>
+<p>… or, if your performance requirements demand the short-circuiting versions …</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary</span> <span class="kn">import</span> <span class="n">IntegralLikeSCU</span><span class="p">,</span> <span class="n">IntegralLikeSCT</span><span class="p">,</span> <span class="n">RealLikeSCU</span><span class="p">,</span> <span class="n">RealLikeSCT</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># ...</span>
 </code></pre></div>
 </td></tr></table>
-<p>Much more coming soon.
+<p>More examples coming soon.
 I <em>promise</em>!
 No, really.
 Not a PEP promise.
@@ -1160,7 +1203,7 @@ Source code is <a href="https://github.com/posita/numerary">available on GitHub<
 <li><a href="https://pypi.org/project/beartype/"><code>beartype</code></a> for yummy runtime type-checking goodness (0.8+)
   <a href="https://beartype.rtfd.io/"><img alt="Bear-ified™" src="https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg" /></a></li>
 </ul>
-<p>If you use <code>beartype</code> for type checking your code that interacts with <code>numerary</code>, but don’t want <code>numerary</code> to use it internally (e.g., for performance reasons), set the <code>NUMERARY_BEARTYPE</code> environment variable to a falsy<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup> value before <code>numerary</code> is loaded.</p>
+<p>If you use <code>beartype</code> for type checking your code that interacts with <code>numerary</code>, but don’t want <code>numerary</code> to use it internally (e.g., for performance reasons), set the <code>NUMERARY_BEARTYPE</code> environment variable to a falsy<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup> value before <code>numerary</code> is loaded.</p>
 <p>See the <a href="https://posita.github.io/numerary/0.0/contrib/#hacking-quick-start">hacking quick-start</a> for additional development and testing dependencies.</p>
 <div class="footnote">
 <hr />
@@ -1171,11 +1214,16 @@ Source code is <a href="https://github.com/posita/numerary">available on GitHub<
 Am I right?&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:2">
-<p>Even though the syntax is legal and <a href="https://pypi.org/project/beartype/"><code>beartype</code></a> gladly does the right thing by treating the tuple literal as a <code>Union</code>.
-Not sure if this is a bug or a feature, but my vote is for feature.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>That should be easy
+I just gave you the <a href="https://pypi.org/project/beartype/">link</a>.
+<em>Twice</em>.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:3">
-<p>I.E., one of: <code>0</code>, <code>off</code>, <code>f</code>, <code>false</code>, and <code>no</code>.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p>Even though the syntax is legal and <a href="https://pypi.org/project/beartype/"><code>beartype</code></a> gladly does the right thing by treating the tuple literal as a <code>Union</code>.
+Not sure if this is a bug or a feature, but my vote is for feature.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>I.E., one of: <code>0</code>, <code>off</code>, <code>f</code>, <code>false</code>, and <code>no</code>.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
