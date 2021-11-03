@@ -63,12 +63,24 @@ def pow_func_t(arg: SupportsIntegralPowSCU):
 
 
 def test_supports_integral_ops_pow() -> None:
+    bool_val: SupportsIntegralOps = True
+    int_val: SupportsIntegralOps = -273
+    nw_val: SupportsIntegralOps = Numberwang(-273)
+    nwd_val: SupportsIntegralOps = NumberwangDerived(-273)
+    nwr_val: SupportsIntegralOps = NumberwangRegistered(-273)
+    _: SupportsIntegralPow
+    _ = True
+    _ = -273
+    _ = Numberwang(-273)
+    _ = NumberwangDerived(-273)
+    _ = NumberwangRegistered(-273)
+
     for good_val in (
-        True,
-        -273,
-        Numberwang(-273),
-        NumberwangDerived(-273),
-        NumberwangRegistered(-273),
+        bool_val,
+        int_val,
+        nw_val,
+        nwd_val,
+        nwr_val,
     ):
         assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
         assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
@@ -126,16 +138,44 @@ def test_supports_integral_ops_pow_beartype() -> None:
 
 def test_supports_integral_ops_pow_numpy() -> None:
     numpy = pytest.importorskip("numpy", reason="requires numpy")
+    uint8_val: SupportsIntegralOps = numpy.uint8(2)
+    uint16_val: SupportsIntegralOps = numpy.uint16(273)
+    uint32_val: SupportsIntegralOps = numpy.uint32(273)
+    uint64_val: SupportsIntegralOps = numpy.uint64(273)
+    int8_val: SupportsIntegralOps = numpy.int8(-2)
+    int16_val: SupportsIntegralOps = numpy.int16(-273)
+    int32_val: SupportsIntegralOps = numpy.int32(-273)
+    int64_val: SupportsIntegralOps = numpy.int64(-273)
+    float16_val: SupportsIntegralOps = numpy.float16(-1.8)
+    float32_val: SupportsIntegralOps = numpy.float32(-273.15)
+    float64_val: SupportsIntegralOps = numpy.float64(-273.15)
+    float128_val: SupportsIntegralOps = numpy.float128(-273.15)
+    _: SupportsIntegralPow
+    _ = numpy.uint8(2)
+    _ = numpy.uint16(273)
+    _ = numpy.uint32(273)
+    _ = numpy.uint64(273)
+    _ = numpy.int8(-2)
+    _ = numpy.int16(-273)
+    _ = numpy.int32(-273)
+    _ = numpy.int64(-273)
+    _ = numpy.float16(-1.8)
+    _ = numpy.float32(-273.15)
+    _ = numpy.float64(-273.15)
+    _ = numpy.float128(-273.15)
+    _ = numpy.csingle(-273.15)
+    _ = numpy.cdouble(-273.15)
+    _ = numpy.clongdouble(-273.15)
 
     for good_val in (
-        numpy.uint8(2),
-        numpy.uint16(273),
-        numpy.uint32(273),
-        numpy.uint64(273),
-        numpy.int8(-2),
-        numpy.int16(-273),
-        numpy.int32(-273),
-        numpy.int64(-273),
+        uint8_val,
+        uint16_val,
+        uint32_val,
+        uint64_val,
+        int8_val,
+        int16_val,
+        int32_val,
+        int64_val,
     ):
         assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
         assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
@@ -157,10 +197,10 @@ def test_supports_integral_ops_pow_numpy() -> None:
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
     for lying_val in (
-        numpy.float16(-1.8),
-        numpy.float32(-273.15),
-        numpy.float64(-273.15),
-        numpy.float128(-273.15),
+        float16_val,
+        float32_val,
+        float64_val,
+        float128_val,
         numpy.csingle(-273.15),
         numpy.cdouble(-273.15),
         numpy.clongdouble(-273.15),
@@ -181,6 +221,10 @@ def test_supports_integral_ops_pow_numpy() -> None:
 
         with pytest.raises(TypeError):
             lying_val | 0
+
+        assert isinstance(lying_val, SupportsIntegralPow), f"{lying_val!r}"
+        assert isinstance(lying_val, SupportsIntegralPowSCT), f"{lying_val!r}"
+        assert lying_val ** 1 == lying_val, f"{lying_val!r}"
 
 
 def test_supports_integral_ops_pow_numpy_beartype() -> None:
@@ -215,8 +259,13 @@ def test_supports_integral_ops_pow_numpy_beartype() -> None:
 
 def test_supports_integral_ops_pow_sympy() -> None:
     sympy = pytest.importorskip("sympy", reason="requires numpy")
+    integral_val: SupportsIntegralOps = sympy.Integer(-273)
+    sym_val: SupportsIntegralOps = sympy.symbols("x")
+    _: SupportsIntegralPow
+    _ = sympy.Integer(-273)
+    _ = sympy.symbols("x")
 
-    for good_val in (sympy.Integer(-273),):
+    for good_val in (integral_val,):
         assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
         assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
         assert good_val >> 0 == good_val, f"{good_val!r}"
@@ -227,7 +276,7 @@ def test_supports_integral_ops_pow_sympy() -> None:
         assert isinstance(good_val, SupportsIntegralPowSCT), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
-    for lying_val in (sympy.symbols("x"),):
+    for lying_val in (sym_val,):
         assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
         assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
 

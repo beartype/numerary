@@ -31,6 +31,8 @@ These are additional protocols that can be composed as desired.
     selection:
       members:
         - "CachingProtocolMeta"
+        - "RationalLikeMethods"
+        - "RationalLikeProperties"
         - "SupportsAbs"
         - "SupportsComplex"
         - "SupportsFloat"
@@ -43,7 +45,8 @@ These are additional protocols that can be composed as desired.
         - "SupportsFloor"
         - "SupportsCeil"
         - "SupportsDivmod"
-        - "SupportsNumeratorDenominator"
+        - "SupportsNumeratorDenominatorProperties"
+        - "SupportsNumeratorDenominatorMethods"
         - "SupportsComplexOps"
         - "SupportsComplexPow"
         - "SupportsRealOps"
@@ -52,3 +55,5 @@ These are additional protocols that can be composed as desired.
         - "trunc"
         - "floor"
         - "ceil"
+        - "numerator"
+        - "denominator"

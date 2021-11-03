@@ -250,9 +250,9 @@ The standard library provides [some simple precedents](https://docs.python.org/3
 ... class SupportsNumeratorDenominator(Protocol):
 ...   __slots__: Union[str, Iterable[str]] = ()
 ...   @property
-...   def numerator(self) -> int: ...
+...   def numerator(self) -> int: pass
 ...   @property
-...   def denominator(self) -> int: ...
+...   def denominator(self) -> int: pass
 >>> def require_rational(arg: SupportsNumeratorDenominator) -> None:
 ...   assert isinstance(arg, SupportsNumeratorDenominator)
 >>> require_rational(1)
@@ -339,13 +339,13 @@ That seems as good a place as any to tackle next.
 ... class SupportsRealComparisons(Protocol):
 ...   __slots__: Union[str, Iterable[str]] = ()
 ...   @abstractmethod
-...   def __lt__(self, other: Any) -> bool: ...
+...   def __lt__(self, other: Any) -> bool: pass
 ...   @abstractmethod
-...   def __le__(self, other: Any) -> bool: ...
+...   def __le__(self, other: Any) -> bool: pass
 ...   @abstractmethod
-...   def __ge__(self, other: Any) -> bool: ...
+...   def __ge__(self, other: Any) -> bool: pass
 ...   @abstractmethod
-...   def __gt__(self, other: Any) -> bool: ...
+...   def __gt__(self, other: Any) -> bool: pass
 >>> def require_real(arg: SupportsRealComparisons) -> None:
 ...   assert isinstance(arg, SupportsRealComparisons)
 >>> require_real(1)
@@ -533,15 +533,15 @@ isinstance(1, Union[int, Integral])  # syntax error
 
 And because Mypy is confused by this[^3]:
 
-``` python
-def my_func(arg: (int, Integral)):  # Mypy "syntax" error
-  pass
-```
-
 [^3]:
 
     Even though the syntax is legal and [``beartype``](https://pypi.org/project/beartype/) gladly does the right thing by treating the tuple literal as a ``Union``.
     Not sure if this is a bug or a feature, but my vote is for feature.
+
+``` python
+def my_func(arg: (int, Integral)):  # Mypy "syntax" error
+  pass
+```
 
 So Python needs one thing for ``isinstance`` checks, and Mypy needs an entirely separate thing for annotations.
 Yay. 😒
@@ -558,11 +558,6 @@ Defining a ``Union`` provides an annotation analog for short-circuiting.
 
 There are some downsides, though.
 (Aren’t there always?)
-
-#### Protocols lose fidelity
-
-Protocols match *names*, not *signatures*.
-*TODO(@posita): Add detail.*
 
 #### Short-circuiting is too trusting
 
@@ -587,9 +582,85 @@ True
 
 ```
 
+#### Protocols lose fidelity at runtime
+
+At runtime, protocols match *names*, not *signatures*.
+More specifically, [``SupportsNumeratorDenominatorProperties``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
+In other words, ``isinstance(sage_integer, SupportsNumeratorDenominatorProperties)`` will return ``True``.
+Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^4] not be caught by Mypy.
+
+[^4]:
+
+    I say *may* because I don’t really know how Sage’s number registrations work.
+
+``` python
+>>> class SageLikeRational:
+...   def __init__(self, numerator: int, denominator: int = 1):
+...     self._numerator = numerator
+...     self._denominator = denominator
+...   def numerator(self) -> int:
+...     return self._numerator
+...   def denominator(self) -> int:
+...     return self._denominator
+
+>>> from numerary.types import SupportsNumeratorDenominatorProperties
+>>> frac: SupportsNumeratorDenominatorProperties = Fraction(29, 3)  # no typing error
+>>> sage_rational1: SupportsNumeratorDenominatorProperties = SageLikeRational(29, 3)  # type: ignore  # Mypy catches this
+>>> isinstance(sage_rational1, SupportsNumeratorDenominatorProperties)  # isinstance does not
+True
+>>> sage_rational1.numerator
+<...method...numerator...>
+>>> frac.numerator
+29
+
+```
+
+To combat this particular situation, ``numerary`` provides the [``SupportsNumeratorDenominatorMethods``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods) protocol and the [``numerator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.numerator) and [``denominator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.denominator) helper functions.
+
+``` python
+>>> from numerary.types import numerator
+>>> numerator(sage_rational1)
+29
+>>> numerator(frac)
+29
+
+>>> from numerary.types import SupportsNumeratorDenominatorMethods, numerator
+>>> sage_rational2: SupportsNumeratorDenominatorMethods = SageLikeRational(3, 29)  # no type error
+>>> numerator(sage_rational2)
+3
+
+```
+
+``numerary`` also defines:
+
+``` python
+SupportsNumeratorDenominatorMixedU = Union[
+    SupportsNumeratorDenominatorProperties,
+    SupportsNumeratorDenominatorMethods,
+]
+SupportsNumeratorDenominatorMixedT = (
+    SupportsNumeratorDenominatorProperties,
+    SupportsNumeratorDenominatorMethods,
+)
+```
+
+``` python
+>>> from numerary.types import SupportsNumeratorDenominatorMixedU, numerator
+>>> chimera_rational: SupportsNumeratorDenominatorMixedU
+>>> chimera_rational = Fraction(29, 3)  # no type error
+>>> numerator(chimera_rational)
+29
+>>> chimera_rational = SageLikeRational(3, 29)  # still no type error
+>>> numerator(chimera_rational)
+3
+
+```
+
+The ``SupportsNumeratorDenominator*`` primitives provide the basis for the analogous [``numerary.types.RationalLike*`` primitives](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.RationalLikeMethods), which *should* provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.
+
 ### Shut up and take my money!
 
-If all you deal with are integrals and reals and what you want is arithmetic operator compatibility, this should probably get you most of where you likely want to go:
+If all you deal with are integrals and reals, and what you want is arithmetic operator compatibility, but don’t do a ton of runtime checking, this should probably get you most of where you likely want to go:
 
 ``` python
 >>> from numerary import IntegralLike, RealLike
@@ -599,10 +670,13 @@ If all you deal with are integrals and reals and what you want is arithmetic ope
 
 ```
 
-… or, if your performance requirements demand the short-circuiting versions …
+If your performance requirements demand them, consider the short-circuiting versions.
 
 ``` python
->>> from numerary import IntegralLikeSCU, IntegralLikeSCT, RealLikeSCU, RealLikeSCT
+>>> from numerary import (
+...   IntegralLikeSCT, IntegralLikeSCU,
+...   RealLikeSCT, RealLikeSCU,
+... )
 >>> # ...
 
 ```
@@ -655,9 +729,10 @@ It has the following runtime dependencies:
 * [``beartype``](https://pypi.org/project/beartype/) for yummy runtime type-checking goodness (0.8+)
   [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
-If you use ``beartype`` for type checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for performance reasons), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^4] value before ``numerary`` is loaded.
+If you use ``beartype`` for type checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for performance reasons), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^5] value before ``numerary`` is loaded.
 
-[^4]:
+[^5]:
+
     I.E., one of: ``0``, ``off``, ``f``, ``false``, and ``no``.
 
 See the [hacking quick-start](https://posita.github.io/numerary/latest/contrib/#hacking-quick-start) for additional development and testing dependencies.

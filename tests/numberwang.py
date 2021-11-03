@@ -439,7 +439,7 @@ class NumberwangBase:
 
     @beartype
     def __pow__(self, other, modulo=None):
-        if isinstance(other, (int, NumberwangBase)):
+        if isinstance(other, (NumberwangBase, Integral)):
             return type(self)(pow(self.val, int(other), modulo))
         elif isinstance(other, float):
             val = pow(self.val, float(other), modulo)
@@ -469,8 +469,8 @@ class NumberwangBase:
 
     @beartype
     def __rpow__(self, other, modulo=None):
-        if isinstance(other, (int, NumberwangBase)):
-            return type(self)(pow(other, self.val, modulo))
+        if isinstance(other, (NumberwangBase, Integral)):
+            return type(self)(pow(int(other), self.val, modulo))
         elif isinstance(other, float):
             val = pow(float(other), self.val, modulo)
 

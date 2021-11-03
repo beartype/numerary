@@ -22,14 +22,9 @@ __all__ = (
     "IntegralLike",
     "IntegralLikeSCU",
     "IntegralLikeSCT",
-    "RationalLike",
-    "RationalLikeSCU",
-    "RationalLikeSCT",
     "RealLike",
     "RealLikeSCU",
     "RealLikeSCT",
-    "denominator",
-    "numerator",
 )
 
 
@@ -62,7 +57,7 @@ else:
 
         @abstractmethod
         def __abs__(self) -> _T_co:
-            ...
+            pass
 
     @runtime_checkable
     class _SupportsComplex(Protocol):
@@ -78,7 +73,7 @@ else:
 
         @abstractmethod
         def __float__(self) -> float:
-            ...
+            pass
 
     @runtime_checkable
     class _SupportsIndex(Protocol):
@@ -86,7 +81,7 @@ else:
 
         @abstractmethod
         def __index__(self) -> int:
-            ...
+            pass
 
     @runtime_checkable
     class _SupportsInt(Protocol):
@@ -94,7 +89,7 @@ else:
 
         @abstractmethod
         def __int__(self) -> int:
-            ...
+            pass
 
     @runtime_checkable
     class _SupportsRound(Protocol[_T_co]):
@@ -102,7 +97,7 @@ else:
 
         @abstractmethod
         def __round__(self, ndigits: int = 0) -> _T_co:
-            ...
+            pass
 
 
 _ProtocolMeta: Any = type(Protocol)
@@ -171,7 +166,7 @@ assert SupportsAbsSCU.__args__ == SupportsAbsSCT  # type: ignore
 @runtime_checkable
 class SupportsComplex(
     _SupportsComplex,
-    Protocol[_T_co],
+    Protocol,
     metaclass=CachingProtocolMeta,
 ):
     __slots__: Union[str, Iterable[str]] = ()
@@ -187,7 +182,7 @@ assert SupportsComplexSCU.__args__ == SupportsComplexSCT  # type: ignore
 @runtime_checkable
 class SupportsFloat(
     _SupportsFloat,
-    Protocol[_T_co],
+    Protocol,
     metaclass=CachingProtocolMeta,
 ):
     __slots__: Union[str, Iterable[str]] = ()
@@ -203,7 +198,7 @@ assert SupportsFloatSCU.__args__ == SupportsFloatSCT  # type: ignore
 @runtime_checkable
 class SupportsInt(
     _SupportsInt,
-    Protocol[_T_co],
+    Protocol,
     metaclass=CachingProtocolMeta,
 ):
     __slots__: Union[str, Iterable[str]] = ()
@@ -219,7 +214,7 @@ assert SupportsIntSCU.__args__ == SupportsIntSCT  # type: ignore
 @runtime_checkable
 class SupportsIndex(
     _SupportsIndex,
-    Protocol[_T_co],
+    Protocol,
     metaclass=CachingProtocolMeta,
 ):
     __slots__: Union[str, Iterable[str]] = ()
@@ -234,7 +229,7 @@ assert SupportsIndexSCU.__args__ == SupportsIndexSCT  # type: ignore
 
 @runtime_checkable
 class SupportsRound(
-    _SupportsRound,
+    _SupportsRound[_T_co],
     Protocol[_T_co],
     metaclass=CachingProtocolMeta,
 ):
@@ -249,7 +244,10 @@ assert SupportsRoundSCU.__args__ == SupportsRoundSCT  # type: ignore
 
 
 @runtime_checkable
-class SupportsConjugate(Protocol[_T_co], metaclass=CachingProtocolMeta):
+class SupportsConjugate(
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
     r"""
     TODO(posita): Document this!
     """
@@ -257,7 +255,7 @@ class SupportsConjugate(Protocol[_T_co], metaclass=CachingProtocolMeta):
 
     @abstractmethod
     def conjugate(self) -> Any:
-        ...
+        pass
 
 
 _assert_isinstance(
@@ -269,7 +267,10 @@ assert SupportsConjugateSCU.__args__ == SupportsConjugateSCT  # type: ignore
 
 
 @runtime_checkable
-class SupportsRealImag(Protocol[_T_co], metaclass=CachingProtocolMeta):
+class SupportsRealImag(
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
     r"""
     TODO(posita): Document this!
     """
@@ -277,11 +278,11 @@ class SupportsRealImag(Protocol[_T_co], metaclass=CachingProtocolMeta):
 
     @property
     def real(self) -> Any:
-        ...
+        pass
 
     @property
     def imag(self) -> Any:
-        ...
+        pass
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealImag)
@@ -291,7 +292,10 @@ assert SupportsRealImagSCU.__args__ == SupportsRealImagSCT  # type: ignore
 
 
 @runtime_checkable
-class SupportsTrunc(Protocol[_T_co], metaclass=CachingProtocolMeta):
+class SupportsTrunc(
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
     r"""
     TODO(posita): Document this!
     """
@@ -299,7 +303,7 @@ class SupportsTrunc(Protocol[_T_co], metaclass=CachingProtocolMeta):
 
     @abstractmethod
     def __trunc__(self) -> int:
-        ...
+        pass
 
 
 _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
@@ -309,7 +313,10 @@ assert SupportsTruncSCU.__args__ == SupportsTruncSCT  # type: ignore
 
 
 @runtime_checkable
-class SupportsFloor(Protocol[_T_co], metaclass=CachingProtocolMeta):
+class SupportsFloor(
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
     r"""
     TODO(posita): Document this!
     """
@@ -317,7 +324,7 @@ class SupportsFloor(Protocol[_T_co], metaclass=CachingProtocolMeta):
 
     @abstractmethod
     def __floor__(self) -> int:
-        ...
+        pass
 
 
 _assert_isinstance(int, bool, Decimal, Fraction, target_t=SupportsFloor)
@@ -331,7 +338,10 @@ assert SupportsFloorSCU.__args__ == SupportsFloorSCT  # type: ignore
 
 
 @runtime_checkable
-class SupportsCeil(Protocol[_T_co], metaclass=CachingProtocolMeta):
+class SupportsCeil(
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
     r"""
     TODO(posita): Document this!
     """
@@ -339,7 +349,7 @@ class SupportsCeil(Protocol[_T_co], metaclass=CachingProtocolMeta):
 
     @abstractmethod
     def __ceil__(self) -> int:
-        ...
+        pass
 
 
 _assert_isinstance(int, bool, Decimal, Fraction, target_t=SupportsCeil)
@@ -353,7 +363,10 @@ assert SupportsCeilSCU.__args__ == SupportsCeilSCT  # type: ignore
 
 
 @runtime_checkable
-class SupportsDivmod(Protocol[_T_co], metaclass=CachingProtocolMeta):
+class SupportsDivmod(
+    Protocol[_T_co],
+    metaclass=CachingProtocolMeta,
+):
     r"""
     TODO(posita): Document this!
     """
@@ -361,11 +374,11 @@ class SupportsDivmod(Protocol[_T_co], metaclass=CachingProtocolMeta):
 
     @abstractmethod
     def __divmod__(self, other: Any) -> Tuple[_T_co, _T_co]:
-        ...
+        pass
 
     @abstractmethod
     def __rdivmod__(self, other: Any) -> Tuple[_T_co, _T_co]:
-        ...
+        pass
 
 
 _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsDivmod)
@@ -375,7 +388,10 @@ assert SupportsDivmodSCU.__args__ == SupportsDivmodSCT  # type: ignore
 
 
 @runtime_checkable
-class SupportsNumeratorDenominator(Protocol[_T_co], metaclass=CachingProtocolMeta):
+class SupportsNumeratorDenominatorProperties(
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
     r"""
     TODO(posita): Document this!
     """
@@ -383,19 +399,66 @@ class SupportsNumeratorDenominator(Protocol[_T_co], metaclass=CachingProtocolMet
 
     @property
     def numerator(self) -> int:
-        ...
+        pass
 
     @property
     def denominator(self) -> int:
-        ...
+        pass
 
 
-_assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominator)
-SupportsNumeratorDenominatorSCU = Union[
-    int, bool, Rational, SupportsNumeratorDenominator
+_assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominatorProperties)
+SupportsNumeratorDenominatorPropertiesSCU = Union[
+    int,
+    bool,
+    Rational,
+    SupportsNumeratorDenominatorProperties,
 ]
-SupportsNumeratorDenominatorSCT = (int, bool, Rational, SupportsNumeratorDenominator)
-assert SupportsNumeratorDenominatorSCU.__args__ == SupportsNumeratorDenominatorSCT  # type: ignore
+SupportsNumeratorDenominatorPropertiesSCT = (
+    int,
+    bool,
+    Rational,
+    SupportsNumeratorDenominatorProperties,
+)
+assert SupportsNumeratorDenominatorPropertiesSCU.__args__ == SupportsNumeratorDenominatorPropertiesSCT  # type: ignore
+
+
+@runtime_checkable
+class SupportsNumeratorDenominatorMethods(
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
+    r"""
+    TODO(posita): Document this!
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+    @abstractmethod
+    def numerator(self) -> SupportsInt:
+        pass
+
+    @abstractmethod
+    def denominator(self) -> SupportsInt:
+        pass
+
+
+SupportsNumeratorDenominatorMixedU = Union[
+    SupportsNumeratorDenominatorProperties,
+    SupportsNumeratorDenominatorMethods,
+]
+SupportsNumeratorDenominatorMixedT = (
+    SupportsNumeratorDenominatorProperties,
+    SupportsNumeratorDenominatorMethods,
+)
+assert SupportsNumeratorDenominatorMixedU.__args__ == SupportsNumeratorDenominatorMixedT  # type: ignore
+
+SupportsNumeratorDenominatorMixedSCU = Union[
+    SupportsNumeratorDenominatorPropertiesSCU,
+    SupportsNumeratorDenominatorMethods,
+]
+SupportsNumeratorDenominatorMixedSCT = SupportsNumeratorDenominatorPropertiesSCT + (
+    SupportsNumeratorDenominatorMethods,
+)
+assert SupportsNumeratorDenominatorMixedSCU.__args__ == SupportsNumeratorDenominatorMixedSCT  # type: ignore
 
 
 @runtime_checkable
@@ -410,43 +473,43 @@ class SupportsComplexOps(
 
     @abstractmethod
     def __add__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __radd__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __sub__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rsub__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __mul__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rmul__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __truediv__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rtruediv__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __neg__(self) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __pos__(self) -> _T_co:
-        ...
+        pass
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexOps)
@@ -467,11 +530,11 @@ class SupportsComplexPow(
 
     @abstractmethod
     def __pow__(self, exponent: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rpow__(self, exponent: Any) -> _T_co:
-        ...
+        pass
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexPow)
@@ -492,35 +555,35 @@ class SupportsRealOps(
 
     @abstractmethod
     def __lt__(self, other: Any) -> bool:
-        ...
+        pass
 
     @abstractmethod
     def __le__(self, other: Any) -> bool:
-        ...
+        pass
 
     @abstractmethod
     def __ge__(self, other: Any) -> bool:
-        ...
+        pass
 
     @abstractmethod
     def __gt__(self, other: Any) -> bool:
-        ...
+        pass
 
     @abstractmethod
-    def __floordiv__(self, other: Any) -> _T_co:
-        ...
+    def __floordiv__(self, other: Any) -> Any:  # TODO(posita): should be int
+        pass
 
     @abstractmethod
-    def __rfloordiv__(self, other: Any) -> _T_co:
-        ...
+    def __rfloordiv__(self, other: Any) -> Any:  # TODO(posita): should be int
+        pass
 
     @abstractmethod
     def __mod__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rmod__(self, other: Any) -> _T_co:
-        ...
+        pass
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealOps)
@@ -541,47 +604,47 @@ class SupportsIntegralOps(
 
     @abstractmethod
     def __lshift__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rlshift__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rshift__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rrshift__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __and__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rand__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __xor__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rxor__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __or__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __ror__(self, other: Any) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __invert__(self) -> _T_co:
-        ...
+        pass
 
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralOps)
@@ -602,11 +665,11 @@ class SupportsIntegralPow(
 
     @abstractmethod
     def __pow__(self, exponent: Any, modulus: Optional[Any] = None) -> _T_co:
-        ...
+        pass
 
     @abstractmethod
     def __rpow__(self, exponent: Any, modulus: Optional[Any] = None) -> _T_co:
-        ...
+        pass
 
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralPow)
@@ -633,11 +696,11 @@ class RealLike(
     # Must be able to instantiate it
     @abstractmethod
     def __init__(self, *args: Any, **kw: Any):
-        ...
+        pass
 
     @abstractmethod
     def __hash__(self) -> int:
-        ...
+        pass
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=RealLike)
@@ -647,10 +710,10 @@ assert RealLikeSCU.__args__ == RealLikeSCT  # type: ignore
 
 
 @runtime_checkable
-class RationalLike(
+class RationalLikeProperties(
     SupportsAbs[_T_co],
     SupportsFloat,
-    SupportsNumeratorDenominator[_T_co],
+    SupportsNumeratorDenominatorProperties,
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
     SupportsComplexPow[_T_co],
@@ -665,27 +728,63 @@ class RationalLike(
     # Must be able to instantiate it
     @abstractmethod
     def __init__(self, *args: Any, **kw: Any):
-        ...
+        pass
 
     @abstractmethod
     def __hash__(self) -> int:
-        ...
+        pass
 
 
-_assert_isinstance(int, bool, Fraction, target_t=RationalLike)
-RationalLikeSCU = Union[
+_assert_isinstance(int, bool, Fraction, target_t=RationalLikeProperties)
+RationalLikePropertiesSCU = Union[
     int,
     bool,
     Rational,
-    RationalLike,
+    RationalLikeProperties,
 ]
-RationalLikeSCT = (
+RationalLikePropertiesSCT = (
     int,
     bool,
     Rational,
-    RationalLike,
+    RationalLikeProperties,
 )
-assert RationalLikeSCU.__args__ == RationalLikeSCT  # type: ignore
+assert RationalLikePropertiesSCU.__args__ == RationalLikePropertiesSCT  # type: ignore
+
+
+@runtime_checkable
+class RationalLikeMethods(
+    SupportsAbs[_T_co],
+    SupportsFloat,
+    SupportsNumeratorDenominatorMethods,
+    SupportsRealOps[_T_co],
+    SupportsComplexOps[_T_co],
+    SupportsComplexPow[_T_co],
+    Protocol[_T_co],
+    metaclass=CachingProtocolMeta,
+):
+    r"""
+    TODO(posita): Document this!
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+    # Must be able to instantiate it
+    @abstractmethod
+    def __init__(self, *args: Any, **kw: Any):
+        pass
+
+    @abstractmethod
+    def __hash__(self) -> int:
+        pass
+
+
+RationalLikeMixedU = Union[RationalLikeProperties, RationalLikeMethods]
+RationalLikeMixedT = (RationalLikeProperties, RationalLikeMethods)
+RationalLikeMixedSCU = Union[
+    RationalLikePropertiesSCU,
+    RationalLikeMethods,
+]
+RationalLikeMixedSCT = RationalLikePropertiesSCT + (RationalLikeMethods,)
+assert RationalLikeMixedSCU.__args__ == RationalLikeMixedSCT  # type: ignore
 
 
 @runtime_checkable
@@ -709,11 +808,11 @@ class IntegralLike(
     # Must be able to instantiate it
     @abstractmethod
     def __init__(self, *args: Any, **kw: Any):
-        ...
+        pass
 
     @abstractmethod
     def __hash__(self) -> int:
-        ...
+        pass
 
 
 _assert_isinstance(int, bool, target_t=IntegralLike)
@@ -756,7 +855,7 @@ def trunc(operand: SupportsTrunc):
 
 
 @beartype
-def numerator(operand: SupportsNumeratorDenominator):
+def numerator(operand: SupportsNumeratorDenominatorMixedU):
     r"""
     TODO(posita): Document this!
     """
@@ -770,7 +869,7 @@ def numerator(operand: SupportsNumeratorDenominator):
 
 
 @beartype
-def denominator(operand: SupportsNumeratorDenominator):
+def denominator(operand: SupportsNumeratorDenominatorMixedU):
     r"""
     TODO(posita): Document this!
     """
