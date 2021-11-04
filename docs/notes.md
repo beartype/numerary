@@ -15,6 +15,11 @@
 
 # ``numerary`` release notes
 
+## [0.0.5](https://github.com/posita/numerary/releases/tag/v0.0.5)
+
+* Updates license to the [MIT License](https://opensource.org/licenses/MIT).
+* Gets rid of ``self`` redundancy in ``__isinstance__`` checks.
+
 ## [0.0.4](https://github.com/posita/numerary/releases/tag/v0.0.4)
 
 * ``numerary`` *finally* leaves the [``dyce``](https://github.com/posita/dyce/) nest to become its own library!

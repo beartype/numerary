@@ -68,7 +68,6 @@ def floor_func_t(arg: SupportsFloorSCU):
 def test_floor_ceil() -> None:
     bool_val: SupportsFloor = True
     int_val: SupportsFloor = -273
-    float_val: SupportsFloor = -273.15
     frac_val: SupportsFloor = Fraction(-27315, 100)
     dec_val: SupportsFloor = Decimal("-273.15")
     nw_val: SupportsFloor = Numberwang(-273)
@@ -80,7 +79,6 @@ def test_floor_ceil() -> None:
     _: SupportsCeil
     _ = True
     _ = -273
-    _ = -273.15
     _ = Fraction(-27315, 100)
     _ = Decimal("-273.15")
     _ = Numberwang(-273)
@@ -109,7 +107,7 @@ def test_floor_ceil() -> None:
         assert isinstance(good_val, SupportsCeilSCT), f"{good_val!r}"
         assert ceil(good_val), f"{good_val!r}"
 
-    for out_of_spec_val in (float_val,):
+    for out_of_spec_val in (-273.15,):
         # Prior to Python 3.9, floats didn't have explicit __floor__ or __ceil__
         # methods; they were "directly" supported in math.floor and math.ceil,
         # respectively, so the pure protocol approach thinks they're not supported

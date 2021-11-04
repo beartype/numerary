@@ -128,18 +128,18 @@ class CachingProtocolMeta(_ProtocolMeta):
         # Prefixing this class member with "_abc_" is necessary to prevent it from being
         # considered part of the Protocol. (See
         # <https://github.com/python/cpython/blob/main/Lib/typing.py>.)
-        cache: Dict[Tuple[type, type], bool] = {}
+        cache: Dict[Tuple[type], bool] = {}
         cls._abc_inst_check_cache = cache
 
         return cls
 
-    def __instancecheck__(self, inst: Any) -> bool:
+    def __instancecheck__(cls, inst: Any) -> bool:
         inst_t = type(inst)
 
-        if (self, inst_t) not in self._abc_inst_check_cache:
-            self._abc_inst_check_cache[self, inst_t] = super().__instancecheck__(inst)
+        if inst_t not in cls._abc_inst_check_cache:
+            cls._abc_inst_check_cache[inst_t] = super().__instancecheck__(inst)
 
-        return self._abc_inst_check_cache[self, inst_t]
+        return cls._abc_inst_check_cache[inst_t]
 
 
 def _assert_isinstance(*num_ts: type, target_t: type) -> None:

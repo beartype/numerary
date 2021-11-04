@@ -20,7 +20,7 @@ If that file is missing or appears to be modified from its original, then please
 [![Tests](https://github.com/posita/numerary/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/posita/numerary/actions/workflows/unit-tests.yaml)
 [![Version](https://img.shields.io/pypi/v/numerary.svg)](https://pypi.org/project/numerary/)
 [![Development Stage](https://img.shields.io/pypi/status/numerary.svg)](https://pypi.org/project/numerary/)
-[![License](https://img.shields.io/pypi/l/numerary.svg)](https://github.com/me-shaon/GLWTPL/blob/master/NSFW_LICENSE)
+[![License](https://img.shields.io/pypi/l/numerary.svg)](http://opensource.org/licenses/MIT)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/numerary.svg)](https://pypi.org/project/numerary/)
 [![Supported Python Implementations](https://img.shields.io/pypi/implementation/numerary.svg)](https://pypi.org/project/numerary/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
@@ -36,7 +36,7 @@ Do you find yourself shouting to no one in particular, “There *has* to be a be
 Well I’m here to tell you there ain’t.
 But until there is, there’s …
 
-# *``numerary`` - Now with Protocol Power™*
+# *``numerary`` - now with Protocol Power™*
 
 That’s right!
 
@@ -58,7 +58,7 @@ Yet here we are.
 Its author gauges its success by how quickly it can be deleted as superfluous.
 (I’m looking at you, maintainers.)
 
-``numerary`` is licensed under the [GLWTS License](https://github.com/me-shaon/GLWTPL/blob/master/NSFW_LICENSE) (NSFW version *only*) and comes with absolutely zero warranty for any purpose whatsoever.
+``numerary`` is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 See the accompanying ``LICENSE`` file for details.
 It should be considered experimental for now, but should settle down quickly.
 See the [release notes](https://posita.github.io/numerary/latest/notes/) for a summary of version-to-version changes.
@@ -68,7 +68,7 @@ If you find it lacking in any way, please don’t hesitate to [bring it to my at
 
 ## Customers [![``numerary``-encumbered!](https://raw.githubusercontent.com/posita/numerary/latest/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
 
-* [``dyce``](https://pypi.org/project/dycelib/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* 🙄 of ``numerary``!
+* [``dyce``](https://pypi.org/project/dycelib/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
 * The next one could be _you_! 👋
 
 Do you have a project that suffers problems made slightly less annoying by ``numerary``?
@@ -163,8 +163,8 @@ True
 ```
 
 Huzzah!
-What could be simpler!
-A small tweak is all that is required.
+What could be simpler?
+It appears a small tweak is all that is required!
 
 ``` python
 >>> def deep_thought_towered(arg: Real) -> Integral:
@@ -282,6 +282,10 @@ Let’s see how they perform.
 First, let’s get a baseline.
 
 ``` python
+In [11]: from fractions import Fraction ; from numbers import Rational
+
+In [12]: val = 1
+
 In [13]: %timeit -r10 isinstance(val, Rational)
 326 ns ± 1.26 ns per loop (mean ± std. dev. of 10 runs, 1000000 loops each)
 
@@ -299,6 +303,8 @@ In [17]: %timeit -r10 isinstance(val, Rational)
 Now let’s compare that with our two-property protocol.
 
 ``` python
+In [20]: from numerary import SupportsNumeratorDenominator
+
 In [21]: val = 1
 
 In [22]: %timeit -r10 isinstance(val, SupportsNumeratorDenominator)
@@ -448,7 +454,7 @@ Because *somebody* 🤬ing has to.
 ``numerary`` strives to define composable, *efficient* protocols that one can use to construct numeric requirements.
 It expands on the [``Supports`` pattern](https://docs.python.org/3/library/typing.html#protocols ) used in the standard library.
 
-For example, ``numerary.types.SupportsIntegralOps`` is a [``@typing.runtime_checkable``](https://docs.python.org/3/library/typing.html#typing.runtime_checkable) protocol that approximates the binary operators introduced by [``numbers.Integral``](https://docs.python.org/3/library/numbers.html#numbers.Integral).
+For example, ``numerary.types.SupportsIntegralOps`` is a [``@typing.runtime_checkable``](https://docs.python.org/3/library/typing.html#typing.runtime_checkable) protocol that approximates the unary and binary operators introduced by [``numbers.Integral``](https://docs.python.org/3/library/numbers.html#numbers.Integral).
 
 ``` python
 >>> from numerary.types import SupportsIntegralOps
@@ -543,16 +549,31 @@ def my_func(arg: (int, Integral)):  # Mypy "syntax" error
   pass
 ```
 
-So Python needs one thing for ``isinstance`` checks, and Mypy needs an entirely separate thing for annotations.
-Yay. 😒
+!!! info
+
+    As [@leycec correctly points out](https://github.com/beartype/beartype/issues/66#issuecomment-960495976), [PEP 604](https://www.python.org/dev/peps/pep-0604/) promises a syntax that would help avoid needing one thing for ``isinstance`` checks and an entirely separate thing for annotations.
+    While some of its machinery is available to Python versions prior to 3.10 [via ``from __future__ import annotations``](https://github.com/python/mypy/pull/9647), sadly, [type aliases and ``isinstance`` checks are not](https://github.com/python/mypy/issues/9610#issuecomment-711147567) (a [known limitation](https://www.python.org/dev/peps/pep-0604/#change-only-pep-484-type-hints-to-accept-the-syntax-type1-type2)).
+    ``numerary`` leans heavily on both.
+
+    So we need one of:
+
+    1. A fully functional back-port of PEP 604;
+    1. Version irrelevance *through* Python 3.9; or
+    1. A meaningful and comprehensive fix to [python/mypy#3186](https://github.com/python/mypy/issues/3186) that such that we can gleefully delete ``numerary`` (or at least declare it obsolete) and move on with our lives.
+
+    Place your bets on which happens first.
 
 Does the ``Union`` provide *any* benefit?
 Yes.
 Because *[``beartype``](https://pypi.org/project/beartype/)*.
 ``beartype`` is *awesome*.
-Its author is even *awesomer*.
+Its author is even *awesomer*.[^4]
 More generally, runtime checkers that inspect and enforce annotations face problems similar to ``isinstance``.
 Defining a ``Union`` provides an annotation analog for short-circuiting.
+
+[^4]:
+
+    The subject of who is awesomer, beartype or the man who made it, is [hotly contested](https://github.com/beartype/beartype/issues/66#issuecomment-960495976).
 
 ### Limitations
 
@@ -587,9 +608,9 @@ True
 At runtime, protocols match *names*, not *signatures*.
 More specifically, [``SupportsNumeratorDenominatorProperties``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
 In other words, ``isinstance(sage_integer, SupportsNumeratorDenominatorProperties)`` will return ``True``.
-Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^4] not be caught by Mypy.
+Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^5] not be caught by Mypy.
 
-[^4]:
+[^5]:
 
     I say *may* because I don’t really know how Sage’s number registrations work.
 
@@ -690,7 +711,7 @@ A *real* one.
 
 ## License
 
-``numerary`` is licensed under the [GLWTS License](https://github.com/me-shaon/GLWTPL/blob/master/NSFW_LICENSE) (NSFW version *only*).
+``numerary`` is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 See the included [``LICENSE``](https://posita.github.io/numerary/latest/license/) file for details.
 Source code is [available on GitHub](https://github.com/posita/numerary).
 
@@ -729,9 +750,9 @@ It has the following runtime dependencies:
 * [``beartype``](https://pypi.org/project/beartype/) for yummy runtime type-checking goodness (0.8+)
   [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
-If you use ``beartype`` for type checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for performance reasons), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^5] value before ``numerary`` is loaded.
+If you use ``beartype`` for type checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for some strange reason), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^6] value before ``numerary`` is loaded.
 
-[^5]:
+[^6]:
 
     I.E., one of: ``0``, ``off``, ``f``, ``false``, and ``no``.
 
