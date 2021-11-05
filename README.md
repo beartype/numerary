@@ -55,8 +55,7 @@ If you’re thinking that you shouldn’t need a 🤬ing library for that, *you�
 ``numerary`` should enjoy no audience.
 It should not exist.
 Yet here we are.
-Its author gauges its success by how quickly it can be deleted as superfluous.
-(I’m looking at you, maintainers.)
+Its author gauges its success by how quickly it can be forgotten, relegated to the annals of superfluous folly.
 
 ``numerary`` is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 See the accompanying ``LICENSE`` file for details.
@@ -65,43 +64,6 @@ See the [release notes](https://posita.github.io/numerary/latest/notes/) for a s
 Source code is [available on GitHub](https://github.com/posita/numerary).
 
 If you find it lacking in any way, please don’t hesitate to [bring it to my attention](https://posita.github.io/numerary/latest/contrib/).
-
-## Customers [![``numerary``-encumbered!](https://raw.githubusercontent.com/posita/numerary/latest/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
-
-* [``dyce``](https://pypi.org/project/dycelib/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
-* The next one could be _you_! 👋
-
-Do you have a project that suffers problems made slightly less annoying by ``numerary``?
-[Let me know](https://posita.github.io/numerary/latest/contrib/#filing-issues), and I’ll promote it here!
-
-And don’t forget to do your part in perpetuating gratuitous badge-ification!
-
-``` markdown
-<!-- Markdown -->
-As of version 0.4.1, ``dyce`` is
-[![numerary-encumbered](https://raw.githubusercontent.com/posita/numerary/master/docs/numerary-encumbered.svg)][numerary-encumbered]!
-[numerary-encumbered]: https://posita.github.io/numerary/ "numerary-encumbered!"
-```
-
-``` rst
-..
-    reStructuredText - see https://docutils.sourceforge.io/docs/ref/rst/directives.html#image
-
-As of version 0.4.1, ``dyce`` is |numerary-encumbered|!
-
-.. |numerary-encumbered| image:: https://raw.githubusercontent.com/posita/numerary/master/docs/numerary-encumbered.svg
-   :align: top
-   :target: https://posita.github.io/numerary/
-   :alt: numerary-encumbered
-```
-
-``` html
-<!-- HTML -->
-As of version 0.4.1, <code>dyce</code> is <a href="https://posita.github.io/numerary/"><img
-  src="https://raw.githubusercontent.com/posita/numerary/master/docs/numerary-encumbered.svg"
-  alt="numerary-encumbered"
-  style="vertical-align: middle;"></a>!
-```
 
 ## The calculation function, an allegory
 
@@ -534,8 +496,11 @@ By default, [protocols frustrate runtime type checking performance](https://bugs
 
 It caches, so it’s faster.
 [Bang. Done.](https://youtu.be/cCmNYP1k12w)
-(NSFW warning.
-Although, in retrospect, that warning probably should have been presented more prominently and earlier in this diatribe.)
+(NSFW warning.[^3])
+
+[^3]:
+
+    In retrospect, that warning probably should have been presented more prominently and earlier in this diatribe.
 
 *TODO(@posita): Describe how this works.*
 
@@ -578,9 +543,9 @@ Because you can’t do this:
 isinstance(1, Union[int, Integral])  # syntax error
 ```
 
-And because Mypy is confused by this[^3]:
+And because Mypy is confused by this[^4]:
 
-[^3]:
+[^4]:
 
     Even though the syntax is legal and [``beartype``](https://pypi.org/project/beartype/) gladly does the right thing by treating the tuple literal as a ``Union``.
     Not sure if this is a bug or a feature, but my vote is for feature.
@@ -608,11 +573,11 @@ Does the ``Union`` provide *any* benefit?
 Yes.
 Because *[``beartype``](https://pypi.org/project/beartype/)*.
 ``beartype`` is *awesome*.
-Its author is even *awesomer*.[^4]
+Its author is even *awesomer*.[^5]
 More generally, runtime checkers that inspect and enforce annotations face problems similar to ``isinstance``.
 Defining a ``Union`` provides an annotation analog for short-circuiting.
 
-[^4]:
+[^5]:
 
     I acknowledge that the subject of who is awesomer, beartype or the man who made it, is [hotly contested](https://github.com/beartype/beartype/issues/66#issuecomment-960495976).
 
@@ -649,9 +614,9 @@ True
 At runtime, protocols match *names*, not *signatures*.
 More specifically, [``SupportsNumeratorDenominatorProperties``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
 In other words, ``isinstance(sage_integer, SupportsNumeratorDenominatorProperties)`` will return ``True``.
-Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^5] not be caught by Mypy.
+Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^6] not be caught by Mypy.
 
-[^5]:
+[^6]:
 
     I say *may* because I don’t really know how Sage’s number registrations work.
 
@@ -793,10 +758,47 @@ It has the following runtime dependencies:
 * [``beartype``](https://pypi.org/project/beartype/) for yummy runtime type-checking goodness (0.8+)
   [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
-If you use ``beartype`` for type checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for some strange reason), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^6] value before ``numerary`` is loaded.
+If you use ``beartype`` for type checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for some strange reason), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^7] value before ``numerary`` is loaded.
 
-[^6]:
+[^7]:
 
     I.E., one of: ``0``, ``off``, ``f``, ``false``, and ``no``.
 
 See the [hacking quick-start](https://posita.github.io/numerary/latest/contrib/#hacking-quick-start) for additional development and testing dependencies.
+
+## Customers [![``numerary``-encumbered](https://raw.githubusercontent.com/posita/numerary/latest/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
+
+* [``dyce``](https://pypi.org/project/dycelib/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
+* The next one could be _you_! 👋
+
+Do you have a project that suffers problems made slightly less annoying by ``numerary``?
+[Let me know](https://posita.github.io/numerary/latest/contrib/#filing-issues), and I’ll promote it here!
+
+And don’t forget to do your part in perpetuating gratuitous badge-ification!
+
+``` markdown
+<!-- Markdown -->
+As of version 0.4.1, ``dyce`` is
+[![numerary-encumbered](https://raw.githubusercontent.com/posita/numerary/master/docs/numerary-encumbered.svg)][numerary-encumbered]!
+[numerary-encumbered]: https://posita.github.io/numerary/ "numerary-encumbered"
+```
+
+``` rst
+..
+    reStructuredText - see https://docutils.sourceforge.io/docs/ref/rst/directives.html#image
+
+As of version 0.4.1, ``dyce`` is |numerary-encumbered|!
+
+.. |numerary-encumbered| image:: https://raw.githubusercontent.com/posita/numerary/master/docs/numerary-encumbered.svg
+   :align: top
+   :target: https://posita.github.io/numerary/
+   :alt: numerary-encumbered
+```
+
+``` html
+<!-- HTML -->
+As of version 0.4.1, <code>dyce</code> is <a href="https://posita.github.io/numerary/"><img
+  src="https://raw.githubusercontent.com/posita/numerary/master/docs/numerary-encumbered.svg"
+  alt="numerary-encumbered"
+  style="vertical-align: middle;"></a>!
+```
