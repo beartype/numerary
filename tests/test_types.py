@@ -8,14 +8,44 @@
 
 from __future__ import annotations
 
-from typing import Tuple
+from abc import abstractmethod
+from typing import Iterable, Tuple, Union
 
 import pytest
 
 from numerary import IntegralLikeSCU, RealLikeSCU
 from numerary.bt import beartype
+from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
 
 __all__ = ()
+
+
+# ---- Types ---------------------------------------------------------------------------
+
+
+@runtime_checkable
+class SupportsOne(
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
+    __slots__: Union[str, Iterable[str]] = ()
+
+    @abstractmethod
+    def one(self) -> int:
+        pass
+
+
+# ---- Classes -------------------------------------------------------------------------
+
+
+class One:
+    def one(self) -> int:
+        return 1
+
+
+class Two:
+    def two(self) -> int:
+        return 2
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -77,3 +107,23 @@ def test_beartype_validators() -> None:
 
     with pytest.raises(roar.BeartypeException):
         _if(())
+
+
+def test_caching_protocol_meta_cache_overrides() -> None:
+    one: SupportsOne = One()
+    assert isinstance(one, SupportsOne)
+
+    SupportsOne.excludes(One)
+    assert not isinstance(one, SupportsOne)
+
+    SupportsOne.reset_for(One)
+    assert isinstance(one, SupportsOne)
+
+    two = Two()
+    assert not isinstance(two, SupportsOne)
+
+    SupportsOne.includes(Two)
+    assert isinstance(two, SupportsOne)
+
+    SupportsOne.reset_for(Two)
+    assert not isinstance(two, SupportsOne)

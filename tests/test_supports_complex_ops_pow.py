@@ -257,19 +257,18 @@ def test_supports_complex_ops_pow_sympy() -> None:
     integer_val: SupportsComplexOps = sympy.Integer(-273)
     rational_val: SupportsComplexOps = sympy.Rational(-27315, 100)
     float_val: SupportsComplexOps = sympy.Float(-273.15)
-    # sym_val: SupportsComplexOps = (sympy.symbols("x"),)
+    sym_val: SupportsComplexOps = sympy.symbols("x")
     _: SupportsComplexPow
     _ = sympy.Integer(-273)
     _ = sympy.Rational(-27315, 100)
     _ = sympy.Float(-273.15)
-    # _ = (sympy.symbols("x"),)
+    _ = sympy.symbols("x")
 
     for good_val in (
         integer_val,
         rational_val,
         float_val,
-        # TODO(posita): Can we fix this?
-        # sym_val,
+        sym_val,
     ):
         assert isinstance(good_val, SupportsComplexOps), f"{good_val!r}"
         assert isinstance(good_val, SupportsComplexOpsSCT), f"{good_val!r}"

@@ -196,7 +196,7 @@ def test_supports_integral_ops_pow_numpy() -> None:
         assert isinstance(good_val, SupportsIntegralPowSCT), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
-    for lying_val in (
+    for bad_val in (
         float16_val,
         float32_val,
         float64_val,
@@ -205,31 +205,29 @@ def test_supports_integral_ops_pow_numpy() -> None:
         numpy.cdouble(-273.15),
         numpy.clongdouble(-273.15),
     ):
-        assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
+        assert not isinstance(bad_val, SupportsIntegralOps), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsIntegralOpsSCT), f"{bad_val!r}"
 
         # These have, but don't implement these functions
-        # TODO(posita): Can we fix this?
-        with pytest.raises(TypeError):
-            lying_val << 0
+        with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
+            bad_val << 0
 
-        with pytest.raises(TypeError):
-            lying_val >> 0
+        with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
+            bad_val >> 0
 
-        with pytest.raises(TypeError):
-            lying_val & 0
+        with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
+            bad_val & 0
 
-        with pytest.raises(TypeError):
-            lying_val | 0
+        with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
+            bad_val | 0
 
-        assert isinstance(lying_val, SupportsIntegralPow), f"{lying_val!r}"
-        assert isinstance(lying_val, SupportsIntegralPowSCT), f"{lying_val!r}"
-        assert lying_val ** 1 == lying_val, f"{lying_val!r}"
+        assert not isinstance(bad_val, SupportsIntegralPow), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsIntegralPowSCT), f"{bad_val!r}"
 
 
 def test_supports_integral_ops_pow_numpy_beartype() -> None:
     numpy = pytest.importorskip("numpy", reason="requires numpy")
-    pytest.importorskip("beartype.roar", reason="requires beartype")
+    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (
         numpy.uint8(2),
@@ -244,7 +242,7 @@ def test_supports_integral_ops_pow_numpy_beartype() -> None:
         ops_func(cast(SupportsIntegralOps, good_val))
         ops_func_t(cast(SupportsIntegralOpsSCU, good_val))
 
-    for lying_val in (
+    for bad_val in (
         numpy.float16(-1.8),
         numpy.float32(-273.15),
         numpy.float64(-273.15),
@@ -253,8 +251,11 @@ def test_supports_integral_ops_pow_numpy_beartype() -> None:
         numpy.cdouble(-273.15),
         numpy.clongdouble(-273.15),
     ):
-        ops_func(cast(SupportsIntegralOps, good_val))
-        ops_func_t(cast(SupportsIntegralOpsSCU, good_val))
+        with pytest.raises(roar.BeartypeException):
+            ops_func(cast(SupportsIntegralOps, bad_val))
+
+        with pytest.raises(roar.BeartypeException):
+            ops_func_t(cast(SupportsIntegralOpsSCU, bad_val))
 
 
 def test_supports_integral_ops_pow_sympy() -> None:
@@ -277,12 +278,11 @@ def test_supports_integral_ops_pow_sympy() -> None:
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
     for lying_val in (sym_val,):
-        assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsIntegralOpsSCT), f"{good_val!r}"
+        assert not isinstance(lying_val, SupportsIntegralOps), f"{lying_val!r}"
+        assert not isinstance(lying_val, SupportsIntegralOpsSCT), f"{lying_val!r}"
 
         # Relationals have, but don't implement this function
-        # TODO(posita): Can we fix this?
-        with pytest.raises(TypeError):
+        with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
             lying_val << 0
 
     for bad_val in (
@@ -302,8 +302,11 @@ def test_supports_integral_ops_pow_sympy_beartype() -> None:
         ops_func_t(cast(SupportsIntegralOpsSCU, good_val))
 
     for lying_val in (sympy.symbols("x"),):
-        ops_func(cast(SupportsIntegralOps, lying_val))
-        ops_func_t(cast(SupportsIntegralOpsSCU, lying_val))
+        with pytest.raises(roar.BeartypeException):
+            ops_func(cast(SupportsIntegralOps, lying_val))
+
+        with pytest.raises(roar.BeartypeException):
+            ops_func_t(cast(SupportsIntegralOpsSCU, lying_val))
 
     for bad_val in (
         sympy.Float(-273.15),

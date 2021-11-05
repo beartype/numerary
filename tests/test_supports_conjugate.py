@@ -201,14 +201,13 @@ def test_supports_conjugate_sympy() -> None:
     integer_val: SupportsConjugate = sympy.Integer(-273)
     rational_val: SupportsConjugate = sympy.Rational(-27315, 100)
     float_val: SupportsConjugate = sympy.Float(-273.15)
-    # sym_val: SupportsConjugate = (sympy.symbols("x"),)
+    sym_val: SupportsConjugate = sympy.symbols("x")
 
     for good_val in (
         integer_val,
         rational_val,
         float_val,
-        # TODO(posita): Can we fix this?
-        # sym_val,
+        sym_val,
     ):
         assert isinstance(good_val, SupportsConjugate), f"{good_val!r}"
         assert isinstance(good_val, SupportsConjugateSCT), f"{good_val!r}"

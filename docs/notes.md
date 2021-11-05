@@ -15,6 +15,13 @@
 
 # ``numerary`` release notes
 
+## [0.0.6](https://github.com/posita/numerary/releases/tag/v0.0.6)
+
+* Add [CachingProtocolMeta.includes][numerary.types.CachingProtocolMeta.includes],
+  [CachingProtocolMeta.excludes][numerary.types.CachingProtocolMeta.excludes], and
+  [CachingProtocolMeta.reset_for][numerary.types.CachingProtocolMeta.reset_for] cache
+  manipulation functions.
+
 ## [0.0.5](https://github.com/posita/numerary/releases/tag/v0.0.5)
 
 * Updates license to the [MIT License](https://opensource.org/licenses/MIT).

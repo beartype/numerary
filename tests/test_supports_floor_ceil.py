@@ -8,7 +8,6 @@
 
 from __future__ import annotations
 
-import sys
 from decimal import Decimal
 from fractions import Fraction
 from typing import cast
@@ -68,6 +67,7 @@ def floor_func_t(arg: SupportsFloorSCU):
 def test_floor_ceil() -> None:
     bool_val: SupportsFloor = True
     int_val: SupportsFloor = -273
+    float_val: SupportsFloor = -273.15
     frac_val: SupportsFloor = Fraction(-27315, 100)
     dec_val: SupportsFloor = Decimal("-273.15")
     nw_val: SupportsFloor = Numberwang(-273)
@@ -79,6 +79,7 @@ def test_floor_ceil() -> None:
     _: SupportsCeil
     _ = True
     _ = -273
+    _ = -273.15
     _ = Fraction(-27315, 100)
     _ = Decimal("-273.15")
     _ = Numberwang(-273)
@@ -91,6 +92,7 @@ def test_floor_ceil() -> None:
     for good_val in (
         bool_val,
         int_val,
+        float_val,
         frac_val,
         dec_val,
         nw_val,
@@ -106,27 +108,6 @@ def test_floor_ceil() -> None:
         assert isinstance(good_val, SupportsCeil), f"{good_val!r}"
         assert isinstance(good_val, SupportsCeilSCT), f"{good_val!r}"
         assert ceil(good_val), f"{good_val!r}"
-
-    for out_of_spec_val in (-273.15,):
-        # Prior to Python 3.9, floats didn't have explicit __floor__ or __ceil__
-        # methods; they were "directly" supported in math.floor and math.ceil,
-        # respectively, so the pure protocol approach thinks they're not supported
-        # TODO(posita): Can we fix this?
-        if sys.version_info < (3, 9):
-            assert not isinstance(
-                out_of_spec_val, SupportsFloor
-            ), f"{out_of_spec_val!r}"
-            assert not isinstance(out_of_spec_val, SupportsCeil), f"{out_of_spec_val!r}"
-        else:
-            assert isinstance(out_of_spec_val, SupportsFloor), f"{out_of_spec_val!r}"
-            assert floor(out_of_spec_val), f"{out_of_spec_val!r}"
-            assert isinstance(out_of_spec_val, SupportsCeil), f"{out_of_spec_val!r}"
-            assert ceil(out_of_spec_val), f"{out_of_spec_val!r}"
-
-        # The short-circuiting approach inadvertently (in this case correctly) sweeps in
-        # floats, even though they're out-of-spec
-        assert isinstance(out_of_spec_val, SupportsFloorSCT), f"{out_of_spec_val!r}"
-        assert isinstance(out_of_spec_val, SupportsCeilSCT), f"{out_of_spec_val!r}"
 
     for bad_val in (
         complex(-273.15),
@@ -144,6 +125,7 @@ def test_floor_ceil_beartype() -> None:
     for good_val in (
         True,
         -273,
+        -273.15,
         Fraction(-27315, 100),
         Decimal("-273.15"),
         Numberwang(-273),
@@ -157,26 +139,6 @@ def test_floor_ceil_beartype() -> None:
         floor_func_t(cast(SupportsFloorSCU, good_val))
         ceil_func(cast(SupportsCeil, good_val))
         ceil_func_t(cast(SupportsCeilSCU, good_val))
-
-    for out_of_spec_val in (-273.15,):
-        # Prior to Python 3.9, floats didn't have explicit __floor__ or __ceil__
-        # methods; they were "directly" supported in math.floor and math.ceil,
-        # respectively, so the pure protocol approach thinks they're not supported
-        # TODO(posita): Can we fix this?
-        if sys.version_info < (3, 9):
-            with pytest.raises(roar.BeartypeException):
-                floor_func(cast(SupportsFloor, out_of_spec_val))
-
-            with pytest.raises(roar.BeartypeException):
-                ceil_func(cast(SupportsCeil, out_of_spec_val))
-        else:
-            floor_func(cast(SupportsFloor, good_val))
-            ceil_func(cast(SupportsCeil, good_val))
-
-        # The short-circuiting approach inadvertently (in this case correctly) sweeps in
-        # floats, even though they're out-of-spec
-        floor_func_t(cast(SupportsFloorSCU, out_of_spec_val))
-        ceil_func_t(cast(SupportsCeilSCU, out_of_spec_val))
 
     for bad_val in (
         complex(-273.15),
@@ -223,30 +185,7 @@ def test_floor_ceil_numpy() -> None:
     _ = numpy.float64(-273.15)
     _ = numpy.float128(-273.15)
 
-    # numpy.float64 seems to have a closer relationship to the native float than the
-    # other numpy.float* types
-    for out_of_spec_val in (float64_val,):
-        # Prior to Python 3.9, floats didn't have explicit __floor__ or __ceil__
-        # methods; they were "directly" supported in math.floor and math.ceil,
-        # respectively, so the pure protocol approach thinks they're not supported
-        # TODO(posita): Can we fix this?
-        if sys.version_info < (3, 9):
-            assert not isinstance(
-                out_of_spec_val, SupportsFloor
-            ), f"{out_of_spec_val!r}"
-            assert not isinstance(out_of_spec_val, SupportsCeil), f"{out_of_spec_val!r}"
-        else:
-            assert isinstance(out_of_spec_val, SupportsFloor), f"{out_of_spec_val!r}"
-            assert floor(out_of_spec_val), f"{out_of_spec_val!r}"
-            assert isinstance(out_of_spec_val, SupportsCeil), f"{out_of_spec_val!r}"
-            assert ceil(out_of_spec_val), f"{out_of_spec_val!r}"
-
-        # The short-circuiting approach inadvertently (in this case correctly) sweeps in
-        # floats, even though they're out-of-spec
-        assert isinstance(out_of_spec_val, SupportsFloorSCT), f"{out_of_spec_val!r}"
-        assert isinstance(out_of_spec_val, SupportsCeilSCT), f"{out_of_spec_val!r}"
-
-    for lying_val in (
+    for good_val in (
         uint8_val,
         uint16_val,
         uint32_val,
@@ -257,15 +196,15 @@ def test_floor_ceil_numpy() -> None:
         int64_val,
         float16_val,
         float32_val,
+        float64_val,
         float128_val,
     ):
-        # The pure protocol approach catches this
-        assert not isinstance(lying_val, SupportsFloor), f"{lying_val!r}"
-        assert not isinstance(lying_val, SupportsCeil), f"{lying_val!r}"
-
-        # The short-circuiting approach does not
-        assert isinstance(lying_val, SupportsFloorSCT), f"{lying_val!r}"
-        assert isinstance(lying_val, SupportsCeilSCT), f"{lying_val!r}"
+        assert isinstance(good_val, SupportsFloor), f"{good_val!r}"
+        assert isinstance(good_val, SupportsFloorSCT), f"{good_val!r}"
+        assert floor(good_val), f"{good_val!r}"
+        assert isinstance(good_val, SupportsCeil), f"{good_val!r}"
+        assert isinstance(good_val, SupportsCeilSCT), f"{good_val!r}"
+        assert ceil(good_val), f"{good_val!r}"
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -282,24 +221,7 @@ def test_floor_ceil_numpy_beartype() -> None:
     numpy = pytest.importorskip("numpy", reason="requires numpy")
     roar = pytest.importorskip("beartype.roar", reason="requires beartype")
 
-    # numpy.float64 seems to have a closer relationship to the native float than the
-    # other numpy.float* types
-    for out_of_spec_val in (numpy.float64(-273.15),):
-        # Prior to Python 3.9, floats didn't have explicit __floor__ or __ceil__
-        # methods; they were "directly" supported in math.floor and math.ceil,
-        # respectively, so the pure protocol approach thinks they're not supported
-        # TODO(posita): Can we fix this?
-        if sys.version_info < (3, 9):
-            with pytest.raises(roar.BeartypeException):
-                floor_func(cast(SupportsFloor, out_of_spec_val))
-
-            with pytest.raises(roar.BeartypeException):
-                ceil_func(cast(SupportsCeil, out_of_spec_val))
-        else:
-            floor_func(cast(SupportsFloor, out_of_spec_val))
-            ceil_func(cast(SupportsCeil, out_of_spec_val))
-
-    for lying_val in (
+    for good_val in (
         numpy.uint8(2),
         numpy.uint16(273),
         numpy.uint32(273),
@@ -310,17 +232,11 @@ def test_floor_ceil_numpy_beartype() -> None:
         numpy.int64(-273),
         numpy.float16(-1.8),
         numpy.float32(-273.15),
+        numpy.float64(-273.15),
         numpy.float128(-273.15),
     ):
-        with pytest.raises(roar.BeartypeException):
-            floor_func(cast(SupportsFloor, lying_val))
-
-        floor_func_t(cast(SupportsFloorSCU, lying_val))
-
-        with pytest.raises(roar.BeartypeException):
-            ceil_func(cast(SupportsCeil, lying_val))
-
-        ceil_func_t(cast(SupportsCeilSCU, lying_val))
+        floor_func(cast(SupportsFloor, good_val))
+        ceil_func(cast(SupportsCeil, good_val))
 
     for bad_val in (
         numpy.csingle(-273.15),

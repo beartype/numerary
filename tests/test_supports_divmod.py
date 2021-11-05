@@ -81,8 +81,7 @@ def test_supports_divmod() -> None:
         assert isinstance(lying_val, SupportsDivmodSCT), f"{lying_val!r}"
 
     for bad_val in (
-        # TODO(posita): fix this
-        # complex(-273.15),
+        complex(-273.15),
         Numberwang(-273),
         Wangernumb(-273.15),
         "-273.15",
@@ -119,8 +118,7 @@ def test_supports_divmod_beartype() -> None:
         func_t(cast(SupportsDivmodSCU, lying_val))
 
     for bad_val in (
-        # TODO(posita): fix this
-        # complex(-273.15),
+        complex(-273.15),
         Numberwang(-273),
         Wangernumb(-273.15),
         "-273.15",
@@ -166,11 +164,9 @@ def test_supports_divmod_numpy() -> None:
         assert divmod(good_val, good_val), f"{good_val!r}"
 
     for bad_val in (
-        # TODO(posita): fix these
-        # numpy.csingle(-273.15),
-        # numpy.cdouble(-273.15),
-        # numpy.clongdouble(-273.15),
-        "-273.15",  # TODO(posita): remove me
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsDivmod), f"{bad_val!r}"
         assert not isinstance(bad_val, SupportsDivmodSCT), f"{bad_val!r}"
@@ -198,11 +194,9 @@ def test_supports_divmod_numpy_beartype() -> None:
         func_t(cast(SupportsDivmodSCU, good_val))
 
     for bad_val in (
-        # TODO(posita): fix these
-        # numpy.csingle(-273.15),
-        # numpy.cdouble(-273.15),
-        # numpy.clongdouble(-273.15),
-        "-273.15",  # TODO(posita): remove me
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
             func(cast(SupportsDivmod, bad_val))
@@ -216,23 +210,17 @@ def test_supports_divmod_sympy() -> None:
     integer_val: SupportsDivmod = sympy.Integer(-273)
     rational_val: SupportsDivmod = sympy.Rational(-27315, 100)
     float_val: SupportsDivmod = sympy.Float(-273.15)
-    # sym_val: SupportsDivmod = (sympy.symbols("x"),)
+    sym_val: SupportsDivmod = sympy.symbols("x")
 
     for good_val in (
         integer_val,
         rational_val,
         float_val,
-        # TODO(posita): Can we fix this?
-        # sym_val,
+        sym_val,
     ):
         assert isinstance(good_val, SupportsDivmod), f"{good_val!r}"
         assert isinstance(good_val, SupportsDivmodSCT), f"{good_val!r}"
-
-        # Symbolic relationals can't be reduced to a boolean
-        if isinstance(good_val, sympy.core.symbol.Symbol):
-            assert divmod(good_val, good_val), f"{good_val!r}"
-        else:
-            assert divmod(good_val, good_val), f"{good_val!r}"
+        assert divmod(good_val, good_val), f"{good_val!r}"
 
 
 def test_supports_divmod_sympy_beartype() -> None:

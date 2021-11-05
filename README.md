@@ -202,7 +202,7 @@ All is right in the world again!
 >>> deep_thought_crumbling(Fraction(1, 2))
 42
 >>> from decimal import Decimal
->>> deep_thought_crumbling(Decimal("0.123"))  # type: ignore  # fails
+>>> deep_thought_crumbling(Decimal("0.123"))  # type: ignore  # fail
 42
 
 ```
@@ -483,6 +483,47 @@ AssertionError
     ``numerary`` catches that!
     The above properly results in both a type checking error as well as a runtime failure for [SymPy](https://www.sympy.org/) versions prior to 1.9.
 
+Remember that scandal (above) where ``complex`` defined exception-throwing comparators it wasn’t supposed to have, which confused runtime protocol checking, and then its type definitions lied about it to cover it up?
+Yeah, that shit ends *here*.
+
+``` python
+>>> from numerary.types import SupportsRealOps
+>>> isinstance(1.0, SupportsRealOps)  # all good
+True
+>>> has_real_ops: SupportsRealOps = complex(1)  # type: ignore  # properly caught by Mypy
+>>> isinstance(complex(1), SupportsRealOps)  # you're not fooling anyone, buddy
+False
+
+```
+
+That is because ``numerary`` not only caches runtime protocol evaluations, but allows overriding those evaluations when the default machinery gets it wrong.
+
+``` python
+>>> from numerary.types import CachingProtocolMeta
+>>> @runtime_checkable
+... class SupportsOne(Protocol, metaclass=CachingProtocolMeta):
+...   __slots__: Union[str, Iterable[str]] = ()
+...   @abstractmethod
+...   def one(self) -> int:
+...     pass
+>>> class Imposter:
+...   def one(self) -> str:
+...     return "one"
+>>> imp: SupportsOne = Imposter()  # type: ignore  # properly caught by Mypy
+>>> isinstance(imp, SupportsOne)  # fool me once, shame on you ...
+True
+>>> SupportsOne.excludes(Imposter)
+>>> isinstance(imp, SupportsOne)  # ... can't get fooled again
+False
+
+```
+
+``numerary`` has default overrides to correct for known oddities with native types (like our old friend, ``complex``), [``numpy``](https://numpy.org/), and [``sympy``](https://www.sympy.org/).
+Others will be added as they are identified.
+If I’ve missed any, or if you would like ``numerary`` to support additional number implementations out of the box, please [let me know](https://posita.github.io/numerary/latest/contrib/#filing-issues).
+
+## Performance Enhanced Protocols
+
 By default, [protocols frustrate runtime type checking performance](https://bugs.python.org/issue30505).
 ``numerary`` applies two distinct, layered optimization strategies:
 
@@ -558,10 +599,10 @@ def my_func(arg: (int, Integral)):  # Mypy "syntax" error
     So we need one of:
 
     1. A fully functional back-port of PEP 604;
-    1. Version irrelevance *through* Python 3.9; or
+    1. Version irrelevance *through* Python 3.9; and
     1. A meaningful and comprehensive fix to [python/mypy#3186](https://github.com/python/mypy/issues/3186) that such that we can gleefully delete ``numerary`` (or at least declare it obsolete) and move on with our lives.
 
-    Place your bets on which happens first.
+    I am taking bets on which happens first.
 
 Does the ``Union`` provide *any* benefit?
 Yes.
@@ -573,7 +614,7 @@ Defining a ``Union`` provides an annotation analog for short-circuiting.
 
 [^4]:
 
-    The subject of who is awesomer, beartype or the man who made it, is [hotly contested](https://github.com/beartype/beartype/issues/66#issuecomment-960495976).
+    I acknowledge that the subject of who is awesomer, beartype or the man who made it, is [hotly contested](https://github.com/beartype/beartype/issues/66#issuecomment-960495976).
 
 ### Limitations
 
@@ -636,7 +677,9 @@ True
 
 ```
 
-To combat this particular situation, ``numerary`` provides the [``SupportsNumeratorDenominatorMethods``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods) protocol and the [``numerator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.numerator) and [``denominator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.denominator) helper functions.
+Known warts can be cured using cache overriding as discussed above.
+To combat this particular situation, ``numerary`` provides an alternative: the [``SupportsNumeratorDenominatorMethods``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods) protocol and the [``numerator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.numerator) and [``denominator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.denominator) helper functions.
+These allow accommodation of rational implementations that are mostly compliant with the exception of their respective ``numerator`` and ``denominator`` implementations.
 
 ``` python
 >>> from numerary.types import numerator
@@ -681,7 +724,7 @@ The ``SupportsNumeratorDenominator*`` primitives provide the basis for the analo
 
 ### Shut up and take my money!
 
-If all you deal with are integrals and reals, and what you want is arithmetic operator compatibility, but don’t do a ton of runtime checking, this should probably get you most of where you likely want to go:
+If all you deal with are integrals and reals, and what you want is broad arithmetic operator compatibility, but don’t do a ton of runtime checking, this should probably get you most of where you likely want to go:
 
 ``` python
 >>> from numerary import IntegralLike, RealLike

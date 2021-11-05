@@ -89,8 +89,7 @@ def test_real_like() -> None:
         assert math.ceil(good_val), f"{good_val!r}"
 
     for bad_val in (
-        # TODO(posita): fix this
-        # complex(-273.15),
+        complex(-273.15),
         "-273.15",
     ):
         assert not isinstance(bad_val, RealLike), f"{bad_val!r}"
@@ -117,8 +116,7 @@ def test_real_like_beartype() -> None:
         func_t(cast(RealLikeSCU, good_val))
 
     for bad_val in (
-        # TODO(posita): fix this
-        # complex(-273.15),
+        complex(-273.15),
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):
@@ -178,11 +176,9 @@ def test_real_like_numpy() -> None:
         assert good_val > good_val - 1, f"{good_val!r}"
 
     for bad_val in (
-        # TODO(posita): fix these
-        # numpy.csingle(-273.15),
-        # numpy.cdouble(-273.15),
-        # numpy.clongdouble(-273.15),
-        "-273.15",  # TODO(posita): remove me
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, RealLike), f"{bad_val!r}"
         assert not isinstance(bad_val, RealLikeSCT), f"{bad_val!r}"
@@ -210,11 +206,9 @@ def test_real_like_numpy_beartype() -> None:
         func_t(cast(RealLikeSCU, good_val))
 
     for bad_val in (
-        # TODO(posita): fix these
-        # numpy.csingle(-273.15),
-        # numpy.cdouble(-273.15),
-        # numpy.clongdouble(-273.15),
-        "-273.15",  # TODO(posita): remove me
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
             func(cast(RealLike, bad_val))

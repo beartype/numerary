@@ -128,7 +128,7 @@ class CachingProtocolMeta(_ProtocolMeta):
         # Prefixing this class member with "_abc_" is necessary to prevent it from being
         # considered part of the Protocol. (See
         # <https://github.com/python/cpython/blob/main/Lib/typing.py>.)
-        cache: Dict[Tuple[type], bool] = {}
+        cache: Dict[Tuple[Type], bool] = {}
         cls._abc_inst_check_cache = cache
 
         return cls
@@ -140,6 +140,25 @@ class CachingProtocolMeta(_ProtocolMeta):
             cls._abc_inst_check_cache[inst_t] = super().__instancecheck__(inst)
 
         return cls._abc_inst_check_cache[inst_t]
+
+    def includes(cls, inst_t: Type) -> None:
+        r"""
+        TODO(posita): Document this!
+        """
+        cls._abc_inst_check_cache[inst_t] = True
+
+    def excludes(cls, inst_t: Type) -> None:
+        r"""
+        TODO(posita): Document this!
+        """
+        cls._abc_inst_check_cache[inst_t] = False
+
+    def reset_for(cls, inst_t: Type) -> None:
+        r"""
+        TODO(posita): Document this!
+        """
+        if inst_t in cls._abc_inst_check_cache:
+            del cls._abc_inst_check_cache[inst_t]
 
 
 def _assert_isinstance(*num_ts: type, target_t: type) -> None:
@@ -880,3 +899,68 @@ def denominator(operand: SupportsNumeratorDenominatorMixedU):
             return operand.denominator
     else:
         raise TypeError(f"{operand!r} has no denominator")
+
+
+# ---- Initialization ------------------------------------------------------------------
+
+
+# Prior to Python 3.9, floats didn't have explicit __floor__ or __ceil__ methods; they
+# were "directly" supported in math.floor and math.ceil, respectively, so the pure
+# protocol approach thinks they're not supported
+SupportsFloor.includes(float)
+SupportsCeil.includes(float)
+
+# complex defines these methods, but only to raise exceptions
+SupportsDivmod.excludes(complex)
+SupportsRealOps.excludes(complex)
+RealLike.excludes(complex)
+
+try:
+    import numpy
+
+    for t in (
+        numpy.uint8,
+        numpy.uint16,
+        numpy.uint32,
+        numpy.uint64,
+        numpy.int8,
+        numpy.int16,
+        numpy.int32,
+        numpy.int64,
+    ):
+        SupportsFloor.includes(t)
+        SupportsCeil.includes(t)
+
+    for t in (
+        numpy.float16,
+        numpy.float32,
+        numpy.float64,
+        numpy.float128,
+    ):
+        SupportsFloor.includes(t)
+        SupportsCeil.includes(t)
+        SupportsIntegralOps.excludes(t)
+        SupportsIntegralPow.excludes(t)
+
+    # numpy complex types define these methods, but only to raise exceptions
+    for t in (
+        numpy.csingle,
+        numpy.cdouble,
+        numpy.clongdouble,
+    ):
+        SupportsDivmod.excludes(t)
+        SupportsRealOps.excludes(t)
+        SupportsIntegralOps.excludes(t)
+        SupportsIntegralPow.excludes(t)
+        RealLike.excludes(t)
+except ImportError:
+    pass
+
+try:
+    import sympy.core.symbol
+
+    SupportsTrunc.excludes(sympy.core.symbol.Symbol)
+    SupportsIntegralOps.excludes(sympy.core.symbol.Symbol)
+    SupportsIntegralPow.excludes(sympy.core.symbol.Symbol)
+except ImportError:
+    pass

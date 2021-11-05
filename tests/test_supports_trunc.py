@@ -220,12 +220,11 @@ def test_trunc_sympy() -> None:
         assert trunc(good_val), f"{good_val!r}"
 
     for lying_val in (sym_val,):
-        assert isinstance(lying_val, SupportsTrunc), f"{lying_val!r}"
-        assert isinstance(lying_val, SupportsTruncSCT), f"{lying_val!r}"
+        assert not isinstance(lying_val, SupportsTrunc), f"{lying_val!r}"
+        assert not isinstance(lying_val, SupportsTruncSCT), f"{lying_val!r}"
 
         # Relationals have, but don't implement this function
-        # TODO(posita): Can we fix this?
-        with pytest.raises(TypeError):
+        with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
             trunc(lying_val)
 
 

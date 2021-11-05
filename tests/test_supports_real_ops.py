@@ -77,8 +77,7 @@ def test_supports_real_ops() -> None:
         assert good_val >= good_val, f"{good_val!r}"
 
     for bad_val in (
-        # TODO(posita): fix this
-        # complex(-273.15),
+        complex(-273.15),
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsRealOps), f"{bad_val!r}"
@@ -105,8 +104,7 @@ def test_supports_real_ops_beartype() -> None:
         func_t(cast(SupportsRealOpsSCU, good_val))
 
     for bad_val in (
-        # TODO(posita): fix this
-        # complex(-273.15),
+        complex(-273.15),
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):
@@ -151,11 +149,9 @@ def test_supports_real_ops_numpy() -> None:
         assert good_val >= good_val, f"{good_val!r}"
 
     for bad_val in (
-        # TODO(posita): fix these
-        # numpy.csingle(-273.15),
-        # numpy.cdouble(-273.15),
-        # numpy.clongdouble(-273.15),
-        "-273.15",  # TODO(posita): remove me
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsRealOps), f"{bad_val!r}"
         assert not isinstance(bad_val, SupportsRealOpsSCT), f"{bad_val!r}"
@@ -183,11 +179,9 @@ def test_supports_real_ops_numpy_beartype() -> None:
         func_t(cast(SupportsRealOpsSCU, good_val))
 
     for bad_val in (
-        # TODO(posita): fix these
-        # numpy.csingle(-273.15),
-        # numpy.cdouble(-273.15),
-        # numpy.clongdouble(-273.15),
-        "-273.15",  # TODO(posita): remove me
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
             func(cast(SupportsRealOps, bad_val))
