@@ -18,11 +18,11 @@ All rights not expressly waived or licensed are reserved.
 If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.*
 
 [![Tests](https://github.com/posita/numerary/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/posita/numerary/actions/workflows/unit-tests.yaml)
-[![Version](https://img.shields.io/pypi/v/numerary.svg)](https://pypi.org/project/numerary/)
-[![Development Stage](https://img.shields.io/pypi/status/numerary.svg)](https://pypi.org/project/numerary/)
-[![License](https://img.shields.io/pypi/l/numerary.svg)](http://opensource.org/licenses/MIT)
-[![Supported Python Versions](https://img.shields.io/pypi/pyversions/numerary.svg)](https://pypi.org/project/numerary/)
-[![Supported Python Implementations](https://img.shields.io/pypi/implementation/numerary.svg)](https://pypi.org/project/numerary/)
+[![Version](https://img.shields.io/pypi/v/numerary/0.0.5.svg)](https://pypi.org/project/numerary/0.0.5/)
+[![Development Stage](https://img.shields.io/pypi/status/numerary/0.0.5.svg)](https://pypi.org/project/numerary/0.0.5/)
+[![License](https://img.shields.io/pypi/l/numerary/0.0.5.svg)](http://opensource.org/licenses/MIT)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/numerary/0.0.5.svg)](https://pypi.org/project/numerary/0.0.5/)
+[![Supported Python Implementations](https://img.shields.io/pypi/implementation/numerary/0.0.5.svg)](https://pypi.org/project/numerary/0.0.5/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
@@ -61,18 +61,18 @@ Its author gauges its success by how quickly it can be deleted as superfluous.
 ``numerary`` is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 See the accompanying ``LICENSE`` file for details.
 It should be considered experimental for now, but should settle down quickly.
-See the [release notes](https://posita.github.io/numerary/latest/notes/) for a summary of version-to-version changes.
+See the [release notes](https://posita.github.io/numerary/0.0/notes/) for a summary of version-to-version changes.
 Source code is [available on GitHub](https://github.com/posita/numerary).
 
-If you find it lacking in any way, please don’t hesitate to [bring it to my attention](https://posita.github.io/numerary/latest/contrib/).
+If you find it lacking in any way, please don’t hesitate to [bring it to my attention](https://posita.github.io/numerary/0.0/contrib/).
 
-## Customers [![``numerary``-encumbered!](https://raw.githubusercontent.com/posita/numerary/latest/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
+## Customers [![``numerary``-encumbered!](https://raw.githubusercontent.com/posita/numerary/v0.0.5/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
 
 * [``dyce``](https://pypi.org/project/dycelib/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
 * The next one could be _you_! 👋
 
 Do you have a project that suffers problems made slightly less annoying by ``numerary``?
-[Let me know](https://posita.github.io/numerary/latest/contrib/#filing-issues), and I’ll promote it here!
+[Let me know](https://posita.github.io/numerary/0.0/contrib/#filing-issues), and I’ll promote it here!
 
 And don’t forget to do your part in perpetuating gratuitous badge-ification!
 
@@ -606,7 +606,7 @@ True
 #### Protocols lose fidelity at runtime
 
 At runtime, protocols match *names*, not *signatures*.
-More specifically, [``SupportsNumeratorDenominatorProperties``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
+More specifically, [``SupportsNumeratorDenominatorProperties``](https://posita.github.io/numerary/0.0/numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
 In other words, ``isinstance(sage_integer, SupportsNumeratorDenominatorProperties)`` will return ``True``.
 Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^5] not be caught by Mypy.
 
@@ -636,7 +636,7 @@ True
 
 ```
 
-To combat this particular situation, ``numerary`` provides the [``SupportsNumeratorDenominatorMethods``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods) protocol and the [``numerator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.numerator) and [``denominator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.denominator) helper functions.
+To combat this particular situation, ``numerary`` provides the [``SupportsNumeratorDenominatorMethods``](https://posita.github.io/numerary/0.0/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods) protocol and the [``numerator``](https://posita.github.io/numerary/0.0/numerary.types/#numerary.types.numerator) and [``denominator``](https://posita.github.io/numerary/0.0/numerary.types/#numerary.types.denominator) helper functions.
 
 ``` python
 >>> from numerary.types import numerator
@@ -677,7 +677,7 @@ SupportsNumeratorDenominatorMixedT = (
 
 ```
 
-The ``SupportsNumeratorDenominator*`` primitives provide the basis for the analogous [``numerary.types.RationalLike*`` primitives](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.RationalLikeMethods), which *should* provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.
+The ``SupportsNumeratorDenominator*`` primitives provide the basis for the analogous [``numerary.types.RationalLike*`` primitives](https://posita.github.io/numerary/0.0/numerary.types/#numerary.types.RationalLikeMethods), which *should* provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.
 
 ### Shut up and take my money!
 
@@ -712,7 +712,7 @@ A *real* one.
 ## License
 
 ``numerary`` is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-See the included [``LICENSE``](https://posita.github.io/numerary/latest/license/) file for details.
+See the included [``LICENSE``](https://posita.github.io/numerary/0.0/license/) file for details.
 Source code is [available on GitHub](https://github.com/posita/numerary).
 
 ## Installation
@@ -756,4 +756,4 @@ If you use ``beartype`` for type checking your code that interacts with ``numera
 
     I.E., one of: ``0``, ``off``, ``f``, ``false``, and ``no``.
 
-See the [hacking quick-start](https://posita.github.io/numerary/latest/contrib/#hacking-quick-start) for additional development and testing dependencies.
+See the [hacking quick-start](https://posita.github.io/numerary/0.0/contrib/#hacking-quick-start) for additional development and testing dependencies.
