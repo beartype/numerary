@@ -1596,7 +1596,7 @@ off that bridge when we come to it.</p>
 
 
 <h3 id="numerary.types.CachingProtocolMeta.__instancecheck__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__instancecheck__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+<code class="highlight language-python"><span class="fm">__instancecheck__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inst</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1609,13 +1609,13 @@ off that bridge when we come to it.</p>
 
         <details class="quote">
           <summary>Source code in <code>numerary/types.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__instancecheck__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__instancecheck__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inst</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="n">inst_t</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst_t</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_abc_inst_check_cache</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_abc_inst_check_cache</span><span class="p">[</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst_t</span><span class="p">]</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__instancecheck__</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">inst_t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_abc_inst_check_cache</span><span class="p">:</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_abc_inst_check_cache</span><span class="p">[</span><span class="n">inst_t</span><span class="p">]</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__instancecheck__</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_abc_inst_check_cache</span><span class="p">[</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst_t</span><span class="p">]</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_abc_inst_check_cache</span><span class="p">[</span><span class="n">inst_t</span><span class="p">]</span>
 </code></pre></div>
         </details>
     </div>
@@ -1656,7 +1656,7 @@ off that bridge when we come to it.</p>
     <span class="c1"># Prefixing this class member with &quot;_abc_&quot; is necessary to prevent it from being</span>
     <span class="c1"># considered part of the Protocol. (See</span>
     <span class="c1"># &lt;https://github.com/python/cpython/blob/main/Lib/typing.py&gt;.)</span>
-    <span class="n">cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">type</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="bp">cls</span><span class="o">.</span><span class="n">_abc_inst_check_cache</span> <span class="o">=</span> <span class="n">cache</span>
 
     <span class="k">return</span> <span class="bp">cls</span>
