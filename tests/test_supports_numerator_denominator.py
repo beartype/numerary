@@ -17,7 +17,6 @@ import pytest
 from numerary.bt import beartype
 from numerary.types import (
     SupportsNumeratorDenominatorMethods,
-    SupportsNumeratorDenominatorMixedSCT,
     SupportsNumeratorDenominatorMixedSCU,
     SupportsNumeratorDenominatorMixedT,
     SupportsNumeratorDenominatorMixedU,
@@ -66,13 +65,13 @@ class SageLikeRational:
 
 
 @beartype
-def func(arg: SupportsNumeratorDenominatorMixedU):
+def supports_numerator_denominator_func(arg: SupportsNumeratorDenominatorMixedU):
     assert isinstance(arg, SupportsNumeratorDenominatorMixedT), f"{arg!r}"
 
 
 @beartype
-def func_t(arg: SupportsNumeratorDenominatorMixedSCU):
-    assert isinstance(arg, SupportsNumeratorDenominatorMixedSCT), f"{arg!r}"
+def supports_numerator_denominator_func_t(arg: SupportsNumeratorDenominatorMixedSCU):
+    assert isinstance(arg, SupportsNumeratorDenominatorMixedT), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -97,9 +96,6 @@ def test_numerator_denominator() -> None:
         sage_val,
     ):
         assert isinstance(good_val, SupportsNumeratorDenominatorMixedT), f"{good_val!r}"
-        assert isinstance(
-            good_val, SupportsNumeratorDenominatorMixedSCT
-        ), f"{good_val!r}"
         assert numerator(good_val), f"{good_val!r}"
         assert denominator(good_val), f"{good_val!r}"
 
@@ -115,9 +111,6 @@ def test_numerator_denominator() -> None:
         assert not isinstance(
             bad_val, SupportsNumeratorDenominatorMixedT
         ), f"{bad_val!r}"
-        assert not isinstance(
-            bad_val, SupportsNumeratorDenominatorMixedSCT
-        ), f"{bad_val!r}"
 
 
 def test_numerator_denominator_beartype() -> None:
@@ -132,8 +125,12 @@ def test_numerator_denominator_beartype() -> None:
         NumberwangRegistered(-273),
         SageLikeRational(-27315, 100),
     ):
-        func(cast(SupportsNumeratorDenominatorMixedU, good_val))
-        func_t(cast(SupportsNumeratorDenominatorMixedSCU, good_val))
+        supports_numerator_denominator_func(
+            cast(SupportsNumeratorDenominatorMixedU, good_val)
+        )
+        supports_numerator_denominator_func_t(
+            cast(SupportsNumeratorDenominatorMixedSCU, good_val)
+        )
 
     for bad_val in (
         -273.15,
@@ -145,10 +142,14 @@ def test_numerator_denominator_beartype() -> None:
         "-273",
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(SupportsNumeratorDenominatorMixedU, bad_val))
+            supports_numerator_denominator_func(
+                cast(SupportsNumeratorDenominatorMixedU, bad_val)
+            )
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsNumeratorDenominatorMixedSCU, bad_val))
+            supports_numerator_denominator_func_t(
+                cast(SupportsNumeratorDenominatorMixedSCU, bad_val)
+            )
 
 
 def test_numerator_denominator_numpy() -> None:
@@ -173,9 +174,6 @@ def test_numerator_denominator_numpy() -> None:
         int64_val,
     ):
         assert isinstance(good_val, SupportsNumeratorDenominatorMixedT), f"{good_val!r}"
-        assert isinstance(
-            good_val, SupportsNumeratorDenominatorMixedSCT
-        ), f"{good_val!r}"
         assert numerator(good_val), f"{good_val!r}"
         assert denominator(good_val), f"{good_val!r}"
 
@@ -190,9 +188,6 @@ def test_numerator_denominator_numpy() -> None:
     ):
         assert not isinstance(
             bad_val, SupportsNumeratorDenominatorMixedT
-        ), f"{bad_val!r}"
-        assert not isinstance(
-            bad_val, SupportsNumeratorDenominatorMixedSCT
         ), f"{bad_val!r}"
 
 
@@ -210,8 +205,12 @@ def test_numerator_denominator_numpy_beartype() -> None:
         numpy.int32(-273),
         numpy.int64(-273),
     ):
-        func(cast(SupportsNumeratorDenominatorMixedU, good_val))
-        func_t(cast(SupportsNumeratorDenominatorMixedSCU, good_val))
+        supports_numerator_denominator_func(
+            cast(SupportsNumeratorDenominatorMixedU, good_val)
+        )
+        supports_numerator_denominator_func_t(
+            cast(SupportsNumeratorDenominatorMixedSCU, good_val)
+        )
 
     for bad_val in (
         numpy.float16(-1.8),
@@ -223,10 +222,14 @@ def test_numerator_denominator_numpy_beartype() -> None:
         numpy.clongdouble(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(SupportsNumeratorDenominatorMixedU, bad_val))
+            supports_numerator_denominator_func(
+                cast(SupportsNumeratorDenominatorMixedU, bad_val)
+            )
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsNumeratorDenominatorMixedSCU, bad_val))
+            supports_numerator_denominator_func_t(
+                cast(SupportsNumeratorDenominatorMixedSCU, bad_val)
+            )
 
 
 def test_numerator_denominator_sympy() -> None:
@@ -239,9 +242,6 @@ def test_numerator_denominator_sympy() -> None:
         rational_val,
     ):
         assert isinstance(good_val, SupportsNumeratorDenominatorMixedT), f"{good_val!r}"
-        assert isinstance(
-            good_val, SupportsNumeratorDenominatorMixedSCT
-        ), f"{good_val!r}"
         assert numerator(good_val), f"{good_val!r}"
         assert denominator(good_val), f"{good_val!r}"
 
@@ -251,9 +251,6 @@ def test_numerator_denominator_sympy() -> None:
     ):
         assert not isinstance(
             bad_val, SupportsNumeratorDenominatorMixedT
-        ), f"{bad_val!r}"
-        assert not isinstance(
-            bad_val, SupportsNumeratorDenominatorMixedSCT
         ), f"{bad_val!r}"
 
 
@@ -265,15 +262,23 @@ def test_numerator_denominator_sympy_beartype() -> None:
         sympy.Rational(-27315, 100),
         sympy.Integer(-273),
     ):
-        func(cast(SupportsNumeratorDenominatorMixedU, good_val))
-        func_t(cast(SupportsNumeratorDenominatorMixedSCU, good_val))
+        supports_numerator_denominator_func(
+            cast(SupportsNumeratorDenominatorMixedU, good_val)
+        )
+        supports_numerator_denominator_func_t(
+            cast(SupportsNumeratorDenominatorMixedSCU, good_val)
+        )
 
     for bad_val in (
         sympy.Float(-273.15),
         sympy.symbols("x"),
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(SupportsNumeratorDenominatorMixedU, bad_val))
+            supports_numerator_denominator_func(
+                cast(SupportsNumeratorDenominatorMixedU, bad_val)
+            )
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsNumeratorDenominatorMixedSCU, bad_val))
+            supports_numerator_denominator_func_t(
+                cast(SupportsNumeratorDenominatorMixedSCU, bad_val)
+            )

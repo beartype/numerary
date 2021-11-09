@@ -15,10 +15,6 @@
 
 # ``#!python numerary`` package reference
 
-::: numerary
-    selection:
-      members: false
-
 !!! warning "Experimental"
 
     This package is an attempt to ease compatibility between Python’s numbers and types.
@@ -29,10 +25,12 @@
 
 These are composition protocols that should suit common use cases.
 
-::: numerary.types.RealLike
-    rendering:
-      show_root_heading: true
-
 ::: numerary.types.IntegralLike
     rendering:
+      show_if_no_docstring: false
+      show_root_heading: true
+
+::: numerary.types.RealLike
+    rendering:
+      show_if_no_docstring: false
       show_root_heading: true

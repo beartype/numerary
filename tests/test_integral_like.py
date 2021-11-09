@@ -15,7 +15,7 @@ from typing import cast
 
 import pytest
 
-from numerary import IntegralLike, IntegralLikeSCT, IntegralLikeSCU
+from numerary import IntegralLike, IntegralLikeSCU
 from numerary.bt import beartype
 
 from .numberwang import (
@@ -34,13 +34,13 @@ __all__ = ()
 
 
 @beartype
-def func(arg: IntegralLike):
+def integral_like_func(arg: IntegralLike):
     assert isinstance(arg, IntegralLike)
 
 
 @beartype
-def func_t(arg: IntegralLikeSCU):
-    assert isinstance(arg, IntegralLikeSCT)
+def integral_like_func_t(arg: IntegralLikeSCU):
+    assert isinstance(arg, IntegralLike)
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -61,7 +61,6 @@ def test_integral_like() -> None:
         nwr_val,
     ):
         assert isinstance(good_val, IntegralLike), f"{good_val!r}"
-        assert isinstance(good_val, IntegralLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -91,7 +90,6 @@ def test_integral_like() -> None:
         "-273",
     ):
         assert not isinstance(bad_val, IntegralLike), f"{bad_val!r}"
-        assert not isinstance(bad_val, IntegralLikeSCT), f"{bad_val!r}"
 
 
 def test_integral_like_beartype() -> None:
@@ -104,8 +102,8 @@ def test_integral_like_beartype() -> None:
         NumberwangDerived(-273),
         NumberwangRegistered(-273),
     ):
-        func(cast(IntegralLike, good_val))
-        func_t(cast(IntegralLikeSCU, good_val))
+        integral_like_func(cast(IntegralLike, good_val))
+        integral_like_func_t(cast(IntegralLikeSCU, good_val))
 
     for bad_val in (
         -273.15,
@@ -118,10 +116,10 @@ def test_integral_like_beartype() -> None:
         "-273",
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(IntegralLike, bad_val))
+            integral_like_func(cast(IntegralLike, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(IntegralLikeSCU, bad_val))
+            integral_like_func_t(cast(IntegralLikeSCU, bad_val))
 
 
 def test_integral_like_numpy() -> None:
@@ -146,7 +144,6 @@ def test_integral_like_numpy() -> None:
         int64_val,
     ):
         assert isinstance(good_val, IntegralLike), f"{good_val!r}"
-        assert isinstance(good_val, IntegralLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -175,7 +172,6 @@ def test_integral_like_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, IntegralLike), f"{bad_val!r}"
-        assert not isinstance(bad_val, IntegralLikeSCT), f"{bad_val!r}"
 
 
 def test_integral_like_numpy_beartype() -> None:
@@ -192,8 +188,8 @@ def test_integral_like_numpy_beartype() -> None:
         numpy.int32(-273),
         numpy.int64(-273),
     ):
-        func(cast(IntegralLike, good_val))
-        func_t(cast(IntegralLikeSCU, good_val))
+        integral_like_func(cast(IntegralLike, good_val))
+        integral_like_func_t(cast(IntegralLikeSCU, good_val))
 
     for bad_val in (
         numpy.float16(-1.8),
@@ -205,10 +201,10 @@ def test_integral_like_numpy_beartype() -> None:
         numpy.clongdouble(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(IntegralLike, bad_val))
+            integral_like_func(cast(IntegralLike, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(IntegralLikeSCU, bad_val))
+            integral_like_func_t(cast(IntegralLikeSCU, bad_val))
 
 
 def test_integral_like_sympy() -> None:
@@ -217,7 +213,6 @@ def test_integral_like_sympy() -> None:
 
     for good_val in (integral_val,):
         assert isinstance(good_val, IntegralLike), f"{good_val!r}"
-        assert isinstance(good_val, IntegralLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -243,7 +238,6 @@ def test_integral_like_sympy() -> None:
         sympy.symbols("x"),
     ):
         assert not isinstance(bad_val, IntegralLike), f"{bad_val!r}"
-        assert not isinstance(bad_val, IntegralLikeSCT), f"{bad_val!r}"
 
 
 def test_integral_like_sympy_beartype() -> None:
@@ -251,8 +245,8 @@ def test_integral_like_sympy_beartype() -> None:
     roar = pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (sympy.Integer(-273),):
-        func(cast(IntegralLike, good_val))
-        func_t(cast(IntegralLikeSCU, good_val))
+        integral_like_func(cast(IntegralLike, good_val))
+        integral_like_func_t(cast(IntegralLikeSCU, good_val))
 
     for bad_val in (
         sympy.Float(-273.15),
@@ -261,7 +255,7 @@ def test_integral_like_sympy_beartype() -> None:
         sympy.symbols("x"),
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(IntegralLike, bad_val))
+            integral_like_func(cast(IntegralLike, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(IntegralLikeSCU, bad_val))
+            integral_like_func_t(cast(IntegralLikeSCU, bad_val))

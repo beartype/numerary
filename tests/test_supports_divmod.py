@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsDivmod, SupportsDivmodSCT, SupportsDivmodSCU
+from numerary.types import SupportsDivmod, SupportsDivmodSCU
 
 from .numberwang import (
     Numberwang,
@@ -33,13 +33,13 @@ __all__ = ()
 
 
 @beartype
-def func(arg: SupportsDivmod):
+def supports_divmod_func(arg: SupportsDivmod):
     assert isinstance(arg, SupportsDivmod), f"{arg!r}"
 
 
 @beartype
-def func_t(arg: SupportsDivmodSCU):
-    assert isinstance(arg, SupportsDivmodSCT), f"{arg!r}"
+def supports_divmod_func_t(arg: SupportsDivmodSCU):
+    assert isinstance(arg, SupportsDivmod), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -65,7 +65,6 @@ def test_supports_divmod() -> None:
         wnd_val,
     ):
         assert isinstance(good_val, SupportsDivmod), f"{good_val!r}"
-        assert isinstance(good_val, SupportsDivmodSCT), f"{good_val!r}"
         assert divmod(good_val, good_val), f"{good_val!r}"
 
     for lying_val in (
@@ -74,11 +73,7 @@ def test_supports_divmod() -> None:
         NumberwangRegistered(-273),
         WangernumbRegistered(-273.15),
     ):
-        # The pure protocol approach catches this
         assert not isinstance(lying_val, SupportsDivmod), f"{lying_val!r}"
-
-        # The short-circuiting approach does not
-        assert isinstance(lying_val, SupportsDivmodSCT), f"{lying_val!r}"
 
     for bad_val in (
         complex(-273.15),
@@ -87,7 +82,6 @@ def test_supports_divmod() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsDivmod), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsDivmodSCT), f"{bad_val!r}"
 
 
 def test_supports_divmod_beartype() -> None:
@@ -103,8 +97,8 @@ def test_supports_divmod_beartype() -> None:
         NumberwangDerived(-273),
         WangernumbDerived(-273.15),
     ):
-        func(cast(SupportsDivmod, good_val))
-        func_t(cast(SupportsDivmodSCU, good_val))
+        supports_divmod_func(cast(SupportsDivmod, good_val))
+        supports_divmod_func_t(cast(SupportsDivmodSCU, good_val))
 
     for lying_val in (
         # These have lied about supporting this interface when they registered
@@ -113,9 +107,10 @@ def test_supports_divmod_beartype() -> None:
         WangernumbRegistered(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(SupportsDivmod, lying_val))
+            supports_divmod_func(cast(SupportsDivmod, lying_val))
 
-        func_t(cast(SupportsDivmodSCU, lying_val))
+        with pytest.raises(AssertionError):  # gets past beartype
+            supports_divmod_func_t(cast(SupportsDivmodSCU, lying_val))
 
     for bad_val in (
         complex(-273.15),
@@ -124,10 +119,10 @@ def test_supports_divmod_beartype() -> None:
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(SupportsDivmod, bad_val))
+            supports_divmod_func(cast(SupportsDivmod, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsDivmodSCU, bad_val))
+            supports_divmod_func_t(cast(SupportsDivmodSCU, bad_val))
 
 
 def test_supports_divmod_numpy() -> None:
@@ -160,7 +155,6 @@ def test_supports_divmod_numpy() -> None:
         float128_val,
     ):
         assert isinstance(good_val, SupportsDivmod), f"{good_val!r}"
-        assert isinstance(good_val, SupportsDivmodSCT), f"{good_val!r}"
         assert divmod(good_val, good_val), f"{good_val!r}"
 
     for bad_val in (
@@ -169,7 +163,6 @@ def test_supports_divmod_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsDivmod), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsDivmodSCT), f"{bad_val!r}"
 
 
 def test_supports_divmod_numpy_beartype() -> None:
@@ -190,8 +183,8 @@ def test_supports_divmod_numpy_beartype() -> None:
         numpy.float64(-273.15),
         numpy.float128(-273.15),
     ):
-        func(cast(SupportsDivmod, good_val))
-        func_t(cast(SupportsDivmodSCU, good_val))
+        supports_divmod_func(cast(SupportsDivmod, good_val))
+        supports_divmod_func_t(cast(SupportsDivmodSCU, good_val))
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -199,10 +192,10 @@ def test_supports_divmod_numpy_beartype() -> None:
         numpy.clongdouble(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(SupportsDivmod, bad_val))
+            supports_divmod_func(cast(SupportsDivmod, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsDivmodSCU, bad_val))
+            supports_divmod_func_t(cast(SupportsDivmodSCU, bad_val))
 
 
 def test_supports_divmod_sympy() -> None:
@@ -219,7 +212,6 @@ def test_supports_divmod_sympy() -> None:
         sym_val,
     ):
         assert isinstance(good_val, SupportsDivmod), f"{good_val!r}"
-        assert isinstance(good_val, SupportsDivmodSCT), f"{good_val!r}"
         assert divmod(good_val, good_val), f"{good_val!r}"
 
 
@@ -233,5 +225,5 @@ def test_supports_divmod_sympy_beartype() -> None:
         sympy.Rational(-27315, 100),
         sympy.symbols("x"),
     ):
-        func(cast(SupportsDivmod, good_val))
-        func_t(cast(SupportsDivmodSCU, good_val))
+        supports_divmod_func(cast(SupportsDivmod, good_val))
+        supports_divmod_func_t(cast(SupportsDivmodSCU, good_val))

@@ -8,6 +8,7 @@
 
 from __future__ import annotations
 
+import sys
 from decimal import Decimal
 from fractions import Fraction
 from typing import cast
@@ -17,10 +18,8 @@ import pytest
 from numerary.bt import beartype
 from numerary.types import (
     SupportsCeil,
-    SupportsCeilSCT,
     SupportsCeilSCU,
     SupportsFloor,
-    SupportsFloorSCT,
     SupportsFloorSCU,
     ceil,
     floor,
@@ -42,23 +41,23 @@ __all__ = ()
 
 
 @beartype
-def ceil_func(arg: SupportsCeil):
-    assert isinstance(arg, SupportsCeil), f"{arg!r}"
-
-
-@beartype
-def ceil_func_t(arg: SupportsCeilSCU):
-    assert isinstance(arg, SupportsCeilSCT), f"{arg!r}"
-
-
-@beartype
-def floor_func(arg: SupportsFloor):
+def supports_floor_func(arg: SupportsFloor):
     assert isinstance(arg, SupportsFloor), f"{arg!r}"
 
 
 @beartype
-def floor_func_t(arg: SupportsFloorSCU):
-    assert isinstance(arg, SupportsFloorSCT), f"{arg!r}"
+def supports_floor_func_t(arg: SupportsFloorSCU):
+    assert isinstance(arg, SupportsFloor), f"{arg!r}"
+
+
+@beartype
+def supports_ceil_func(arg: SupportsCeil):
+    assert isinstance(arg, SupportsCeil), f"{arg!r}"
+
+
+@beartype
+def supports_ceil_func_t(arg: SupportsCeilSCU):
+    assert isinstance(arg, SupportsCeil), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -67,7 +66,6 @@ def floor_func_t(arg: SupportsFloorSCU):
 def test_floor_ceil() -> None:
     bool_val: SupportsFloor = True
     int_val: SupportsFloor = -273
-    float_val: SupportsFloor = -273.15
     frac_val: SupportsFloor = Fraction(-27315, 100)
     dec_val: SupportsFloor = Decimal("-273.15")
     nw_val: SupportsFloor = Numberwang(-273)
@@ -79,7 +77,6 @@ def test_floor_ceil() -> None:
     _: SupportsCeil
     _ = True
     _ = -273
-    _ = -273.15
     _ = Fraction(-27315, 100)
     _ = Decimal("-273.15")
     _ = Numberwang(-273)
@@ -92,7 +89,6 @@ def test_floor_ceil() -> None:
     for good_val in (
         bool_val,
         int_val,
-        float_val,
         frac_val,
         dec_val,
         nw_val,
@@ -103,10 +99,8 @@ def test_floor_ceil() -> None:
         wnr_val,
     ):
         assert isinstance(good_val, SupportsFloor), f"{good_val!r}"
-        assert isinstance(good_val, SupportsFloorSCT), f"{good_val!r}"
         assert floor(good_val), f"{good_val!r}"
         assert isinstance(good_val, SupportsCeil), f"{good_val!r}"
-        assert isinstance(good_val, SupportsCeilSCT), f"{good_val!r}"
         assert ceil(good_val), f"{good_val!r}"
 
     for bad_val in (
@@ -114,9 +108,21 @@ def test_floor_ceil() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsFloor), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsFloorSCT), f"{bad_val!r}"
         assert not isinstance(bad_val, SupportsCeil), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsCeilSCT), f"{bad_val!r}"
+
+
+@pytest.mark.skipif(sys.version_info < (3, 9), reason="requires Python >=3.9")
+def test_floor_ceil_float() -> None:
+    if sys.version_info >= (3, 9):
+        float_val: SupportsFloor = -273.15
+        _: SupportsCeil
+        _ = -273.15
+
+        for good_val in (float_val,):
+            assert isinstance(good_val, SupportsFloor), f"{good_val!r}"
+            assert floor(good_val), f"{good_val!r}"
+            assert isinstance(good_val, SupportsCeil), f"{good_val!r}"
+            assert ceil(good_val), f"{good_val!r}"
 
 
 def test_floor_ceil_beartype() -> None:
@@ -135,26 +141,26 @@ def test_floor_ceil_beartype() -> None:
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),
     ):
-        floor_func(cast(SupportsFloor, good_val))
-        floor_func_t(cast(SupportsFloorSCU, good_val))
-        ceil_func(cast(SupportsCeil, good_val))
-        ceil_func_t(cast(SupportsCeilSCU, good_val))
+        supports_floor_func(cast(SupportsFloor, good_val))
+        supports_floor_func_t(cast(SupportsFloorSCU, good_val))
+        supports_ceil_func(cast(SupportsCeil, good_val))
+        supports_ceil_func_t(cast(SupportsCeilSCU, good_val))
 
     for bad_val in (
         complex(-273.15),
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):
-            floor_func(cast(SupportsFloor, bad_val))
+            supports_floor_func(cast(SupportsFloor, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            floor_func_t(cast(SupportsFloorSCU, bad_val))
+            supports_floor_func_t(cast(SupportsFloorSCU, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ceil_func(cast(SupportsCeil, bad_val))
+            supports_ceil_func(cast(SupportsCeil, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ceil_func_t(cast(SupportsCeilSCU, bad_val))
+            supports_ceil_func_t(cast(SupportsCeilSCU, bad_val))
 
 
 def test_floor_ceil_numpy() -> None:
@@ -200,10 +206,8 @@ def test_floor_ceil_numpy() -> None:
         float128_val,
     ):
         assert isinstance(good_val, SupportsFloor), f"{good_val!r}"
-        assert isinstance(good_val, SupportsFloorSCT), f"{good_val!r}"
         assert floor(good_val), f"{good_val!r}"
         assert isinstance(good_val, SupportsCeil), f"{good_val!r}"
-        assert isinstance(good_val, SupportsCeilSCT), f"{good_val!r}"
         assert ceil(good_val), f"{good_val!r}"
 
     for bad_val in (
@@ -212,9 +216,7 @@ def test_floor_ceil_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsFloor), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsFloorSCT), f"{bad_val!r}"
         assert not isinstance(bad_val, SupportsCeil), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsCeilSCT), f"{bad_val!r}"
 
 
 def test_floor_ceil_numpy_beartype() -> None:
@@ -235,8 +237,8 @@ def test_floor_ceil_numpy_beartype() -> None:
         numpy.float64(-273.15),
         numpy.float128(-273.15),
     ):
-        floor_func(cast(SupportsFloor, good_val))
-        ceil_func(cast(SupportsCeil, good_val))
+        supports_floor_func(cast(SupportsFloor, good_val))
+        supports_ceil_func(cast(SupportsCeil, good_val))
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -244,16 +246,16 @@ def test_floor_ceil_numpy_beartype() -> None:
         numpy.clongdouble(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
-            floor_func(cast(SupportsFloor, bad_val))
+            supports_floor_func(cast(SupportsFloor, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            floor_func_t(cast(SupportsFloorSCU, bad_val))
+            supports_floor_func_t(cast(SupportsFloorSCU, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ceil_func(cast(SupportsCeil, bad_val))
+            supports_ceil_func(cast(SupportsCeil, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ceil_func_t(cast(SupportsCeilSCU, bad_val))
+            supports_ceil_func_t(cast(SupportsCeilSCU, bad_val))
 
 
 def test_floor_ceil_sympy() -> None:
@@ -274,17 +276,13 @@ def test_floor_ceil_sympy() -> None:
         float_val,
     ):
         assert isinstance(good_val, SupportsFloor), f"{good_val!r}"
-        assert isinstance(good_val, SupportsFloorSCT), f"{good_val!r}"
         assert floor(good_val), f"{good_val!r}"
         assert isinstance(good_val, SupportsCeil), f"{good_val!r}"
-        assert isinstance(good_val, SupportsCeilSCT), f"{good_val!r}"
         assert ceil(good_val), f"{good_val!r}"
 
     for bad_val in (symbol_val,):
         assert not isinstance(bad_val, SupportsFloor), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsFloorSCT), f"{bad_val!r}"
         assert not isinstance(bad_val, SupportsCeil), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsCeilSCT), f"{bad_val!r}"
 
 
 def test_floor_ceil_sympy_beartype() -> None:
@@ -296,20 +294,20 @@ def test_floor_ceil_sympy_beartype() -> None:
         sympy.Float(-273.15),
         sympy.Rational(-27315, 100),
     ):
-        floor_func(cast(SupportsFloor, good_val))
-        floor_func_t(cast(SupportsFloorSCU, good_val))
-        ceil_func(cast(SupportsCeil, good_val))
-        ceil_func_t(cast(SupportsCeilSCU, good_val))
+        supports_floor_func(cast(SupportsFloor, good_val))
+        supports_floor_func_t(cast(SupportsFloorSCU, good_val))
+        supports_ceil_func(cast(SupportsCeil, good_val))
+        supports_ceil_func_t(cast(SupportsCeilSCU, good_val))
 
     for bad_val in (sympy.symbols("x"),):
         with pytest.raises(roar.BeartypeException):
-            floor_func(cast(SupportsFloor, bad_val))
+            supports_floor_func(cast(SupportsFloor, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            floor_func_t(cast(SupportsFloorSCU, bad_val))
+            supports_floor_func_t(cast(SupportsFloorSCU, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ceil_func(cast(SupportsCeil, bad_val))
+            supports_ceil_func(cast(SupportsCeil, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ceil_func_t(cast(SupportsCeilSCU, bad_val))
+            supports_ceil_func_t(cast(SupportsCeilSCU, bad_val))

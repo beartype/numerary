@@ -124,7 +124,7 @@ class CachingProtocolMeta(_ProtocolMeta):
         **kw: Any,
     ) -> _TT:
         # See <https://github.com/python/mypy/issues/9282>
-        cls = super().__new__(mcls, name, bases, namespace, **kw)  # type: ignore
+        cls = super().__new__(mcls, name, bases, namespace, **kw)  # type: ignore [misc]
         # Prefixing this class member with "_abc_" is necessary to prevent it from being
         # considered part of the Protocol. (See
         # <https://github.com/python/cpython/blob/main/Lib/typing.py>.)
@@ -143,19 +143,79 @@ class CachingProtocolMeta(_ProtocolMeta):
 
     def includes(cls, inst_t: Type) -> None:
         r"""
-        TODO(posita): Document this!
+        Registers *inst_t* as supporting the interface in the runtime type-checking cache.
+        This overrides any prior cached value.
+
+        ``` python
+        >>> from abc import abstractmethod
+        >>> from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
+        >>> @runtime_checkable
+        ... class SupportsSpam(
+        ...   Protocol,
+        ...   metaclass=CachingProtocolMeta
+        ... ):
+        ...   @abstractmethod
+        ...   def spam(self) -> str: pass
+        >>> class NoSpam: pass
+        >>> isinstance(NoSpam(), SupportsSpam)
+        False
+        >>> SupportsSpam.includes(NoSpam)
+        >>> isinstance(NoSpam(), SupportsSpam)
+        True
+
+        ```
+
+        !!! note
+
+            This does not affect static type-checking.
+
+            ``` python
+            >>> my_spam: SupportsSpam = NoSpam()  # type: ignore [assignment]  # still generates a Mypy warning
+
+            ```
         """
         cls._abc_inst_check_cache[inst_t] = True
 
     def excludes(cls, inst_t: Type) -> None:
         r"""
-        TODO(posita): Document this!
+        Registers *inst_t* as supporting the interface in the runtime type-checking cache.
+        This overrides any prior cached value.
+
+        ``` python
+        >>> from abc import abstractmethod
+        >>> from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
+        >>> @runtime_checkable
+        ... class SupportsHam(
+        ...   Protocol,
+        ...   metaclass=CachingProtocolMeta
+        ... ):
+        ...   @abstractmethod
+        ...   def ham(self) -> str: pass
+        >>> class NoHam:
+        ...   def ham(self) -> str:
+        ...     raise NotImplementedError
+        >>> isinstance(NoHam(), SupportsHam)
+        True
+        >>> SupportsHam.excludes(NoHam)
+        >>> isinstance(NoHam(), SupportsHam)
+        False
+
+        ```
+
+        !!! note
+
+            This does not affect static type-checking.
+
+            ``` python
+            >>> my_ham: SupportsHam = NoHam()  # does *not* generate a Mypy warning
+
+            ```
         """
         cls._abc_inst_check_cache[inst_t] = False
 
     def reset_for(cls, inst_t: Type) -> None:
         r"""
-        TODO(posita): Document this!
+        Clears any cached instance check for *inst_t*.
         """
         if inst_t in cls._abc_inst_check_cache:
             del cls._abc_inst_check_cache[inst_t]
@@ -172,14 +232,18 @@ class SupportsAbs(
     Protocol[_T_co],
     metaclass=CachingProtocolMeta,
 ):
+    r"""
+    A caching version of the ``#!python typing.SupportsAbs`` ABC defining the
+    [``__abs__``
+    method](https://docs.python.org/3/reference/datamodel.html#object.__abs__) with a
+    covariant return value.
+    """
     __slots__: Union[str, Iterable[str]] = ()
 
 
-SupportsAbs.__doc__ = _SupportsAbs.__doc__
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsAbs)
 SupportsAbsSCU = Union[int, float, bool, Complex, SupportsAbs]
-SupportsAbsSCT = (int, float, bool, Complex, SupportsAbs)
-assert SupportsAbsSCU.__args__ == SupportsAbsSCT  # type: ignore
+SupportsAbsSCT = SupportsAbs
 
 
 @runtime_checkable
@@ -188,14 +252,17 @@ class SupportsComplex(
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
+    r"""
+    A caching version of the ``#!python typing.SupportsComplex`` ABC defining the
+    [``__complex__``
+    method](https://docs.python.org/3/reference/datamodel.html#object.__complex__).
+    """
     __slots__: Union[str, Iterable[str]] = ()
 
 
-SupportsComplex.__doc__ = _SupportsComplex.__doc__
 _assert_isinstance(Decimal, Fraction, target_t=SupportsComplex)
 SupportsComplexSCU = Union[Complex, SupportsComplex]
-SupportsComplexSCT = (Complex, SupportsComplex)
-assert SupportsComplexSCU.__args__ == SupportsComplexSCT  # type: ignore
+SupportsComplexSCT = SupportsComplex
 
 
 @runtime_checkable
@@ -204,14 +271,17 @@ class SupportsFloat(
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
+    r"""
+    A caching version of the ``#!python typing.SupportsFloat`` ABC defining the
+    [``__float__``
+    method](https://docs.python.org/3/reference/datamodel.html#object.__float__).
+    """
     __slots__: Union[str, Iterable[str]] = ()
 
 
-SupportsFloat.__doc__ = _SupportsFloat.__doc__
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloat)
 SupportsFloatSCU = Union[int, float, bool, Real, SupportsFloat]
-SupportsFloatSCT = (int, float, bool, Real, SupportsFloat)
-assert SupportsFloatSCU.__args__ == SupportsFloatSCT  # type: ignore
+SupportsFloatSCT = SupportsFloat
 
 
 @runtime_checkable
@@ -220,14 +290,17 @@ class SupportsInt(
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
+    r"""
+    A caching version of the ``#!python typing.SupportsInt`` ABC defining the
+    [``__int__``
+    method](https://docs.python.org/3/reference/datamodel.html#object.__int__).
+    """
     __slots__: Union[str, Iterable[str]] = ()
 
 
-SupportsInt.__doc__ = _SupportsInt.__doc__
 _assert_isinstance(int, float, bool, target_t=SupportsInt)
 SupportsIntSCU = Union[int, float, bool, Integral, SupportsInt]
-SupportsIntSCT = (int, float, bool, Integral, SupportsInt)
-assert SupportsIntSCU.__args__ == SupportsIntSCT  # type: ignore
+SupportsIntSCT = SupportsInt
 
 
 @runtime_checkable
@@ -236,14 +309,17 @@ class SupportsIndex(
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
+    r"""
+    A caching version of the ``#!python typing.SupportsIndex`` ABC defining the
+    [``__index__``
+    method](https://docs.python.org/3/reference/datamodel.html#object.__index__).
+    """
     __slots__: Union[str, Iterable[str]] = ()
 
 
-SupportsIndex.__doc__ = _SupportsIndex.__doc__
 _assert_isinstance(int, bool, target_t=SupportsIndex)
 SupportsIndexSCU = Union[int, bool, Integral, SupportsIndex]
-SupportsIndexSCT = (int, bool, Integral, SupportsIndex)
-assert SupportsIndexSCU.__args__ == SupportsIndexSCT  # type: ignore
+SupportsIndexSCT = SupportsIndex
 
 
 @runtime_checkable
@@ -252,23 +328,25 @@ class SupportsRound(
     Protocol[_T_co],
     metaclass=CachingProtocolMeta,
 ):
+    r"""
+    A caching version of the ``#!python typing.SupportsRound`` ABC defining the
+    [``__round__``
+    method](https://docs.python.org/3/reference/datamodel.html#object.__round__) with a
+    covariant return value.
+    """
     __slots__: Union[str, Iterable[str]] = ()
 
 
-SupportsRound.__doc__ = _SupportsRound.__doc__
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRound)
 SupportsRoundSCU = Union[int, float, bool, Real, SupportsRound]
-SupportsRoundSCT = (int, float, bool, Real, SupportsRound)
-assert SupportsRoundSCU.__args__ == SupportsRoundSCT  # type: ignore
+SupportsRoundSCT = SupportsRound
 
 
 @runtime_checkable
-class SupportsConjugate(
-    Protocol,
-    metaclass=CachingProtocolMeta,
-):
+class _SupportsConjugate(Protocol):
     r"""
-    TODO(posita): Document this!
+    The raw, non-caching version of
+    [``SupportsConjugate``][numerary.types.SupportsConjugate].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -277,21 +355,34 @@ class SupportsConjugate(
         pass
 
 
-_assert_isinstance(
-    int, float, bool, complex, Decimal, Fraction, target_t=SupportsConjugate
-)
-SupportsConjugateSCU = Union[int, float, bool, complex, Complex, SupportsConjugate]
-SupportsConjugateSCT = (int, float, bool, complex, Complex, SupportsConjugate)
-assert SupportsConjugateSCU.__args__ == SupportsConjugateSCT  # type: ignore
-
-
 @runtime_checkable
-class SupportsRealImag(
+class SupportsConjugate(
+    _SupportsConjugate,
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC defining the [``conjugate``
+    method](https://docs.python.org/3/library/numbers.html#numbers.Complex.conjugate).
+
+    ([``_SupportsConjugate``][numerary.types._SupportsConjugate] is the raw, non-caching
+    version that defines the actual methods.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
+_assert_isinstance(
+    int, float, bool, complex, Decimal, Fraction, target_t=SupportsConjugate
+)
+SupportsConjugateSCU = Union[int, float, bool, complex, Complex, SupportsConjugate]
+SupportsConjugateSCT = SupportsConjugate
+
+
+@runtime_checkable
+class _SupportsRealImag(Protocol):
+    r"""
+    The raw, non-caching version of
+    [``SupportsRealImag``][numerary.types.SupportsRealImag].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -304,19 +395,33 @@ class SupportsRealImag(
         pass
 
 
-_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealImag)
-SupportsRealImagSCU = Union[int, float, bool, Complex, SupportsRealImag]
-SupportsRealImagSCT = (int, float, bool, Complex, SupportsRealImag)
-assert SupportsRealImagSCU.__args__ == SupportsRealImagSCT  # type: ignore
-
-
 @runtime_checkable
-class SupportsTrunc(
+class SupportsRealImag(
+    _SupportsRealImag,
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC defining the
+    [``real``](https://docs.python.org/3/library/numbers.html#numbers.Complex.real) and
+    [``imag``](https://docs.python.org/3/library/numbers.html#numbers.Complex.imag)
+    properties.
+
+    ([``_SupportsRealImag``][numerary.types._SupportsRealImag] is the raw, non-caching
+    version that defines the actual methods.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
+_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealImag)
+SupportsRealImagSCU = Union[int, float, bool, Complex, SupportsRealImag]
+SupportsRealImagSCT = SupportsRealImag
+
+
+@runtime_checkable
+class _SupportsTrunc(Protocol):
+    r"""
+    The raw, non-caching version of [``SupportsTrunc``][numerary.types.SupportsTrunc].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -325,19 +430,33 @@ class SupportsTrunc(
         pass
 
 
-_assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
-SupportsTruncSCU = Union[int, float, bool, Real, SupportsTrunc]
-SupportsTruncSCT = (int, float, bool, Real, SupportsTrunc)
-assert SupportsTruncSCU.__args__ == SupportsTruncSCT  # type: ignore
-
-
 @runtime_checkable
-class SupportsFloor(
+class SupportsTrunc(
+    _SupportsTrunc,
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC defining the [``__trunc__``
+    method](https://docs.python.org/3/reference/datamodel.html#object.__trunc__).
+
+    See also the [``trunc`` helper function][numerary.types.trunc].
+
+    ([``_SupportsTrunc``][numerary.types._SupportsTrunc] is the raw, non-caching version
+    that defines the actual methods.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
+_assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
+SupportsTruncSCU = Union[int, float, bool, Real, SupportsTrunc]
+SupportsTruncSCT = SupportsTrunc
+
+
+@runtime_checkable
+class _SupportsFloor(Protocol):
+    r"""
+    The raw, non-caching version of [``SupportsFloor``][numerary.types.SupportsFloor].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -346,23 +465,44 @@ class SupportsFloor(
         pass
 
 
+@runtime_checkable
+class SupportsFloor(
+    _SupportsFloor,
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
+    r"""
+    A caching ABC defining the [``__floor__``
+    method](https://docs.python.org/3/reference/datamodel.html#object.__floor__).
+
+    See also the [``floor`` helper function][numerary.types.floor].
+
+    ([``_SupportsFloor``][numerary.types._SupportsFloor] is the raw, non-caching version
+    that defines the actual methods.)
+
+    !!! note
+
+        This is of limited value for Python versions prior to 3.9, since ``#!python
+        float.__floor__`` was not defined. If support for those environments is
+        important, consider using [``SupportsFloat``][numerary.types.SupportsFloat]
+        instead.
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
 _assert_isinstance(int, bool, Decimal, Fraction, target_t=SupportsFloor)
 
 if sys.version_info >= (3, 9):
     _assert_isinstance(float, target_t=SupportsFloor)
 
 SupportsFloorSCU = Union[int, float, bool, Real, SupportsFloor]
-SupportsFloorSCT = (int, float, bool, Real, SupportsFloor)
-assert SupportsFloorSCU.__args__ == SupportsFloorSCT  # type: ignore
+SupportsFloorSCT = SupportsFloor
 
 
 @runtime_checkable
-class SupportsCeil(
-    Protocol,
-    metaclass=CachingProtocolMeta,
-):
+class _SupportsCeil(Protocol):
     r"""
-    TODO(posita): Document this!
+    The raw, non-caching version of [``SupportsCeil``][numerary.types.SupportsCeil].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -371,23 +511,44 @@ class SupportsCeil(
         pass
 
 
+@runtime_checkable
+class SupportsCeil(
+    _SupportsCeil,
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
+    r"""
+    A caching ABC defining the [``__ceil__``
+    method](https://docs.python.org/3/reference/datamodel.html#object.__ceil__).
+
+    ([``_SupportsCeil``][numerary.types._SupportsCeil] is the raw, non-caching version
+    that defines the actual methods.)
+
+    See also the [``ceil`` helper function][numerary.types.ceil].
+
+    !!! note
+
+        This is of limited value for Python versions prior to 3.9, since ``#!python
+        float.__ceil__`` was not defined. If support for those environments is
+        important, consider using [``SupportsFloat``][numerary.types.SupportsFloat]
+        instead, since that is what ``#!python math.ceil`` expects.
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
 _assert_isinstance(int, bool, Decimal, Fraction, target_t=SupportsCeil)
 
 if sys.version_info >= (3, 9):
     _assert_isinstance(float, target_t=SupportsCeil)
 
 SupportsCeilSCU = Union[int, float, bool, Real, SupportsCeil]
-SupportsCeilSCT = (int, float, bool, Real, SupportsCeil)
-assert SupportsCeilSCU.__args__ == SupportsCeilSCT  # type: ignore
+SupportsCeilSCT = SupportsCeil
 
 
 @runtime_checkable
-class SupportsDivmod(
-    Protocol[_T_co],
-    metaclass=CachingProtocolMeta,
-):
+class _SupportsDivmod(Protocol[_T_co]):
     r"""
-    TODO(posita): Document this!
+    The raw, non-caching version of [``SupportsDivmod``][numerary.types.SupportsDivmod].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -400,19 +561,35 @@ class SupportsDivmod(
         pass
 
 
-_assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsDivmod)
-SupportsDivmodSCU = Union[int, float, bool, Real, SupportsDivmod]
-SupportsDivmodSCT = (int, float, bool, Real, SupportsDivmod)
-assert SupportsDivmodSCU.__args__ == SupportsDivmodSCT  # type: ignore
-
-
 @runtime_checkable
-class SupportsNumeratorDenominatorProperties(
-    Protocol,
+class SupportsDivmod(
+    _SupportsDivmod[_T_co],
+    Protocol[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC defining the
+    [``__divmod__``](https://docs.python.org/3/reference/datamodel.html#object.__divmod__)
+    and
+    [``__rdivmod__``](https://docs.python.org/3/reference/datamodel.html#object.__rdivmod__)
+    methods. Each returns a 2-tuple of covariants.
+
+    ([``_SupportsDivmod``][numerary.types._SupportsDivmod] is the raw, non-caching
+    version that defines the actual methods.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
+_assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsDivmod)
+SupportsDivmodSCU = Union[int, float, bool, Real, SupportsDivmod]
+SupportsDivmodSCT = SupportsDivmod
+
+
+@runtime_checkable
+class _SupportsNumeratorDenominatorProperties(Protocol):
+    r"""
+    The raw, non-caching version of
+    [``SupportsNumeratorDenominatorProperties``][numerary.types.SupportsNumeratorDenominatorProperties].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -425,6 +602,25 @@ class SupportsNumeratorDenominatorProperties(
         pass
 
 
+@runtime_checkable
+class SupportsNumeratorDenominatorProperties(
+    _SupportsNumeratorDenominatorProperties,
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
+    r"""
+    A caching ABC defining the
+    [``numerator``](https://docs.python.org/3/library/numbers.html#numbers.Rational.numerator)
+    and
+    [``denominator``](https://docs.python.org/3/library/numbers.html#numbers.Rational.denominator)
+    properties.
+
+    ([``_SupportsNumeratorDenominatorProperties``][numerary.types._SupportsNumeratorDenominatorProperties]
+    is the raw, non-caching version that defines the actual properties.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
 _assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominatorProperties)
 SupportsNumeratorDenominatorPropertiesSCU = Union[
     int,
@@ -432,22 +628,14 @@ SupportsNumeratorDenominatorPropertiesSCU = Union[
     Rational,
     SupportsNumeratorDenominatorProperties,
 ]
-SupportsNumeratorDenominatorPropertiesSCT = (
-    int,
-    bool,
-    Rational,
-    SupportsNumeratorDenominatorProperties,
-)
-assert SupportsNumeratorDenominatorPropertiesSCU.__args__ == SupportsNumeratorDenominatorPropertiesSCT  # type: ignore
+SupportsNumeratorDenominatorPropertiesSCT = SupportsNumeratorDenominatorProperties
 
 
 @runtime_checkable
-class SupportsNumeratorDenominatorMethods(
-    Protocol,
-    metaclass=CachingProtocolMeta,
-):
+class _SupportsNumeratorDenominatorMethods(Protocol):
     r"""
-    TODO(posita): Document this!
+    The raw, non-caching version of
+    [``SupportsNumeratorDenominatorMethods``][numerary.types.SupportsNumeratorDenominatorMethods].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -460,33 +648,51 @@ class SupportsNumeratorDenominatorMethods(
         pass
 
 
+@runtime_checkable
+class SupportsNumeratorDenominatorMethods(
+    _SupportsNumeratorDenominatorMethods,
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
+    r"""
+    A caching ABC defining ``#!python numerator`` and ``#!python denominator`` methods.
+    Each returns a [``SupportsInt``][numerary.types.SupportsInt].
+
+    ([``_SupportsNumeratorDenominatorMethods``][numerary.types._SupportsNumeratorDenominatorMethods]
+    is the raw, non-caching version that defines the actual methods.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
+# See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
 SupportsNumeratorDenominatorMixedU = Union[
     SupportsNumeratorDenominatorProperties,
     SupportsNumeratorDenominatorMethods,
 ]
+fr"""
+{SupportsNumeratorDenominatorMixedU!r}
+"""
 SupportsNumeratorDenominatorMixedT = (
     SupportsNumeratorDenominatorProperties,
     SupportsNumeratorDenominatorMethods,
 )
-assert SupportsNumeratorDenominatorMixedU.__args__ == SupportsNumeratorDenominatorMixedT  # type: ignore
+fr"""
+{SupportsNumeratorDenominatorMixedT!r}
+"""
+assert SupportsNumeratorDenominatorMixedU.__args__ == SupportsNumeratorDenominatorMixedT  # type: ignore [attr-defined]
 
 SupportsNumeratorDenominatorMixedSCU = Union[
     SupportsNumeratorDenominatorPropertiesSCU,
     SupportsNumeratorDenominatorMethods,
 ]
-SupportsNumeratorDenominatorMixedSCT = SupportsNumeratorDenominatorPropertiesSCT + (
-    SupportsNumeratorDenominatorMethods,
-)
-assert SupportsNumeratorDenominatorMixedSCU.__args__ == SupportsNumeratorDenominatorMixedSCT  # type: ignore
+SupportsNumeratorDenominatorMixedSCT = SupportsNumeratorDenominatorMixedT
 
 
 @runtime_checkable
-class SupportsComplexOps(
-    Protocol[_T_co],
-    metaclass=CachingProtocolMeta,
-):
+class _SupportsComplexOps(Protocol[_T_co]):
     r"""
-    TODO(posita): Document this!
+    The raw, non-caching version of
+    [``SupportsComplexOps``][numerary.types.SupportsComplexOps].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -531,19 +737,33 @@ class SupportsComplexOps(
         pass
 
 
-_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexOps)
-SupportsComplexOpsSCU = Union[int, float, bool, Complex, SupportsComplexOps]
-SupportsComplexOpsSCT = (int, float, bool, Complex, SupportsComplexOps)
-assert SupportsComplexOpsSCU.__args__ == SupportsComplexOpsSCT  # type: ignore
-
-
 @runtime_checkable
-class SupportsComplexPow(
+class SupportsComplexOps(
+    _SupportsComplexOps[_T_co],
     Protocol[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC defining the [``Complex`` operator
+    methods](https://docs.python.org/3/library/numbers.html#numbers.Complex) with
+    covariant return values.
+
+    ([``_SupportsComplexOps``][numerary.types._SupportsComplexOps] is the raw,
+    non-caching version that defines the actual methods.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
+_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexOps)
+SupportsComplexOpsSCU = Union[int, float, bool, Complex, SupportsComplexOps]
+SupportsComplexOpsSCT = SupportsComplexOps
+
+
+@runtime_checkable
+class _SupportsComplexPow(Protocol[_T_co]):
+    r"""
+    The raw, non-caching version of
+    [``SupportsComplexPow``][numerary.types.SupportsComplexPow].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -556,19 +776,34 @@ class SupportsComplexPow(
         pass
 
 
-_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexPow)
-SupportsComplexPowSCU = Union[int, float, bool, Complex, SupportsComplexPow]
-SupportsComplexPowSCT = (int, float, bool, Complex, SupportsComplexPow)
-assert SupportsComplexPowSCU.__args__ == SupportsComplexPowSCT  # type: ignore
-
-
 @runtime_checkable
-class SupportsRealOps(
+class SupportsComplexPow(
+    _SupportsComplexPow[_T_co],
     Protocol[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC defining the ``#!python Complex`` (i.e., non-modulo) versions of the
+    [``__pow__``](https://docs.python.org/3/reference/datamodel.html#object.__pow__) and
+    [``__rpow__``](https://docs.python.org/3/reference/datamodel.html#object.__rpow__),
+    each with a covariant return value.
+
+    ([``_SupportsComplexPow``][numerary.types._SupportsComplexPow] is the raw,
+    non-caching version that defines the actual methods.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
+_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexPow)
+SupportsComplexPowSCU = Union[int, float, bool, Complex, SupportsComplexPow]
+SupportsComplexPowSCT = SupportsComplexPow
+
+
+@runtime_checkable
+class _SupportsRealOps(Protocol[_T_co]):
+    r"""
+    The raw, non-caching version of
+    [``SupportsRealOps``][numerary.types.SupportsRealOps].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -605,19 +840,33 @@ class SupportsRealOps(
         pass
 
 
-_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealOps)
-SupportsRealOpsSCU = Union[int, float, bool, Real, SupportsRealOps]
-SupportsRealOpsSCT = (int, float, bool, Real, SupportsRealOps)
-assert SupportsRealOpsSCU.__args__ == SupportsRealOpsSCT  # type: ignore
-
-
 @runtime_checkable
-class SupportsIntegralOps(
+class SupportsRealOps(
+    _SupportsRealOps[_T_co],
     Protocol[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC defining the [``Real`` operator
+    methods](https://docs.python.org/3/library/numbers.html#numbers.Real) with covariant
+    return values.
+
+    ([``_SupportsRealOps``][numerary.types._SupportsRealOps] is the raw, non-caching
+    version that defines the actual methods.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
+_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealOps)
+SupportsRealOpsSCU = Union[int, float, bool, Real, SupportsRealOps]
+SupportsRealOpsSCT = SupportsRealOps
+
+
+@runtime_checkable
+class _SupportsIntegralOps(Protocol[_T_co]):
+    r"""
+    The raw, non-caching version of
+    [``SupportsIntegralOps``][numerary.types.SupportsIntegralOps].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -666,19 +915,33 @@ class SupportsIntegralOps(
         pass
 
 
-_assert_isinstance(int, bool, target_t=SupportsIntegralOps)
-SupportsIntegralOpsSCU = Union[int, bool, Integral, SupportsIntegralOps]
-SupportsIntegralOpsSCT = (int, bool, Integral, SupportsIntegralOps)
-assert SupportsIntegralOpsSCU.__args__ == SupportsIntegralOpsSCT  # type: ignore
-
-
 @runtime_checkable
-class SupportsIntegralPow(
+class SupportsIntegralOps(
+    _SupportsIntegralOps[_T_co],
     Protocol[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC defining the [``Integral`` operator
+    methods](https://docs.python.org/3/library/numbers.html#numbers.Real) with covariant
+    return values.
+
+    ([``_SupportsIntegralOps``][numerary.types._SupportsIntegralOps] is the raw,
+    non-caching version that defines the actual methods.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
+_assert_isinstance(int, bool, target_t=SupportsIntegralOps)
+SupportsIntegralOpsSCU = Union[int, bool, Integral, SupportsIntegralOps]
+SupportsIntegralOpsSCT = SupportsIntegralOps
+
+
+@runtime_checkable
+class _SupportsIntegralPow(Protocol[_T_co]):
+    r"""
+    The raw, non-caching version of
+    [``SupportsIntegralPow``][numerary.types.SupportsIntegralPow].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -691,10 +954,27 @@ class SupportsIntegralPow(
         pass
 
 
+@runtime_checkable
+class SupportsIntegralPow(
+    _SupportsIntegralPow[_T_co],
+    Protocol[_T_co],
+    metaclass=CachingProtocolMeta,
+):
+    r"""
+    A caching ABC defining the ``#!python Integral`` (i.e., modulo) versions of the
+    [``__pow__``](https://docs.python.org/3/reference/datamodel.html#object.__pow__) and
+    [``__rpow__``](https://docs.python.org/3/reference/datamodel.html#object.__rpow__),
+    each with a covariant return value.
+
+    ([``_SupportsIntegralPow``][numerary.types._SupportsIntegralPow] is the raw,
+    non-caching version that defines the actual methods.)
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
 _assert_isinstance(int, bool, target_t=SupportsIntegralPow)
 SupportsIntegralPowSCU = Union[int, bool, Integral, SupportsIntegralPow]
-SupportsIntegralPowSCT = (int, bool, Integral, SupportsIntegralPow)
-assert SupportsIntegralPowSCU.__args__ == SupportsIntegralPowSCT  # type: ignore
+SupportsIntegralPowSCT = SupportsIntegralPow
 
 
 @runtime_checkable
@@ -708,7 +988,26 @@ class RealLike(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC that defines a core set of operations for interacting with reals. It
+    is a composition of:
+
+    * [``SupportsAbs``][numerary.types.SupportsAbs]
+    * [``SupportsFloat``][numerary.types.SupportsFloat]
+    * [``SupportsRealOps``][numerary.types.SupportsRealOps]
+    * [``SupportsComplexOps``][numerary.types.SupportsComplexOps]
+    * [``SupportsComplexPow``][numerary.types.SupportsComplexPow]
+
+    This is a practically useful, but incomplete list. To enforce equivalence to
+    ``#!python numbers.Real``, one would also need:
+
+    * [``SupportsComplex``][numerary.types.SupportsComplex]
+    * [``SupportsConjugate``][numerary.types.SupportsConjugate]
+    * [``SupportsRealImag``][numerary.types.SupportsRealImag]
+    * [``SupportsRound``][numerary.types.SupportsRound]
+    * [``SupportsTrunc``][numerary.types.SupportsTrunc]
+    * [``SupportsFloor``][numerary.types.SupportsFloor]
+    * [``SupportsCeil``][numerary.types.SupportsCeil]
+    * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -724,8 +1023,7 @@ class RealLike(
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=RealLike)
 RealLikeSCU = Union[int, float, bool, Real, RealLike]
-RealLikeSCT = (int, float, bool, Real, RealLike)
-assert RealLikeSCU.__args__ == RealLikeSCT  # type: ignore
+RealLikeSCT = RealLike
 
 
 @runtime_checkable
@@ -740,7 +1038,27 @@ class RationalLikeProperties(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC that defines a core set of operations for interacting with rationals.
+    It is a composition of:
+
+    * [``SupportsAbs``][numerary.types.SupportsAbs]
+    * [``SupportsFloat``][numerary.types.SupportsFloat]
+    * [``SupportsNumeratorDenominatorProperties``][numerary.types.SupportsNumeratorDenominatorProperties]
+    * [``SupportsRealOps``][numerary.types.SupportsRealOps]
+    * [``SupportsComplexOps``][numerary.types.SupportsComplexOps]
+    * [``SupportsComplexPow``][numerary.types.SupportsComplexPow]
+
+    This is a practically useful, but incomplete list. To enforce equivalence to
+    ``#!python numbers.Rational``, one would also need:
+
+    * [``SupportsComplex``][numerary.types.SupportsComplex]
+    * [``SupportsConjugate``][numerary.types.SupportsConjugate]
+    * [``SupportsRealImag``][numerary.types.SupportsRealImag]
+    * [``SupportsRound``][numerary.types.SupportsRound]
+    * [``SupportsTrunc``][numerary.types.SupportsTrunc]
+    * [``SupportsFloor``][numerary.types.SupportsFloor]
+    * [``SupportsCeil``][numerary.types.SupportsCeil]
+    * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -761,13 +1079,7 @@ RationalLikePropertiesSCU = Union[
     Rational,
     RationalLikeProperties,
 ]
-RationalLikePropertiesSCT = (
-    int,
-    bool,
-    Rational,
-    RationalLikeProperties,
-)
-assert RationalLikePropertiesSCU.__args__ == RationalLikePropertiesSCT  # type: ignore
+RationalLikePropertiesSCT = RationalLikeProperties
 
 
 @runtime_checkable
@@ -782,7 +1094,17 @@ class RationalLikeMethods(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC that defines a core set of operations for interacting with rationals.
+    It is identical to
+    [``RationalLikeProperties``][numerary.types.RationalLikeProperties] with one
+    important exception. Instead of
+    [``SupportsNumeratorDenominatorProperties``][numerary.types.SupportsNumeratorDenominatorProperties],
+    this protocol provides
+    [``SupportsNumeratorDenominatorMethods``][numerary.types.SupportsNumeratorDenominatorMethods].
+
+    This is probably not very useful on its own, but is important to the construction of
+    [``RationalLikeMixedU``][numerary.types.RationalLikeMixedU] and
+    [``RationalLikeMixedT``][numerary.types.RationalLikeMixedT].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -796,14 +1118,30 @@ class RationalLikeMethods(
         pass
 
 
+# See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
 RationalLikeMixedU = Union[RationalLikeProperties, RationalLikeMethods]
+fr"""
+{RationalLikeMixedU!r}
+"""
 RationalLikeMixedT = (RationalLikeProperties, RationalLikeMethods)
+fr"""
+{RationalLikeMixedT!r}
+"""
+assert RationalLikeMixedU.__args__ == RationalLikeMixedT  # type: ignore [attr-defined]
+assert RationalLikeMethods.__doc__
+RationalLikeMethods.__doc__ += fr"""
+
+    ``` python
+    RationalLikeMixedU = {RationalLikeMixedU!r}
+    RationalLikeMixedT = ({", ".join(cls.__name__ for cls in  RationalLikeMixedT)})
+    ```
+"""
+
 RationalLikeMixedSCU = Union[
     RationalLikePropertiesSCU,
     RationalLikeMethods,
 ]
-RationalLikeMixedSCT = RationalLikePropertiesSCT + (RationalLikeMethods,)
-assert RationalLikeMixedSCU.__args__ == RationalLikeMixedSCT  # type: ignore
+RationalLikeMixedSCT = RationalLikeMixedT
 
 
 @runtime_checkable
@@ -820,7 +1158,30 @@ class IntegralLike(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    TODO(posita): Document this!
+    A caching ABC that defines a core set of operations for interacting with integrals.
+    It is a composition of:
+
+    * [``SupportsAbs``][numerary.types.SupportsAbs]
+    * [``SupportsFloat``][numerary.types.SupportsFloat]
+    * [``SupportsIndex``][numerary.types.SupportsIndex]
+    * [``SupportsInt``][numerary.types.SupportsInt]
+    * [``SupportsIntegralOps``][numerary.types.SupportsIntegralOps]
+    * [``SupportsIntegralPow``][numerary.types.SupportsIntegralPow]
+    * [``SupportsRealOps``][numerary.types.SupportsRealOps]
+    * [``SupportsComplexOps``][numerary.types.SupportsComplexOps]
+
+    This is a practically useful, but incomplete list. To enforce equivalence to
+    ``#!python numbers.Integral``, one would also need:
+
+    * [``SupportsComplex``][numerary.types.SupportsComplex]
+    * [``SupportsConjugate``][numerary.types.SupportsConjugate]
+    * [``SupportsRealImag``][numerary.types.SupportsRealImag]
+    * [``SupportsRound``][numerary.types.SupportsRound]
+    * [``SupportsTrunc``][numerary.types.SupportsTrunc]
+    * [``SupportsFloor``][numerary.types.SupportsFloor]
+    * [``SupportsCeil``][numerary.types.SupportsCeil]
+    * [``SupportsDivmod``][numerary.types.SupportsDivmod]
+    * [``SupportsNumeratorDenominatorProperties``][numerary.types.SupportsNumeratorDenominatorProperties]
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -836,47 +1197,103 @@ class IntegralLike(
 
 _assert_isinstance(int, bool, target_t=IntegralLike)
 IntegralLikeSCU = Union[int, bool, Integral, IntegralLike]
-IntegralLikeSCT = (int, bool, Integral, IntegralLike)
-assert IntegralLikeSCU.__args__ == IntegralLikeSCT  # type: ignore
+IntegralLikeSCT = IntegralLike
 
 
 # ---- Functions -----------------------------------------------------------------------
 
 
 @beartype
-def ceil(operand: SupportsCeil):
+def ceil(operand: Union[SupportsFloat, SupportsCeil]):
     r"""
-    TODO(posita): Document this!
-    """
-    assert isinstance(operand, SupportsFloat)
+    Helper function that wraps ``math.ceil``.
 
-    return math.ceil(operand)
+    ``` python
+    >>> from numerary.types import SupportsCeil, SupportsFloat, ceil
+    >>> my_ceil: SupportsCeil
+    >>> my_ceil = 1
+    >>> ceil(my_ceil)
+    1
+    >>> from fractions import Fraction
+    >>> my_ceil = Fraction(1, 2)
+    >>> ceil(my_ceil)
+    1
+    >>> my_ceil_float: SupportsFloat = 1.2
+    >>> ceil(my_ceil_float)
+    2
+
+    ```
+    """
+    return math.ceil(operand)  # type: ignore [arg-type]
 
 
 @beartype
-def floor(operand: SupportsFloor):
+def floor(operand: Union[SupportsFloat, SupportsFloor]):
     r"""
-    TODO(posita): Document this!
-    """
-    assert isinstance(operand, SupportsFloat)
+    Helper function that wraps ``math.floor``.
 
-    return math.floor(operand)
+    ``` python
+    >>> from numerary.types import SupportsFloat, SupportsFloor, floor
+    >>> my_floor: SupportsFloor
+    >>> my_floor = 1
+    >>> floor(my_floor)
+    1
+    >>> from fractions import Fraction
+    >>> my_floor = Fraction(1, 2)
+    >>> floor(my_floor)
+    0
+    >>> my_floor_float: SupportsFloat = 1.2
+    >>> floor(my_floor_float)
+    1
+
+    ```
+    """
+    return math.floor(operand)  # type: ignore [arg-type]
 
 
 @beartype
-def trunc(operand: SupportsTrunc):
+def trunc(operand: Union[SupportsFloat, SupportsTrunc]):
     r"""
-    TODO(posita): Document this!
-    """
-    assert isinstance(operand, SupportsFloat)
+    Helper function that wraps ``math.trunc``.
 
-    return math.trunc(operand)
+    ``` python
+    >>> from numerary.types import SupportsFloat, SupportsTrunc, trunc
+    >>> my_trunc: SupportsTrunc
+    >>> my_trunc = 1
+    >>> trunc(my_trunc)
+    1
+    >>> from fractions import Fraction
+    >>> my_trunc = Fraction(1, 2)
+    >>> trunc(my_trunc)
+    0
+    >>> my_trunc_float: SupportsFloat = 1.2
+    >>> trunc(my_trunc_float)
+    1
+
+    ```
+    """
+    return math.trunc(operand)  # type: ignore [arg-type]
 
 
 @beartype
 def numerator(operand: SupportsNumeratorDenominatorMixedU):
     r"""
-    TODO(posita): Document this!
+    Helper function that extracts the numerator from *operand* including resolving
+    non-compliant rational implementations that implement ``numerator`` as a method
+    rather than a property.
+
+    ``` python
+    >>> from fractions import Fraction
+    >>> from numerary.types import numerator
+    >>> numerator(Fraction(22, 7))
+    22
+
+    ```
+
+    See
+    [SupportsNumeratorDenominatorProperties][numerary.types.SupportsNumeratorDenominatorProperties]
+    and
+    [SupportsNumeratorDenominatorMethods][numerary.types.SupportsNumeratorDenominatorMethods].
     """
     if hasattr(operand, "numerator"):
         if callable(operand.numerator):
@@ -890,7 +1307,22 @@ def numerator(operand: SupportsNumeratorDenominatorMixedU):
 @beartype
 def denominator(operand: SupportsNumeratorDenominatorMixedU):
     r"""
-    TODO(posita): Document this!
+    Helper function that extracts the denominator from *operand* including resolving
+    non-compliant rational implementations that implement ``denominator`` as a method
+    rather than a property.
+
+    ``` python
+    >>> from fractions import Fraction
+    >>> from numerary.types import denominator
+    >>> denominator(Fraction(22, 7))
+    7
+
+    ```
+
+    See
+    [SupportsNumeratorDenominatorProperties][numerary.types.SupportsNumeratorDenominatorProperties]
+    and
+    [SupportsNumeratorDenominatorMethods][numerary.types.SupportsNumeratorDenominatorMethods].
     """
     if hasattr(operand, "denominator"):
         if callable(operand.denominator):
@@ -914,6 +1346,9 @@ SupportsCeil.includes(float)
 SupportsDivmod.excludes(complex)
 SupportsRealOps.excludes(complex)
 RealLike.excludes(complex)
+RationalLikeProperties.excludes(complex)
+RationalLikeMethods.excludes(complex)
+IntegralLike.excludes(complex)
 
 try:
     import numpy
@@ -941,6 +1376,7 @@ try:
         SupportsCeil.includes(t)
         SupportsIntegralOps.excludes(t)
         SupportsIntegralPow.excludes(t)
+        IntegralLike.excludes(t)
 
     # numpy complex types define these methods, but only to raise exceptions
     for t in (
@@ -953,6 +1389,9 @@ try:
         SupportsIntegralOps.excludes(t)
         SupportsIntegralPow.excludes(t)
         RealLike.excludes(t)
+        RationalLikeProperties.excludes(t)
+        RationalLikeMethods.excludes(t)
+        IntegralLike.excludes(t)
 except ImportError:
     pass
 
@@ -962,5 +1401,6 @@ try:
     SupportsTrunc.excludes(sympy.core.symbol.Symbol)
     SupportsIntegralOps.excludes(sympy.core.symbol.Symbol)
     SupportsIntegralPow.excludes(sympy.core.symbol.Symbol)
+    IntegralLike.excludes(sympy.core.symbol.Symbol)
 except ImportError:
     pass

@@ -27,8 +27,8 @@ If that file is missing or appears to be modified from its original, then please
 [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
 Are you defining a numeric interface that should work with more than just ``int``s and ``float``s?
-Are you annotating that interface for documentation *and* type checking?
-Were you excited by [PEP 3141](https://www.python.org/dev/peps/pep-3141/)’s glitz and gloss promising a clean, straightforward number type definition mechanism, only to learn the hard way—after many hours of searching, tweaking, hacking, and testing ever more convoluted code, again and again—that you could’t actually make it work with Python’s type checking system?
+Are you annotating that interface for documentation *and* type-checking?
+Were you excited by [PEP 3141](https://www.python.org/dev/peps/pep-3141/)’s glitz and gloss promising a clean, straightforward number type definition mechanism, only to learn the hard way—after many hours of searching, tweaking, hacking, and testing ever more convoluted code, again and again—that you could’t actually make it work with Python’s type-checking system?
 Do you now wonder whether numbers were something new to computing in general because nothing else would explain such a gaping hole in a programming language so popular with the STEM crowd that has been around since the early 1990s?
 Does the number [3186](https://github.com/python/mypy/issues/3186) haunt you in your dreams?
 Do you find yourself shouting to no one in particular, “There *has* to be a better way?”
@@ -36,23 +36,26 @@ Do you find yourself shouting to no one in particular, “There *has* to be a be
 Well I’m here to tell you there ain’t.
 But until there is, there’s …
 
-# *``numerary`` - now with Protocol Power™*
+# *``numerary``—Now with Protocol Power™*
 
 That’s right!
 
-For a hopefully limited time, you too can benefit from someone else’s deranged work-arounds for the enormous chasms in Python that lie between the esoteric fields of computation that are “typing” and “numbers” instead of having to develop your own ~~out of sheer desperation~~ *from first principles*!
+For a hopefully limited time, you too can benefit from someone else’s deranged work-arounds for the enormous chasms in Python that lie between the esoteric fields of computation that are “typing” and “numbers” instead of having to roll your own ~~out of sheer desperation~~ *from first principles*!
+If you still have no idea what I’m talking about, [this may help illustrate](https://posita.github.io/numerary/latest/whytho/).
 
-``numerary`` is a pure-Python codified rant for signaling that your interface is usable with non-native numeric primitives[^1] without breaking type checking.
+``numerary`` is a pure-Python codified rant for signaling that your interface is usable with non-native numeric primitives[^1] without breaking type-checking.
+More simply, ``numerary`` aspires to a world where numbers and types can work together.
+
 If you’re thinking that you shouldn’t need a 🤬ing library for that, *you’re right*.
 
 [^1]:
 
-    You know, *super* weird, off-the-wall shit, like members of the [numeric tower](https://docs.python.org/3/library/numbers.html), or [standard library primitives that remain *non*-members for some 🤬ed up reason](https://docs.python.org/3/library/decimal.html), or [legitimate non-members because they predate PEP 3141 and conforming would amount to breaking changes](https://trac.sagemath.org/ticket/28234), or—I don’t know—oodles of libraries and applications that have been around for literally decades that bring huge value to vast scientific and mathematic audiences, but whose number primitives break type checking if one abides by the ubiquitous bum steer, “I don’t have any experience trying to do what you’re doing, but just use ``float``, bro.”
+    You know, *super* weird, off-the-wall shit, like members of the [numeric tower](https://docs.python.org/3/library/numbers.html), or [standard library primitives that remain *non*-members for some 🤬ed up reason](https://docs.python.org/3/library/decimal.html), or [legitimate non-members because they predate PEP 3141 and conforming would amount to breaking changes](https://trac.sagemath.org/ticket/28234), or—I don’t know—oodles of libraries and applications that have been around for literally decades that bring huge value to vast scientific and mathematic audiences, but whose number primitives break type-checking if one abides by the ubiquitous bum steer, “I don’t have any experience trying to do what you’re doing, but just use ``float``, bro.”
 
     Because, hey, *🤬* numbers!
     Am I right?
 
-``numerary`` should enjoy no audience.
+This madness should enjoy no audience.
 It should not exist.
 Yet here we are.
 Its author gauges its success by how quickly it can be forgotten, relegated to the annals of superfluous folly.
@@ -65,366 +68,33 @@ Source code is [available on GitHub](https://github.com/posita/numerary).
 
 If you find it lacking in any way, please don’t hesitate to [bring it to my attention](https://posita.github.io/numerary/latest/contrib/).
 
-## The calculation function, an allegory
-
-We have a simple vision.
-We want to define an API that works with *reals* (not just ``float``s), performs a calculation, and returns *integers* (not just ``int``s).
-
-``` python
->>> from time import sleep
->>> def deep_thought(arg):
-...   sleep(7_500_000 * 365.24219265 * 24 * 60 * 60)  # doctest: +SKIP
-...   assert arg != 0 and arg ** 0 == 1
-...   return 42
-
-```
-
-We want to tell the world how to call it and what to expect in return, so we annotate it:
-
-``` python
->>> def deep_thought_typed(arg: float) -> int:
-...   assert arg != 0 and arg ** 0 == 1
-...   return 42
-
-```
-
-So simple!
-We’re done, right?
-Not quite.
-We find that the runtime works well, but we’re getting type checking errors.
-
-``` python
->>> deep_thought_typed(1.0)  # this is fine ...
-42
->>> from fractions import Fraction
->>> deep_thought_typed(Fraction(1, 2))  # type: ignore  # ... but this fails
-42
-
-```
-
-Without the ``# type: ignore``, we get:
-
-```
-…: error: Argument 1 to "deep_thought_typed" has incompatible type "Fraction"; expected "float"
-```
-
-With a little research, we learn about *the [numeric tower](https://docs.python.org/3/library/numbers.html) [cue angelic singing]*.
-Surely, it has the answer!
-Both ``float`` and ``Fraction`` are ``Real``s.
-Let’s test that to make sure.
-
-``` python
->>> from numbers import Integral, Real
->>> isinstance(42, Integral)
-True
->>> isinstance(1.0, Real)
-True
->>> isinstance(Fraction(1, 2), Real)
-True
-
-```
-
-Huzzah!
-What could be simpler?
-It appears a small tweak is all that is required!
-
-``` python
->>> def deep_thought_towered(arg: Real) -> Integral:
-...   assert arg != 0 and arg ** 0 == 1
-...   return 42  # type: ignore  # now this fails
-
-```
-
-Without the ``# type: ignore``, we get:
-
-```
-…: error: Incompatible return value type (got "int", expected "Integral")
-```
-
-Hold the phone.
-``isinstance(42, Integral)`` was ``True``, was it not?
-This is starting to get confusing.
-
-``` python
->>> from typing import Union
->>> IntegralT = Union[int, Integral]
->>> RealT = Union[float, Real]
->>> def deep_thought_crumbling(arg: RealT) -> IntegralT:
-...   assert arg != 0 and arg ** 0 == 1
-...   return 42
-
-```
-
-Well, that was *odd*, but such warts are a small price to pay.
-All is right in the world again!
-
-``` python
->>> deep_thought_crumbling(1.0)
-42
->>> deep_thought_crumbling(Fraction(1, 2))
-42
->>> from decimal import Decimal
->>> deep_thought_crumbling(Decimal("0.123"))  # type: ignore  # fail
-42
-
-```
-
-Without the ``# type: ignore``, we get:
-
-```
-…: error: Argument 1 to "deep_thought_crumbling" has incompatible type "Decimal"; expected "Union[float, Real]"
-```
-
-Oh, come *on*!
-
-``` python
->>> RealAndDecimalT = Union[float, Real, Decimal]
->>> def deep_thought_toppled(arg: RealAndDecimalT) -> IntegralT:
-...   assert arg != 0 and arg ** 0 == 1
-...   return 42
->>> deep_thought_toppled(Decimal("0.123"))
-42
-
-```
-
-🤬 me.
-If we have to engage in these kinds of gymnastics just to reach escape velocity from the standard library, how the heck are we supposed to survive contact with numeric implementations we haven’t even heard of yet?!
-We can’t enumerate them *all*!
-
-For many years, the numeric tower was declared a “dead end” by maintainers.
-Unsurprisingly, many longstanding library authors didn’t see much benefit to conforming to its API.
-Adoption has grown, but we can’t rely on it.
-
-What *should* we rely on, then?
-Surely the exalted few who have steered us *away* from one thing are prepared to steer us *toward* something else, no?
-Sadly, the apparent attitude of many seems to be, “Something, something, protocols? Meh. I don’t know. We’ll figure it out later.”
-
-*Can* we fix this with protocols?
-The standard library provides [some simple precedents](https://docs.python.org/3/library/typing.html#protocols).
-
-``` python
->>> try:
-...   from typing import Protocol, runtime_checkable
-... except ImportError:
-...   from typing_extensions import Protocol, runtime_checkable  # type: ignore
->>> from typing import Iterable, Union
->>> @runtime_checkable
-... class SupportsNumeratorDenominator(Protocol):
-...   __slots__: Union[str, Iterable[str]] = ()
-...   @property
-...   def numerator(self) -> int: pass
-...   @property
-...   def denominator(self) -> int: pass
->>> def require_rational(arg: SupportsNumeratorDenominator) -> None:
-...   assert isinstance(arg, SupportsNumeratorDenominator)
->>> require_rational(1)
->>> require_rational(Fraction(1, 2))
->>> require_rational(1.0)  # type: ignore
-Traceback (most recent call last):
-  ...
-AssertionError
-
-```
-
-Without the ``# type: ignore``, we get:
-
-```
-…: error: Argument 1 to "require_rational" has incompatible type "float"; expected "SupportsNumeratorDenominator"
-…: note: "float" is missing following "SupportsNumeratorDenominator" protocol members:
-…: note:     denominator, numerator
-```
-
-Oh.
-My.
-Godetia.
-Could this be it?
-Have we stumbled into the promised land?
-
-Let’s see how they perform.
-First, let’s get a baseline.
-
-``` python
-In [11]: from fractions import Fraction ; from numbers import Rational
-
-In [12]: val = 1
-
-In [13]: %timeit -r10 isinstance(val, Rational)
-326 ns ± 1.26 ns per loop (mean ± std. dev. of 10 runs, 1000000 loops each)
-
-In [14]: val = Fraction(1, 2)
-
-In [15]: %timeit -r10 isinstance(val, Rational)
-329 ns ± 1.87 ns per loop (mean ± std. dev. of 10 runs, 1000000 loops each)
-
-In [16]: val = 1.0
-
-In [17]: %timeit -r10 isinstance(val, Rational)
-351 ns ± 1.29 ns per loop (mean ± std. dev. of 10 runs, 1000000 loops each)
-```
-
-Now let’s compare that with our two-property protocol.
-
-``` python
-In [20]: from numerary import SupportsNumeratorDenominator
-
-In [21]: val = 1
-
-In [22]: %timeit -r10 isinstance(val, SupportsNumeratorDenominator)
-12.2 µs ± 203 ns per loop (mean ± std. dev. of 10 runs, 100000 loops each)
-
-In [23]: val = Fraction(1, 2)
-
-In [24]: %timeit -r10 isinstance(val, SupportsNumeratorDenominator)
-12.3 µs ± 62 ns per loop (mean ± std. dev. of 10 runs, 100000 loops each)
-
-In [25]: val = 1.0
-
-In [26]: %timeit -r10 isinstance(val, SupportsNumeratorDenominator)
-12.4 µs ± 97.8 ns per loop (mean ± std. dev. of 10 runs, 100000 loops each)
-```
-
-That’s *forty times* slower. 😶
-And that’s just with a two-property protocol.
-How much worse would it be if we had enumerated all the dunder methods? 😰
-
-You know what?
-Never mind that.
-Where there’s a will, there’s a way.
-Note to self, “Solve the performance problems with protocols later, but we’re *definitely* onto something!”
-
-Let’s do another one.
-Real numbers have comparisons that complex ones don’t.
-That seems as good a place as any to tackle next.
-
-``` python
->>> try:
-...   from typing import Protocol, runtime_checkable
-... except ImportError:
-...   from typing_extensions import Protocol, runtime_checkable  # type: ignore
->>> from abc import abstractmethod
->>> from typing import Any, Iterable, Union
->>> @runtime_checkable
-... class SupportsRealComparisons(Protocol):
-...   __slots__: Union[str, Iterable[str]] = ()
-...   @abstractmethod
-...   def __lt__(self, other: Any) -> bool: pass
-...   @abstractmethod
-...   def __le__(self, other: Any) -> bool: pass
-...   @abstractmethod
-...   def __ge__(self, other: Any) -> bool: pass
-...   @abstractmethod
-...   def __gt__(self, other: Any) -> bool: pass
->>> def require_real(arg: SupportsRealComparisons) -> None:
-...   assert isinstance(arg, SupportsRealComparisons)
->>> require_real(1)
->>> require_real(Fraction(1, 2))
->>> require_real(1.0)
->>> require_real(complex(0))  # type: ignore  # should go ka-boom!
-
-```
-
-Where was the ka-boom?
-[There was *supposed* to be an earth-shattering ka-boom!](https://youtu.be/t9wmWZbr_wQ)
-Type checking spotted the error.
-Without the ``# type: ignore``, we get:
-
-```
-…: error: Argument 1 to "require_real" has incompatible type "complex"; expected "SupportsRealComparisons"
-```
-
-So what gives?
-Why does our protocol think a ``complex`` has comparisons at runtime?
-It’s a complex number and complex numbers don’t have those.
-The [standard library says so](https://docs.python.org/3/library/numbers.html#the-numeric-tower)!
-
-``` python
->>> from numbers import Complex
->>> isinstance(complex(0), Complex)
-True
->>> hasattr(Complex, "__le__")
-True
->>> complex(0).__le__  # type: ignore
-<...method...complex...>
-
-```
-
-What the shit?
-Do they work?
-
-``` python
->>> complex(0) <= complex(0)  # type: ignore
-Traceback (most recent call last):
-  ...
-TypeError: '<=' not supported between instances of 'complex' and 'complex'
-
-```
-
-Wait.
-Complex numbers implement comparisons *in complete contradiction to the documentation* just to return ``NotImplemented``?!
-🤬 *off*!
-
-How does Mypy know?
-Because the type definitions for [``complex``](https://github.com/python/typeshed/blob/f4143c40e85db42dc98549e09329e196668395ee/stdlib/builtins.pyi#L304-L331) and [``Complex``](https://github.com/python/typeshed/blob/f4143c40e85db42dc98549e09329e196668395ee/stdlib/numbers.pyi#L11-L45) are lies that conveniently omit mention of those methods.
-
-!!! quote
-
-    “When it becomes serious, you have to lie.”
-
-    —Jean-Claude Juncker
-
-Do you see?!
-Do you see now why we can’t have nice things?!
-I mean, I get *casting* as a rare case, but who builds *sophisticated deception tooling* into the very fabric a type definition mechanism to claim that non-compliant native primitives comply?
-How can you trust *anything* anymore?!
-Shouldn’t that be a pretty strong hint that maybe you should step back and rethink your approach?
-
-Astute readers may note [``beartype``](https://pypi.org/project/beartype/) could help restore Truth for us.
-
-``` python
-from beartype import beartype
-from beartype.vale import Is
-from typing import Annotated
-SupportsRealComparisonsNotComplexLies = Annotated[
-  SupportsRealComparisons, Is[lambda arg: not isinstance(arg, complex)]
-]
-@beartype
-def require_real(arg: SupportsRealComparisonsNotComplexLies) -> None:
-  assert isinstance(arg, SupportsRealComparisonsNotComplexLies)
-```
-
-That’s because Bear is hip to the scene.
-Bear is *down*.
-Bear knows what’s what.
-If you have a typing problem, if no one else can help, and if you can find them[^2], maybe you can hire the Bear-Team.
-
-[^2]:
-
-    That should be easy
-    I just gave you the [link](https://pypi.org/project/beartype/).
-    *Twice*.
-
-I digress.
-
-Okay.
-Can we still work with any of this shit *and* have type checking?
-Dunno.
-Let’s try.
-Because *somebody* 🤬ing has to.
-
-## A taste
+## You had me at, “numbers and types can work together”
 
 ``numerary`` strives to define composable, *efficient* protocols that one can use to construct numeric requirements.
-It expands on the [``Supports`` pattern](https://docs.python.org/3/library/typing.html#protocols ) used in the standard library.
+If all you deal with are integrals and reals, and what you want is broad arithmetic operator compatibility, this will probably get you where you likely want to go:
 
+``` python
+>>> from numerary import IntegralLike, RealLike
+
+>>> def deeper_thot(arg: RealLike) -> IntegralLike:
+...   assert arg != 0 and arg ** 0 == 1
+...   return arg // arg + 42
+
+```
+
+Beyond default compositions for common use cases, ``numerary`` expands on the [``Supports`` pattern](https://docs.python.org/3/library/typing.html#protocols ) used in the standard library.
 For example, ``numerary.types.SupportsIntegralOps`` is a [``@typing.runtime_checkable``](https://docs.python.org/3/library/typing.html#typing.runtime_checkable) protocol that approximates the unary and binary operators introduced by [``numbers.Integral``](https://docs.python.org/3/library/numbers.html#numbers.Integral).
 
 ``` python
 >>> from numerary.types import SupportsIntegralOps
+
 >>> def shift_right_one(arg: SupportsIntegralOps) -> SupportsIntegralOps:
 ...   assert isinstance(arg, SupportsIntegralOps)
 ...   return arg >> 1
+
 >>> shift_right_one(2)
 1
+
 >>> from sympy import sympify
 >>> two = sympify("2") ; type(two)
 <class 'sympy.core.numbers.Integer'>
@@ -432,7 +102,9 @@ For example, ``numerary.types.SupportsIntegralOps`` is a [``@typing.runtime_chec
 1
 >>> type(res)
 <class 'sympy.core.numbers.One'>
->>> shift_right_one(Fraction(1, 2))  # type: ignore  # properly caught by Mypy
+
+>>> from fractions import Fraction
+>>> shift_right_one(Fraction(1, 2))  # type: ignore [arg-type]  # properly caught by Mypy
 Traceback (most recent call last):
   ...
 AssertionError
@@ -443,16 +115,67 @@ AssertionError
 
     Until 1.9, ``sympy.core.numbers.Integer`` [lacked the requisite bitwise operators](https://github.com/sympy/sympy/issues/19311).
     ``numerary`` catches that!
-    The above properly results in both a type checking error as well as a runtime failure for [SymPy](https://www.sympy.org/) versions prior to 1.9.
+    The above properly results in both a type-checking error as well as a runtime failure for [SymPy](https://www.sympy.org/) versions prior to 1.9.
 
-Remember that scandal (above) where ``complex`` defined exception-throwing comparators it wasn’t supposed to have, which confused runtime protocol checking, and then its type definitions lied about it to cover it up?
+ ``numerary``’s ``Supports`` protocols can be composed to refine requirements.
+For example, let’s say one wanted to ensure type compatibility with primitives that support both ``__abs__`` and ``__divmod__``.
+
+``` python
+>>> from typing import TypeVar
+>>> T_co = TypeVar("T_co", covariant=True)
+>>> from numerary.types import (
+...   CachingProtocolMeta, Protocol, runtime_checkable,
+...   SupportsAbs, SupportsDivmod,
+... )
+
+>>> @runtime_checkable
+... class MyType(
+...   SupportsAbs[T_co], SupportsDivmod[T_co],
+...   Protocol, metaclass=CachingProtocolMeta,
+... ): pass
+
+>>> my_type: MyType
+
+>>> my_type = 3.5
+>>> isinstance(my_type, MyType)
+True
+>>> abs(my_type)
+3.5
+>>> divmod(my_type, 2)
+(1.0, 1.5)
+
+>>> from fractions import Fraction
+>>> my_type = Fraction(22, 7)
+>>> isinstance(my_type, MyType)
+True
+>>> abs(my_type)
+Fraction(22, 7)
+>>> divmod(my_type, 2)
+(1, Fraction(8, 7))
+
+>>> from decimal import Decimal
+>>> my_type = Decimal("5.2")
+>>> isinstance(my_type, MyType)
+True
+>>> abs(my_type)
+Decimal('5.2')
+>>> divmod(my_type, 2)
+(Decimal('2'), Decimal('1.2'))
+
+>>> my_type = "nope"  # type: ignore [assignment]  # properly caught by Mypy
+>>> isinstance(my_type, MyType)
+False
+
+```
+
+Remember that scandal where [``complex`` defined exception-throwing comparators it wasn’t supposed to have, which confused runtime protocol checking, and then its type definitions lied about it to cover it up](https://posita.github.io/numerary/latest/whytho/#lies-upon-lies-upon-lies-all-the-way-down)?
 Yeah, that shit ends *here*.
 
 ``` python
 >>> from numerary.types import SupportsRealOps
 >>> isinstance(1.0, SupportsRealOps)  # all good
 True
->>> has_real_ops: SupportsRealOps = complex(1)  # type: ignore  # properly caught by Mypy
+>>> has_real_ops: SupportsRealOps = complex(1)  # type: ignore [assignment]  # properly caught by Mypy
 >>> isinstance(complex(1), SupportsRealOps)  # you're not fooling anyone, buddy
 False
 
@@ -461,164 +184,199 @@ False
 That is because ``numerary`` not only caches runtime protocol evaluations, but allows overriding those evaluations when the default machinery gets it wrong.
 
 ``` python
->>> from numerary.types import CachingProtocolMeta
+>>> from abc import abstractmethod
+>>> from typing import Iterable, Union
+>>> from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
+
 >>> @runtime_checkable
 ... class SupportsOne(Protocol, metaclass=CachingProtocolMeta):
 ...   __slots__: Union[str, Iterable[str]] = ()
 ...   @abstractmethod
 ...   def one(self) -> int:
 ...     pass
+
 >>> class Imposter:
 ...   def one(self) -> str:
 ...     return "one"
->>> imp: SupportsOne = Imposter()  # type: ignore  # properly caught by Mypy
+
+>>> imp: SupportsOne = Imposter()  # type: ignore [assignment]  # properly caught by Mypy
 >>> isinstance(imp, SupportsOne)  # fool me once, shame on you ...
 True
+
 >>> SupportsOne.excludes(Imposter)
 >>> isinstance(imp, SupportsOne)  # ... can't get fooled again
 False
 
 ```
 
-``numerary`` has default overrides to correct for known oddities with native types (like our old friend, ``complex``), [``numpy``](https://numpy.org/), and [``sympy``](https://www.sympy.org/).
+``numerary`` has default overrides to correct for known oddities with native types (like our old friend, ``complex``) and with popular libraries like [``numpy``](https://numpy.org/) and [``sympy``](https://www.sympy.org/).
 Others will be added as they are identified.
 If I’ve missed any, or if you would like ``numerary`` to support additional number implementations out of the box, please [let me know](https://posita.github.io/numerary/latest/contrib/#filing-issues).
 
-## Performance Enhanced Protocols
+## Performance Enhanced Protocols—A *different* kind of “PEP” for your step
 
-By default, [protocols frustrate runtime type checking performance](https://bugs.python.org/issue30505).
+By default, [protocols frustrate runtime type-checking performance](https://bugs.python.org/issue30505).
+
+[A lot.](https://posita.github.io/numerary/latest/whytho/#puh-roh-tih-caaahhhlllz)
+
 ``numerary`` applies two distinct, layered optimization strategies:
 
 1. Cached ``__instancecheck__`` results for ``numerary``-defined protocols; and
-2. Short-circuit type enumerations.
+2. Optional(-ish) short-circuit type enumerations.
 
 ### Cached ``__instancecheck__`` results
 
-It caches, so it’s faster.
-[Bang. Done.](https://youtu.be/cCmNYP1k12w)
-(NSFW warning.[^3])
+To understand why ``numerary`` protocols are faster for runtime checks, it helps to understand why non-``numerary`` protocols are so slow.
+At runtime (i.e., via ``isinstance``), the [default ``Protocol`` implementation](https://github.com/python/cpython/blob/main/Lib/typing.py) delegates to ``_ProtocolMeta.__instancecheck__`` to perform a crude comparison of an instance’s callable attributes against the protocol’s.
+More attributes means more comparisons.
+Further, it performs these comparisons … Every. Single. 🤬ing. Time.
 
-[^3]:
+Protocols provided by ``numerary`` use instead [``CachingProtocolMeta``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.CachingProtocolMeta) as their meta class.
+``CachingProtocolMeta`` derives from ``_ProtocolMeta`` and overrides ``__instancecheck__ `` to cache the default implementation’s results based on instance type.
 
-    In retrospect, that warning probably should have been presented more prominently and earlier in this diatribe.
+Conceptually:
 
-*TODO(@posita): Describe how this works.*
+``` python
+>>> isinstance(1, SupportsIntegralOps)  # first check for an int is delegated to _ProtcolMeta.__instancecheck__
+True
+>>> isinstance(2, SupportsIntegralOps)  # cached result
+True
+>>> isinstance(1.0, SupportsIntegralOps)  # the first check for a float is delegated to _ProtcolMeta.__instancecheck__
+False
+>>> isinstance(2.0, SupportsIntegralOps)  # cached result
+False
+
+```
+
+These offer significant performance improvements, especially where protocols define many methods.
+
+``` python
+--8<-- "docs/perf_supports_complex.out"
+```
+
+<details>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/latest/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
+
+``` python
+--8<-- "docs/perf_supports_complex.ipy"
+```
+</details>
 
 ### Short-circuit type enumerations
 
-If the interface is to be used most often with native types (``int``s, ``float``s, ``bool``s) or those registered with the numeric tower, there is an optimization to be had at runtime by short-circuiting protocol type checking.
-These come in two flavors.
+If the interface is to be used most often with native types (``int``s, ``float``s, ``bool``s), an additional optimization may be had at runtime by short-circuiting protocol type-checking.
 
-1. ``…SCU`` objects which are ``Union``s for compliant types.
-2. ``…SCT`` tuples, which are identical to the corresponding ``Union`` arguments. These are useful for runtime checks (e.g., as the second argument to ``isinstance``).
-
-For example, for the aforementioned ``SupportsIntegralOps``, ``numerary`` defines two additional interfaces (some details and safeguards omitted).
+``…SCU`` objects provide ``Union``s for compliant types.
+As one example, for the aforementioned ``SupportsIntegralOps``, ``numerary`` defines an additional interface.
 
 ``` python
 SupportsIntegralOpsSCU = Union[int, bool, Integral, SupportsIntegralOps]
-SupportsIntegralOpsSCT = (int, bool, Integral, SupportsIntegralOps)
 ```
 
 ``` python
->>> from numerary.types import SupportsIntegralOpsSCU  # for type annotations
->>> from numerary.types import SupportsIntegralOpsSCT  # for runtime checking
+>>> from numerary.types import SupportsIntegralOpsSCU
+
 >>> def shift_left_one(arg: SupportsIntegralOpsSCU) -> SupportsIntegralOpsSCU:
-...   assert isinstance(arg, SupportsIntegralOpsSCT)
+...   assert isinstance(arg, SupportsIntegralOps)
 ...   return arg << 1
+
 >>> shift_left_one(1)
 2
 >>> shift_left_one(sympify("1"))
 2
->>> shift_left_one(Fraction(1, 2))  # type: ignore
+>>> shift_left_one(Fraction(1, 2))  # type: ignore [arg-type]
 Traceback (most recent call last):
   ...
 AssertionError
 
 ```
 
-Why two?
-Because you can’t do this:
-
-``` python
-isinstance(1, Union[int, Integral])  # syntax error
-```
-
-And because Mypy is confused by this[^4]:
+Where do ``…SCU`` protocols help?
+In a word, *[``beartype``](https://pypi.org/project/beartype/)*.
+``beartype`` is *awesome*.
+Its author is even *awesomer*.[^4]
+More generally, runtime checkers that inspect and enforce annotations may benefit from short-circuiting where protocol validation is expensive.
 
 [^4]:
 
-    Even though the syntax is legal and [``beartype``](https://pypi.org/project/beartype/) gladly does the right thing by treating the tuple literal as a ``Union``.
-    Not sure if this is a bug or a feature, but my vote is for feature.
+    I acknowledge that the subject of who is awesomer, beartype or the man who made it, is [hotly contested](https://github.com/beartype/beartype/issues/66#issuecomment-960495976).
+
+``Union``s are *also* useful when trying to accommodate non-compliant primitives that fail static type-checking, but will work anyway at runtime.
+``float``s in Python versions prior to 3.9 are an excellent example, because they officially lacked ``__floor__`` and ``__ceil__`` methods, but were registered with the numeric tower and worked just fine with ``math.floor`` and ``math.ceil``.
+
+How do ``numerary``’s [``SupportsFloor``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsFloor) and [``SupportsCeil``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsCeil) deal with this situation?
+Not super well on their own, unfortunately.
 
 ``` python
-def my_func(arg: (int, Integral)):  # Mypy "syntax" error
-  pass
+>>> import math
+>>> from numerary.types import SupportsFloor
+
+>>> def my_dumb_floor_func(arg: SupportsFloor) -> int:
+...   assert isinstance(arg, SupportsFloor)  # will work, even for floats, thanks to default overrides
+...   return math.floor(arg)  # type: ignore [arg-type]  # doesn't understand SupportsFloor
+
+>>> my_dumb_floor_func(float(1.2))  # type: ignore [arg-type]  # still results in a Mypy error for Python version <3.9
+1
+
 ```
 
-!!! info
+``Union``s allow a work-around for the static type-checking issue.
 
-    As [@leycec correctly points out](https://github.com/beartype/beartype/issues/66#issuecomment-960495976), [PEP 604](https://www.python.org/dev/peps/pep-0604/) promises a syntax that would help avoid needing one thing for ``isinstance`` checks and an entirely separate thing for annotations.
-    While some of its machinery is available to Python versions prior to 3.10 [via ``from __future__ import annotations``](https://github.com/python/mypy/pull/9647), sadly, [type aliases and ``isinstance`` checks are not](https://github.com/python/mypy/issues/9610#issuecomment-711147567) (a [known limitation](https://www.python.org/dev/peps/pep-0604/#change-only-pep-484-type-hints-to-accept-the-syntax-type1-type2)).
-    ``numerary`` leans heavily on both.
+``` python
+>>> from numerary.types import SupportsFloor, SupportsFloorSCU, floor
+>>> SupportsFloorSCU  # float is included here
+typing.Union[int, float, bool, numbers.Real, numerary.types.SupportsFloor]
 
-    So we need one of:
+>>> import sys
+>>> def my_floor_func(arg: SupportsFloorSCU) -> int:
+...   assert isinstance(arg, SupportsFloor)
+...   return floor(arg)
 
-    1. A fully functional back-port of PEP 604;
-    1. Version irrelevance *through* Python 3.9; and
-    1. A meaningful and comprehensive fix to [python/mypy#3186](https://github.com/python/mypy/issues/3186) that such that we can gleefully delete ``numerary`` (or at least declare it obsolete) and move on with our lives.
+>>> my_floor_func(float(1.2))  # works in 3.7+
+1
 
-    I am taking bets on which happens first.
+```
 
-Does the ``Union`` provide *any* benefit?
-Yes.
-Because *[``beartype``](https://pypi.org/project/beartype/)*.
-``beartype`` is *awesome*.
-Its author is even *awesomer*.[^5]
-More generally, runtime checkers that inspect and enforce annotations face problems similar to ``isinstance``.
-Defining a ``Union`` provides an annotation analog for short-circuiting.
-
-[^5]:
-
-    I acknowledge that the subject of who is awesomer, beartype or the man who made it, is [hotly contested](https://github.com/beartype/beartype/issues/66#issuecomment-960495976).
+This is largely a contrived example, since ``math.floor`` and ``math.ceil`` happily accept ``SupportsFloat``, but it is useful for illustration.
 
 ### Limitations
 
 There are some downsides, though.
 (Aren’t there always?)
 
-#### Short-circuiting is too trusting
+#### Sometimes protocols are too trusting
 
-Short-circuiting trusts numeric tower registrations.
+Protocols trust numeric tower registrations.
+*TODO(@posita): Is this really true?*
 But sometimes, out there in the real world, implementations *lie*.
 
 Consider:
 
 ``` python
->>> from numerary.types import SupportsRealImag, SupportsRealImagSCT
+>>> from numbers import Integral
 >>> hasattr(Integral, "real") and hasattr(Integral, "imag")
 True
->>> one = sympify("1")
->>> isinstance(one, Integral)
+>>> import sympy.core.numbers
+>>> pants_on_fire = sympy.core.numbers.Integer(1)
+>>> isinstance(pants_on_fire, Integral)
 True
->>> hasattr(one, "real") or hasattr(one, "imag")  # somebody's tellin' stories
+>>> hasattr(pants_on_fire, "real") or hasattr(pants_on_fire, "imag")  # somebody's tellin' stories
 False
->>> isinstance(one, SupportsRealImag)  # detects the lie
-False
->>> isinstance(one, SupportsRealImagSCT)  # trusts the registration
-True
+>>> from numerary.types import SupportsRealImag
+>>> real_imag: SupportsRealImag = pants_on_fire  # fails to detect the lie
 
 ```
 
-#### Protocols lose fidelity at runtime
+#### Protocols loses fidelity during runtime checking
 
 At runtime, protocols match *names*, not *signatures*.
-More specifically, [``SupportsNumeratorDenominatorProperties``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
+For example, [``SupportsNumeratorDenominatorProperties``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
 In other words, ``isinstance(sage_integer, SupportsNumeratorDenominatorProperties)`` will return ``True``.
-Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^6] not be caught by Mypy.
+Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^5] not be caught by Mypy.
 
-[^6]:
+[^5]:
 
-    I say *may* because I don’t really know how Sage’s number registrations work.
+    I say *may* because I don’t really understand how Sage’s number registrations work.
 
 ``` python
 >>> class SageLikeRational:
@@ -632,7 +390,7 @@ Further, if the short-circuiting approach is used, because ``sage.rings.integer.
 
 >>> from numerary.types import SupportsNumeratorDenominatorProperties
 >>> frac: SupportsNumeratorDenominatorProperties = Fraction(29, 3)  # no typing error
->>> sage_rational1: SupportsNumeratorDenominatorProperties = SageLikeRational(29, 3)  # type: ignore  # Mypy catches this
+>>> sage_rational1: SupportsNumeratorDenominatorProperties = SageLikeRational(29, 3)  # type: ignore [assignment]  # Mypy catches this
 >>> isinstance(sage_rational1, SupportsNumeratorDenominatorProperties)  # isinstance does not
 True
 >>> sage_rational1.numerator
@@ -642,9 +400,9 @@ True
 
 ```
 
-Known warts can be cured using cache overriding as discussed above.
-To combat this particular situation, ``numerary`` provides an alternative: the [``SupportsNumeratorDenominatorMethods``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods) protocol and the [``numerator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.numerator) and [``denominator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.denominator) helper functions.
-These allow accommodation of rational implementations that are mostly compliant with the exception of their respective ``numerator`` and ``denominator`` implementations.
+Known warts *could* be cured by cache overriding as discussed above.
+However, to combat this particular situation, ``numerary`` provides an alternative: the [``SupportsNumeratorDenominatorMethods``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods) protocol and the [``numerator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.numerator) and [``denominator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.denominator) helper functions.
+These allow accommodation of rational implementations like Sage’s that are mostly compliant with the exception of their respective ``numerator`` and ``denominator`` implementations.
 
 ``` python
 >>> from numerary.types import numerator
@@ -685,37 +443,7 @@ SupportsNumeratorDenominatorMixedT = (
 
 ```
 
-The ``SupportsNumeratorDenominator*`` primitives provide the basis for the analogous [``numerary.types.RationalLike*`` primitives](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.RationalLikeMethods), which *should* provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.
-
-### Shut up and take my money!
-
-If all you deal with are integrals and reals, and what you want is broad arithmetic operator compatibility, but don’t do a ton of runtime checking, this should probably get you most of where you likely want to go:
-
-``` python
->>> from numerary import IntegralLike, RealLike
->>> def deeper_thot(arg: RealLike) -> IntegralLike:
-...   assert arg != 0 and arg ** 0 == 1
-...   return arg // arg + 42
-
-```
-
-If your performance requirements demand them, consider the short-circuiting versions.
-
-``` python
->>> from numerary import (
-...   IntegralLikeSCT, IntegralLikeSCU,
-...   RealLikeSCT, RealLikeSCU,
-... )
->>> # ...
-
-```
-
-More examples coming soon.
-I *promise*!
-No, really.
-Not a PEP promise.
-A *real* one.
-✌️😊
+The ``SupportsNumeratorDenominator*`` primitives provide the basis for analogous [``numerary.types.RationalLike*`` primitives](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.RationalLikeMethods), which *should* provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.
 
 ## License
 
@@ -758,9 +486,9 @@ It has the following runtime dependencies:
 * [``beartype``](https://pypi.org/project/beartype/) for yummy runtime type-checking goodness (0.8+)
   [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
-If you use ``beartype`` for type checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for some strange reason), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^7] value before ``numerary`` is loaded.
+If you use ``beartype`` for type-checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for some strange reason), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^6] value before ``numerary`` is loaded.
 
-[^7]:
+[^6]:
 
     I.E., one of: ``0``, ``off``, ``f``, ``false``, and ``no``.
 

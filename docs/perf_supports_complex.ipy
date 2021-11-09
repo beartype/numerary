@@ -1,0 +1,21 @@
+from decimal import Decimal
+from fractions import Fraction
+from numerary.types import _SupportsComplexOps  # non-caching version
+from numerary.types import SupportsComplexOps  # CachingProtocolMeta version
+import sympy
+
+one_int = 1
+two_float = 2.0
+three_dec = Decimal(3)
+four_frac = Fraction(4)
+five_sym = sympy.sympify(5)
+vals = (one_int, two_float, three_dec, four_frac, five_sym)
+
+for v in vals:
+  for t in (
+    _SupportsComplexOps,
+    SupportsComplexOps,
+  ):
+    print(f"%timeit isinstance({type(v).__module__}.{type(v).__name__}({v}), {t.__name__})")
+    %timeit isinstance(v, t)
+  print()

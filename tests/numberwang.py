@@ -100,7 +100,7 @@ class NumberwangBase:
         return hash((type(self).__name__, self.val))
 
     @overload
-    def __add__(self, other: _IntegralT) -> _IntegralT:  # type: ignore
+    def __add__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
         ...
 
     @overload
@@ -128,7 +128,7 @@ class NumberwangBase:
             return __add__(self.val, other)
 
     @overload
-    def __radd__(self, other: _IntegralT) -> _IntegralT:  # type: ignore
+    def __radd__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
         ...
 
     @overload
@@ -156,7 +156,7 @@ class NumberwangBase:
             return __add__(other, self.val)
 
     @overload
-    def __sub__(self, other: _IntegralT) -> _IntegralT:  # type: ignore
+    def __sub__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
         ...
 
     @overload
@@ -184,7 +184,7 @@ class NumberwangBase:
             return __sub__(self.val, other)
 
     @overload
-    def __rsub__(self, other: _IntegralT) -> _IntegralT:  # type: ignore
+    def __rsub__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
         ...
 
     @overload
@@ -212,7 +212,7 @@ class NumberwangBase:
             return __sub__(other, self.val)
 
     @overload
-    def __mul__(self, other: _IntegralT) -> _IntegralT:  # type: ignore
+    def __mul__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
         ...
 
     @overload
@@ -240,7 +240,7 @@ class NumberwangBase:
             return __mul__(self.val, other)
 
     @overload
-    def __rmul__(self, other: _IntegralT) -> _IntegralT:  # type: ignore
+    def __rmul__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
         ...
 
     @overload
@@ -312,7 +312,7 @@ class NumberwangBase:
             return __truediv__(other, self.val)
 
     @overload
-    def __floordiv__(self, other: _IntegralT) -> _IntegralT:  # type: ignore
+    def __floordiv__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
         ...
 
     @overload
@@ -340,11 +340,11 @@ class NumberwangBase:
             return __floordiv__(self.val, other)
 
     @overload
-    def __rfloordiv__(self, other: _IntegralT) -> _IntegralT:  # type: ignore
+    def __rfloordiv__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
         ...
 
     @overload
-    def __rfloordiv__(self, other: _RealT) -> _RealT:  # type: ignore
+    def __rfloordiv__(self, other: _RealT) -> _RealT:  # type: ignore [misc]
         ...
 
     @overload
@@ -368,7 +368,7 @@ class NumberwangBase:
             return __floordiv__(other, self.val)
 
     @overload
-    def __mod__(self, other: _IntegralT) -> _IntegralT:  # type: ignore
+    def __mod__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
         ...
 
     @overload
@@ -396,7 +396,7 @@ class NumberwangBase:
             return __mod__(self.val, other)
 
     @overload
-    def __rmod__(self, other: _IntegralT) -> _IntegralT:  # type: ignore
+    def __rmod__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
         ...
 
     @overload
@@ -424,7 +424,7 @@ class NumberwangBase:
             return __mod__(other, self.val)
 
     @overload
-    def __pow__(  # type: ignore
+    def __pow__(  # type: ignore [misc]
         self, other: _IntegralT, modulo: Optional[_IntegralT] = None
     ) -> _IntegralT:
         ...
@@ -454,7 +454,7 @@ class NumberwangBase:
             return pow(self.val, other, modulo)
 
     @overload
-    def __rpow__(  # type: ignore
+    def __rpow__(  # type: ignore [misc]
         self, other: _IntegralT, modulo: Optional[_IntegralT] = None
     ) -> _IntegralT:
         ...
@@ -653,7 +653,7 @@ assert issubclass(NumberwangRegistered, Real)
 assert issubclass(NumberwangRegistered, Integral)
 
 
-class NumberwangDerived(NumberwangBase, Integral):  # type: ignore
+class NumberwangDerived(NumberwangBase, Integral):  # type: ignore [misc]
     __slots__: Union[str, Iterable[str]] = ()
 
 
@@ -841,7 +841,7 @@ class Wangernumb:
             return __floordiv__(self.val, other)
 
     @overload
-    def __rfloordiv__(self, other: _RealT) -> _RealT:  # type: ignore
+    def __rfloordiv__(self, other: _RealT) -> _RealT:  # type: ignore [misc]
         ...
 
     @overload
@@ -976,7 +976,7 @@ Real.register(WangernumbRegistered)
 assert issubclass(WangernumbRegistered, Real)
 
 
-class WangernumbDerived(Wangernumb, Real):  # type: ignore
+class WangernumbDerived(Wangernumb, Real):  # type: ignore [misc]
     __slots__: Union[str, Iterable[str]] = ()
 
 

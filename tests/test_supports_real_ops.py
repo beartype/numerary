@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsRealOps, SupportsRealOpsSCT, SupportsRealOpsSCU
+from numerary.types import SupportsRealOps, SupportsRealOpsSCU
 
 from .numberwang import (
     Numberwang,
@@ -33,13 +33,13 @@ __all__ = ()
 
 
 @beartype
-def func(arg: SupportsRealOps):
+def supports_real_ops_func(arg: SupportsRealOps):
     assert isinstance(arg, SupportsRealOps), f"{arg!r}"
 
 
 @beartype
-def func_t(arg: SupportsRealOpsSCU):
-    assert isinstance(arg, SupportsRealOpsSCT), f"{arg!r}"
+def supports_real_ops_func_t(arg: SupportsRealOpsSCU):
+    assert isinstance(arg, SupportsRealOps), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -72,7 +72,6 @@ def test_supports_real_ops() -> None:
         wnr_val,
     ):
         assert isinstance(good_val, SupportsRealOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsRealOpsSCT), f"{good_val!r}"
         assert good_val <= good_val, f"{good_val!r}"
         assert good_val >= good_val, f"{good_val!r}"
 
@@ -81,7 +80,6 @@ def test_supports_real_ops() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsRealOps), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsRealOpsSCT), f"{bad_val!r}"
 
 
 def test_supports_real_ops_beartype() -> None:
@@ -100,18 +98,18 @@ def test_supports_real_ops_beartype() -> None:
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),
     ):
-        func(cast(SupportsRealOps, good_val))
-        func_t(cast(SupportsRealOpsSCU, good_val))
+        supports_real_ops_func(cast(SupportsRealOps, good_val))
+        supports_real_ops_func_t(cast(SupportsRealOpsSCU, good_val))
 
     for bad_val in (
         complex(-273.15),
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(SupportsRealOps, bad_val))
+            supports_real_ops_func(cast(SupportsRealOps, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsRealOpsSCU, bad_val))
+            supports_real_ops_func_t(cast(SupportsRealOpsSCU, bad_val))
 
 
 def test_supports_real_ops_numpy() -> None:
@@ -144,7 +142,6 @@ def test_supports_real_ops_numpy() -> None:
         float128_val,
     ):
         assert isinstance(good_val, SupportsRealOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsRealOpsSCT), f"{good_val!r}"
         assert good_val <= good_val, f"{good_val!r}"
         assert good_val >= good_val, f"{good_val!r}"
 
@@ -154,7 +151,6 @@ def test_supports_real_ops_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsRealOps), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsRealOpsSCT), f"{bad_val!r}"
 
 
 def test_supports_real_ops_numpy_beartype() -> None:
@@ -175,8 +171,8 @@ def test_supports_real_ops_numpy_beartype() -> None:
         numpy.float64(-273.15),
         numpy.float128(-273.15),
     ):
-        func(cast(SupportsRealOps, good_val))
-        func_t(cast(SupportsRealOpsSCU, good_val))
+        supports_real_ops_func(cast(SupportsRealOps, good_val))
+        supports_real_ops_func_t(cast(SupportsRealOpsSCU, good_val))
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -184,10 +180,10 @@ def test_supports_real_ops_numpy_beartype() -> None:
         numpy.clongdouble(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(SupportsRealOps, bad_val))
+            supports_real_ops_func(cast(SupportsRealOps, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(SupportsRealOpsSCU, bad_val))
+            supports_real_ops_func_t(cast(SupportsRealOpsSCU, bad_val))
 
 
 def test_supports_real_ops_sympy() -> None:
@@ -204,7 +200,6 @@ def test_supports_real_ops_sympy() -> None:
         sym_val,
     ):
         assert isinstance(good_val, SupportsRealOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsRealOpsSCT), f"{good_val!r}"
 
         # Symbolic relationals can't be reduced to a boolean
         if isinstance(good_val, sympy.core.symbol.Symbol):
@@ -225,5 +220,5 @@ def test_supports_real_ops_sympy_beartype() -> None:
         sympy.Rational(-27315, 100),
         sympy.symbols("x"),
     ):
-        func(cast(SupportsRealOps, good_val))
-        func_t(cast(SupportsRealOpsSCU, good_val))
+        supports_real_ops_func(cast(SupportsRealOps, good_val))
+        supports_real_ops_func_t(cast(SupportsRealOpsSCU, good_val))

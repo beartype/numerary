@@ -59,11 +59,11 @@ def test_beartype_detection() -> None:
         return arg
 
     with pytest.raises(roar.BeartypeException):
-        _real_like_identity("-273")  # type: ignore
+        _real_like_identity("-273")  # type: ignore [arg-type]
 
     @beartype
     def _lies_all_lies(arg: RealLikeSCU) -> Tuple[str]:
-        return (arg,)  # type: ignore
+        return (arg,)  # type: ignore [return-value]
 
     with pytest.raises(roar.BeartypeException):
         _lies_all_lies(-273)
@@ -85,7 +85,7 @@ def test_beartype_validators() -> None:
         _divide_it(0, 0)
 
     with pytest.raises(roar.BeartypeException):
-        _divide_it(0, "1")  # type: ignore
+        _divide_it(0, "1")  # type: ignore [arg-type]
 
     If = Annotated[
         Tuple[str, ...],

@@ -17,10 +17,8 @@ import pytest
 from numerary.bt import beartype
 from numerary.types import (
     SupportsComplexOps,
-    SupportsComplexOpsSCT,
     SupportsComplexOpsSCU,
     SupportsComplexPow,
-    SupportsComplexPowSCT,
     SupportsComplexPowSCU,
 )
 
@@ -40,23 +38,23 @@ __all__ = ()
 
 
 @beartype
-def ops_func(arg: SupportsComplexOps):
+def supports_complex_ops_func(arg: SupportsComplexOps):
     assert isinstance(arg, SupportsComplexOps), f"{arg!r}"
 
 
 @beartype
-def ops_func_t(arg: SupportsComplexOpsSCU):
-    assert isinstance(arg, SupportsComplexOpsSCT), f"{arg!r}"
+def supports_complex_ops_func_t(arg: SupportsComplexOpsSCU):
+    assert isinstance(arg, SupportsComplexOps), f"{arg!r}"
 
 
 @beartype
-def pow_func(arg: SupportsComplexPow):
+def supports_complex_pow_func(arg: SupportsComplexPow):
     assert isinstance(arg, SupportsComplexPow), f"{arg!r}"
 
 
 @beartype
-def pow_func_t(arg: SupportsComplexPowSCU):
-    assert isinstance(arg, SupportsComplexPowSCT), f"{arg!r}"
+def supports_complex_pow_func_t(arg: SupportsComplexPowSCU):
+    assert isinstance(arg, SupportsComplexPow), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -104,19 +102,16 @@ def test_supports_complex_ops_pow() -> None:
         wnr_val,
     ):
         assert isinstance(good_val, SupportsComplexOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsComplexOpsSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
         assert good_val / 1 == good_val, f"{good_val!r}"
         assert 0 - good_val == -good_val, f"{good_val!r}"
         assert isinstance(good_val, SupportsComplexPow), f"{good_val!r}"
-        assert isinstance(good_val, SupportsComplexPowSCT), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
     for bad_val in ("-273.15",):
         assert not isinstance(bad_val, SupportsComplexOps), f"{bad_val!r}"
-        assert not isinstance(bad_val, SupportsComplexOpsSCT), f"{bad_val!r}"
 
 
 def test_supports_complex_ops_pow_beartype() -> None:
@@ -136,23 +131,23 @@ def test_supports_complex_ops_pow_beartype() -> None:
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),
     ):
-        ops_func(cast(SupportsComplexOps, good_val))
-        ops_func_t(cast(SupportsComplexOpsSCU, good_val))
-        pow_func(cast(SupportsComplexPow, good_val))
-        pow_func_t(cast(SupportsComplexPowSCU, good_val))
+        supports_complex_ops_func(cast(SupportsComplexOps, good_val))
+        supports_complex_ops_func_t(cast(SupportsComplexOpsSCU, good_val))
+        supports_complex_pow_func(cast(SupportsComplexPow, good_val))
+        supports_complex_pow_func_t(cast(SupportsComplexPowSCU, good_val))
 
     for bad_val in ("-273.15",):
         with pytest.raises(roar.BeartypeException):
-            ops_func(cast(SupportsComplexOps, bad_val))
+            supports_complex_ops_func(cast(SupportsComplexOps, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            ops_func_t(cast(SupportsComplexOpsSCU, bad_val))
+            supports_complex_ops_func_t(cast(SupportsComplexOpsSCU, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            pow_func(cast(SupportsComplexPow, bad_val))
+            supports_complex_pow_func(cast(SupportsComplexPow, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            pow_func_t(cast(SupportsComplexPowSCU, bad_val))
+            supports_complex_pow_func_t(cast(SupportsComplexPowSCU, bad_val))
 
 
 def test_supports_complex_ops_pow_numpy() -> None:
@@ -207,7 +202,6 @@ def test_supports_complex_ops_pow_numpy() -> None:
         clongdouble_val,
     ):
         assert isinstance(good_val, SupportsComplexOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsComplexOpsSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -221,7 +215,6 @@ def test_supports_complex_ops_pow_numpy() -> None:
             assert 0 - good_val == -good_val, f"{good_val!r}"
 
         assert isinstance(good_val, SupportsComplexPow), f"{good_val!r}"
-        assert isinstance(good_val, SupportsComplexPowSCT), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
 
@@ -246,10 +239,10 @@ def test_supports_complex_ops_pow_numpy_beartype() -> None:
         numpy.cdouble(-273.15),
         numpy.clongdouble(-273.15),
     ):
-        ops_func(cast(SupportsComplexOps, good_val))
-        ops_func_t(cast(SupportsComplexOpsSCU, good_val))
-        pow_func(cast(SupportsComplexPow, good_val))
-        pow_func_t(cast(SupportsComplexPowSCU, good_val))
+        supports_complex_ops_func(cast(SupportsComplexOps, good_val))
+        supports_complex_ops_func_t(cast(SupportsComplexOpsSCU, good_val))
+        supports_complex_pow_func(cast(SupportsComplexPow, good_val))
+        supports_complex_pow_func_t(cast(SupportsComplexPowSCU, good_val))
 
 
 def test_supports_complex_ops_pow_sympy() -> None:
@@ -271,7 +264,6 @@ def test_supports_complex_ops_pow_sympy() -> None:
         sym_val,
     ):
         assert isinstance(good_val, SupportsComplexOps), f"{good_val!r}"
-        assert isinstance(good_val, SupportsComplexOpsSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -279,7 +271,6 @@ def test_supports_complex_ops_pow_sympy() -> None:
         assert 0 - good_val == -good_val, f"{good_val!r}"
 
         assert isinstance(good_val, SupportsComplexPow), f"{good_val!r}"
-        assert isinstance(good_val, SupportsComplexPowSCT), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
 
@@ -293,7 +284,7 @@ def test_supports_complex_ops_pow_sympy_beartype() -> None:
         sympy.Rational(-27315, 100),
         sympy.symbols("x"),
     ):
-        ops_func(cast(SupportsComplexOps, good_val))
-        ops_func_t(cast(SupportsComplexOpsSCU, good_val))
-        pow_func(cast(SupportsComplexPow, good_val))
-        pow_func_t(cast(SupportsComplexPowSCU, good_val))
+        supports_complex_ops_func(cast(SupportsComplexOps, good_val))
+        supports_complex_ops_func_t(cast(SupportsComplexOpsSCU, good_val))
+        supports_complex_pow_func(cast(SupportsComplexPow, good_val))
+        supports_complex_pow_func_t(cast(SupportsComplexPowSCU, good_val))

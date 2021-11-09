@@ -17,10 +17,14 @@
 
 ## [0.0.6](https://github.com/posita/numerary/releases/tag/v0.0.6)
 
-* Add [CachingProtocolMeta.includes][numerary.types.CachingProtocolMeta.includes],
+* Adds [CachingProtocolMeta.includes][numerary.types.CachingProtocolMeta.includes],
   [CachingProtocolMeta.excludes][numerary.types.CachingProtocolMeta.excludes], and
   [CachingProtocolMeta.reset_for][numerary.types.CachingProtocolMeta.reset_for] cache
   manipulation functions.
+* Retires ``…SCT`` tuples as unnecessary.
+  (Runtime ``isinstance`` protocol checking is fast enough.)
+  For limited backward compatibility, they are now merely type aliases for similarly named protocols and will be removed in the next version.
+* Updates docs.
 
 ## [0.0.5](https://github.com/posita/numerary/releases/tag/v0.0.5)
 

@@ -15,7 +15,7 @@ from typing import cast
 
 import pytest
 
-from numerary import RealLike, RealLikeSCT, RealLikeSCU
+from numerary import RealLike, RealLikeSCU
 from numerary.bt import beartype
 
 from .numberwang import (
@@ -34,13 +34,13 @@ __all__ = ()
 
 
 @beartype
-def func(arg: RealLike):
+def real_like_func(arg: RealLike):
     assert isinstance(arg, RealLike), f"{arg!r}"
 
 
 @beartype
-def func_t(arg: RealLikeSCU):
-    assert isinstance(arg, RealLikeSCT), f"{arg!r}"
+def real_like_func_t(arg: RealLikeSCU):
+    assert isinstance(arg, RealLike), f"{arg!r}"
 
 
 # ---- Tests ---------------------------------------------------------------------------
@@ -73,7 +73,6 @@ def test_real_like() -> None:
         wnr_val,
     ):
         assert isinstance(good_val, RealLike), f"{good_val!r}"
-        assert isinstance(good_val, RealLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -93,7 +92,6 @@ def test_real_like() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, RealLike), f"{bad_val!r}"
-        assert not isinstance(bad_val, RealLikeSCT), f"{bad_val!r}"
 
 
 def test_real_like_beartype() -> None:
@@ -112,18 +110,18 @@ def test_real_like_beartype() -> None:
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),
     ):
-        func(cast(RealLike, good_val))
-        func_t(cast(RealLikeSCU, good_val))
+        real_like_func(cast(RealLike, good_val))
+        real_like_func_t(cast(RealLikeSCU, good_val))
 
     for bad_val in (
         complex(-273.15),
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(RealLike, bad_val))
+            real_like_func(cast(RealLike, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(RealLikeSCU, bad_val))
+            real_like_func_t(cast(RealLikeSCU, bad_val))
 
 
 def test_real_like_numpy() -> None:
@@ -156,7 +154,6 @@ def test_real_like_numpy() -> None:
         float128_val,
     ):
         assert isinstance(good_val, RealLike), f"{good_val!r}"
-        assert isinstance(good_val, RealLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -181,7 +178,6 @@ def test_real_like_numpy() -> None:
         numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, RealLike), f"{bad_val!r}"
-        assert not isinstance(bad_val, RealLikeSCT), f"{bad_val!r}"
 
 
 def test_real_like_numpy_beartype() -> None:
@@ -202,8 +198,8 @@ def test_real_like_numpy_beartype() -> None:
         numpy.float64(-273.15),
         numpy.float128(-273.15),
     ):
-        func(cast(RealLike, good_val))
-        func_t(cast(RealLikeSCU, good_val))
+        real_like_func(cast(RealLike, good_val))
+        real_like_func_t(cast(RealLikeSCU, good_val))
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -211,10 +207,10 @@ def test_real_like_numpy_beartype() -> None:
         numpy.clongdouble(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
-            func(cast(RealLike, bad_val))
+            real_like_func(cast(RealLike, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            func_t(cast(RealLikeSCU, bad_val))
+            real_like_func_t(cast(RealLikeSCU, bad_val))
 
 
 def test_real_like_sympy() -> None:
@@ -231,7 +227,6 @@ def test_real_like_sympy() -> None:
         symbol_val,
     ):
         assert isinstance(good_val, RealLike), f"{good_val!r}"
-        assert isinstance(good_val, RealLikeSCT), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
@@ -265,5 +260,5 @@ def test_real_like_sympy_beartype() -> None:
         sympy.Float(-273.15),
         sympy.symbols("x"),
     ):
-        func(cast(RealLike, good_val))
-        func_t(cast(RealLikeSCU, good_val))
+        real_like_func(cast(RealLike, good_val))
+        real_like_func_t(cast(RealLikeSCU, good_val))

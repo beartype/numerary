@@ -23,16 +23,42 @@
     I am working toward stability as quickly as possible, but be warned that future release may introduce incompatibilities or remove this package altogether.
     [Feedback, suggestions, and contributions](contrib.md) are desperately appreciated.
 
-These are additional protocols that can be composed as desired.
+In addition to the following protocols and helper functions, ``numerary.types`` also resolves importing ``Annotated``, ``Protocol``, and ``runtime_checkable`` from the best available source.
+This can be helpful if you need to support Python versions prior to 3.9, but don’t want to take a runtime dependency on ``typing_extensions`` unless needed.
+Instead of doing this all over the place …
+
+``` python
+try:
+  from typing import Annotated, Protocol, runtime_checkable
+except ImportError:
+  from typing_extensions import Annotated, Protocol, runtime_checkable
+```
+
+… you can do this instead …
+
+``` python
+from numerary.types import Annotated, Protocol, runtime_checkable
+```
+
+Bang.
+Done.
+
+Further, if you want to opportunistically take advantage of [``beartype``](https://pypi.org/project/beartype/) without imposing a strict runtime dependency, you can do this:
+
+``` python
+from numerary.bt import beartype  # will resolve to the identity decorator if beartype is unavailable at runtime
+```
 
 ::: numerary.types
     rendering:
-      show_if_no_docstring: true
+      show_if_no_docstring: false
+      show_root_heading: false
+      show_root_toc_entry: false
     selection:
       members:
         - "CachingProtocolMeta"
-        - "RationalLikeMethods"
         - "RationalLikeProperties"
+        - "RationalLikeMethods"
         - "SupportsAbs"
         - "SupportsComplex"
         - "SupportsFloat"
@@ -57,3 +83,37 @@ These are additional protocols that can be composed as desired.
         - "ceil"
         - "numerator"
         - "denominator"
+
+<!---
+  See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
+-->
+::: numerary.types
+    rendering:
+      show_if_no_docstring: true
+      show_root_heading: false
+      show_root_toc_entry: false
+    selection:
+      members:
+        - "RationalLikeMixedT"
+        - "RationalLikeMixedU"
+        - "_SupportsAbs"
+        - "_SupportsComplex"
+        - "_SupportsFloat"
+        - "_SupportsInt"
+        - "_SupportsIndex"
+        - "_SupportsRound"
+        - "_SupportsConjugate"
+        - "_SupportsRealImag"
+        - "_SupportsTrunc"
+        - "_SupportsFloor"
+        - "_SupportsCeil"
+        - "_SupportsDivmod"
+        - "_SupportsNumeratorDenominatorProperties"
+        - "_SupportsNumeratorDenominatorMethods"
+        - "SupportsNumeratorDenominatorMixedT"
+        - "SupportsNumeratorDenominatorMixedU"
+        - "_SupportsComplexOps"
+        - "_SupportsComplexPow"
+        - "_SupportsRealOps"
+        - "_SupportsIntegralOps"
+        - "_SupportsIntegralPow"
