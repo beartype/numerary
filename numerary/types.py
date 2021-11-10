@@ -14,7 +14,18 @@ from abc import abstractmethod
 from decimal import Decimal
 from fractions import Fraction
 from numbers import Complex, Integral, Rational, Real
-from typing import Any, Dict, Iterable, Optional, Tuple, Type, TypeVar, Union
+from typing import (
+    Any,
+    Dict,
+    Iterable,
+    Iterator,
+    Optional,
+    Set,
+    Tuple,
+    Type,
+    TypeVar,
+    Union,
+)
 
 from .bt import beartype
 
@@ -40,6 +51,7 @@ else:
     from typing_extensions import Annotated  # noqa: F401
 
 if sys.version_info >= (3, 8):
+    from typing import _get_protocol_attrs  # type: ignore [attr-defined]
     from typing import Protocol
     from typing import SupportsAbs as _SupportsAbs
     from typing import SupportsComplex as _SupportsComplex
@@ -49,7 +61,7 @@ if sys.version_info >= (3, 8):
     from typing import SupportsRound as _SupportsRound
     from typing import runtime_checkable
 else:
-    from typing_extensions import Protocol, runtime_checkable
+    from typing_extensions import Protocol, _get_protocol_attrs, runtime_checkable
 
     @runtime_checkable
     class _SupportsAbs(Protocol[_T_co]):
@@ -103,6 +115,14 @@ else:
 _ProtocolMeta: Any = type(Protocol)
 
 
+def _bases_pass_muster_gen(cls: CachingProtocolMeta, inst: Any) -> Iterator[bool]:
+    for base in cls.__bases__:
+        if base is cls or base.__name__ in ("Protocol", "Generic", "object"):
+            continue
+
+        yield isinstance(inst, base)
+
+
 class CachingProtocolMeta(_ProtocolMeta):
     """
     Stand-in for ``#!python Protocol``’s base class that caches results of ``#!python
@@ -128,16 +148,31 @@ class CachingProtocolMeta(_ProtocolMeta):
         # Prefixing this class member with "_abc_" is necessary to prevent it from being
         # considered part of the Protocol. (See
         # <https://github.com/python/cpython/blob/main/Lib/typing.py>.)
-        cache: Dict[Tuple[Type], bool] = {}
+        cache: Dict[Type, bool] = {}
         cls._abc_inst_check_cache = cache
+        overridden: Dict[Type, bool] = {}
+        cls._abc_inst_check_cache_overridden = overridden
+        listeners: Set[CachingProtocolMeta] = set()
+        cls._abc_inst_check_cache_listeners = listeners
+
+        for base in bases:
+            if hasattr(base, "_abc_inst_check_cache_listeners"):
+                base._abc_inst_check_cache_listeners.add(cls)
 
         return cls
 
     def __instancecheck__(cls, inst: Any) -> bool:
+        # This has to stay *super* tight! Even adding a mere assertion can add ~50% to
+        # the best case runtime!
         inst_t = type(inst)
 
         if inst_t not in cls._abc_inst_check_cache:
-            cls._abc_inst_check_cache[inst_t] = super().__instancecheck__(inst)
+            # If you're going to do *anything*, do it here. Don't touch the rest of this
+            # method if you can avoid it.
+            cls._abc_inst_check_cache[inst_t] = all(
+                _bases_pass_muster_gen(cls, inst)
+            ) and cls._check_only_my_attrs(inst)
+            cls._abc_inst_check_cache_overridden[inst_t] = False
 
         return cls._abc_inst_check_cache[inst_t]
 
@@ -175,6 +210,8 @@ class CachingProtocolMeta(_ProtocolMeta):
             ```
         """
         cls._abc_inst_check_cache[inst_t] = True
+        cls._abc_inst_check_cache_overridden[inst_t] = True
+        cls._dirty_for(inst_t)
 
     def excludes(cls, inst_t: Type) -> None:
         r"""
@@ -212,6 +249,8 @@ class CachingProtocolMeta(_ProtocolMeta):
             ```
         """
         cls._abc_inst_check_cache[inst_t] = False
+        cls._abc_inst_check_cache_overridden[inst_t] = True
+        cls._dirty_for(inst_t)
 
     def reset_for(cls, inst_t: Type) -> None:
         r"""
@@ -219,6 +258,30 @@ class CachingProtocolMeta(_ProtocolMeta):
         """
         if inst_t in cls._abc_inst_check_cache:
             del cls._abc_inst_check_cache[inst_t]
+            del cls._abc_inst_check_cache_overridden[inst_t]
+            cls._dirty_for(inst_t)
+
+    def _check_only_my_attrs(cls, inst: Any) -> bool:
+        attrs = set(cls.__dict__)
+        attrs.update(cls.__dict__.get("__annotations__", {}))
+        attrs.intersection_update(_get_protocol_attrs(cls))
+
+        for attr in attrs:
+            if not hasattr(inst, attr):
+                return False
+            elif callable(getattr(cls, attr, None)) and getattr(inst, attr) is None:
+                return False
+
+        return True
+
+    def _dirty_for(cls, inst_t: Type) -> None:
+        for inheriting_cls in cls._abc_inst_check_cache_listeners:
+            if (
+                inst_t in inheriting_cls._abc_inst_check_cache
+                and not inheriting_cls._abc_inst_check_cache_overridden[inst_t]
+            ):
+                del inheriting_cls._abc_inst_check_cache[inst_t]
+                del inheriting_cls._abc_inst_check_cache_overridden[inst_t]
 
 
 def _assert_isinstance(*num_ts: type, target_t: type) -> None:
@@ -1345,10 +1408,6 @@ SupportsCeil.includes(float)
 # complex defines these methods, but only to raise exceptions
 SupportsDivmod.excludes(complex)
 SupportsRealOps.excludes(complex)
-RealLike.excludes(complex)
-RationalLikeProperties.excludes(complex)
-RationalLikeMethods.excludes(complex)
-IntegralLike.excludes(complex)
 
 try:
     import numpy
@@ -1376,7 +1435,6 @@ try:
         SupportsCeil.includes(t)
         SupportsIntegralOps.excludes(t)
         SupportsIntegralPow.excludes(t)
-        IntegralLike.excludes(t)
 
     # numpy complex types define these methods, but only to raise exceptions
     for t in (
@@ -1388,10 +1446,6 @@ try:
         SupportsRealOps.excludes(t)
         SupportsIntegralOps.excludes(t)
         SupportsIntegralPow.excludes(t)
-        RealLike.excludes(t)
-        RationalLikeProperties.excludes(t)
-        RationalLikeMethods.excludes(t)
-        IntegralLike.excludes(t)
 except ImportError:
     pass
 
@@ -1401,6 +1455,5 @@ try:
     SupportsTrunc.excludes(sympy.core.symbol.Symbol)
     SupportsIntegralOps.excludes(sympy.core.symbol.Symbol)
     SupportsIntegralPow.excludes(sympy.core.symbol.Symbol)
-    IntegralLike.excludes(sympy.core.symbol.Symbol)
 except ImportError:
     pass

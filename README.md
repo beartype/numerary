@@ -192,8 +192,7 @@ That is because ``numerary`` not only caches runtime protocol evaluations, but a
 ... class SupportsOne(Protocol, metaclass=CachingProtocolMeta):
 ...   __slots__: Union[str, Iterable[str]] = ()
 ...   @abstractmethod
-...   def one(self) -> int:
-...     pass
+...   def one(self) -> int: pass
 
 >>> class Imposter:
 ...   def one(self) -> str:
@@ -445,6 +444,89 @@ SupportsNumeratorDenominatorMixedT = (
 
 The ``SupportsNumeratorDenominator*`` primitives provide the basis for analogous [``numerary.types.RationalLike*`` primitives](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.RationalLikeMethods), which *should* provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.
 
+#### Pass-through caching with composition implementation is pretty sketchy
+
+This is really getting into where the sausage is made.
+However, in the spirit of full transparency, this must be disclosed.
+
+Let’s say we register an errant implementation as non-compliant.
+
+``` python
+>>> from numerary.types import SupportsFloat
+
+>>> class FloatImposter:
+...   def __float__(self) -> float:
+...     raise NotImplementedError("Haha! JK! @#$% you!")
+...   def __int__(self) -> int:
+...     return 42
+
+>>> float_imp = FloatImposter()
+>>> isinstance(float_imp, SupportsFloat)
+True
+>>> SupportsFloat.excludes(FloatImposter)
+>>> isinstance(float_imp, SupportsFloat)
+False
+
+```
+
+For composition to be ergonomic, this registration should be indelible, survive composition, but allow overriding by inheritors.
+
+``` python
+>>> from numerary.types import (
+...   CachingProtocolMeta, Protocol, runtime_checkable,
+...   SupportsInt,
+... )
+
+>>> @runtime_checkable
+... class MyFloatInt(
+...   SupportsFloat, SupportsInt,
+...   Protocol, metaclass=CachingProtocolMeta,
+... ): pass
+
+>>> isinstance(float_imp, MyFloatInt)  # picks up excludes override from SupportsFloat
+False
+
+>>> SupportsFloat.reset_for(FloatImposter)
+>>> isinstance(float_imp, SupportsFloat)
+True
+>>> isinstance(float_imp, MyFloatInt)  # picks up resetting of SupportsFloat override
+True
+
+>>> MyFloatInt.excludes(FloatImposter)  # overrides in composition
+>>> isinstance(float_imp, MyFloatInt)
+False
+>>> SupportsFloat.includes(FloatImposter)
+>>> isinstance(float_imp, FloatImposter)
+True
+>>> isinstance(float_imp, MyFloatInt)  # overrides/resets in member protocols are hidden
+False
+
+>>> MyFloatInt.reset_for(FloatImposter)  # removes override in composition
+>>> isinstance(float_imp, MyFloatInt)  # member protocol is visible again
+True
+>>> SupportsFloat.excludes(FloatImposter)
+>>> isinstance(float_imp, MyFloatInt)
+False
+
+```
+
+For this to work under the current implementation, we cannot rely exclusively on the [standard library’s implementation of ``__instancecheck__``](https://github.com/python/cpython/blob/main/Lib/typing.py), since it flattens and inspects all properties (with some proprietary exceptions) of all classes in order of the MRO, not just the current instance.
+In lay terms, this means that an ancestor’s ``__instancecheck__`` cache is effectively hidden from its progeny.
+Without intervention, that would require one to register exceptions with every inheritor, which would suck.
+
+Overriding the behavior is problematic, because the standard library uses a non-public function called ``_get_protocol_attrs`` to perform its attribute enumeration.
+
+[``CachingProtocolMeta``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.CachingProtocolMeta) tries to work around this by importing ``_get_protocol_attrs`` and performing some set arithmetic to limit its evaluation to directly defined attributes, and then delegate ``isinstance`` evaluation to its ``__base__`` classes.
+In doing so, it picks up its bases’ then-cached values, but at the cost of re-implementing the attribute check as well as taking a dependency on an implementation detail of the standard library, which creates a fragility.
+Further, for post-inheritance updates, ``CachingProtocolMeta`` implements a simplistic publish/subscribe mechanism that dirties non-overridden caches in inheritors when member protocols caches are updated.
+These are deliberate compromises.
+(See the [implementation](https://github.com/posita/numerary/blob/latest/numerary/types.py) for details.)
+
+One subtlety is that the implementation deviates from performing checks in MRO order (and may perform redundant checks).
+This is probably fine as long as runtime comparisons remain limited to crude checks whether attributes merely exist.
+It would likely fail if runtime checking becomes more sophisticated, at which time, this implementation will need to be revisited.
+Hopefully by then, we can just delete ``numerary`` as the aspirationally unnecessary hack it is and move on with our lives.
+
 ## License
 
 ``numerary`` is licensed under the [MIT License](https://opensource.org/licenses/MIT).
@@ -496,7 +578,7 @@ See the [hacking quick-start](https://posita.github.io/numerary/latest/contrib/#
 
 ## Customers [![``numerary``-encumbered](https://raw.githubusercontent.com/posita/numerary/latest/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
 
-* [``dyce``](https://pypi.org/project/dycelib/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
+* [``dyce``](https://pypi.org/project/dyce/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
 * The next one could be _you_! 👋
 
 Do you have a project that suffers problems made slightly less annoying by ``numerary``?
