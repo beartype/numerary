@@ -18,11 +18,11 @@ All rights not expressly waived or licensed are reserved.
 If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.*
 
 [![Tests](https://github.com/posita/numerary/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/posita/numerary/actions/workflows/unit-tests.yaml)
-[![Version](https://img.shields.io/pypi/v/numerary.svg)](https://pypi.org/project/numerary/)
-[![Development Stage](https://img.shields.io/pypi/status/numerary.svg)](https://pypi.org/project/numerary/)
-[![License](https://img.shields.io/pypi/l/numerary.svg)](http://opensource.org/licenses/MIT)
-[![Supported Python Versions](https://img.shields.io/pypi/pyversions/numerary.svg)](https://pypi.org/project/numerary/)
-[![Supported Python Implementations](https://img.shields.io/pypi/implementation/numerary.svg)](https://pypi.org/project/numerary/)
+[![Version](https://img.shields.io/pypi/v/numerary/0.1.0.svg)](https://pypi.org/project/numerary/0.1.0/)
+[![Development Stage](https://img.shields.io/pypi/status/numerary/0.1.0.svg)](https://pypi.org/project/numerary/0.1.0/)
+[![License](https://img.shields.io/pypi/l/numerary/0.1.0.svg)](http://opensource.org/licenses/MIT)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/numerary/0.1.0.svg)](https://pypi.org/project/numerary/0.1.0/)
+[![Supported Python Implementations](https://img.shields.io/pypi/implementation/numerary/0.1.0.svg)](https://pypi.org/project/numerary/0.1.0/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
@@ -41,7 +41,7 @@ But until there is, there’s …
 That’s right!
 
 For a hopefully limited time, you too can benefit from someone else’s deranged work-arounds for the enormous chasms in Python that lie between the esoteric fields of computation that are “typing” and “numbers” instead of having to roll your own ~~out of sheer desperation~~ *from first principles*!
-If you still have no idea what I’m talking about, [this may help illustrate](https://posita.github.io/numerary/latest/whytho/).
+If you still have no idea what I’m talking about, [this may help illustrate](https://posita.github.io/numerary/0.1/whytho/).
 
 ``numerary`` is a pure-Python codified rant for signaling that your interface is usable with non-native numeric primitives[^1] without breaking type-checking.
 More simply, ``numerary`` aspires to a world where numbers and types can work together.
@@ -63,10 +63,10 @@ Its author gauges its success by how quickly it can be forgotten, relegated to t
 ``numerary`` is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 See the accompanying ``LICENSE`` file for details.
 It should be considered experimental for now, but should settle down quickly.
-See the [release notes](https://posita.github.io/numerary/latest/notes/) for a summary of version-to-version changes.
+See the [release notes](https://posita.github.io/numerary/0.1/notes/) for a summary of version-to-version changes.
 Source code is [available on GitHub](https://github.com/posita/numerary).
 
-If you find it lacking in any way, please don’t hesitate to [bring it to my attention](https://posita.github.io/numerary/latest/contrib/).
+If you find it lacking in any way, please don’t hesitate to [bring it to my attention](https://posita.github.io/numerary/0.1/contrib/).
 
 ## You had me at, “numbers and types can work together”
 
@@ -168,7 +168,7 @@ False
 
 ```
 
-Remember that scandal where [``complex`` defined exception-throwing comparators it wasn’t supposed to have, which confused runtime protocol checking, and then its type definitions lied about it to cover it up](https://posita.github.io/numerary/latest/whytho/#lies-upon-lies-upon-lies-all-the-way-down)?
+Remember that scandal where [``complex`` defined exception-throwing comparators it wasn’t supposed to have, which confused runtime protocol checking, and then its type definitions lied about it to cover it up](https://posita.github.io/numerary/0.1/whytho/#lies-upon-lies-upon-lies-all-the-way-down)?
 Yeah, that shit ends *here*.
 
 ``` python
@@ -210,13 +210,13 @@ False
 
 ``numerary`` has default overrides to correct for known oddities with native types (like our old friend, ``complex``) and with popular libraries like [``numpy``](https://numpy.org/) and [``sympy``](https://www.sympy.org/).
 Others will be added as they are identified.
-If I’ve missed any, or if you would like ``numerary`` to support additional number implementations out of the box, please [let me know](https://posita.github.io/numerary/latest/contrib/#filing-issues).
+If I’ve missed any, or if you would like ``numerary`` to support additional number implementations out of the box, please [let me know](https://posita.github.io/numerary/0.1/contrib/#filing-issues).
 
 ## Performance Enhanced Protocols—A *different* kind of “PEP” for your step
 
 By default, [protocols frustrate runtime type-checking performance](https://bugs.python.org/issue30505).
 
-[A lot.](https://posita.github.io/numerary/latest/whytho/#puh-roh-tih-caaahhhlllz)
+[A lot.](https://posita.github.io/numerary/0.1/whytho/#puh-roh-tih-caaahhhlllz)
 
 ``numerary`` applies two distinct, layered optimization strategies:
 
@@ -230,7 +230,7 @@ At runtime (i.e., via ``isinstance``), the [default ``Protocol`` implementation]
 More attributes means more comparisons.
 Further, it performs these comparisons … Every. Single. 🤬ing. Time.
 
-Protocols provided by ``numerary`` use instead [``CachingProtocolMeta``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.CachingProtocolMeta) as their meta class.
+Protocols provided by ``numerary`` use instead [``CachingProtocolMeta``](https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.CachingProtocolMeta) as their meta class.
 ``CachingProtocolMeta`` derives from ``_ProtocolMeta`` and overrides ``__instancecheck__ `` to cache the default implementation’s results based on instance type.
 
 Conceptually:
@@ -254,7 +254,7 @@ These offer significant performance improvements, especially where protocols def
 ```
 
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/latest/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.1.0/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
 
 ``` python
 --8<-- "docs/perf_supports_complex.ipy"
@@ -303,7 +303,7 @@ More generally, runtime checkers that inspect and enforce annotations may benefi
 ``Union``s are *also* useful when trying to accommodate non-compliant primitives that fail static type-checking, but will work anyway at runtime.
 ``float``s in Python versions prior to 3.9 are an excellent example, because they officially lacked ``__floor__`` and ``__ceil__`` methods, but were registered with the numeric tower and worked just fine with ``math.floor`` and ``math.ceil``.
 
-How do ``numerary``’s [``SupportsFloor``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsFloor) and [``SupportsCeil``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsCeil) deal with this situation?
+How do ``numerary``’s [``SupportsFloor``](https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.SupportsFloor) and [``SupportsCeil``](https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.SupportsCeil) deal with this situation?
 Not super well on their own, unfortunately.
 
 ``` python
@@ -369,7 +369,7 @@ False
 #### Protocols loses fidelity during runtime checking
 
 At runtime, protocols match *names*, not *signatures*.
-For example, [``SupportsNumeratorDenominatorProperties``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
+For example, [``SupportsNumeratorDenominatorProperties``](https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
 In other words, ``isinstance(sage_integer, SupportsNumeratorDenominatorProperties)`` will return ``True``.
 Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^5] not be caught by Mypy.
 
@@ -400,7 +400,7 @@ True
 ```
 
 Known warts *could* be cured by cache overriding as discussed above.
-However, to combat this particular situation, ``numerary`` provides an alternative: the [``SupportsNumeratorDenominatorMethods``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods) protocol and the [``numerator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.numerator) and [``denominator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.denominator) helper functions.
+However, to combat this particular situation, ``numerary`` provides an alternative: the [``SupportsNumeratorDenominatorMethods``](https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods) protocol and the [``numerator``](https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.numerator) and [``denominator``](https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.denominator) helper functions.
 These allow accommodation of rational implementations like Sage’s that are mostly compliant with the exception of their respective ``numerator`` and ``denominator`` implementations.
 
 ``` python
@@ -442,7 +442,7 @@ SupportsNumeratorDenominatorMixedT = (
 
 ```
 
-The ``SupportsNumeratorDenominator*`` primitives provide the basis for analogous [``numerary.types.RationalLike*`` primitives](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.RationalLikeMethods), which *should* provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.
+The ``SupportsNumeratorDenominator*`` primitives provide the basis for analogous [``numerary.types.RationalLike*`` primitives](https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.RationalLikeMethods), which *should* provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.
 
 #### Pass-through caching with composition implementation is pretty sketchy
 
@@ -516,11 +516,11 @@ Without intervention, that would require one to register exceptions with every i
 
 Overriding the behavior is problematic, because the standard library uses a non-public function called ``_get_protocol_attrs`` to perform its attribute enumeration.
 
-[``CachingProtocolMeta``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.CachingProtocolMeta) tries to work around this by importing ``_get_protocol_attrs`` and performing some set arithmetic to limit its evaluation to directly defined attributes, and then delegate ``isinstance`` evaluation to its ``__base__`` classes.
+[``CachingProtocolMeta``](https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.CachingProtocolMeta) tries to work around this by importing ``_get_protocol_attrs`` and performing some set arithmetic to limit its evaluation to directly defined attributes, and then delegate ``isinstance`` evaluation to its ``__base__`` classes.
 In doing so, it picks up its bases’ then-cached values, but at the cost of re-implementing the attribute check as well as taking a dependency on an implementation detail of the standard library, which creates a fragility.
 Further, for post-inheritance updates, ``CachingProtocolMeta`` implements a simplistic publish/subscribe mechanism that dirties non-overridden caches in inheritors when member protocols caches are updated.
 These are deliberate compromises.
-(See the [implementation](https://github.com/posita/numerary/blob/latest/numerary/types.py) for details.)
+(See the [implementation](https://github.com/posita/numerary/blob/v0.1.0/numerary/types.py) for details.)
 
 One subtlety is that the implementation deviates from performing checks in MRO order (and may perform redundant checks).
 This is probably fine as long as runtime comparisons remain limited to crude checks whether attributes merely exist.
@@ -530,7 +530,7 @@ Hopefully by then, we can just delete ``numerary`` as the aspirationally unneces
 ## License
 
 ``numerary`` is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-See the included [``LICENSE``](https://posita.github.io/numerary/latest/license/) file for details.
+See the included [``LICENSE``](https://posita.github.io/numerary/0.1/license/) file for details.
 Source code is [available on GitHub](https://github.com/posita/numerary).
 
 ## Installation
@@ -574,15 +574,15 @@ If you use ``beartype`` for type-checking your code that interacts with ``numera
 
     I.E., one of: ``0``, ``off``, ``f``, ``false``, and ``no``.
 
-See the [hacking quick-start](https://posita.github.io/numerary/latest/contrib/#hacking-quick-start) for additional development and testing dependencies.
+See the [hacking quick-start](https://posita.github.io/numerary/0.1/contrib/#hacking-quick-start) for additional development and testing dependencies.
 
-## Customers [![``numerary``-encumbered](https://raw.githubusercontent.com/posita/numerary/latest/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
+## Customers [![``numerary``-encumbered](https://raw.githubusercontent.com/posita/numerary/v0.1.0/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
 
 * [``dyce``](https://pypi.org/project/dyce/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
 * The next one could be _you_! 👋
 
 Do you have a project that suffers problems made slightly less annoying by ``numerary``?
-[Let me know](https://posita.github.io/numerary/latest/contrib/#filing-issues), and I’ll promote it here!
+[Let me know](https://posita.github.io/numerary/0.1/contrib/#filing-issues), and I’ll promote it here!
 
 And don’t forget to do your part in perpetuating gratuitous badge-ification!
 
