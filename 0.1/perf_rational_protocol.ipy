@@ -1,0 +1,22 @@
+from fractions import Fraction
+from numbers import Rational
+from typing import Iterable, Protocol, Union, runtime_checkable
+
+one_int = 1
+two_frac = Fraction(2)
+three_float = 3.0
+vals = (one_int, two_frac, three_float)
+
+@runtime_checkable
+class SupportsNumeratorDenominator(Protocol):
+  __slots__: Union[str, Iterable[str]] = ()
+  @property
+  def numerator(self) -> int: pass
+  @property
+  def denominator(self) -> int: pass
+
+t = SupportsNumeratorDenominator
+
+for v in vals:
+  print(f"%timeit isinstance({type(v).__module__}.{type(v).__name__}({v}), {t.__name__})")
+  %timeit isinstance(v, t)

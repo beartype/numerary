@@ -1,0 +1,55 @@
+from fractions import Fraction
+from numbers import Rational
+from numerary.types import (  # "raw" (non-caching) versions
+  _SupportsCeil,
+  _SupportsComplexOps,
+  _SupportsConjugate,
+  _SupportsFloor,
+  _SupportsDivmod,
+  _SupportsRealImag,
+  _SupportsRealOps,
+  _SupportsTrunc,
+)
+from typing import (
+  Iterable,
+  Protocol,
+  SupportsAbs,
+  SupportsFloat,
+  SupportsComplex,
+  SupportsRound,
+  Union,
+  runtime_checkable,
+)
+
+one_int = 1
+two_frac = Fraction(2)
+three_float = 3.0
+vals = (one_int, two_frac, three_float)
+
+@runtime_checkable
+class SupportsLotsOfNumberStuff(
+  _SupportsRealOps,
+  _SupportsComplexOps,
+  _SupportsDivmod,
+  _SupportsTrunc,
+  _SupportsFloor,
+  _SupportsCeil,
+  _SupportsConjugate,
+  _SupportsRealImag,
+  SupportsAbs,
+  SupportsFloat,
+  SupportsComplex,
+  SupportsRound,
+  Protocol,
+):
+  __slots__: Union[str, Iterable[str]] = ()
+  @property
+  def numerator(self) -> int: pass
+  @property
+  def denominator(self) -> int: pass
+
+t = SupportsLotsOfNumberStuff
+
+for v in vals:
+  print(f"%timeit isinstance({type(v).__module__}.{type(v).__name__}({v}), {t.__name__})")
+  %timeit isinstance(v, t)

@@ -1,0 +1,24 @@
+%timeit isinstance(builtins.int(1), _SupportsComplexOps)
+11.8 µs ± 314 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+%timeit isinstance(builtins.int(1), SupportsComplexOps)
+307 ns ± 2.97 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+
+%timeit isinstance(builtins.float(2.0), _SupportsComplexOps)
+11.6 µs ± 104 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+%timeit isinstance(builtins.float(2.0), SupportsComplexOps)
+312 ns ± 6.29 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+
+%timeit isinstance(decimal.Decimal(3), _SupportsComplexOps)
+11.7 µs ± 68.1 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+%timeit isinstance(decimal.Decimal(3), SupportsComplexOps)
+306 ns ± 3.7 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+
+%timeit isinstance(fractions.Fraction(4), _SupportsComplexOps)
+11.7 µs ± 100 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+%timeit isinstance(fractions.Fraction(4), SupportsComplexOps)
+308 ns ± 4.24 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+
+%timeit isinstance(sympy.core.numbers.Integer(5), _SupportsComplexOps)
+11.9 µs ± 251 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+%timeit isinstance(sympy.core.numbers.Integer(5), SupportsComplexOps)
+306 ns ± 1.5 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
