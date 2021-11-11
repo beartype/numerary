@@ -126,6 +126,10 @@ def test_supports_real_ops_numpy() -> None:
     float32_val: SupportsRealOps = numpy.float32(-273.15)
     float64_val: SupportsRealOps = numpy.float64(-273.15)
     float128_val: SupportsRealOps = numpy.float128(-273.15)
+    # TODO(posita): These should not validate
+    csingle_val: SupportsRealOps = numpy.csingle(-273.15)
+    cdouble_val: SupportsRealOps = numpy.cdouble(-273.15)
+    clongdouble_val: SupportsRealOps = numpy.clongdouble(-273.15)
 
     for good_val in (
         uint8_val,
@@ -146,9 +150,9 @@ def test_supports_real_ops_numpy() -> None:
         assert good_val >= good_val, f"{good_val!r}"
 
     for bad_val in (
-        numpy.csingle(-273.15),
-        numpy.cdouble(-273.15),
-        numpy.clongdouble(-273.15),
+        csingle_val,
+        cdouble_val,
+        clongdouble_val,
     ):
         assert not isinstance(bad_val, SupportsRealOps), f"{bad_val!r}"
 

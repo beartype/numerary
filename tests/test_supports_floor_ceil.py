@@ -177,6 +177,10 @@ def test_floor_ceil_numpy() -> None:
     float32_val: SupportsFloor = numpy.float32(-273.15)
     float64_val: SupportsFloor = numpy.float64(-273.15)
     float128_val: SupportsFloor = numpy.float128(-273.15)
+    # TODO(posita): These should not validate
+    csingle_val: SupportsFloor = numpy.csingle(-273.15)
+    cdouble_val: SupportsFloor = numpy.cdouble(-273.15)
+    clongdouble_val: SupportsFloor = numpy.clongdouble(-273.15)
     _: SupportsCeil
     _ = numpy.uint8(2)
     _ = numpy.uint16(273)
@@ -190,6 +194,10 @@ def test_floor_ceil_numpy() -> None:
     _ = numpy.float32(-273.15)
     _ = numpy.float64(-273.15)
     _ = numpy.float128(-273.15)
+    # TODO(posita): These should not validate
+    _ = numpy.csingle(-273.15)
+    _ = numpy.cdouble(-273.15)
+    _ = numpy.clongdouble(-273.15)
 
     for good_val in (
         uint8_val,
@@ -211,9 +219,9 @@ def test_floor_ceil_numpy() -> None:
         assert ceil(good_val), f"{good_val!r}"
 
     for bad_val in (
-        numpy.csingle(-273.15),
-        numpy.cdouble(-273.15),
-        numpy.clongdouble(-273.15),
+        csingle_val,
+        cdouble_val,
+        clongdouble_val,
     ):
         assert not isinstance(bad_val, SupportsFloor), f"{bad_val!r}"
         assert not isinstance(bad_val, SupportsCeil), f"{bad_val!r}"

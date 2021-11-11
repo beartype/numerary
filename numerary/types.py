@@ -32,10 +32,8 @@ from .bt import beartype
 __all__ = (
     "IntegralLike",
     "IntegralLikeSCU",
-    "IntegralLikeSCT",
     "RealLike",
     "RealLikeSCU",
-    "RealLikeSCT",
 )
 
 
@@ -306,7 +304,6 @@ class SupportsAbs(
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsAbs)
 SupportsAbsSCU = Union[int, float, bool, Complex, SupportsAbs]
-SupportsAbsSCT = SupportsAbs
 
 
 @runtime_checkable
@@ -325,7 +322,6 @@ class SupportsComplex(
 
 _assert_isinstance(Decimal, Fraction, target_t=SupportsComplex)
 SupportsComplexSCU = Union[Complex, SupportsComplex]
-SupportsComplexSCT = SupportsComplex
 
 
 @runtime_checkable
@@ -344,7 +340,6 @@ class SupportsFloat(
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloat)
 SupportsFloatSCU = Union[int, float, bool, Real, SupportsFloat]
-SupportsFloatSCT = SupportsFloat
 
 
 @runtime_checkable
@@ -363,7 +358,6 @@ class SupportsInt(
 
 _assert_isinstance(int, float, bool, target_t=SupportsInt)
 SupportsIntSCU = Union[int, float, bool, Integral, SupportsInt]
-SupportsIntSCT = SupportsInt
 
 
 @runtime_checkable
@@ -382,7 +376,6 @@ class SupportsIndex(
 
 _assert_isinstance(int, bool, target_t=SupportsIndex)
 SupportsIndexSCU = Union[int, bool, Integral, SupportsIndex]
-SupportsIndexSCT = SupportsIndex
 
 
 @runtime_checkable
@@ -402,7 +395,6 @@ class SupportsRound(
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRound)
 SupportsRoundSCU = Union[int, float, bool, Real, SupportsRound]
-SupportsRoundSCT = SupportsRound
 
 
 @runtime_checkable
@@ -438,7 +430,6 @@ _assert_isinstance(
     int, float, bool, complex, Decimal, Fraction, target_t=SupportsConjugate
 )
 SupportsConjugateSCU = Union[int, float, bool, complex, Complex, SupportsConjugate]
-SupportsConjugateSCT = SupportsConjugate
 
 
 @runtime_checkable
@@ -478,7 +469,6 @@ class SupportsRealImag(
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealImag)
 SupportsRealImagSCU = Union[int, float, bool, Complex, SupportsRealImag]
-SupportsRealImagSCT = SupportsRealImag
 
 
 @runtime_checkable
@@ -513,7 +503,6 @@ class SupportsTrunc(
 
 _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
 SupportsTruncSCU = Union[int, float, bool, Real, SupportsTrunc]
-SupportsTruncSCT = SupportsTrunc
 
 
 @runtime_checkable
@@ -553,13 +542,14 @@ class SupportsFloor(
     __slots__: Union[str, Iterable[str]] = ()
 
 
-_assert_isinstance(int, bool, Decimal, Fraction, target_t=SupportsFloor)
+# Prior to Python 3.9, floats didn't have an explicit __floor__ method; it was
+# "directly" supported in math.floor, so the pure protocol approach thinks they're not
+# supported
+if sys.version_info < (3, 9):
+    SupportsFloor.includes(float)
 
-if sys.version_info >= (3, 9):
-    _assert_isinstance(float, target_t=SupportsFloor)
-
+_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloor)
 SupportsFloorSCU = Union[int, float, bool, Real, SupportsFloor]
-SupportsFloorSCT = SupportsFloor
 
 
 @runtime_checkable
@@ -599,13 +589,13 @@ class SupportsCeil(
     __slots__: Union[str, Iterable[str]] = ()
 
 
-_assert_isinstance(int, bool, Decimal, Fraction, target_t=SupportsCeil)
+# Prior to Python 3.9, floats didn't have an explicit __ceil__ method; it was "directly"
+# supported in math.ceil, so the pure protocol approach thinks they're not supported
+if sys.version_info < (3, 9):
+    SupportsCeil.includes(float)
 
-if sys.version_info >= (3, 9):
-    _assert_isinstance(float, target_t=SupportsCeil)
-
+_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsCeil)
 SupportsCeilSCU = Union[int, float, bool, Real, SupportsCeil]
-SupportsCeilSCT = SupportsCeil
 
 
 @runtime_checkable
@@ -643,9 +633,10 @@ class SupportsDivmod(
     __slots__: Union[str, Iterable[str]] = ()
 
 
+# complex defines these methods, but only to raise exceptions
+SupportsDivmod.excludes(complex)
 _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsDivmod)
 SupportsDivmodSCU = Union[int, float, bool, Real, SupportsDivmod]
-SupportsDivmodSCT = SupportsDivmod
 
 
 @runtime_checkable
@@ -691,7 +682,6 @@ SupportsNumeratorDenominatorPropertiesSCU = Union[
     Rational,
     SupportsNumeratorDenominatorProperties,
 ]
-SupportsNumeratorDenominatorPropertiesSCT = SupportsNumeratorDenominatorProperties
 
 
 @runtime_checkable
@@ -748,7 +738,6 @@ SupportsNumeratorDenominatorMixedSCU = Union[
     SupportsNumeratorDenominatorPropertiesSCU,
     SupportsNumeratorDenominatorMethods,
 ]
-SupportsNumeratorDenominatorMixedSCT = SupportsNumeratorDenominatorMixedT
 
 
 @runtime_checkable
@@ -819,7 +808,6 @@ class SupportsComplexOps(
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexOps)
 SupportsComplexOpsSCU = Union[int, float, bool, Complex, SupportsComplexOps]
-SupportsComplexOpsSCT = SupportsComplexOps
 
 
 @runtime_checkable
@@ -859,7 +847,6 @@ class SupportsComplexPow(
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexPow)
 SupportsComplexPowSCU = Union[int, float, bool, Complex, SupportsComplexPow]
-SupportsComplexPowSCT = SupportsComplexPow
 
 
 @runtime_checkable
@@ -920,9 +907,10 @@ class SupportsRealOps(
     __slots__: Union[str, Iterable[str]] = ()
 
 
+# complex defines these methods, but only to raise exceptions
+SupportsRealOps.excludes(complex)
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealOps)
 SupportsRealOpsSCU = Union[int, float, bool, Real, SupportsRealOps]
-SupportsRealOpsSCT = SupportsRealOps
 
 
 @runtime_checkable
@@ -997,7 +985,6 @@ class SupportsIntegralOps(
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralOps)
 SupportsIntegralOpsSCU = Union[int, bool, Integral, SupportsIntegralOps]
-SupportsIntegralOpsSCT = SupportsIntegralOps
 
 
 @runtime_checkable
@@ -1037,7 +1024,6 @@ class SupportsIntegralPow(
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralPow)
 SupportsIntegralPowSCU = Union[int, bool, Integral, SupportsIntegralPow]
-SupportsIntegralPowSCT = SupportsIntegralPow
 
 
 @runtime_checkable
@@ -1086,7 +1072,6 @@ class RealLike(
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=RealLike)
 RealLikeSCU = Union[int, float, bool, Real, RealLike]
-RealLikeSCT = RealLike
 
 
 @runtime_checkable
@@ -1142,7 +1127,6 @@ RationalLikePropertiesSCU = Union[
     Rational,
     RationalLikeProperties,
 ]
-RationalLikePropertiesSCT = RationalLikeProperties
 
 
 @runtime_checkable
@@ -1204,7 +1188,6 @@ RationalLikeMixedSCU = Union[
     RationalLikePropertiesSCU,
     RationalLikeMethods,
 ]
-RationalLikeMixedSCT = RationalLikeMixedT
 
 
 @runtime_checkable
@@ -1260,7 +1243,6 @@ class IntegralLike(
 
 _assert_isinstance(int, bool, target_t=IntegralLike)
 IntegralLikeSCU = Union[int, bool, Integral, IntegralLike]
-IntegralLikeSCT = IntegralLike
 
 
 # ---- Functions -----------------------------------------------------------------------
@@ -1398,16 +1380,6 @@ def denominator(operand: SupportsNumeratorDenominatorMixedU):
 
 # ---- Initialization ------------------------------------------------------------------
 
-
-# Prior to Python 3.9, floats didn't have explicit __floor__ or __ceil__ methods; they
-# were "directly" supported in math.floor and math.ceil, respectively, so the pure
-# protocol approach thinks they're not supported
-SupportsFloor.includes(float)
-SupportsCeil.includes(float)
-
-# complex defines these methods, but only to raise exceptions
-SupportsDivmod.excludes(complex)
-SupportsRealOps.excludes(complex)
 
 try:
     import numpy

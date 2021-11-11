@@ -43,7 +43,7 @@ from numerary.types import Annotated, Protocol, runtime_checkable
 Bang.
 Done.
 
-Further, if you want to opportunistically take advantage of [``beartype``](https://pypi.org/project/beartype/) without imposing a strict runtime dependency, you can do this:
+Further, if you want to opportunistically take advantage of [``beartype``](https://github.com/beartype/beartype/) without imposing a strict runtime dependency, you can do this:
 
 ``` python
 from numerary.bt import beartype  # will resolve to the identity decorator if beartype is unavailable at runtime

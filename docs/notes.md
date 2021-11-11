@@ -15,7 +15,12 @@
 
 # ``numerary`` release notes
 
-## [0.0.6](https://github.com/posita/numerary/releases/tag/v0.0.6)
+## [0.1.1](https://github.com/posita/numerary/releases/tag/v0.1.1)
+
+* Removes obsoleted ``…SCT`` aliases.
+* Corrects release notes which erroneously identified version 0.1.0 as 0.0.6.
+
+## [0.1.0](https://github.com/posita/numerary/releases/tag/v0.1.0)
 
 * Adds [``CachingProtocolMeta.includes``][numerary.types.CachingProtocolMeta.includes],
   [``CachingProtocolMeta.excludes``][numerary.types.CachingProtocolMeta.excludes], and

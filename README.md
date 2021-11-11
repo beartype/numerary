@@ -189,7 +189,7 @@ That is because ``numerary`` not only caches runtime protocol evaluations, but a
 >>> from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
 
 >>> @runtime_checkable
-... class SupportsOne(Protocol, metaclass=CachingProtocolMeta):
+... class MySupportsOne(Protocol, metaclass=CachingProtocolMeta):
 ...   __slots__: Union[str, Iterable[str]] = ()
 ...   @abstractmethod
 ...   def one(self) -> int: pass
@@ -198,19 +198,19 @@ That is because ``numerary`` not only caches runtime protocol evaluations, but a
 ...   def one(self) -> str:
 ...     return "one"
 
->>> imp: SupportsOne = Imposter()  # type: ignore [assignment]  # properly caught by Mypy
->>> isinstance(imp, SupportsOne)  # fool me once, shame on you ...
+>>> imp: MySupportsOne = Imposter()  # type: ignore [assignment]  # properly caught by Mypy
+>>> isinstance(imp, MySupportsOne)  # fool me once, shame on you ...
 True
 
->>> SupportsOne.excludes(Imposter)
->>> isinstance(imp, SupportsOne)  # ... can't get fooled again
+>>> MySupportsOne.excludes(Imposter)
+>>> isinstance(imp, MySupportsOne)  # ... can't get fooled again
 False
 
 ```
 
 ``numerary`` has default overrides to correct for known oddities with native types (like our old friend, ``complex``) and with popular libraries like [``numpy``](https://numpy.org/) and [``sympy``](https://www.sympy.org/).
 Others will be added as they are identified.
-If I’ve missed any, or if you would like ``numerary`` to support additional number implementations out of the box, please [let me know](https://posita.github.io/numerary/latest/contrib/#filing-issues).
+If I’ve missed any, or if you would like ``numerary`` to support additional number implementations out of the box, please [let me know](https://posita.github.io/numerary/latest/contrib/#starting-discussions-and-filing-issues).
 
 ## Performance Enhanced Protocols—A *different* kind of “PEP” for your step
 
@@ -231,7 +231,7 @@ More attributes means more comparisons.
 Further, it performs these comparisons … Every. Single. 🤬ing. Time.
 
 Protocols provided by ``numerary`` use instead [``CachingProtocolMeta``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.CachingProtocolMeta) as their meta class.
-``CachingProtocolMeta`` derives from ``_ProtocolMeta`` and overrides ``__instancecheck__ `` to cache the default implementation’s results based on instance type.
+``CachingProtocolMeta`` derives from ``_ProtocolMeta`` and overrides ``__instancecheck__ `` to cache results based on instance type.
 
 Conceptually:
 
@@ -291,7 +291,7 @@ AssertionError
 ```
 
 Where do ``…SCU`` protocols help?
-In a word, *[``beartype``](https://pypi.org/project/beartype/)*.
+In a word, *[``beartype``](https://github.com/beartype/beartype/)*.
 ``beartype`` is *awesome*.
 Its author is even *awesomer*.[^4]
 More generally, runtime checkers that inspect and enforce annotations may benefit from short-circuiting where protocol validation is expensive.
@@ -304,7 +304,7 @@ More generally, runtime checkers that inspect and enforce annotations may benefi
 ``float``s in Python versions prior to 3.9 are an excellent example, because they officially lacked ``__floor__`` and ``__ceil__`` methods, but were registered with the numeric tower and worked just fine with ``math.floor`` and ``math.ceil``.
 
 How do ``numerary``’s [``SupportsFloor``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsFloor) and [``SupportsCeil``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsCeil) deal with this situation?
-Not super well on their own, unfortunately.
+Not very well, unfortunately, at least not on their own.
 
 ``` python
 >>> import math
@@ -319,7 +319,7 @@ Not super well on their own, unfortunately.
 
 ```
 
-``Union``s allow a work-around for the static type-checking issue.
+``…SCU`` ``Union``s allow a work-around for the static type-checking issue.
 
 ``` python
 >>> from numerary.types import SupportsFloor, SupportsFloorSCU, floor
@@ -401,7 +401,7 @@ True
 
 Known warts *could* be cured by cache overriding as discussed above.
 However, to combat this particular situation, ``numerary`` provides an alternative: the [``SupportsNumeratorDenominatorMethods``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods) protocol and the [``numerator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.numerator) and [``denominator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.denominator) helper functions.
-These allow accommodation of rational implementations like Sage’s that are mostly compliant with the exception of their respective ``numerator`` and ``denominator`` implementations.
+These accommodate rational implementations like Sage’s that are mostly compliant with the exception of their respective ``numerator`` and ``denominator`` implementations.
 
 ``` python
 >>> from numerary.types import numerator
@@ -449,7 +449,7 @@ The ``SupportsNumeratorDenominator*`` primitives provide the basis for analogous
 This is really getting into where the sausage is made.
 However, in the spirit of full transparency, this must be disclosed.
 
-Let’s say we register an errant implementation as non-compliant.
+Let’s say we register an errant implementation as non-compliant using the [``CachingProtocolMeta.excludes``method](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.CachingProtocolMeta.excludes).
 
 ``` python
 >>> from numerary.types import SupportsFloat
@@ -469,7 +469,7 @@ False
 
 ```
 
-For composition to be ergonomic, this registration should be indelible, survive composition, but allow overriding by inheritors.
+For composition to be ergonomic, such registration should be indelible, survive composition, and afford preference to overrides by inheritors.
 
 ``` python
 >>> from numerary.types import (
@@ -478,34 +478,34 @@ For composition to be ergonomic, this registration should be indelible, survive 
 ... )
 
 >>> @runtime_checkable
-... class MyFloatInt(
+... class MySupportsFloatInt(
 ...   SupportsFloat, SupportsInt,
 ...   Protocol, metaclass=CachingProtocolMeta,
 ... ): pass
 
->>> isinstance(float_imp, MyFloatInt)  # picks up excludes override from SupportsFloat
+>>> isinstance(float_imp, MySupportsFloatInt)  # composition picks up override from base
 False
 
->>> SupportsFloat.reset_for(FloatImposter)
+>>> SupportsFloat.reset_for(FloatImposter)  # base resets override
 >>> isinstance(float_imp, SupportsFloat)
 True
->>> isinstance(float_imp, MyFloatInt)  # picks up resetting of SupportsFloat override
+>>> isinstance(float_imp, MySupportsFloatInt)  # picks up base’s changes
 True
 
->>> MyFloatInt.excludes(FloatImposter)  # overrides in composition
->>> isinstance(float_imp, MyFloatInt)
+>>> MySupportsFloatInt.excludes(FloatImposter)  # composition overrides
+>>> isinstance(float_imp, MySupportsFloatInt)
 False
->>> SupportsFloat.includes(FloatImposter)
+>>> SupportsFloat.includes(FloatImposter)  # base changes
 >>> isinstance(float_imp, FloatImposter)
 True
->>> isinstance(float_imp, MyFloatInt)  # overrides/resets in member protocols are hidden
+>>> isinstance(float_imp, MySupportsFloatInt)  # composition remains unchanged
 False
 
->>> MyFloatInt.reset_for(FloatImposter)  # removes override in composition
->>> isinstance(float_imp, MyFloatInt)  # member protocol is visible again
+>>> MySupportsFloatInt.reset_for(FloatImposter)  # removes override in composition
+>>> isinstance(float_imp, MySupportsFloatInt)  # base is visible again
 True
 >>> SupportsFloat.excludes(FloatImposter)
->>> isinstance(float_imp, MyFloatInt)
+>>> isinstance(float_imp, MySupportsFloatInt)  # base’s changes are visible to composition again
 False
 
 ```
@@ -578,11 +578,11 @@ See the [hacking quick-start](https://posita.github.io/numerary/latest/contrib/#
 
 ## Customers [![``numerary``-encumbered](https://raw.githubusercontent.com/posita/numerary/latest/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
 
-* [``dyce``](https://pypi.org/project/dyce/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
+* [``dyce``](https://github.com/posita/dyce/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
 * The next one could be _you_! 👋
 
 Do you have a project that suffers problems made slightly less annoying by ``numerary``?
-[Let me know](https://posita.github.io/numerary/latest/contrib/#filing-issues), and I’ll promote it here!
+[Let me know](https://posita.github.io/numerary/latest/contrib/#starting-discussions-and-filing-issues), and I’ll promote it here!
 
 And don’t forget to do your part in perpetuating gratuitous badge-ification!
 

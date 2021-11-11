@@ -197,6 +197,7 @@ def test_trunc_sympy() -> None:
     integer_val: SupportsTrunc = sympy.Integer(-273)
     rational_val: SupportsTrunc = sympy.Rational(-27315, 100)
     float_val: SupportsTrunc = sympy.Float(-273.15)
+    # TODO(posita): These should not validate
     sym_val: SupportsTrunc = sympy.symbols("x")
 
     for good_val in (
