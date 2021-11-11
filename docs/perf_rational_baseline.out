@@ -1,0 +1,6 @@
+%timeit isinstance(builtins.int(1), Rational)
+322 ns ± 1.08 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+%timeit isinstance(fractions.Fraction(2), Rational)
+324 ns ± 1.57 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+%timeit isinstance(builtins.float(3.0), Rational)
+346 ns ± 1.18 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
