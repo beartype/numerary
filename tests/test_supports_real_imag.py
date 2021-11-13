@@ -21,6 +21,9 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
+    TestFlag,
+    TestIntEnum,
+    TestIntFlag,
     Wangernumb,
     WangernumbDerived,
     WangernumbRegistered,
@@ -51,6 +54,8 @@ def test_supports_real_imag() -> None:
     float_val: SupportsRealImag = -273.15
     frac_val: SupportsRealImag = Fraction(-27315, 100)
     dec_val: SupportsRealImag = Decimal("-273.15")
+    test_int_enum: SupportsRealImag = TestIntEnum.ZERO
+    test_int_flag: SupportsRealImag = TestIntFlag.B
     # These have inherited this interface by deriving from number tower ABCs
     nwd_val: SupportsRealImag = NumberwangDerived(-273)
     wnd_val: SupportsRealImag = WangernumbDerived(-273.15)
@@ -61,6 +66,8 @@ def test_supports_real_imag() -> None:
         float_val,
         frac_val,
         dec_val,
+        test_int_enum,
+        test_int_flag,
         nwd_val,
         wnd_val,
     ):
@@ -69,6 +76,7 @@ def test_supports_real_imag() -> None:
         assert hasattr(good_val, "imag"), f"{good_val!r}"
 
     for bad_val in (
+        TestFlag.B,
         Numberwang(-273),
         NumberwangRegistered(-273),
         Wangernumb(-273.15),
@@ -88,6 +96,8 @@ def test_supports_real_imag_beartype() -> None:
         complex(-273.15),
         Fraction(-27315, 100),
         Decimal("-273.15"),
+        TestIntEnum.ZERO,
+        TestIntFlag.B,
         # These have inherited this interface by deriving from number tower ABCs
         NumberwangDerived(-273),
         WangernumbDerived(-273.15),
@@ -108,6 +118,7 @@ def test_supports_real_imag_beartype() -> None:
             supports_real_imag_func_t(cast(SupportsRealImagSCU, lying_val))
 
     for bad_val in (
+        TestFlag.B,
         Numberwang(-273),
         Wangernumb(-273.15),
         "-273.15",

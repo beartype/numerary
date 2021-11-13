@@ -26,6 +26,9 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
+    TestFlag,
+    TestIntEnum,
+    TestIntFlag,
     Wangernumb,
     WangernumbDerived,
     WangernumbRegistered,
@@ -67,6 +70,8 @@ def test_supports_complex_ops_pow() -> None:
     complex_val: SupportsComplexOps = complex(-273.15)
     frac_val: SupportsComplexOps = Fraction(-27315, 100)
     dec_val: SupportsComplexOps = Decimal("-273.15")
+    test_int_enum: SupportsComplexOps = TestIntEnum.ZERO
+    test_int_flag: SupportsComplexOps = TestIntFlag.B
     nw_val: SupportsComplexOps = Numberwang(-273)
     nwd_val: SupportsComplexOps = NumberwangDerived(-273)
     nwr_val: SupportsComplexOps = NumberwangRegistered(-273)
@@ -80,6 +85,8 @@ def test_supports_complex_ops_pow() -> None:
     _ = complex(-273.15)
     _ = Fraction(-27315, 100)
     _ = Decimal("-273.15")
+    _ = TestIntEnum.ZERO
+    _ = TestIntFlag.B
     _ = Numberwang(-273)
     _ = NumberwangDerived(-273)
     _ = NumberwangRegistered(-273)
@@ -94,6 +101,8 @@ def test_supports_complex_ops_pow() -> None:
         complex_val,
         frac_val,
         dec_val,
+        test_int_enum,
+        test_int_flag,
         nw_val,
         nwd_val,
         nwr_val,
@@ -110,7 +119,10 @@ def test_supports_complex_ops_pow() -> None:
         assert isinstance(good_val, SupportsComplexPow), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
-    for bad_val in ("-273.15",):
+    for bad_val in (
+        TestFlag.B,
+        "-273.15",
+    ):
         assert not isinstance(bad_val, SupportsComplexOps), f"{bad_val!r}"
 
 
@@ -124,6 +136,8 @@ def test_supports_complex_ops_pow_beartype() -> None:
         complex(-273.15),
         Fraction(-27315, 100),
         Decimal("-273.15"),
+        TestIntEnum.ZERO,
+        TestIntFlag.B,
         Numberwang(-273),
         NumberwangDerived(-273),
         NumberwangRegistered(-273),
@@ -136,7 +150,10 @@ def test_supports_complex_ops_pow_beartype() -> None:
         supports_complex_pow_func(cast(SupportsComplexPow, good_val))
         supports_complex_pow_func_t(cast(SupportsComplexPowSCU, good_val))
 
-    for bad_val in ("-273.15",):
+    for bad_val in (
+        TestFlag.B,
+        "-273.15",
+    ):
         with pytest.raises(roar.BeartypeException):
             supports_complex_ops_func(cast(SupportsComplexOps, bad_val))
 

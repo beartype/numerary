@@ -29,6 +29,9 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
+    TestFlag,
+    TestIntEnum,
+    TestIntFlag,
     Wangernumb,
     WangernumbDerived,
     WangernumbRegistered,
@@ -68,6 +71,8 @@ def test_floor_ceil() -> None:
     int_val: SupportsFloor = -273
     frac_val: SupportsFloor = Fraction(-27315, 100)
     dec_val: SupportsFloor = Decimal("-273.15")
+    test_int_enum: SupportsFloor = TestIntEnum.ZERO
+    test_int_flag: SupportsFloor = TestIntFlag.B
     nw_val: SupportsFloor = Numberwang(-273)
     nwd_val: SupportsFloor = NumberwangDerived(-273)
     nwr_val: SupportsFloor = NumberwangRegistered(-273)
@@ -79,6 +84,8 @@ def test_floor_ceil() -> None:
     _ = -273
     _ = Fraction(-27315, 100)
     _ = Decimal("-273.15")
+    _ = TestIntEnum.ZERO
+    _ = TestIntFlag.B
     _ = Numberwang(-273)
     _ = NumberwangDerived(-273)
     _ = NumberwangRegistered(-273)
@@ -91,6 +98,8 @@ def test_floor_ceil() -> None:
         int_val,
         frac_val,
         dec_val,
+        test_int_enum,
+        test_int_flag,
         nw_val,
         nwd_val,
         nwr_val,
@@ -105,6 +114,7 @@ def test_floor_ceil() -> None:
 
     for bad_val in (
         complex(-273.15),
+        TestFlag.B,
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsFloor), f"{bad_val!r}"
@@ -134,6 +144,8 @@ def test_floor_ceil_beartype() -> None:
         -273.15,
         Fraction(-27315, 100),
         Decimal("-273.15"),
+        TestIntEnum.ZERO,
+        TestIntFlag.B,
         Numberwang(-273),
         NumberwangDerived(-273),
         NumberwangRegistered(-273),
@@ -148,6 +160,7 @@ def test_floor_ceil_beartype() -> None:
 
     for bad_val in (
         complex(-273.15),
+        TestFlag.B,
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):

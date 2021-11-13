@@ -21,6 +21,9 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
+    TestFlag,
+    TestIntEnum,
+    TestIntFlag,
     Wangernumb,
     WangernumbDerived,
     WangernumbRegistered,
@@ -51,6 +54,8 @@ def test_supports_divmod() -> None:
     float_val: SupportsDivmod = -273.15
     frac_val: SupportsDivmod = Fraction(-27315, 100)
     dec_val: SupportsDivmod = Decimal("-273.15")
+    test_int_enum: SupportsDivmod = TestIntEnum.ZERO
+    test_int_flag: SupportsDivmod = TestIntFlag.B
     # These have inherited this interface by deriving from number tower ABCs
     nwd_val: SupportsDivmod = NumberwangDerived(-273)
     wnd_val: SupportsDivmod = WangernumbDerived(-273.15)
@@ -61,6 +66,8 @@ def test_supports_divmod() -> None:
         float_val,
         frac_val,
         dec_val,
+        test_int_enum,
+        test_int_flag,
         nwd_val,
         wnd_val,
     ):
@@ -77,6 +84,7 @@ def test_supports_divmod() -> None:
 
     for bad_val in (
         complex(-273.15),
+        TestFlag.B,
         Numberwang(-273),
         Wangernumb(-273.15),
         "-273.15",
@@ -93,6 +101,8 @@ def test_supports_divmod_beartype() -> None:
         -273.15,
         Fraction(-27315, 100),
         Decimal("-273.15"),
+        TestIntEnum.ZERO,
+        TestIntFlag.B,
         # These have inherited this interface by deriving from number tower ABCs
         NumberwangDerived(-273),
         WangernumbDerived(-273.15),
@@ -114,6 +124,7 @@ def test_supports_divmod_beartype() -> None:
 
     for bad_val in (
         complex(-273.15),
+        TestFlag.B,
         Numberwang(-273),
         Wangernumb(-273.15),
         "-273.15",

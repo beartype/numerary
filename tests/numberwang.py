@@ -9,6 +9,7 @@
 from __future__ import annotations
 
 from decimal import Decimal
+from enum import Flag, IntEnum, IntFlag, auto
 from math import ceil, floor, trunc
 from numbers import Integral, Real
 from operator import (
@@ -58,6 +59,30 @@ _RealT = Union[float, "Wangernumb", Real]
 
 
 # ---- Classes -------------------------------------------------------------------------
+
+
+class TestIntEnum(IntEnum):
+    NEG_FOUR = -4
+    NEG_THREE = -3
+    NEG_TWO = -2
+    NEG_ONE = -1
+    ZERO = 1
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+
+
+class TestIntFlag(IntFlag):
+    A = auto()
+    B = auto()
+    C = auto()
+
+
+class TestFlag(Flag):
+    A = auto()
+    B = auto()
+    C = auto()
 
 
 class NumberwangBase:

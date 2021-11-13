@@ -27,6 +27,9 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
+    TestFlag,
+    TestIntEnum,
+    TestIntFlag,
     Wangernumb,
     WangernumbDerived,
     WangernumbRegistered,
@@ -55,6 +58,8 @@ def test_rational_like() -> None:
     bool_val: RationalLikeProperties = True
     int_val: RationalLikeProperties = -273
     frac_val: RationalLikeProperties = Fraction(-27315, 100)
+    test_int_enum: RationalLikeProperties = TestIntEnum.ZERO
+    test_int_flag: RationalLikeProperties = TestIntFlag.B
     nw_val: RationalLikeProperties = Numberwang(-273)
     nwd_val: RationalLikeProperties = NumberwangDerived(-273)
     nwr_val: RationalLikeProperties = NumberwangRegistered(-273)
@@ -63,6 +68,8 @@ def test_rational_like() -> None:
         bool_val,
         int_val,
         frac_val,
+        test_int_enum,
+        test_int_flag,
         nw_val,
         nwd_val,
         nwr_val,
@@ -88,6 +95,7 @@ def test_rational_like() -> None:
         -273.15,
         complex(-273.15),
         Decimal("-273.15"),
+        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),
@@ -103,6 +111,8 @@ def test_rational_like_beartype() -> None:
         True,
         -273,
         Fraction(-27315, 100),
+        TestIntEnum.ZERO,
+        TestIntFlag.B,
         Numberwang(-273),
         NumberwangDerived(-273),
         NumberwangRegistered(-273),
@@ -114,6 +124,7 @@ def test_rational_like_beartype() -> None:
         -273.15,
         complex(-273.15),
         Decimal("-273.15"),
+        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),

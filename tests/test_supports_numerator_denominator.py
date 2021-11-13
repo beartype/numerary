@@ -29,6 +29,9 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
+    TestFlag,
+    TestIntEnum,
+    TestIntFlag,
     Wangernumb,
     WangernumbDerived,
     WangernumbRegistered,
@@ -81,6 +84,8 @@ def test_numerator_denominator() -> None:
     bool_val: SupportsNumeratorDenominatorProperties = True
     int_val: SupportsNumeratorDenominatorProperties = -273
     frac_val: SupportsNumeratorDenominatorProperties = Fraction(-27315, 100)
+    test_int_enum: SupportsNumeratorDenominatorProperties = TestIntEnum.ZERO
+    test_int_flag: SupportsNumeratorDenominatorProperties = TestIntFlag.B
     nw_val: SupportsNumeratorDenominatorProperties = Numberwang(-273)
     nwd_val: SupportsNumeratorDenominatorProperties = NumberwangDerived(-273)
     nwr_val: SupportsNumeratorDenominatorProperties = NumberwangRegistered(-273)
@@ -90,6 +95,8 @@ def test_numerator_denominator() -> None:
         bool_val,
         int_val,
         frac_val,
+        test_int_enum,
+        test_int_flag,
         nw_val,
         nwd_val,
         nwr_val,
@@ -103,6 +110,7 @@ def test_numerator_denominator() -> None:
         -273.15,
         complex(-273.15),
         Decimal("-273.15"),
+        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),
@@ -120,6 +128,8 @@ def test_numerator_denominator_beartype() -> None:
         True,
         -273,
         Fraction(-27315, 100),
+        TestIntEnum.ZERO,
+        TestIntFlag.B,
         Numberwang(-273),
         NumberwangDerived(-273),
         NumberwangRegistered(-273),
@@ -136,6 +146,7 @@ def test_numerator_denominator_beartype() -> None:
         -273.15,
         complex(-273.15),
         Decimal("-273.15"),
+        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),

@@ -21,6 +21,9 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
+    TestFlag,
+    TestIntEnum,
+    TestIntFlag,
     Wangernumb,
     WangernumbDerived,
     WangernumbRegistered,
@@ -52,6 +55,8 @@ def test_supports_conjugate() -> None:
     complex_val: SupportsConjugate = complex(-273.15)
     frac_val: SupportsConjugate = Fraction(-27315, 100)
     dec_val: SupportsConjugate = Decimal("-273.15")
+    test_int_enum: SupportsConjugate = TestIntEnum.ZERO
+    test_int_flag: SupportsConjugate = TestIntFlag.B
     # These have inherited this interface by deriving from number tower ABCs
     nwd_val: SupportsConjugate = NumberwangDerived(-273)
     wnd_val: SupportsConjugate = WangernumbDerived(-273.15)
@@ -63,6 +68,8 @@ def test_supports_conjugate() -> None:
         complex_val,
         frac_val,
         dec_val,
+        test_int_enum,
+        test_int_flag,
         nwd_val,
         wnd_val,
     ):
@@ -70,6 +77,7 @@ def test_supports_conjugate() -> None:
         assert good_val.conjugate(), f"{good_val!r}"
 
     for bad_val in (
+        TestFlag.B,
         Numberwang(-273),
         NumberwangRegistered(-273),
         Wangernumb(-273.15),
@@ -89,6 +97,8 @@ def test_supports_conjugate_beartype() -> None:
         complex(-273.15),
         Fraction(-27315, 100),
         Decimal("-273.15"),
+        TestIntEnum.ZERO,
+        TestIntFlag.B,
         # These have inherited this interface by deriving from number tower ABCs
         NumberwangDerived(-273),
         WangernumbDerived(-273.15),
@@ -109,6 +119,7 @@ def test_supports_conjugate_beartype() -> None:
             supports_conjugate_func_t(cast(SupportsConjugateSCU, lying_val))
 
     for bad_val in (
+        TestFlag.B,
         Numberwang(-273),
         Wangernumb(-273.15),
         "-273.15",

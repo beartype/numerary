@@ -26,6 +26,9 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
+    TestFlag,
+    TestIntEnum,
+    TestIntFlag,
     Wangernumb,
     WangernumbDerived,
     WangernumbRegistered,
@@ -63,12 +66,16 @@ def supports_integral_pow_func_t(arg: SupportsIntegralPowSCU):
 def test_supports_integral_ops_pow() -> None:
     bool_val: SupportsIntegralOps = True
     int_val: SupportsIntegralOps = -273
+    test_int_enum: SupportsIntegralOps = TestIntEnum.ZERO
+    test_int_flag: SupportsIntegralOps = TestIntFlag.B
     nw_val: SupportsIntegralOps = Numberwang(-273)
     nwd_val: SupportsIntegralOps = NumberwangDerived(-273)
     nwr_val: SupportsIntegralOps = NumberwangRegistered(-273)
     _: SupportsIntegralPow
     _ = True
     _ = -273
+    _ = TestIntEnum.ZERO
+    _ = TestIntFlag.B
     _ = Numberwang(-273)
     _ = NumberwangDerived(-273)
     _ = NumberwangRegistered(-273)
@@ -76,6 +83,8 @@ def test_supports_integral_ops_pow() -> None:
     for good_val in (
         bool_val,
         int_val,
+        test_int_enum,
+        test_int_flag,
         nw_val,
         nwd_val,
         nwr_val,
@@ -93,6 +102,7 @@ def test_supports_integral_ops_pow() -> None:
         complex(-273.15),
         Fraction(-27315, 100),
         Decimal("-273.15"),
+        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),
@@ -107,6 +117,8 @@ def test_supports_integral_ops_pow_beartype() -> None:
     for good_val in (
         True,
         -273,
+        TestIntEnum.ZERO,
+        TestIntFlag.B,
         Numberwang(-273),
         NumberwangDerived(-273),
         NumberwangRegistered(-273),
@@ -121,6 +133,7 @@ def test_supports_integral_ops_pow_beartype() -> None:
         complex(-273.15),
         Fraction(-27315, 100),
         Decimal("-273.15"),
+        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),

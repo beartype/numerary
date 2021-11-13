@@ -22,6 +22,9 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
+    TestFlag,
+    TestIntEnum,
+    TestIntFlag,
     Wangernumb,
     WangernumbDerived,
     WangernumbRegistered,
@@ -52,6 +55,8 @@ def test_real_like() -> None:
     float_val: RealLike = -273.15
     frac_val: RealLike = Fraction(-27315, 100)
     dec_val: RealLike = Decimal("-273.15")
+    test_int_enum: RealLike = TestIntEnum.ZERO
+    test_int_flag: RealLike = TestIntFlag.B
     nw_val: RealLike = Numberwang(-273)
     nwd_val: RealLike = NumberwangDerived(-273)
     nwr_val: RealLike = NumberwangRegistered(-273)
@@ -65,6 +70,8 @@ def test_real_like() -> None:
         float_val,
         frac_val,
         dec_val,
+        test_int_enum,
+        test_int_flag,
         nw_val,
         nwd_val,
         nwr_val,
@@ -89,6 +96,7 @@ def test_real_like() -> None:
 
     for bad_val in (
         complex(-273.15),
+        TestFlag.B,
         "-273.15",
     ):
         assert not isinstance(bad_val, RealLike), f"{bad_val!r}"
@@ -103,6 +111,8 @@ def test_real_like_beartype() -> None:
         -273.15,
         Fraction(-27315, 100),
         Decimal("-273.15"),
+        TestIntEnum.ZERO,
+        TestIntFlag.B,
         Numberwang(-273),
         NumberwangDerived(-273),
         NumberwangRegistered(-273),
@@ -115,6 +125,7 @@ def test_real_like_beartype() -> None:
 
     for bad_val in (
         complex(-273.15),
+        TestFlag.B,
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):

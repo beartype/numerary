@@ -22,6 +22,9 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
+    TestFlag,
+    TestIntEnum,
+    TestIntFlag,
     Wangernumb,
     WangernumbDerived,
     WangernumbRegistered,
@@ -49,6 +52,8 @@ def integral_like_func_t(arg: IntegralLikeSCU):
 def test_integral_like() -> None:
     bool_val: IntegralLike = True
     int_val: IntegralLike = -273
+    test_int_enum: IntegralLike = TestIntEnum.ZERO
+    test_int_flag: IntegralLike = TestIntFlag.B
     nw_val: IntegralLike = Numberwang(-273)
     nwd_val: IntegralLike = NumberwangDerived(-273)
     nwr_val: IntegralLike = NumberwangRegistered(-273)
@@ -56,6 +61,8 @@ def test_integral_like() -> None:
     for good_val in (
         bool_val,
         int_val,
+        test_int_enum,
+        test_int_flag,
         nw_val,
         nwd_val,
         nwr_val,
@@ -81,9 +88,10 @@ def test_integral_like() -> None:
 
     for bad_val in (
         -273.15,
+        complex(-273.15),
         Fraction(-27315, 100),
         Decimal("-273.15"),
-        complex(-273.15),
+        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),
@@ -98,6 +106,8 @@ def test_integral_like_beartype() -> None:
     for good_val in (
         True,
         -273,
+        TestIntEnum.ZERO,
+        TestIntFlag.B,
         Numberwang(-273),
         NumberwangDerived(-273),
         NumberwangRegistered(-273),
@@ -110,6 +120,7 @@ def test_integral_like_beartype() -> None:
         complex(-273.15),
         Fraction(-27315, 100),
         Decimal("-273.15"),
+        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),
