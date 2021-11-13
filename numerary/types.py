@@ -506,9 +506,10 @@ SupportsTruncSCU = Union[int, float, bool, Real, SupportsTrunc]
 
 
 @runtime_checkable
-class _SupportsFloor(Protocol):
+class _SupportsFloorCeil(Protocol):
     r"""
-    The raw, non-caching version of [``SupportsFloor``][numerary.types.SupportsFloor].
+    The raw, non-caching version of
+    [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -518,19 +519,20 @@ class _SupportsFloor(Protocol):
 
 
 @runtime_checkable
-class SupportsFloor(
-    _SupportsFloor,
+class SupportsFloorCeil(
+    _SupportsFloorCeil,
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching ABC defining the [``__floor__``
-    method](https://docs.python.org/3/reference/datamodel.html#object.__floor__).
+    A caching ABC defining the
+    [``__floor__``](https://docs.python.org/3/reference/datamodel.html#object.__floor__).
+    and
+    [``__ceil__``](https://docs.python.org/3/reference/datamodel.html#object.__ceil__)
+    methods.
 
-    See also the [``floor`` helper function][numerary.types.floor].
-
-    ([``_SupportsFloor``][numerary.types._SupportsFloor] is the raw, non-caching version
-    that defines the actual methods.)
+    ([``_SupportsFloorCeil``][numerary.types._SupportsFloorCeil] is the raw, non-caching
+    version that defines the actual methods.)
 
     !!! note
 
@@ -538,6 +540,9 @@ class SupportsFloor(
         float.__floor__`` was not defined. If support for those environments is
         important, consider using [``SupportsFloat``][numerary.types.SupportsFloat]
         instead.
+
+        See also the [``floor``][numerary.types.floor] and
+        [``ceil``][numerary.types.ceil] helper functions.
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -546,56 +551,10 @@ class SupportsFloor(
 # "directly" supported in math.floor, so the pure protocol approach thinks they're not
 # supported
 if sys.version_info < (3, 9):
-    SupportsFloor.includes(float)
+    SupportsFloorCeil.includes(float)
 
-_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloor)
-SupportsFloorSCU = Union[int, float, bool, Real, SupportsFloor]
-
-
-@runtime_checkable
-class _SupportsCeil(Protocol):
-    r"""
-    The raw, non-caching version of [``SupportsCeil``][numerary.types.SupportsCeil].
-    """
-    __slots__: Union[str, Iterable[str]] = ()
-
-    @abstractmethod
-    def __ceil__(self) -> int:
-        pass
-
-
-@runtime_checkable
-class SupportsCeil(
-    _SupportsCeil,
-    Protocol,
-    metaclass=CachingProtocolMeta,
-):
-    r"""
-    A caching ABC defining the [``__ceil__``
-    method](https://docs.python.org/3/reference/datamodel.html#object.__ceil__).
-
-    ([``_SupportsCeil``][numerary.types._SupportsCeil] is the raw, non-caching version
-    that defines the actual methods.)
-
-    See also the [``ceil`` helper function][numerary.types.ceil].
-
-    !!! note
-
-        This is of limited value for Python versions prior to 3.9, since ``#!python
-        float.__ceil__`` was not defined. If support for those environments is
-        important, consider using [``SupportsFloat``][numerary.types.SupportsFloat]
-        instead, since that is what ``#!python math.ceil`` expects.
-    """
-    __slots__: Union[str, Iterable[str]] = ()
-
-
-# Prior to Python 3.9, floats didn't have an explicit __ceil__ method; it was "directly"
-# supported in math.ceil, so the pure protocol approach thinks they're not supported
-if sys.version_info < (3, 9):
-    SupportsCeil.includes(float)
-
-_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsCeil)
-SupportsCeilSCU = Union[int, float, bool, Real, SupportsCeil]
+_assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloorCeil)
+SupportsFloorCeilSCU = Union[int, float, bool, Real, SupportsFloorCeil]
 
 
 @runtime_checkable
@@ -1054,8 +1013,7 @@ class RealLike(
     * [``SupportsRealImag``][numerary.types.SupportsRealImag]
     * [``SupportsRound``][numerary.types.SupportsRound]
     * [``SupportsTrunc``][numerary.types.SupportsTrunc]
-    * [``SupportsFloor``][numerary.types.SupportsFloor]
-    * [``SupportsCeil``][numerary.types.SupportsCeil]
+    * [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil]
     * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     """
     __slots__: Union[str, Iterable[str]] = ()
@@ -1104,8 +1062,7 @@ class RationalLikeProperties(
     * [``SupportsRealImag``][numerary.types.SupportsRealImag]
     * [``SupportsRound``][numerary.types.SupportsRound]
     * [``SupportsTrunc``][numerary.types.SupportsTrunc]
-    * [``SupportsFloor``][numerary.types.SupportsFloor]
-    * [``SupportsCeil``][numerary.types.SupportsCeil]
+    * [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil]
     * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     """
     __slots__: Union[str, Iterable[str]] = ()
@@ -1224,8 +1181,7 @@ class IntegralLike(
     * [``SupportsRealImag``][numerary.types.SupportsRealImag]
     * [``SupportsRound``][numerary.types.SupportsRound]
     * [``SupportsTrunc``][numerary.types.SupportsTrunc]
-    * [``SupportsFloor``][numerary.types.SupportsFloor]
-    * [``SupportsCeil``][numerary.types.SupportsCeil]
+    * [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil]
     * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     * [``SupportsNumeratorDenominatorProperties``][numerary.types.SupportsNumeratorDenominatorProperties]
     """
@@ -1249,13 +1205,13 @@ IntegralLikeSCU = Union[int, bool, Integral, IntegralLike]
 
 
 @beartype
-def ceil(operand: Union[SupportsFloat, SupportsCeil]):
+def ceil(operand: Union[SupportsFloat, SupportsFloorCeil]):
     r"""
     Helper function that wraps ``math.ceil``.
 
     ``` python
-    >>> from numerary.types import SupportsCeil, SupportsFloat, ceil
-    >>> my_ceil: SupportsCeil
+    >>> from numerary.types import SupportsFloat, SupportsFloorCeil, ceil
+    >>> my_ceil: SupportsFloorCeil
     >>> my_ceil = 1
     >>> ceil(my_ceil)
     1
@@ -1273,13 +1229,13 @@ def ceil(operand: Union[SupportsFloat, SupportsCeil]):
 
 
 @beartype
-def floor(operand: Union[SupportsFloat, SupportsFloor]):
+def floor(operand: Union[SupportsFloat, SupportsFloorCeil]):
     r"""
     Helper function that wraps ``math.floor``.
 
     ``` python
-    >>> from numerary.types import SupportsFloat, SupportsFloor, floor
-    >>> my_floor: SupportsFloor
+    >>> from numerary.types import SupportsFloat, SupportsFloorCeil, floor
+    >>> my_floor: SupportsFloorCeil
     >>> my_floor = 1
     >>> floor(my_floor)
     1
@@ -1394,8 +1350,7 @@ try:
         numpy.int32,
         numpy.int64,
     ):
-        SupportsFloor.includes(t)
-        SupportsCeil.includes(t)
+        SupportsFloorCeil.includes(t)
 
     for t in (
         numpy.float16,
@@ -1403,8 +1358,7 @@ try:
         numpy.float64,
         numpy.float128,
     ):
-        SupportsFloor.includes(t)
-        SupportsCeil.includes(t)
+        SupportsFloorCeil.includes(t)
         SupportsIntegralOps.excludes(t)
         SupportsIntegralPow.excludes(t)
 

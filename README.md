@@ -303,16 +303,16 @@ More generally, runtime checkers that inspect and enforce annotations may benefi
 ``Union``s are *also* useful when trying to accommodate non-compliant primitives that fail static type-checking, but will work anyway at runtime.
 ``float``s in Python versions prior to 3.9 are an excellent example, because they officially lacked ``__floor__`` and ``__ceil__`` methods, but were registered with the numeric tower and worked just fine with ``math.floor`` and ``math.ceil``.
 
-How do ``numerary``’s [``SupportsFloor``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsFloor) and [``SupportsCeil``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsCeil) deal with this situation?
-Not very well, unfortunately, at least not on their own.
+How does ``numerary``’s [``SupportsFloorCeil``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsFloorCeil) deal with this situation?
+Not very well, unfortunately, at least not on its own.
 
 ``` python
 >>> import math
->>> from numerary.types import SupportsFloor
+>>> from numerary.types import SupportsFloorCeil
 
->>> def my_dumb_floor_func(arg: SupportsFloor) -> int:
-...   assert isinstance(arg, SupportsFloor)  # will work, even for floats, thanks to default overrides
-...   return math.floor(arg)  # type: ignore [arg-type]  # doesn't understand SupportsFloor
+>>> def my_dumb_floor_func(arg: SupportsFloorCeil) -> int:
+...   assert isinstance(arg, SupportsFloorCeil)  # will work, even for floats, thanks to default overrides
+...   return math.floor(arg)  # type: ignore [arg-type]  # doesn't understand SupportsFloorCeil
 
 >>> my_dumb_floor_func(float(1.2))  # type: ignore [arg-type]  # still results in a Mypy error for Python version <3.9
 1
@@ -322,13 +322,13 @@ Not very well, unfortunately, at least not on their own.
 ``…SCU`` ``Union``s allow a work-around for the static type-checking issue.
 
 ``` python
->>> from numerary.types import SupportsFloor, SupportsFloorSCU, floor
->>> SupportsFloorSCU  # float is included here
-typing.Union[int, float, bool, numbers.Real, numerary.types.SupportsFloor]
+>>> from numerary.types import SupportsFloorCeil, SupportsFloorCeilSCU, floor
+>>> SupportsFloorCeilSCU  # float is included here
+typing.Union[int, float, bool, numbers.Real, numerary.types.SupportsFloorCeil]
 
 >>> import sys
->>> def my_floor_func(arg: SupportsFloorSCU) -> int:
-...   assert isinstance(arg, SupportsFloor)
+>>> def my_floor_func(arg: SupportsFloorCeilSCU) -> int:
+...   assert isinstance(arg, SupportsFloorCeil)
 ...   return floor(arg)
 
 >>> my_floor_func(float(1.2))  # works in 3.7+

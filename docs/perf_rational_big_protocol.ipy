@@ -1,10 +1,9 @@
 from fractions import Fraction
 from numbers import Rational
 from numerary.types import (  # "raw" (non-caching) versions
-  _SupportsCeil,
   _SupportsComplexOps,
   _SupportsConjugate,
-  _SupportsFloor,
+  _SupportsFloorCeil,
   _SupportsDivmod,
   _SupportsRealImag,
   _SupportsRealOps,
@@ -32,8 +31,7 @@ class SupportsLotsOfNumberStuff(
   _SupportsComplexOps,
   _SupportsDivmod,
   _SupportsTrunc,
-  _SupportsFloor,
-  _SupportsCeil,
+  _SupportsFloorCeil,
   _SupportsConjugate,
   _SupportsRealImag,
   SupportsAbs,
