@@ -212,7 +212,7 @@ def test_trunc_numpy_beartype() -> None:
 
 
 def test_trunc_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     integer_val: SupportsTrunc = sympy.Integer(-273)
     rational_val: SupportsTrunc = sympy.Rational(-27315, 100)
     float_val: SupportsTrunc = sympy.Float(-273.15)
@@ -237,7 +237,7 @@ def test_trunc_sympy() -> None:
 
 
 def test_trunc_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (

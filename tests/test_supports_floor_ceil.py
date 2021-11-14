@@ -215,7 +215,7 @@ def test_floor_ceil_numpy_beartype() -> None:
 
 
 def test_floor_ceil_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     integer_val: SupportsFloorCeil = sympy.Integer(-273)
     rational_val: SupportsFloorCeil = sympy.Rational(-27315, 100)
     float_val: SupportsFloorCeil = sympy.Float(-273.15)
@@ -237,7 +237,7 @@ def test_floor_ceil_sympy() -> None:
 
 
 def test_floor_ceil_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     roar = pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (

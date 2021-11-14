@@ -219,7 +219,7 @@ Let’s see how they perform.
 First, let’s get a baseline.
 
 ``` python
---8<-- "docs/perf_rational_baseline.out"
+--8<-- "docs/perf_rational_baseline.txt"
 ```
 
 <details>
@@ -233,7 +233,7 @@ First, let’s get a baseline.
 Now let’s compare that with our two-property protocol.
 
 ``` python
---8<-- "docs/perf_rational_protocol.out"
+--8<-- "docs/perf_rational_protocol.txt"
 ```
 
 <details>
@@ -249,7 +249,7 @@ And that’s just with a two-property protocol.
 How much worse would it be if we had enumerated all the dunder methods? 😰
 
 ``` python
---8<-- "docs/perf_rational_big_protocol.out"
+--8<-- "docs/perf_rational_big_protocol.txt"
 ```
 
 <details>

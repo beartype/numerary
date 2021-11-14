@@ -252,7 +252,7 @@ False
 These offer significant performance improvements, especially where protocols define many methods.
 
 ``` python
---8<-- "docs/perf_supports_complex.out"
+--8<-- "docs/perf_supports_complex.txt"
 ```
 
 <details>
@@ -370,14 +370,30 @@ True
 False
 >>> from numerary.types import SupportsRealImag
 >>> real_imag: SupportsRealImag = pants_on_fire  # fails to detect the lie
+>>> real_imag.real
+Traceback (most recent call last):
+  ...
+AttributeError: 'One' object has no attribute 'real'
+
+```
+
+In this particular case, ``numerary`` provides us with a defensive mechanism.
+
+``` python
+>>> from numerary.types import SupportsRealImagMixedU, real, imag
+>>> real_imag_defense: SupportsRealImagMixedU = pants_on_fire
+>>> real(real_imag_defense)
+1
+>>> imag(real_imag)
+0
 
 ```
 
 #### Protocols loses fidelity during runtime checking
 
 At runtime, protocols match *names*, not *signatures*.
-For example, [``SupportsNumeratorDenominatorProperties``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
-In other words, ``isinstance(sage_integer, SupportsNumeratorDenominatorProperties)`` will return ``True``.
+For example, [``SupportsNumeratorDenominator``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsNumeratorDenominator)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
+In other words, ``isinstance(sage_integer, SupportsNumeratorDenominator)`` will return ``True``.
 Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^5] not be caught by Mypy.
 
 [^5]:
@@ -394,10 +410,10 @@ Further, if the short-circuiting approach is used, because ``sage.rings.integer.
 ...   def denominator(self) -> int:
 ...     return self._denominator
 
->>> from numerary.types import SupportsNumeratorDenominatorProperties
->>> frac: SupportsNumeratorDenominatorProperties = Fraction(29, 3)  # no typing error
->>> sage_rational1: SupportsNumeratorDenominatorProperties = SageLikeRational(29, 3)  # type: ignore [assignment]  # Mypy catches this
->>> isinstance(sage_rational1, SupportsNumeratorDenominatorProperties)  # isinstance does not
+>>> from numerary.types import SupportsNumeratorDenominator
+>>> frac: SupportsNumeratorDenominator = Fraction(29, 3)  # no typing error
+>>> sage_rational1: SupportsNumeratorDenominator = SageLikeRational(29, 3)  # type: ignore [assignment]  # Mypy catches this
+>>> isinstance(sage_rational1, SupportsNumeratorDenominator)  # isinstance does not
 True
 >>> sage_rational1.numerator
 <...method...numerator...>
@@ -428,11 +444,11 @@ These accommodate rational implementations like Sage’s that are mostly complia
 
 ``` python
 SupportsNumeratorDenominatorMixedU = Union[
-    SupportsNumeratorDenominatorProperties,
+    SupportsNumeratorDenominator,
     SupportsNumeratorDenominatorMethods,
 ]
 SupportsNumeratorDenominatorMixedT = (
-    SupportsNumeratorDenominatorProperties,
+    SupportsNumeratorDenominator,
     SupportsNumeratorDenominatorMethods,
 )
 ```

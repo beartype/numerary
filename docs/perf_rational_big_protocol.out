@@ -1,6 +1,0 @@
-%timeit isinstance(builtins.int(1), SupportsLotsOfNumberStuff)
-132 µs ± 1.15 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
-%timeit isinstance(fractions.Fraction(2), SupportsLotsOfNumberStuff)
-139 µs ± 2.01 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
-%timeit isinstance(builtins.float(3.0), SupportsLotsOfNumberStuff)
-131 µs ± 1.13 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)

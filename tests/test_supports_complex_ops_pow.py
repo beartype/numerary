@@ -266,7 +266,7 @@ def test_supports_complex_ops_pow_numpy_beartype() -> None:
 
 
 def test_supports_complex_ops_pow_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     integer_val: SupportsComplexOps = sympy.Integer(-273)
     rational_val: SupportsComplexOps = sympy.Rational(-27315, 100)
     float_val: SupportsComplexOps = sympy.Float(-273.15)
@@ -295,7 +295,7 @@ def test_supports_complex_ops_pow_sympy() -> None:
 
 
 def test_supports_complex_ops_pow_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (

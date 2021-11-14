@@ -15,7 +15,16 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsRealImag, SupportsRealImagSCU
+from numerary.types import (
+    SupportsRealImag,
+    SupportsRealImagAsMethod,
+    SupportsRealImagMixedSCU,
+    SupportsRealImagMixedT,
+    SupportsRealImagMixedU,
+    SupportsRealImagSCU,
+    imag,
+    real,
+)
 
 from .numberwang import (
     Numberwang,
@@ -36,12 +45,22 @@ __all__ = ()
 
 
 @beartype
-def supports_real_imag_func(arg: SupportsRealImag):
+def supports_real_imag_func(arg: SupportsRealImagMixedU):
+    assert isinstance(arg, SupportsRealImagMixedT), f"{arg!r}"
+
+
+@beartype
+def supports_real_imag_func_t(arg: SupportsRealImagMixedSCU):
+    assert isinstance(arg, SupportsRealImagMixedT), f"{arg!r}"
+
+
+@beartype
+def supports_real_imag_properties_func(arg: SupportsRealImag):
     assert isinstance(arg, SupportsRealImag), f"{arg!r}"
 
 
 @beartype
-def supports_real_imag_func_t(arg: SupportsRealImagSCU):
+def supports_real_imag_properties_func_t(arg: SupportsRealImagSCU):
     assert isinstance(arg, SupportsRealImag), f"{arg!r}"
 
 
@@ -71,15 +90,15 @@ def test_supports_real_imag() -> None:
         nwd_val,
         wnd_val,
     ):
-        assert isinstance(good_val, SupportsRealImag), f"{good_val!r}"
-        assert hasattr(good_val, "real"), f"{good_val!r}"
-        assert hasattr(good_val, "imag"), f"{good_val!r}"
+        assert isinstance(good_val, SupportsRealImagMixedT), f"{good_val!r}"
+        assert real(good_val) is not None, f"{good_val!r}"
+        assert imag(good_val) is not None, f"{good_val!r}"
 
-    test_flag_bad_val: SupportsRealImag = TestFlag.B  # type: ignore [assignment]
-    nw_bad_val: SupportsRealImag = Numberwang(-273)  # type: ignore [assignment]
-    nwr_bad_val: SupportsRealImag = NumberwangRegistered(-273)  # type: ignore [assignment]
-    wn_bad_val: SupportsRealImag = Wangernumb(-273.15)  # type: ignore [assignment]
-    wnr_bad_val: SupportsRealImag = WangernumbRegistered(-273.15)  # type: ignore [assignment]
+    test_flag_bad_val: SupportsRealImagMixedU = TestFlag.B  # type: ignore [assignment]
+    nw_bad_val: SupportsRealImagMixedU = Numberwang(-273)  # type: ignore [assignment]
+    nwr_bad_val: SupportsRealImagMixedU = NumberwangRegistered(-273)  # type: ignore [assignment]
+    wn_bad_val: SupportsRealImagMixedU = Wangernumb(-273.15)  # type: ignore [assignment]
+    wnr_bad_val: SupportsRealImagMixedU = WangernumbRegistered(-273.15)  # type: ignore [assignment]
 
     for bad_val in (
         test_flag_bad_val,
@@ -89,7 +108,7 @@ def test_supports_real_imag() -> None:
         wnr_bad_val,
         "-273.15",
     ):
-        assert not isinstance(bad_val, SupportsRealImag), f"{bad_val!r}"
+        assert not isinstance(bad_val, SupportsRealImagMixedT), f"{bad_val!r}"
 
 
 def test_supports_real_imag_beartype() -> None:
@@ -108,20 +127,8 @@ def test_supports_real_imag_beartype() -> None:
         NumberwangDerived(-273),
         WangernumbDerived(-273.15),
     ):
-        supports_real_imag_func(cast(SupportsRealImag, good_val))
-        supports_real_imag_func_t(cast(SupportsRealImagSCU, good_val))
-
-    for lying_val in (
-        # These have lied about supporting this interface when they registered
-        # themselves in the number tower
-        NumberwangRegistered(-273),
-        WangernumbRegistered(-273.15),
-    ):
-        with pytest.raises(roar.BeartypeException):
-            supports_real_imag_func(cast(SupportsRealImag, lying_val))
-
-        with pytest.raises(AssertionError):  # gets past beartype
-            supports_real_imag_func_t(cast(SupportsRealImagSCU, lying_val))
+        supports_real_imag_func(cast(SupportsRealImagMixedU, good_val))
+        supports_real_imag_func_t(cast(SupportsRealImagMixedSCU, good_val))
 
     for bad_val in (
         TestFlag.B,
@@ -130,10 +137,22 @@ def test_supports_real_imag_beartype() -> None:
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):
-            supports_real_imag_func(cast(SupportsRealImag, bad_val))
+            supports_real_imag_func(cast(SupportsRealImagMixedU, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            supports_real_imag_func_t(cast(SupportsRealImagSCU, bad_val))
+            supports_real_imag_func_t(cast(SupportsRealImagMixedSCU, bad_val))
+
+    for lying_val in (
+        # These have lied about supporting this interface when they registered
+        # themselves in the number tower
+        NumberwangRegistered(-273),
+        WangernumbRegistered(-273.15),
+    ):
+        with pytest.raises(roar.BeartypeException):
+            supports_real_imag_func(cast(SupportsRealImagMixedU, lying_val))
+
+        with pytest.raises(AssertionError):  # gets past beartype
+            supports_real_imag_func_t(cast(SupportsRealImagMixedSCU, lying_val))
 
 
 def test_supports_real_imag_numpy() -> None:
@@ -171,9 +190,9 @@ def test_supports_real_imag_numpy() -> None:
         cdouble_val,
         clongdouble_val,
     ):
-        assert isinstance(good_val, SupportsRealImag), f"{good_val!r}"
-        assert hasattr(good_val, "real"), f"{good_val!r}"
-        assert hasattr(good_val, "imag"), f"{good_val!r}"
+        assert isinstance(good_val, SupportsRealImagMixedT), f"{good_val!r}"
+        assert real(good_val) is not None, f"{good_val!r}"
+        assert imag(good_val) is not None, f"{good_val!r}"
 
 
 def test_supports_real_imag_numpy_beartype() -> None:
@@ -197,12 +216,44 @@ def test_supports_real_imag_numpy_beartype() -> None:
         numpy.cdouble(-273.15),
         numpy.clongdouble(-273.15),
     ):
-        supports_real_imag_func(cast(SupportsRealImag, good_val))
-        supports_real_imag_func_t(cast(SupportsRealImagSCU, good_val))
+        supports_real_imag_func(cast(SupportsRealImagMixedU, good_val))
+        supports_real_imag_func_t(cast(SupportsRealImagMixedSCU, good_val))
 
 
 def test_supports_real_imag_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    integer_val: SupportsRealImagAsMethod = sympy.Integer(-273)
+    rational_val: SupportsRealImagAsMethod = sympy.Rational(-27315, 100)
+    float_val: SupportsRealImagAsMethod = sympy.Float(-273.15)
+    sym_val: SupportsRealImagAsMethod = sympy.symbols("x")
+
+    for good_val in (
+        integer_val,
+        rational_val,
+        float_val,
+        sym_val,
+    ):
+        assert isinstance(good_val, SupportsRealImagMixedT), f"{good_val!r}"
+        assert real(good_val) is not None, f"{good_val!r}"
+        assert imag(good_val) is not None, f"{good_val!r}"
+
+
+def test_supports_real_imag_sympy_beartype() -> None:
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("beartype.roar", reason="requires beartype")
+
+    for good_val in (
+        sympy.Integer(-273),
+        sympy.Rational(-27315, 100),
+        sympy.Float(-273.15),
+        sympy.symbols("x"),
+    ):
+        supports_real_imag_func(cast(SupportsRealImagMixedU, good_val))
+        supports_real_imag_func_t(cast(SupportsRealImagMixedSCU, good_val))
+
+
+def test_supports_real_imag_sympy_false_positives() -> None:
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     # TODO(posita): These should not validate
     integer_val: SupportsRealImag = sympy.Integer(-273)
     rational_val: SupportsRealImag = sympy.Rational(-27315, 100)
@@ -218,8 +269,8 @@ def test_supports_real_imag_sympy() -> None:
         assert not isinstance(bad_val, SupportsRealImag), f"{bad_val!r}"
 
 
-def test_supports_real_imag_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+def test_supports_real_imag_sympy_beartype_false_positives() -> None:
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     roar = pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for lying_val in (
@@ -230,14 +281,14 @@ def test_supports_real_imag_sympy_beartype() -> None:
         sympy.Float(-273.15),
     ):
         with pytest.raises(roar.BeartypeException):
-            supports_real_imag_func(cast(SupportsRealImag, lying_val))
+            supports_real_imag_properties_func(cast(SupportsRealImag, lying_val))
 
         with pytest.raises(AssertionError):  # gets past beartype
-            supports_real_imag_func_t(cast(SupportsRealImagSCU, lying_val))
+            supports_real_imag_properties_func_t(cast(SupportsRealImagSCU, lying_val))
 
     for bad_val in (sympy.symbols("x"),):
         with pytest.raises(roar.BeartypeException):
-            supports_real_imag_func(cast(SupportsRealImag, bad_val))
+            supports_real_imag_properties_func(cast(SupportsRealImag, bad_val))
 
         with pytest.raises(roar.BeartypeException):
-            supports_real_imag_func_t(cast(SupportsRealImagSCU, bad_val))
+            supports_real_imag_properties_func_t(cast(SupportsRealImagSCU, bad_val))

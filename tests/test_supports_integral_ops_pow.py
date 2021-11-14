@@ -290,7 +290,7 @@ def test_supports_integral_ops_pow_numpy_beartype() -> None:
 
 
 def test_supports_integral_ops_pow_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     integral_val: SupportsIntegralOps = sympy.Integer(-273)
     _: SupportsIntegralPow
     _ = sympy.Integer(-273)
@@ -327,7 +327,7 @@ def test_supports_integral_ops_pow_sympy() -> None:
 
 
 def test_supports_integral_ops_pow_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     roar = pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (sympy.Integer(-273),):

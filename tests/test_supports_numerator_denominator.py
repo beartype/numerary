@@ -16,11 +16,11 @@ import pytest
 
 from numerary.bt import beartype
 from numerary.types import (
+    SupportsNumeratorDenominator,
     SupportsNumeratorDenominatorMethods,
     SupportsNumeratorDenominatorMixedSCU,
     SupportsNumeratorDenominatorMixedT,
     SupportsNumeratorDenominatorMixedU,
-    SupportsNumeratorDenominatorProperties,
     denominator,
     numerator,
 )
@@ -81,14 +81,14 @@ def supports_numerator_denominator_func_t(arg: SupportsNumeratorDenominatorMixed
 
 
 def test_numerator_denominator() -> None:
-    bool_val: SupportsNumeratorDenominatorProperties = True
-    int_val: SupportsNumeratorDenominatorProperties = -273
-    frac_val: SupportsNumeratorDenominatorProperties = Fraction(-27315, 100)
-    test_int_enum: SupportsNumeratorDenominatorProperties = TestIntEnum.ZERO
-    test_int_flag: SupportsNumeratorDenominatorProperties = TestIntFlag.B
-    nw_val: SupportsNumeratorDenominatorProperties = Numberwang(-273)
-    nwd_val: SupportsNumeratorDenominatorProperties = NumberwangDerived(-273)
-    nwr_val: SupportsNumeratorDenominatorProperties = NumberwangRegistered(-273)
+    bool_val: SupportsNumeratorDenominator = True
+    int_val: SupportsNumeratorDenominator = -273
+    frac_val: SupportsNumeratorDenominator = Fraction(-27315, 100)
+    test_int_enum: SupportsNumeratorDenominator = TestIntEnum.ZERO
+    test_int_flag: SupportsNumeratorDenominator = TestIntFlag.B
+    nw_val: SupportsNumeratorDenominator = Numberwang(-273)
+    nwd_val: SupportsNumeratorDenominator = NumberwangDerived(-273)
+    nwr_val: SupportsNumeratorDenominator = NumberwangRegistered(-273)
     sage_val: SupportsNumeratorDenominatorMethods = SageLikeRational(-27315, 100)
 
     for good_val in (
@@ -173,14 +173,14 @@ def test_numerator_denominator_beartype() -> None:
 
 def test_numerator_denominator_numpy() -> None:
     numpy = pytest.importorskip("numpy", reason="requires numpy")
-    uint8_val: SupportsNumeratorDenominatorProperties = numpy.uint8(2)
-    uint16_val: SupportsNumeratorDenominatorProperties = numpy.uint16(273)
-    uint32_val: SupportsNumeratorDenominatorProperties = numpy.uint32(273)
-    uint64_val: SupportsNumeratorDenominatorProperties = numpy.uint64(273)
-    int8_val: SupportsNumeratorDenominatorProperties = numpy.int8(-2)
-    int16_val: SupportsNumeratorDenominatorProperties = numpy.int16(-273)
-    int32_val: SupportsNumeratorDenominatorProperties = numpy.int32(-273)
-    int64_val: SupportsNumeratorDenominatorProperties = numpy.int64(-273)
+    uint8_val: SupportsNumeratorDenominator = numpy.uint8(2)
+    uint16_val: SupportsNumeratorDenominator = numpy.uint16(273)
+    uint32_val: SupportsNumeratorDenominator = numpy.uint32(273)
+    uint64_val: SupportsNumeratorDenominator = numpy.uint64(273)
+    int8_val: SupportsNumeratorDenominator = numpy.int8(-2)
+    int16_val: SupportsNumeratorDenominator = numpy.int16(-273)
+    int32_val: SupportsNumeratorDenominator = numpy.int32(-273)
+    int64_val: SupportsNumeratorDenominator = numpy.int64(-273)
 
     for good_val in (
         uint8_val,
@@ -262,8 +262,8 @@ def test_numerator_denominator_numpy_beartype() -> None:
 
 def test_numerator_denominator_sympy() -> None:
     sympy = pytest.importorskip("sympy", reason="requires sympy")
-    integral_val: SupportsNumeratorDenominatorProperties = sympy.Integer(-273)
-    rational_val: SupportsNumeratorDenominatorProperties = sympy.Rational(-27315, 100)
+    integral_val: SupportsNumeratorDenominator = sympy.Integer(-273)
+    rational_val: SupportsNumeratorDenominator = sympy.Rational(-27315, 100)
 
     for good_val in (
         integral_val,

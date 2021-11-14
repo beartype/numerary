@@ -17,6 +17,9 @@
 
 ## [0.1.2](https://github.com/posita/numerary/releases/tag/v0.1.2)
 
+* Splits [``SupportsRealImagAsMethod``][numerary.types.SupportsRealImagAsMethod] out of [``SupportsRealImag``][numerary.types.SupportsRealImag] and provides the [``real``][numerary.types.real] and [``imag``][numerary.types.imag] helper functions for better support of ``sympy.core.numbers`` primitives.
+* Renames ``SupportsNumeratorDenominatorProperties`` to [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator] to mirror [``SupportsRealImag``][numerary.types.SupportsRealImag] and reflect that it captures the numeric tower interface.
+
 ## [0.1.1](https://github.com/posita/numerary/releases/tag/v0.1.1)
 
 * Removes obsoleted ``…SCT`` aliases.

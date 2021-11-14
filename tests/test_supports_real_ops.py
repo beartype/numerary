@@ -206,7 +206,7 @@ def test_supports_real_ops_numpy_beartype() -> None:
 
 
 def test_supports_real_ops_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     integer_val: SupportsRealOps = sympy.Integer(-273)
     rational_val: SupportsRealOps = sympy.Rational(-27315, 100)
     float_val: SupportsRealOps = sympy.Float(-273.15)
@@ -230,7 +230,7 @@ def test_supports_real_ops_sympy() -> None:
 
 
 def test_supports_real_ops_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (

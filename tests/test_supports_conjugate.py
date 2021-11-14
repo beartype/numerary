@@ -112,18 +112,6 @@ def test_supports_conjugate_beartype() -> None:
         supports_conjugate_func(cast(SupportsConjugate, good_val))
         supports_conjugate_func_t(cast(SupportsConjugateSCU, good_val))
 
-    for lying_val in (
-        # These have lied about supporting this interface when they registered
-        # themselves in the number tower
-        NumberwangRegistered(-273),
-        WangernumbRegistered(-273.15),
-    ):
-        with pytest.raises(roar.BeartypeException):
-            supports_conjugate_func(cast(SupportsConjugate, lying_val))
-
-        with pytest.raises(AssertionError):  # gets past beartype
-            supports_conjugate_func_t(cast(SupportsConjugateSCU, lying_val))
-
     for bad_val in (
         TestFlag.B,
         Numberwang(-273),
@@ -135,6 +123,18 @@ def test_supports_conjugate_beartype() -> None:
 
         with pytest.raises(roar.BeartypeException):
             supports_conjugate_func_t(cast(SupportsConjugateSCU, bad_val))
+
+    for lying_val in (
+        # These have lied about supporting this interface when they registered
+        # themselves in the number tower
+        NumberwangRegistered(-273),
+        WangernumbRegistered(-273.15),
+    ):
+        with pytest.raises(roar.BeartypeException):
+            supports_conjugate_func(cast(SupportsConjugate, lying_val))
+
+        with pytest.raises(AssertionError):  # gets past beartype
+            supports_conjugate_func_t(cast(SupportsConjugateSCU, lying_val))
 
 
 def test_supports_conjugate_numpy() -> None:
@@ -202,7 +202,7 @@ def test_supports_conjugate_numpy_beartype() -> None:
 
 
 def test_supports_conjugate_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     integer_val: SupportsConjugate = sympy.Integer(-273)
     rational_val: SupportsConjugate = sympy.Rational(-27315, 100)
     float_val: SupportsConjugate = sympy.Float(-273.15)
@@ -219,7 +219,7 @@ def test_supports_conjugate_sympy() -> None:
 
 
 def test_supports_conjugate_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (

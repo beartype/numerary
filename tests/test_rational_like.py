@@ -17,10 +17,10 @@ import pytest
 
 from numerary.bt import beartype
 from numerary.types import (
+    RationalLike,
     RationalLikeMixedSCU,
     RationalLikeMixedT,
     RationalLikeMixedU,
-    RationalLikeProperties,
 )
 
 from .numberwang import (
@@ -55,14 +55,14 @@ def rational_like_func_t(arg: RationalLikeMixedSCU):
 
 
 def test_rational_like() -> None:
-    bool_val: RationalLikeProperties = True
-    int_val: RationalLikeProperties = -273
-    frac_val: RationalLikeProperties = Fraction(-27315, 100)
-    test_int_enum: RationalLikeProperties = TestIntEnum.ZERO
-    test_int_flag: RationalLikeProperties = TestIntFlag.B
-    nw_val: RationalLikeProperties = Numberwang(-273)
-    nwd_val: RationalLikeProperties = NumberwangDerived(-273)
-    nwr_val: RationalLikeProperties = NumberwangRegistered(-273)
+    bool_val: RationalLike = True
+    int_val: RationalLike = -273
+    frac_val: RationalLike = Fraction(-27315, 100)
+    test_int_enum: RationalLike = TestIntEnum.ZERO
+    test_int_flag: RationalLike = TestIntFlag.B
+    nw_val: RationalLike = Numberwang(-273)
+    nwd_val: RationalLike = NumberwangDerived(-273)
+    nwr_val: RationalLike = NumberwangRegistered(-273)
 
     for good_val in (
         bool_val,
@@ -91,13 +91,13 @@ def test_rational_like() -> None:
         assert good_val.numerator, f"{good_val!r}"
         assert good_val.denominator, f"{good_val!r}"
 
-    float_bad_val: RationalLikeProperties = -273.15  # type: ignore [assignment]
-    complex_bad_val: RationalLikeProperties = complex(-273.15)  # type: ignore [assignment]
-    dec_bad_val: RationalLikeProperties = Decimal("-273.15")  # type: ignore [assignment]
-    test_flag_bad_val: RationalLikeProperties = TestFlag.B  # type: ignore [assignment]
-    wn_bad_val: RationalLikeProperties = Wangernumb(-273.15)  # type: ignore [assignment]
-    wnd_bad_val: RationalLikeProperties = WangernumbDerived(-273.15)  # type: ignore [assignment]
-    wnr_bad_val: RationalLikeProperties = WangernumbRegistered(-273.15)  # type: ignore [assignment]
+    float_bad_val: RationalLike = -273.15  # type: ignore [assignment]
+    complex_bad_val: RationalLike = complex(-273.15)  # type: ignore [assignment]
+    dec_bad_val: RationalLike = Decimal("-273.15")  # type: ignore [assignment]
+    test_flag_bad_val: RationalLike = TestFlag.B  # type: ignore [assignment]
+    wn_bad_val: RationalLike = Wangernumb(-273.15)  # type: ignore [assignment]
+    wnd_bad_val: RationalLike = WangernumbDerived(-273.15)  # type: ignore [assignment]
+    wnr_bad_val: RationalLike = WangernumbRegistered(-273.15)  # type: ignore [assignment]
 
     for bad_val in (
         float_bad_val,
@@ -147,14 +147,14 @@ def test_rational_like_beartype() -> None:
 
 def test_rational_like_numpy() -> None:
     numpy = pytest.importorskip("numpy", reason="requires numpy")
-    uint8_val: RationalLikeProperties = numpy.uint8(2)
-    uint16_val: RationalLikeProperties = numpy.uint16(273)
-    uint32_val: RationalLikeProperties = numpy.uint32(273)
-    uint64_val: RationalLikeProperties = numpy.uint64(273)
-    int8_val: RationalLikeProperties = numpy.int8(-2)
-    int16_val: RationalLikeProperties = numpy.int16(-273)
-    int32_val: RationalLikeProperties = numpy.int32(-273)
-    int64_val: RationalLikeProperties = numpy.int64(-273)
+    uint8_val: RationalLike = numpy.uint8(2)
+    uint16_val: RationalLike = numpy.uint16(273)
+    uint32_val: RationalLike = numpy.uint32(273)
+    uint64_val: RationalLike = numpy.uint64(273)
+    int8_val: RationalLike = numpy.int8(-2)
+    int16_val: RationalLike = numpy.int16(-273)
+    int32_val: RationalLike = numpy.int32(-273)
+    int64_val: RationalLike = numpy.int64(-273)
 
     for good_val in (
         uint8_val,
@@ -180,13 +180,13 @@ def test_rational_like_numpy() -> None:
         assert good_val.denominator, f"{good_val!r}"
 
     # TODO(posita): These should not validate
-    float16_val: RationalLikeProperties = numpy.float16(-1.8)
-    float32_val: RationalLikeProperties = numpy.float32(-273.15)
-    float64_val: RationalLikeProperties = numpy.float64(-273.15)
-    float128_val: RationalLikeProperties = numpy.float128(-273.15)
-    csingle_val: RationalLikeProperties = numpy.csingle(-273.15)
-    cdouble_val: RationalLikeProperties = numpy.cdouble(-273.15)
-    clongdouble_val: RationalLikeProperties = numpy.clongdouble(-273.15)
+    float16_val: RationalLike = numpy.float16(-1.8)
+    float32_val: RationalLike = numpy.float32(-273.15)
+    float64_val: RationalLike = numpy.float64(-273.15)
+    float128_val: RationalLike = numpy.float128(-273.15)
+    csingle_val: RationalLike = numpy.csingle(-273.15)
+    cdouble_val: RationalLike = numpy.cdouble(-273.15)
+    clongdouble_val: RationalLike = numpy.clongdouble(-273.15)
 
     for bad_val in (
         float16_val,
@@ -235,8 +235,8 @@ def test_rational_like_numpy_beartype() -> None:
 
 def test_rational_like_sympy() -> None:
     sympy = pytest.importorskip("sympy", reason="requires sympy")
-    integral_val: RationalLikeProperties = sympy.Integer(-273)
-    rational_val: RationalLikeProperties = sympy.Rational(-27315, 100)
+    integral_val: RationalLike = sympy.Integer(-273)
+    rational_val: RationalLike = sympy.Rational(-27315, 100)
 
     for good_val in (
         integral_val,
@@ -260,8 +260,8 @@ def test_rational_like_sympy() -> None:
         assert good_val.denominator, f"{good_val!r}"
 
     # TODO(posita): These should not validate
-    sym_float: RationalLikeProperties = sympy.Float(-273.15)
-    sym_sym: RationalLikeProperties = sympy.symbols("x")
+    sym_float: RationalLike = sympy.Float(-273.15)
+    sym_sym: RationalLike = sympy.symbols("x")
 
     for bad_val in (
         sym_float,

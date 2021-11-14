@@ -548,17 +548,17 @@ class SupportsRealImag(
     [``imag``](https://docs.python.org/3/library/numbers.html#numbers.Complex.imag)
     properties.
 
-    ([``_SupportsRealImag``][numerary.types._SupportsRealImag] is the raw, non-caching
-    version that defines the actual methods.)
+    ([``_SupportsRealImag``][numerary.types._SupportsRealImag] is
+    the raw, non-caching version that defines the actual methods.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
-    >>> from numerary.types import SupportsRealImag
+    >>> from numerary.types import SupportsRealImag, real, imag
     >>> MyRealImagT = TypeVar("MyRealImagT", bound=SupportsRealImag)
 
     >>> def real_imag_my_thing(arg: MyRealImagT) -> Tuple[Any, Any]:
     ...   assert isinstance(arg, SupportsRealImag)
-    ...   return (arg.real, arg.imag)
+    ...   return (real(arg), imag(arg))
 
     >>> real_imag_my_thing(3)
     (3, 0)
@@ -580,6 +580,82 @@ class SupportsRealImag(
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealImag)
 SupportsRealImagSCU = Union[int, float, bool, Complex, SupportsRealImag]
+
+
+@runtime_checkable
+class _SupportsRealImagAsMethod(Protocol):
+    r"""
+    The raw, non-caching version of
+    [``SupportsRealImagAsMethod``][numerary.types.SupportsRealImagAsMethod].
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+    @abstractmethod
+    def as_real_imag(self) -> Tuple[Any, Any]:
+        pass
+
+
+@runtime_checkable
+class SupportsRealImagAsMethod(
+    _SupportsRealImagAsMethod,
+    Protocol,
+    metaclass=CachingProtocolMeta,
+):
+    r"""
+    A caching ABC defining the ``#!python as_real_imag`` method that returns a 2-tuple.
+
+    ([``_SupportsRealImagAsMethod``][numerary.types._SupportsRealImagAsMethod]
+    is the raw, non-caching version that defines the actual methods.)
+
+    See also the [``real``][numerary.types.real] and [``imag``][numerary.types.imag]
+    helper functions.
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsRealImagAsMethod, real, imag
+    >>> MyRealImagAsMethodT = TypeVar("MyRealImagAsMethodT", bound=SupportsRealImagAsMethod)
+
+    >>> def as_real_imag_my_thing(arg: MyRealImagAsMethodT) -> Tuple[Any, Any]:
+    ...   assert isinstance(arg, SupportsRealImagAsMethod)
+    ...   return (real(arg), imag(arg))
+
+    >>> as_real_imag_my_thing(sympy.core.numbers.Float(3.5))
+    (3.5, 0)
+    >>> tuple(type(i) for i in _)
+    (<class 'sympy.core.numbers.Float'>, <class 'sympy.core.numbers.Zero'>)
+
+    >>> # error: Value of type variable "MyRealImagAsMethodT" of "as_real_imag_my_thing" cannot be "str"
+    >>> as_real_imag_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
+    """
+    __slots__: Union[str, Iterable[str]] = ()
+
+
+# See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
+SupportsRealImagMixedU = Union[
+    SupportsRealImag,
+    SupportsRealImagAsMethod,
+]
+fr"""
+{SupportsRealImagMixedU!r}
+"""
+SupportsRealImagMixedT = (
+    SupportsRealImag,
+    SupportsRealImagAsMethod,
+)
+fr"""
+{SupportsRealImagMixedT!r}
+"""
+assert SupportsRealImagMixedU.__args__ == SupportsRealImagMixedT  # type: ignore [attr-defined]
+
+SupportsRealImagMixedSCU = Union[
+    SupportsRealImagSCU,
+    SupportsRealImagAsMethod,
+]
 
 
 @runtime_checkable
@@ -804,10 +880,10 @@ SupportsDivmodSCU = Union[int, float, bool, Real, SupportsDivmod]
 
 
 @runtime_checkable
-class _SupportsNumeratorDenominatorProperties(Protocol):
+class _SupportsNumeratorDenominator(Protocol):
     r"""
     The raw, non-caching version of
-    [``SupportsNumeratorDenominatorProperties``][numerary.types.SupportsNumeratorDenominatorProperties].
+    [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator].
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -821,8 +897,8 @@ class _SupportsNumeratorDenominatorProperties(Protocol):
 
 
 @runtime_checkable
-class SupportsNumeratorDenominatorProperties(
-    _SupportsNumeratorDenominatorProperties,
+class SupportsNumeratorDenominator(
+    _SupportsNumeratorDenominator,
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
@@ -833,16 +909,16 @@ class SupportsNumeratorDenominatorProperties(
     [``denominator``](https://docs.python.org/3/library/numbers.html#numbers.Rational.denominator)
     properties.
 
-    ([``_SupportsNumeratorDenominatorProperties``][numerary.types._SupportsNumeratorDenominatorProperties]
+    ([``_SupportsNumeratorDenominator``][numerary.types._SupportsNumeratorDenominator]
     is the raw, non-caching version that defines the actual properties.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
-    >>> from numerary.types import SupportsNumeratorDenominatorProperties, denominator, numerator
-    >>> MyNumDenomT = TypeVar("MyNumDenomT", bound=SupportsNumeratorDenominatorProperties)
+    >>> from numerary.types import SupportsNumeratorDenominator, denominator, numerator
+    >>> MyNumDenomT = TypeVar("MyNumDenomT", bound=SupportsNumeratorDenominator)
 
     >>> def num_denom_my_thing(arg: MyNumDenomT) -> Tuple[int, int]:
-    ...   assert isinstance(arg, SupportsNumeratorDenominatorProperties)
+    ...   assert isinstance(arg, SupportsNumeratorDenominator)
     ...   return numerator(arg), denominator(arg)
 
     >>> num_denom_my_thing(3)
@@ -869,12 +945,12 @@ class SupportsNumeratorDenominatorProperties(
     __slots__: Union[str, Iterable[str]] = ()
 
 
-_assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominatorProperties)
-SupportsNumeratorDenominatorPropertiesSCU = Union[
+_assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominator)
+SupportsNumeratorDenominatorSCU = Union[
     int,
     bool,
     Rational,
-    SupportsNumeratorDenominatorProperties,
+    SupportsNumeratorDenominator,
 ]
 
 
@@ -907,20 +983,23 @@ class SupportsNumeratorDenominatorMethods(
 
     ([``_SupportsNumeratorDenominatorMethods``][numerary.types._SupportsNumeratorDenominatorMethods]
     is the raw, non-caching version that defines the actual methods.)
+
+    See also the [``numerator``][numerary.types.numerator] and
+    [``denominator``][numerary.types.denominator] helper functions.
     """
     __slots__: Union[str, Iterable[str]] = ()
 
 
 # See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
 SupportsNumeratorDenominatorMixedU = Union[
-    SupportsNumeratorDenominatorProperties,
+    SupportsNumeratorDenominator,
     SupportsNumeratorDenominatorMethods,
 ]
 fr"""
 {SupportsNumeratorDenominatorMixedU!r}
 """
 SupportsNumeratorDenominatorMixedT = (
-    SupportsNumeratorDenominatorProperties,
+    SupportsNumeratorDenominator,
     SupportsNumeratorDenominatorMethods,
 )
 fr"""
@@ -929,7 +1008,7 @@ fr"""
 assert SupportsNumeratorDenominatorMixedU.__args__ == SupportsNumeratorDenominatorMixedT  # type: ignore [attr-defined]
 
 SupportsNumeratorDenominatorMixedSCU = Union[
-    SupportsNumeratorDenominatorPropertiesSCU,
+    SupportsNumeratorDenominatorSCU,
     SupportsNumeratorDenominatorMethods,
 ]
 
@@ -1429,10 +1508,10 @@ RealLikeSCU = Union[int, float, bool, Real, RealLike]
 
 
 @runtime_checkable
-class RationalLikeProperties(
+class RationalLike(
     SupportsAbs[_T_co],
     SupportsFloat,
-    SupportsNumeratorDenominatorProperties,
+    SupportsNumeratorDenominator,
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
     SupportsComplexPow[_T_co],
@@ -1445,7 +1524,7 @@ class RationalLikeProperties(
 
     * [``SupportsAbs``][numerary.types.SupportsAbs]
     * [``SupportsFloat``][numerary.types.SupportsFloat]
-    * [``SupportsNumeratorDenominatorProperties``][numerary.types.SupportsNumeratorDenominatorProperties]
+    * [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator]
     * [``SupportsRealOps``][numerary.types.SupportsRealOps]
     * [``SupportsComplexOps``][numerary.types.SupportsComplexOps]
     * [``SupportsComplexPow``][numerary.types.SupportsComplexPow]
@@ -1457,10 +1536,10 @@ class RationalLikeProperties(
     from numerary.types import CachingProtocolMeta, Protocol, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
-    class RationalLikeProperties(
+    class RationalLike(
       SupportsAbs[T_co],
       SupportsFloat,
-      SupportsNumeratorDenominatorProperties,
+      SupportsNumeratorDenominator,
       SupportsRealOps[T_co],
       SupportsComplexOps[T_co],
       SupportsComplexPow[T_co],
@@ -1493,12 +1572,12 @@ class RationalLikeProperties(
         pass
 
 
-_assert_isinstance(int, bool, Fraction, target_t=RationalLikeProperties)
-RationalLikePropertiesSCU = Union[
+_assert_isinstance(int, bool, Fraction, target_t=RationalLike)
+RationalLikeSCU = Union[
     int,
     bool,
     Rational,
-    RationalLikeProperties,
+    RationalLike,
 ]
 
 
@@ -1515,10 +1594,9 @@ class RationalLikeMethods(
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with rationals.
-    It is identical to
-    [``RationalLikeProperties``][numerary.types.RationalLikeProperties] with one
+    It is identical to [``RationalLike``][numerary.types.RationalLike] with one
     important exception. Instead of
-    [``SupportsNumeratorDenominatorProperties``][numerary.types.SupportsNumeratorDenominatorProperties],
+    [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator],
     this protocol provides
     [``SupportsNumeratorDenominatorMethods``][numerary.types.SupportsNumeratorDenominatorMethods].
 
@@ -1545,6 +1623,9 @@ class RationalLikeMethods(
     This is probably not very useful on its own, but is important to the construction of
     [``RationalLikeMixedU``][numerary.types.RationalLikeMixedU] and
     [``RationalLikeMixedT``][numerary.types.RationalLikeMixedT].
+
+    See also the [``numerator``][numerary.types.numerator] and
+    [``denominator``][numerary.types.denominator] helper functions.
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -1559,11 +1640,11 @@ class RationalLikeMethods(
 
 
 # See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
-RationalLikeMixedU = Union[RationalLikeProperties, RationalLikeMethods]
+RationalLikeMixedU = Union[RationalLike, RationalLikeMethods]
 fr"""
 {RationalLikeMixedU!r}
 """
-RationalLikeMixedT = (RationalLikeProperties, RationalLikeMethods)
+RationalLikeMixedT = (RationalLike, RationalLikeMethods)
 fr"""
 {RationalLikeMixedT!r}
 """
@@ -1578,7 +1659,7 @@ RationalLikeMethods.__doc__ += fr"""
 """
 
 RationalLikeMixedSCU = Union[
-    RationalLikePropertiesSCU,
+    RationalLikeSCU,
     RationalLikeMethods,
 ]
 
@@ -1641,7 +1722,7 @@ class IntegralLike(
     * [``SupportsTrunc``][numerary.types.SupportsTrunc]
     * [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil]
     * [``SupportsDivmod``][numerary.types.SupportsDivmod]
-    * [``SupportsNumeratorDenominatorProperties``][numerary.types.SupportsNumeratorDenominatorProperties]
+    * [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator]
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -1663,51 +1744,63 @@ IntegralLikeSCU = Union[int, bool, Integral, IntegralLike]
 
 
 @beartype
-def ceil(operand: Union[SupportsFloat, SupportsFloorCeil]):
+def real(operand: SupportsRealImagMixedU):
     r"""
-    Helper function that wraps ``math.ceil``.
+    Helper function that extracts the real part from *operand* including resolving
+    non-compliant implementations that implement such extraction via a ``as_real_imag``
+    method rather than as properties.
 
     ``` python
-    >>> from numerary.types import SupportsFloat, SupportsFloorCeil, ceil
-    >>> my_ceil: SupportsFloorCeil
-    >>> my_ceil = 1
-    >>> ceil(my_ceil)
-    1
-    >>> from fractions import Fraction
-    >>> my_ceil = Fraction(1, 2)
-    >>> ceil(my_ceil)
-    1
-    >>> my_ceil_float: SupportsFloat = 1.2
-    >>> ceil(my_ceil_float)
-    2
+    >>> import sympy
+    >>> from numerary.types import real
+    >>> real(sympy.core.numbers.Float(3.5))
+    3.5
 
     ```
+
+    See
+    [SupportsRealImag][numerary.types.SupportsRealImag]
+    and
+    [SupportsRealImagAsMethod][numerary.types.SupportsRealImagAsMethod].
     """
-    return math.ceil(operand)  # type: ignore [arg-type]
+    if callable(getattr(operand, "as_real_imag", None)):
+        real_part, _ = operand.as_real_imag()  # type: ignore [union-attr]
+
+        return real_part
+    elif hasattr(operand, "real"):
+        return operand.real  # type: ignore [union-attr]
+    else:
+        raise TypeError(f"{operand!r} has no real or as_real_imag")
 
 
 @beartype
-def floor(operand: Union[SupportsFloat, SupportsFloorCeil]):
+def imag(operand: SupportsRealImagMixedU):
     r"""
-    Helper function that wraps ``math.floor``.
+    Helper function that extracts the imaginary part from *operand* including resolving
+    non-compliant implementations that implement such extraction via a ``as_real_imag``
+    method rather than as properties.
 
     ``` python
-    >>> from numerary.types import SupportsFloat, SupportsFloorCeil, floor
-    >>> my_floor: SupportsFloorCeil
-    >>> my_floor = 1
-    >>> floor(my_floor)
-    1
-    >>> from fractions import Fraction
-    >>> my_floor = Fraction(1, 2)
-    >>> floor(my_floor)
+    >>> import sympy
+    >>> from numerary.types import real
+    >>> imag(sympy.core.numbers.Float(3.5))
     0
-    >>> my_floor_float: SupportsFloat = 1.2
-    >>> floor(my_floor_float)
-    1
 
     ```
+
+    See
+    [SupportsRealImag][numerary.types.SupportsRealImag]
+    and
+    [SupportsRealImagAsMethod][numerary.types.SupportsRealImagAsMethod].
     """
-    return math.floor(operand)  # type: ignore [arg-type]
+    if callable(getattr(operand, "as_real_imag", None)):
+        _, imag_part = operand.as_real_imag()  # type: ignore [union-attr]
+
+        return imag_part
+    elif hasattr(operand, "imag"):
+        return operand.imag  # type: ignore [union-attr]
+    else:
+        raise TypeError(f"{operand!r} has no real or as_real_imag")
 
 
 @beartype
@@ -1735,6 +1828,54 @@ def trunc(operand: Union[SupportsFloat, SupportsTrunc]):
 
 
 @beartype
+def floor(operand: Union[SupportsFloat, SupportsFloorCeil]):
+    r"""
+    Helper function that wraps ``math.floor``.
+
+    ``` python
+    >>> from numerary.types import SupportsFloat, SupportsFloorCeil, floor
+    >>> my_floor: SupportsFloorCeil
+    >>> my_floor = 1
+    >>> floor(my_floor)
+    1
+    >>> from fractions import Fraction
+    >>> my_floor = Fraction(1, 2)
+    >>> floor(my_floor)
+    0
+    >>> my_floor_float: SupportsFloat = 1.2
+    >>> floor(my_floor_float)
+    1
+
+    ```
+    """
+    return math.floor(operand)  # type: ignore [arg-type]
+
+
+@beartype
+def ceil(operand: Union[SupportsFloat, SupportsFloorCeil]):
+    r"""
+    Helper function that wraps ``math.ceil``.
+
+    ``` python
+    >>> from numerary.types import SupportsFloat, SupportsFloorCeil, ceil
+    >>> my_ceil: SupportsFloorCeil
+    >>> my_ceil = 1
+    >>> ceil(my_ceil)
+    1
+    >>> from fractions import Fraction
+    >>> my_ceil = Fraction(1, 2)
+    >>> ceil(my_ceil)
+    1
+    >>> my_ceil_float: SupportsFloat = 1.2
+    >>> ceil(my_ceil_float)
+    2
+
+    ```
+    """
+    return math.ceil(operand)  # type: ignore [arg-type]
+
+
+@beartype
 def numerator(operand: SupportsNumeratorDenominatorMixedU):
     r"""
     Helper function that extracts the numerator from *operand* including resolving
@@ -1750,7 +1891,7 @@ def numerator(operand: SupportsNumeratorDenominatorMixedU):
     ```
 
     See
-    [SupportsNumeratorDenominatorProperties][numerary.types.SupportsNumeratorDenominatorProperties]
+    [SupportsNumeratorDenominator][numerary.types.SupportsNumeratorDenominator]
     and
     [SupportsNumeratorDenominatorMethods][numerary.types.SupportsNumeratorDenominatorMethods].
     """
@@ -1779,7 +1920,7 @@ def denominator(operand: SupportsNumeratorDenominatorMixedU):
     ```
 
     See
-    [SupportsNumeratorDenominatorProperties][numerary.types.SupportsNumeratorDenominatorProperties]
+    [SupportsNumeratorDenominator][numerary.types.SupportsNumeratorDenominator]
     and
     [SupportsNumeratorDenominatorMethods][numerary.types.SupportsNumeratorDenominatorMethods].
     """

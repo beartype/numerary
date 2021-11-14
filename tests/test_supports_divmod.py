@@ -74,17 +74,6 @@ def test_supports_divmod() -> None:
         assert isinstance(good_val, SupportsDivmod), f"{good_val!r}"
         assert divmod(good_val, good_val), f"{good_val!r}"
 
-    nwr_bad_val: SupportsDivmod = NumberwangRegistered(-273)  # type: ignore [assignment]
-    wnr_bad_val: SupportsDivmod = WangernumbRegistered(-273.15)  # type: ignore [assignment]
-
-    for lying_val in (
-        # These have lied about supporting this interface when they registered
-        # themselves in the number tower
-        nwr_bad_val,
-        wnr_bad_val,
-    ):
-        assert not isinstance(lying_val, SupportsDivmod), f"{lying_val!r}"
-
     complex_bad_val: SupportsDivmod = complex(-273.15)  # type: ignore [assignment]
     test_flag_bad_val: SupportsDivmod = TestFlag.B  # type: ignore [assignment]
     nw_bad_val: SupportsDivmod = Numberwang(-273)  # type: ignore [assignment]
@@ -98,6 +87,17 @@ def test_supports_divmod() -> None:
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsDivmod), f"{bad_val!r}"
+
+    nwr_bad_val: SupportsDivmod = NumberwangRegistered(-273)  # type: ignore [assignment]
+    wnr_bad_val: SupportsDivmod = WangernumbRegistered(-273.15)  # type: ignore [assignment]
+
+    for lying_val in (
+        # These have lied about supporting this interface when they registered
+        # themselves in the number tower
+        nwr_bad_val,
+        wnr_bad_val,
+    ):
+        assert not isinstance(lying_val, SupportsDivmod), f"{lying_val!r}"
 
 
 def test_supports_divmod_beartype() -> None:
@@ -118,18 +118,6 @@ def test_supports_divmod_beartype() -> None:
         supports_divmod_func(cast(SupportsDivmod, good_val))
         supports_divmod_func_t(cast(SupportsDivmodSCU, good_val))
 
-    for lying_val in (
-        # These have lied about supporting this interface when they registered
-        # themselves in the number tower
-        NumberwangRegistered(-273),
-        WangernumbRegistered(-273.15),
-    ):
-        with pytest.raises(roar.BeartypeException):
-            supports_divmod_func(cast(SupportsDivmod, lying_val))
-
-        with pytest.raises(AssertionError):  # gets past beartype
-            supports_divmod_func_t(cast(SupportsDivmodSCU, lying_val))
-
     for bad_val in (
         complex(-273.15),
         TestFlag.B,
@@ -142,6 +130,18 @@ def test_supports_divmod_beartype() -> None:
 
         with pytest.raises(roar.BeartypeException):
             supports_divmod_func_t(cast(SupportsDivmodSCU, bad_val))
+
+    for lying_val in (
+        # These have lied about supporting this interface when they registered
+        # themselves in the number tower
+        NumberwangRegistered(-273),
+        WangernumbRegistered(-273.15),
+    ):
+        with pytest.raises(roar.BeartypeException):
+            supports_divmod_func(cast(SupportsDivmod, lying_val))
+
+        with pytest.raises(AssertionError):  # gets past beartype
+            supports_divmod_func_t(cast(SupportsDivmodSCU, lying_val))
 
 
 def test_supports_divmod_numpy() -> None:
@@ -223,7 +223,7 @@ def test_supports_divmod_numpy_beartype() -> None:
 
 
 def test_supports_divmod_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     integer_val: SupportsDivmod = sympy.Integer(-273)
     rational_val: SupportsDivmod = sympy.Rational(-27315, 100)
     float_val: SupportsDivmod = sympy.Float(-273.15)
@@ -240,7 +240,7 @@ def test_supports_divmod_sympy() -> None:
 
 
 def test_supports_divmod_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires numpy")
+    sympy = pytest.importorskip("sympy", reason="requires sympy")
     pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (
