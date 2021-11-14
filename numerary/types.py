@@ -344,8 +344,9 @@ class SupportsAbs(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the ``#!python typing.SupportsAbs`` ABC defining the
-    [``__abs__``
+    A caching version of the
+    [``typing.SupportsAbs``](https://docs.python.org/3/library/typing.html#typing.SupportsAbs)
+    ABC defining the [``__abs__``
     method](https://docs.python.org/3/reference/datamodel.html#object.__abs__) with a
     covariant return value.
     """
@@ -363,8 +364,9 @@ class SupportsComplex(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the ``#!python typing.SupportsComplex`` ABC defining the
-    [``__complex__``
+    A caching version of the
+    [``typing.SupportsComplex``](https://docs.python.org/3/library/typing.html#typing.SupportsComplex)
+    ABC defining the [``__complex__``
     method](https://docs.python.org/3/reference/datamodel.html#object.__complex__).
     """
     __slots__: Union[str, Iterable[str]] = ()
@@ -381,8 +383,9 @@ class SupportsFloat(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the ``#!python typing.SupportsFloat`` ABC defining the
-    [``__float__``
+    A caching version of the
+    [``typing.SupportsFloat``](https://docs.python.org/3/library/typing.html#typing.SupportsFloat)
+    ABC defining the [``__float__``
     method](https://docs.python.org/3/reference/datamodel.html#object.__float__).
     """
     __slots__: Union[str, Iterable[str]] = ()
@@ -399,7 +402,9 @@ class SupportsInt(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the ``#!python typing.SupportsInt`` ABC defining the
+    A caching version of the
+    [``typing.SupportsInt``](https://docs.python.org/3/library/typing.html#typing.SupportsInt)
+    ABC defining the
     [``__int__``
     method](https://docs.python.org/3/reference/datamodel.html#object.__int__).
     """
@@ -417,8 +422,9 @@ class SupportsIndex(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the ``#!python typing.SupportsIndex`` ABC defining the
-    [``__index__``
+    A caching version of the
+    [``typing.SupportsIndex``](https://docs.python.org/3/library/typing.html#typing.SupportsIndex)
+    ABC defining the [``__index__``
     method](https://docs.python.org/3/reference/datamodel.html#object.__index__).
     """
     __slots__: Union[str, Iterable[str]] = ()
@@ -435,8 +441,9 @@ class SupportsRound(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the ``#!python typing.SupportsRound`` ABC defining the
-    [``__round__``
+    A caching version of the
+    [``typing.SupportsRound``](https://docs.python.org/3/library/typing.html#typing.SupportsRound)
+    ABC defining the [``__round__``
     method](https://docs.python.org/3/reference/datamodel.html#object.__round__) with a
     covariant return value.
     """
@@ -1247,8 +1254,8 @@ class SupportsIntegralOps(
 ):
     r"""
     A caching ABC defining the [``Integral`` operator
-    methods](https://docs.python.org/3/library/numbers.html#numbers.Real) with covariant
-    return values.
+    methods](https://docs.python.org/3/library/numbers.html#numbers.Integral) with
+    covariant return values.
 
     ([``_SupportsIntegralOps``][numerary.types._SupportsIntegralOps] is the raw,
     non-caching version that defines the actual methods.)
@@ -1312,8 +1319,8 @@ class SupportsIntegralPow(
     r"""
     A caching ABC defining the ``#!python Integral`` (i.e., modulo) versions of the
     [``__pow__``](https://docs.python.org/3/reference/datamodel.html#object.__pow__) and
-    [``__rpow__``](https://docs.python.org/3/reference/datamodel.html#object.__rpow__),
-    each with a covariant return value.
+    [``__rpow__``](https://docs.python.org/3/reference/datamodel.html#object.__rpow__)
+    methods, each with a covariant return value.
 
     ([``_SupportsIntegralPow``][numerary.types._SupportsIntegralPow] is the raw,
     non-caching version that defines the actual methods.)
@@ -1390,8 +1397,8 @@ class RealLike(
       pass
     ```
 
-    This is a practically useful, but incomplete list. To enforce equivalence to
-    ``#!python numbers.Real``, one would also need:
+    This is intended as a practically useful, but incomplete list. To enforce
+    equivalence to ``#!python numbers.Real``, one would also need:
 
     * [``SupportsComplex``][numerary.types.SupportsComplex]
     * [``SupportsConjugate``][numerary.types.SupportsConjugate]
@@ -1459,8 +1466,8 @@ class RationalLikeProperties(
       pass
     ```
 
-    This is a practically useful, but incomplete list. To enforce equivalence to
-    ``#!python numbers.Rational``, one would also need:
+    This is intended as a practically useful, but incomplete list. To enforce
+    equivalence to ``#!python numbers.Rational``, one would also need:
 
     * [``SupportsComplex``][numerary.types.SupportsComplex]
     * [``SupportsConjugate``][numerary.types.SupportsConjugate]
@@ -1620,8 +1627,8 @@ class IntegralLike(
       pass
     ```
 
-    This is a practically useful, but incomplete list. To enforce equivalence to
-    ``#!python numbers.Integral``, one would also need:
+    This is intended as a practically useful, but incomplete list. To enforce
+    equivalence to ``#!python numbers.Integral``, one would also need:
 
     * [``SupportsComplex``][numerary.types.SupportsComplex]
     * [``SupportsConjugate``][numerary.types.SupportsConjugate]

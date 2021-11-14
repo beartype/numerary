@@ -34,7 +34,7 @@ We want to define an API that works with *reals* (not just ``float``s), performs
 
 ### Native primitives
 
-We want to tell the world how to call it and what to expect in return, so we annotate it:
+We want to tell the world how to call it and what to expect in return, so we annotate it according to the standard advice to [just](https://wiki.c2.com/?JustIsaDangerousWord) use native types:
 
 ``` python
 >>> def deep_thought_typed(arg: float) -> int:
@@ -46,7 +46,7 @@ We want to tell the world how to call it and what to expect in return, so we ann
 So simple!
 We’re done, right?
 Not quite.
-We find that the runtime works well, but we’re Mypy errors.
+We find that the runtime works well, but there are Mypy errors.
 
 ``` python
 >>> deep_thought_typed(1.0)  # this is fine ...
@@ -135,9 +135,12 @@ Without the ``# type: ignore``, we get:
 …: error: Argument 1 to "deep_thought_crumbling" has incompatible type "Decimal"; expected "Union[float, Real]"
 ```
 
+Oh, come *on*!
+
 ### Native primitives, the numeric tower, or other things that define all the methods, but didn’t (or couldn’t) register in the numeric tower for some reason
 
-Oh, come *on*!
+🤬 me.
+Do we just tack this onto the list?
 
 ``` python
 >>> RealAndDecimalT = Union[float, Real, Decimal]
@@ -150,7 +153,6 @@ Oh, come *on*!
 
 ```
 
-🤬 me.
 If we have to engage in these kinds of gymnastics just to reach escape velocity from the standard library, how the heck are we supposed to survive contact with numeric implementations we haven’t even heard of yet?!
 We can’t enumerate them *all*!
 
@@ -165,7 +167,8 @@ Sadly, the apparent attitude of many seems to be, “Something, something, proto
 ### Protocols!
 
 *Can* we fix this with protocols?
-The standard library provides [some simple precedents](https://docs.python.org/3/library/typing.html#protocols).
+The standard library ~~picked the low hanging fruit~~ *provides [some simple precedents](https://docs.python.org/3/library/typing.html#protocols)*.
+Can we imitate those?
 
 ``` python
 >>> try:
@@ -187,9 +190,9 @@ The standard library provides [some simple precedents](https://docs.python.org/3
 >>> def require_rational(arg: SupportsNumeratorDenominator) -> None:
 ...   assert isinstance(arg, SupportsNumeratorDenominator)
 
->>> require_rational(1)
->>> require_rational(Fraction(1, 2))
->>> require_rational(1.0)  # type: ignore [arg-type]
+>>> require_rational(1)  # yup
+>>> require_rational(Fraction(1, 2))  # nice
+>>> require_rational(1.0)  # type: ignore [arg-type]  # floats don't have numerator/denominator properties
 Traceback (most recent call last):
   ...
 AssertionError
@@ -265,7 +268,8 @@ And that’s not even *all* the methods!
 You know what?
 Never mind that.
 Where there’s a will, there’s a way.
-Note to self, “Solve the performance problems with protocols later, but we’re *definitely* onto something!”
+Note to self: *Self, solve the performance problems with protocols later.*
+But we’re *definitely* onto something!
 
 ### Lies! Upon lies! Upon lies! All the way down!
 

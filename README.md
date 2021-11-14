@@ -33,7 +33,7 @@ Do you now wonder whether numbers were something new to computing in general bec
 Does the number [3186](https://github.com/python/mypy/issues/3186) haunt you in your dreams?
 Do you find yourself shouting to no one in particular, “There *has* to be a better way?”
 
-Well I’m here to tell you there ain’t.
+Well I’m here to tell you there isn’t.
 But until there is, there’s …
 
 # *``numerary``—Now with Protocol Power™*
@@ -446,10 +446,9 @@ SupportsNumeratorDenominatorMixedT = (
 
 The ``SupportsNumeratorDenominator*`` primitives provide the basis for analogous [``numerary.types.RationalLike*`` primitives](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.RationalLikeMethods), which *should* provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.
 
-#### Pass-through caching with composition implementation is pretty sketchy
+#### Pass-through caching with composition is pretty sketchy
 
-This is really getting into where the sausage is made.
-However, in the spirit of full transparency, this must be disclosed.
+This is really getting into where the sausage is made, but full transparency is important, because ``CachingProtocolMeta`` does change how protocols are validated at runtime.
 
 Let’s say we register an errant implementation as non-compliant using the [``CachingProtocolMeta.excludes``method](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.CachingProtocolMeta.excludes).
 
@@ -513,22 +512,26 @@ False
 
 ```
 
-For this to work under the current implementation, we cannot rely exclusively on the [standard library’s implementation of ``__instancecheck__``](https://github.com/python/cpython/blob/main/Lib/typing.py), since it flattens and inspects all properties (with some proprietary exceptions) of all classes in order of the MRO, not just the current instance.
-In lay terms, this means that an ancestor’s ``__instancecheck__`` cache is effectively hidden from its progeny.
-Without intervention, that would require one to register exceptions with every inheritor, which would suck.
+For this to work under the current implementation, we cannot rely exclusively on the [standard library’s implementation of ``__instancecheck__``](https://github.com/python/cpython/blob/main/Lib/typing.py), since it flattens and inspects *all* properties (with some proprietary exceptions) of all classes in the inheritance tree (in order of the MRO).
+In practical terms, this means one can’t easily delegate to an ancestor’s ``__instancecheck__`` method and a protocol’s cache is effectively hidden from its progeny.
+In other words, leaning on the default behavior would require one to register exceptions with every inheritor.
+That would suck, so let’s not do that.
 
-Overriding the behavior is problematic, because the standard library uses a non-public function called ``_get_protocol_attrs`` to perform its attribute enumeration.
+However, overriding the behavior is problematic, because the standard library uses a non-public function called ``_get_protocol_attrs`` to perform its attribute enumeration.
+We certainly don’t want to re-implement protocol runtime checking from scratch.
+(At least not yet.)
 
-[``CachingProtocolMeta``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.CachingProtocolMeta) tries to work around this by importing ``_get_protocol_attrs`` and performing some set arithmetic to limit its evaluation to directly defined attributes, and then delegate ``isinstance`` evaluation to its ``__base__`` classes.
+[``CachingProtocolMeta``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.CachingProtocolMeta) tries to work around this by importing ``_get_protocol_attrs`` and performing some set arithmetic to limit its evaluation to directly defined attributes, and then delegating ``isinstance`` evaluation to its ``__base__`` classes.
 In doing so, it picks up its bases’ then-cached values, but at the cost of re-implementing the attribute check as well as taking a dependency on an implementation detail of the standard library, which creates a fragility.
 Further, for post-inheritance updates, ``CachingProtocolMeta`` implements a simplistic publish/subscribe mechanism that dirties non-overridden caches in inheritors when member protocols caches are updated.
-These are deliberate compromises.
-(See the [implementation](https://github.com/posita/numerary/blob/latest/numerary/types.py) for details.)
+That’s completely off the beaten path and there are probably some gremlins hiding out there.
 
 One subtlety is that the implementation deviates from performing checks in MRO order (and may perform redundant checks).
 This is probably fine as long as runtime comparisons remain limited to crude checks whether attributes merely exist.
 It would likely fail if runtime checking becomes more sophisticated, at which time, this implementation will need to be revisited.
 Hopefully by then, we can just delete ``numerary`` as the aspirationally unnecessary hack it is and move on with our lives.
+
+(See the [implementation](https://github.com/posita/numerary/blob/latest/numerary/types.py) for details.)
 
 ## License
 
