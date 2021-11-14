@@ -11,9 +11,11 @@ vals = (one_int, two_frac, three_float)
 class SupportsNumeratorDenominator(Protocol):
   __slots__: Union[str, Iterable[str]] = ()
   @property
-  def numerator(self) -> int: pass
+  def numerator(self) -> int:
+    pass
   @property
-  def denominator(self) -> int: pass
+  def denominator(self) -> int:
+    pass
 
 t = SupportsNumeratorDenominator
 

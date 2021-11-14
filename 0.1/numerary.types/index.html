@@ -445,13 +445,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#numerary.types.SupportsCeil" class="md-nav__link">
-    SupportsCeil
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#numerary.types.SupportsComplex" class="md-nav__link">
     SupportsComplex
   </a>
@@ -494,8 +487,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#numerary.types.SupportsFloor" class="md-nav__link">
-    SupportsFloor
+  <a href="#numerary.types.SupportsFloorCeil" class="md-nav__link">
+    SupportsFloorCeil
   </a>
   
 </li>
@@ -630,47 +623,6 @@
   <a href="#numerary.types.SupportsNumeratorDenominatorMixedU" class="md-nav__link">
     SupportsNumeratorDenominatorMixedU
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#numerary.types._SupportsCeil" class="md-nav__link">
-    _SupportsCeil
-  </a>
-  
-    <nav class="md-nav" aria-label="_SupportsCeil">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#numerary.types._SupportsCeil.__slots__" class="md-nav__link">
-    __slots__
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#numerary.types._SupportsCeil.__ceil__" class="md-nav__link">
-    __ceil__()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#numerary.types._SupportsCeil.__init__" class="md-nav__link">
-    __init__()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#numerary.types._SupportsCeil.__subclasshook__" class="md-nav__link">
-    __subclasshook__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -916,36 +868,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#numerary.types._SupportsFloor" class="md-nav__link">
-    _SupportsFloor
+  <a href="#numerary.types._SupportsFloorCeil" class="md-nav__link">
+    _SupportsFloorCeil
   </a>
   
-    <nav class="md-nav" aria-label="_SupportsFloor">
+    <nav class="md-nav" aria-label="_SupportsFloorCeil">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#numerary.types._SupportsFloor.__slots__" class="md-nav__link">
+  <a href="#numerary.types._SupportsFloorCeil.__slots__" class="md-nav__link">
     __slots__
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#numerary.types._SupportsFloor.__floor__" class="md-nav__link">
+  <a href="#numerary.types._SupportsFloorCeil.__floor__" class="md-nav__link">
     __floor__()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#numerary.types._SupportsFloor.__init__" class="md-nav__link">
+  <a href="#numerary.types._SupportsFloorCeil.__init__" class="md-nav__link">
     __init__()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#numerary.types._SupportsFloor.__subclasshook__" class="md-nav__link">
+  <a href="#numerary.types._SupportsFloorCeil.__subclasshook__" class="md-nav__link">
     __subclasshook__()
   </a>
   
@@ -1464,7 +1416,7 @@ Instead of doing this all over the place …</p>
 </td></tr></table>
 <p>Bang.
 Done.</p>
-<p>Further, if you want to opportunistically take advantage of <a href="https://pypi.org/project/beartype/"><code>beartype</code></a> without imposing a strict runtime dependency, you can do this:</p>
+<p>Further, if you want to opportunistically take advantage of <a href="https://github.com/beartype/beartype/"><code>beartype</code></a> without imposing a strict runtime dependency, you can do this:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">numerary.bt</span> <span class="kn">import</span> <span class="n">beartype</span>  <span class="c1"># will resolve to the identity decorator if beartype is unavailable at runtime</span>
 </code></pre></div>
 </td></tr></table>
@@ -1509,6 +1461,58 @@ benchmark I had at the time.) The downside is that this will yield unpredictable
 results for objects whose methods don’t stem from any type (e.g., are assembled at
 runtime). I don’t know of any real-world case where that would be true. We’ll jump
 off that bridge when we come to it.</p>
+<p>Note that one can make an existing protocol a caching protocol through inheritance,
+but in order to be <code>@runtime_checkable</code>, the parent protocol also has to be
+@runtime_checkable.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
+<span class="o">...</span> <span class="k">class</span> <span class="nc">_MyProtocol</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>  <span class="c1"># plain vanilla protocol</span>
+<span class="o">...</span>   <span class="nd">@abstractmethod</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>  <span class="c1"># redundant, but useful for documentation</span>
+<span class="o">...</span> <span class="k">class</span> <span class="nc">MyProtocol</span><span class="p">(</span>
+<span class="o">...</span>   <span class="n">_MyProtocol</span><span class="p">,</span>
+<span class="o">...</span>   <span class="n">Protocol</span><span class="p">,</span>
+<span class="o">...</span>   <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">,</span>  <span class="c1"># caching version</span>
+<span class="o">...</span> <span class="p">):</span>
+<span class="o">...</span>   <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">MyImplementation</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg</span> <span class="o">*</span> <span class="o">-</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_thing</span><span class="p">:</span> <span class="n">MyProtocol</span> <span class="o">=</span> <span class="n">MyImplementation</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">my_thing</span><span class="p">,</span> <span class="n">MyProtocol</span><span class="p">)</span>
+<span class="kc">True</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -1606,18 +1610,26 @@ This overrides any prior cached value.</p>
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
-<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
+
 <span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
 <span class="o">...</span> <span class="k">class</span> <span class="nc">SupportsHam</span><span class="p">(</span>
 <span class="o">...</span>   <span class="n">Protocol</span><span class="p">,</span>
 <span class="o">...</span>   <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span>
 <span class="o">...</span> <span class="p">):</span>
 <span class="o">...</span>   <span class="nd">@abstractmethod</span>
-<span class="o">...</span>   <span class="k">def</span> <span class="nf">ham</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="k">pass</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">ham</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
+
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">NoHam</span><span class="p">:</span>
 <span class="o">...</span>   <span class="k">def</span> <span class="nf">ham</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="o">...</span>     <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">NoHam</span><span class="p">(),</span> <span class="n">SupportsHam</span><span class="p">)</span>
 <span class="kc">True</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsHam</span><span class="o">.</span><span class="n">excludes</span><span class="p">(</span><span class="n">NoHam</span><span class="p">)</span>
@@ -1643,16 +1655,20 @@ This overrides any prior cached value.</p>
 <span class="sd">    ``` python</span>
 <span class="sd">    &gt;&gt;&gt; from abc import abstractmethod</span>
 <span class="sd">    &gt;&gt;&gt; from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable</span>
+
 <span class="sd">    &gt;&gt;&gt; @runtime_checkable</span>
 <span class="sd">    ... class SupportsHam(</span>
 <span class="sd">    ...   Protocol,</span>
 <span class="sd">    ...   metaclass=CachingProtocolMeta</span>
 <span class="sd">    ... ):</span>
 <span class="sd">    ...   @abstractmethod</span>
-<span class="sd">    ...   def ham(self) -&gt; str: pass</span>
+<span class="sd">    ...   def ham(self) -&gt; str:</span>
+<span class="sd">    ...     pass</span>
+
 <span class="sd">    &gt;&gt;&gt; class NoHam:</span>
 <span class="sd">    ...   def ham(self) -&gt; str:</span>
 <span class="sd">    ...     raise NotImplementedError</span>
+
 <span class="sd">    &gt;&gt;&gt; isinstance(NoHam(), SupportsHam)</span>
 <span class="sd">    True</span>
 <span class="sd">    &gt;&gt;&gt; SupportsHam.excludes(NoHam)</span>
@@ -1709,16 +1725,26 @@ This overrides any prior cached value.</p>
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
-<span class="normal">15</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
+
 <span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
 <span class="o">...</span> <span class="k">class</span> <span class="nc">SupportsSpam</span><span class="p">(</span>
 <span class="o">...</span>   <span class="n">Protocol</span><span class="p">,</span>
 <span class="o">...</span>   <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span>
 <span class="o">...</span> <span class="p">):</span>
 <span class="o">...</span>   <span class="nd">@abstractmethod</span>
-<span class="o">...</span>   <span class="k">def</span> <span class="nf">spam</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="k">pass</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">NoSpam</span><span class="p">:</span> <span class="k">pass</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">spam</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">NoSpam</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">pass</span>
+
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">NoSpam</span><span class="p">(),</span> <span class="n">SupportsSpam</span><span class="p">)</span>
 <span class="kc">False</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsSpam</span><span class="o">.</span><span class="n">includes</span><span class="p">(</span><span class="n">NoSpam</span><span class="p">)</span>
@@ -1744,14 +1770,19 @@ This overrides any prior cached value.</p>
 <span class="sd">    ``` python</span>
 <span class="sd">    &gt;&gt;&gt; from abc import abstractmethod</span>
 <span class="sd">    &gt;&gt;&gt; from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable</span>
+
 <span class="sd">    &gt;&gt;&gt; @runtime_checkable</span>
 <span class="sd">    ... class SupportsSpam(</span>
 <span class="sd">    ...   Protocol,</span>
 <span class="sd">    ...   metaclass=CachingProtocolMeta</span>
 <span class="sd">    ... ):</span>
 <span class="sd">    ...   @abstractmethod</span>
-<span class="sd">    ...   def spam(self) -&gt; str: pass</span>
-<span class="sd">    &gt;&gt;&gt; class NoSpam: pass</span>
+<span class="sd">    ...   def spam(self) -&gt; str:</span>
+<span class="sd">    ...     pass</span>
+
+<span class="sd">    &gt;&gt;&gt; class NoSpam:</span>
+<span class="sd">    ...   pass</span>
+
 <span class="sd">    &gt;&gt;&gt; isinstance(NoSpam(), SupportsSpam)</span>
 <span class="sd">    False</span>
 <span class="sd">    &gt;&gt;&gt; SupportsSpam.includes(NoSpam)</span>
@@ -1844,6 +1875,38 @@ important exception. Instead of
 <a href="#numerary.types.SupportsNumeratorDenominatorProperties"><code>SupportsNumeratorDenominatorProperties</code></a>,
 this protocol provides
 <a href="#numerary.types.SupportsNumeratorDenominatorMethods"><code>SupportsNumeratorDenominatorMethods</code></a>.</p>
+<p>Basically:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+<span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">Supports</span><span class="err">…</span>
+<span class="n">T_co</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T_co&quot;</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">RationalLikeMethods</span><span class="p">(</span>
+  <span class="n">SupportsAbs</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsFloat</span><span class="p">,</span>
+  <span class="n">SupportsNumeratorDenominatorMethods</span><span class="p">,</span>
+  <span class="n">SupportsRealOps</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsComplexOps</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsComplexPow</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">Protocol</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">,</span>
+<span class="p">):</span>
+  <span class="k">pass</span>
+</code></pre></div>
+</td></tr></table>
 <p>This is probably not very useful on its own, but is important to the construction of
 <a href="#numerary.types.RationalLikeMixedU"><code>RationalLikeMixedU</code></a> and
 <a href="#numerary.types.RationalLikeMixedT"><code>RationalLikeMixedT</code></a>.</p>
@@ -1905,16 +1968,47 @@ It is a composition of:</p>
 <li><a href="#numerary.types.SupportsComplexOps"><code>SupportsComplexOps</code></a></li>
 <li><a href="#numerary.types.SupportsComplexPow"><code>SupportsComplexPow</code></a></li>
 </ul>
-<p>This is a practically useful, but incomplete list. To enforce equivalence to
-<code class="highlight"><span class="n">numbers</span><span class="o">.</span><span class="n">Rational</span></code>, one would also need:</p>
+<p>Basically:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+<span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">Supports</span><span class="err">…</span>
+<span class="n">T_co</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T_co&quot;</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">RationalLikeProperties</span><span class="p">(</span>
+  <span class="n">SupportsAbs</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsFloat</span><span class="p">,</span>
+  <span class="n">SupportsNumeratorDenominatorProperties</span><span class="p">,</span>
+  <span class="n">SupportsRealOps</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsComplexOps</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsComplexPow</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">Protocol</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">,</span>
+<span class="p">):</span>
+  <span class="k">pass</span>
+</code></pre></div>
+</td></tr></table>
+<p>This is intended as a practically useful, but incomplete list. To enforce
+equivalence to <code class="highlight"><span class="n">numbers</span><span class="o">.</span><span class="n">Rational</span></code>, one would also need:</p>
 <ul>
 <li><a href="#numerary.types.SupportsComplex"><code>SupportsComplex</code></a></li>
 <li><a href="#numerary.types.SupportsConjugate"><code>SupportsConjugate</code></a></li>
 <li><a href="#numerary.types.SupportsRealImag"><code>SupportsRealImag</code></a></li>
 <li><a href="#numerary.types.SupportsRound"><code>SupportsRound</code></a></li>
 <li><a href="#numerary.types.SupportsTrunc"><code>SupportsTrunc</code></a></li>
-<li><a href="#numerary.types.SupportsFloor"><code>SupportsFloor</code></a></li>
-<li><a href="#numerary.types.SupportsCeil"><code>SupportsCeil</code></a></li>
+<li><a href="#numerary.types.SupportsFloorCeil"><code>SupportsFloorCeil</code></a></li>
 <li><a href="#numerary.types.SupportsDivmod"><code>SupportsDivmod</code></a></li>
 </ul>
 
@@ -1960,63 +2054,11 @@ SupportsAbs            (<span title="typing.SupportsAbs">SupportsAbs</span>, <sp
 
     <div class="doc doc-contents ">
 
-      <p>A caching version of the <code class="highlight"><span class="n">typing</span><span class="o">.</span><span class="n">SupportsAbs</span></code> ABC defining the
-<a href="https://docs.python.org/3/reference/datamodel.html#object.__abs__"><code>__abs__</code>
+      <p>A caching version of the
+<a href="https://docs.python.org/3/library/typing.html#typing.SupportsAbs"><code>typing.SupportsAbs</code></a>
+ABC defining the <a href="https://docs.python.org/3/reference/datamodel.html#object.__abs__"><code>__abs__</code>
 method</a> with a
 covariant return value.</p>
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h2 id="numerary.types.SupportsCeil" class="doc doc-heading">
-        <code>
-SupportsCeil            (<a title="numerary.types._SupportsCeil" href="#numerary.types._SupportsCeil">_SupportsCeil</a>, <span title="typing.Protocol">Protocol</span>)
-        </code>
-
-
-
-</h2>
-
-    <div class="doc doc-contents ">
-
-      <p>A caching ABC defining the <a href="https://docs.python.org/3/reference/datamodel.html#object.__ceil__"><code>__ceil__</code>
-method</a>.</p>
-<p>(<a href="#numerary.types._SupportsCeil"><code>_SupportsCeil</code></a> is the raw, non-caching version
-that defines the actual methods.)</p>
-<p>See also the <a href="#numerary.types.ceil"><code>ceil</code> helper function</a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is of limited value for Python versions prior to 3.9, since <code class="highlight"><span class="nb">float</span><span class="o">.</span><span class="n">__ceil__</span></code> was not defined. If support for those environments is
-important, consider using <a href="#numerary.types.SupportsFloat"><code>SupportsFloat</code></a>
-instead, since that is what <code class="highlight"><span class="n">math</span><span class="o">.</span><span class="n">ceil</span></code> expects.</p>
-</div>
 
 
 
@@ -2059,8 +2101,9 @@ SupportsComplex            (<span title="typing.SupportsComplex">SupportsComplex
 
     <div class="doc doc-contents ">
 
-      <p>A caching version of the <code class="highlight"><span class="n">typing</span><span class="o">.</span><span class="n">SupportsComplex</span></code> ABC defining the
-<a href="https://docs.python.org/3/reference/datamodel.html#object.__complex__"><code>__complex__</code>
+      <p>A caching version of the
+<a href="https://docs.python.org/3/library/typing.html#typing.SupportsComplex"><code>typing.SupportsComplex</code></a>
+ABC defining the <a href="https://docs.python.org/3/reference/datamodel.html#object.__complex__"><code>__complex__</code>
 method</a>.</p>
 
 
@@ -2109,6 +2152,59 @@ methods</a> with
 covariant return values.</p>
 <p>(<a href="#numerary.types._SupportsComplexOps"><code>_SupportsComplexOps</code></a> is the raw,
 non-caching version that defines the actual methods.)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsComplexOps</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyComplexOpsT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyComplexOpsT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsComplexOps</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">complex_ops_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyComplexOpsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MyComplexOpsT</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsComplexOps</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">arg</span> <span class="o">*</span> <span class="o">-</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">complex_ops_my_thing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">complex_ops_my_thing</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;2.5&quot;</span><span class="p">))</span>
+<span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.0&#39;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">complex_ops_my_thing</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">3.5</span><span class="p">))</span>
+<span class="o">-</span><span class="mf">2.0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="s1">&#39;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyComplexOpsT&quot; of &quot;complex_ops_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">complex_ops_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2157,6 +2253,59 @@ SupportsComplexPow            (<a title="numerary.types._SupportsComplexPow" hre
 each with a covariant return value.</p>
 <p>(<a href="#numerary.types._SupportsComplexPow"><code>_SupportsComplexPow</code></a> is the raw,
 non-caching version that defines the actual methods.)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsComplexPow</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyComplexPowT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyComplexPowT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsComplexPow</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">complex_pow_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyComplexPowT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MyComplexPowT</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsComplexPow</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">arg</span> <span class="o">**</span> <span class="o">-</span><span class="mi">2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">complex_pow_my_thing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mf">0.1111111111111111</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">complex_pow_my_thing</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;2.5&quot;</span><span class="p">))</span>
+<span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.16&#39;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">complex_pow_my_thing</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">3.5</span><span class="p">))</span>
+<span class="mf">0.0816326530612245</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="s1">&#39;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyComplexPowT&quot; of &quot;complex_pow_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">complex_pow_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2203,6 +2352,59 @@ SupportsConjugate            (<a title="numerary.types._SupportsConjugate" href=
 method</a>.</p>
 <p>(<a href="#numerary.types._SupportsConjugate"><code>_SupportsConjugate</code></a> is the raw, non-caching
 version that defines the actual methods.)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsConjugate</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyConjugateT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyConjugateT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsConjugate</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">conjugate_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyConjugateT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MyConjugateT</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsConjugate</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">arg</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">conjugate_my_thing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">3</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">conjugate_my_thing</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="mf">2.5</span><span class="p">))</span>
+<span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;2.5&#39;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">conjugate_my_thing</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">3.5</span><span class="p">))</span>
+<span class="mf">3.5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="s1">&#39;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyConjugateT&quot; of &quot;conjugate_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">conjugate_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2252,6 +2454,59 @@ and
 methods. Each returns a 2-tuple of covariants.</p>
 <p>(<a href="#numerary.types._SupportsDivmod"><code>_SupportsDivmod</code></a> is the raw, non-caching
 version that defines the actual methods.)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsDivmod</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyDivmodT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyDivmodT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsDivmod</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">divmod_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyDivmodT</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">MyDivmodT</span><span class="p">,</span> <span class="n">MyDivmodT</span><span class="p">]:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsDivmod</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">divmod_my_thing</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">divmod_my_thing</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="mf">2.5</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="mf">1.5</span><span class="p">))</span>
+<span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">divmod_my_thing</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">3.5</span><span class="p">),</span> <span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">1.5</span><span class="p">))</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">_</span><span class="p">)</span>
+<span class="p">(</span><span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="s1">&#39;&gt;, &lt;class &#39;</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="s1">&#39;&gt;)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyDivmodT&quot; of &quot;divmod_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">divmod_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">,</span> <span class="s2">&quot;still-not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2294,8 +2549,9 @@ SupportsFloat            (<span title="typing.SupportsFloat">SupportsFloat</span
 
     <div class="doc doc-contents ">
 
-      <p>A caching version of the <code class="highlight"><span class="n">typing</span><span class="o">.</span><span class="n">SupportsFloat</span></code> ABC defining the
-<a href="https://docs.python.org/3/reference/datamodel.html#object.__float__"><code>__float__</code>
+      <p>A caching version of the
+<a href="https://docs.python.org/3/library/typing.html#typing.SupportsFloat"><code>typing.SupportsFloat</code></a>
+ABC defining the <a href="https://docs.python.org/3/reference/datamodel.html#object.__float__"><code>__float__</code>
 method</a>.</p>
 
 
@@ -2328,9 +2584,9 @@ method</a>.</p>
 
 
 
-<h2 id="numerary.types.SupportsFloor" class="doc doc-heading">
+<h2 id="numerary.types.SupportsFloorCeil" class="doc doc-heading">
         <code>
-SupportsFloor            (<a title="numerary.types._SupportsFloor" href="#numerary.types._SupportsFloor">_SupportsFloor</a>, <span title="typing.Protocol">Protocol</span>)
+SupportsFloorCeil            (<a title="numerary.types._SupportsFloorCeil" href="#numerary.types._SupportsFloorCeil">_SupportsFloorCeil</a>, <span title="typing.Protocol">Protocol</span>)
         </code>
 
 
@@ -2339,17 +2595,74 @@ SupportsFloor            (<a title="numerary.types._SupportsFloor" href="#numera
 
     <div class="doc doc-contents ">
 
-      <p>A caching ABC defining the <a href="https://docs.python.org/3/reference/datamodel.html#object.__floor__"><code>__floor__</code>
-method</a>.</p>
-<p>See also the <a href="#numerary.types.floor"><code>floor</code> helper function</a>.</p>
-<p>(<a href="#numerary.types._SupportsFloor"><code>_SupportsFloor</code></a> is the raw, non-caching version
-that defines the actual methods.)</p>
+      <p>A caching ABC defining the
+<a href="https://docs.python.org/3/reference/datamodel.html#object.__floor__"><code>__floor__</code></a>.
+and
+<a href="https://docs.python.org/3/reference/datamodel.html#object.__ceil__"><code>__ceil__</code></a>
+methods.</p>
+<p>(<a href="#numerary.types._SupportsFloorCeil"><code>_SupportsFloorCeil</code></a> is the raw, non-caching
+version that defines the actual methods.)</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This is of limited value for Python versions prior to 3.9, since <code class="highlight"><span class="nb">float</span><span class="o">.</span><span class="n">__floor__</span></code> was not defined. If support for those environments is
-important, consider using <a href="#numerary.types.SupportsFloat"><code>SupportsFloat</code></a>
-instead.</p>
+<p>This is of limited value for Python versions prior to 3.9, since <code class="highlight"><span class="nb">float</span><span class="o">.</span><span class="n">__floor__</span></code> and <code class="highlight"><span class="nb">float</span><span class="o">.</span><span class="n">__ceil__</span></code> were not defined. If support
+for those environments is important, consider using
+<a href="#numerary.types.SupportsFloat"><code>SupportsFloat</code></a> instead.</p>
+<p>See also the <a href="#numerary.types.floor"><code>floor</code></a> and
+<a href="#numerary.types.ceil"><code>ceil</code></a> helper functions.</p>
 </div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloorCeil</span><span class="p">,</span> <span class="n">ceil</span><span class="p">,</span> <span class="n">floor</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyFloorCeilT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyFloorCeilT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsFloorCeil</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">floor_ceil_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyFloorCeilT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">floor</span><span class="p">(</span><span class="n">arg</span><span class="p">),</span> <span class="n">ceil</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">floor_ceil_my_thing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">floor_ceil_my_thing</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="mf">2.5</span><span class="p">))</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">floor_ceil_my_thing</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">3.5</span><span class="p">))</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">_</span><span class="p">)</span>
+<span class="p">(</span><span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="s1">&#39;&gt;, &lt;class &#39;</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="s1">&#39;&gt;)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyFloorCeilT&quot; of &quot;floor_ceil_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">floor_ceil_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2392,8 +2705,9 @@ SupportsIndex            (<span title="typing.SupportsIndex">SupportsIndex</span
 
     <div class="doc doc-contents ">
 
-      <p>A caching version of the <code class="highlight"><span class="n">typing</span><span class="o">.</span><span class="n">SupportsIndex</span></code> ABC defining the
-<a href="https://docs.python.org/3/reference/datamodel.html#object.__index__"><code>__index__</code>
+      <p>A caching version of the
+<a href="https://docs.python.org/3/library/typing.html#typing.SupportsIndex"><code>typing.SupportsIndex</code></a>
+ABC defining the <a href="https://docs.python.org/3/reference/datamodel.html#object.__index__"><code>__index__</code>
 method</a>.</p>
 
 
@@ -2437,7 +2751,9 @@ SupportsInt            (<span title="typing.SupportsInt">SupportsInt</span>, <sp
 
     <div class="doc doc-contents ">
 
-      <p>A caching version of the <code class="highlight"><span class="n">typing</span><span class="o">.</span><span class="n">SupportsInt</span></code> ABC defining the
+      <p>A caching version of the
+<a href="https://docs.python.org/3/library/typing.html#typing.SupportsInt"><code>typing.SupportsInt</code></a>
+ABC defining the
 <a href="https://docs.python.org/3/reference/datamodel.html#object.__int__"><code>__int__</code>
 method</a>.</p>
 
@@ -2482,11 +2798,56 @@ SupportsIntegralOps            (<a title="numerary.types._SupportsIntegralOps" h
 
     <div class="doc doc-contents ">
 
-      <p>A caching ABC defining the <a href="https://docs.python.org/3/library/numbers.html#numbers.Real"><code>Integral</code> operator
-methods</a> with covariant
-return values.</p>
+      <p>A caching ABC defining the <a href="https://docs.python.org/3/library/numbers.html#numbers.Integral"><code>Integral</code> operator
+methods</a> with
+covariant return values.</p>
 <p>(<a href="#numerary.types._SupportsIntegralOps"><code>_SupportsIntegralOps</code></a> is the raw,
 non-caching version that defines the actual methods.)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsIntegralOps</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyIntegralOpsT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyIntegralOpsT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsIntegralOps</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">integral_ops_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyIntegralOpsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MyIntegralOpsT</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsIntegralOps</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">arg</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">integral_ops_my_thing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">6</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">integral_ops_my_thing</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="mi">6</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="s1">&#39;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyIntegralOpsT&quot; of &quot;integral_ops_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">integral_ops_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2531,10 +2892,55 @@ SupportsIntegralPow            (<a title="numerary.types._SupportsIntegralPow" h
 
       <p>A caching ABC defining the <code class="highlight"><span class="n">Integral</span></code> (i.e., modulo) versions of the
 <a href="https://docs.python.org/3/reference/datamodel.html#object.__pow__"><code>__pow__</code></a> and
-<a href="https://docs.python.org/3/reference/datamodel.html#object.__rpow__"><code>__rpow__</code></a>,
-each with a covariant return value.</p>
+<a href="https://docs.python.org/3/reference/datamodel.html#object.__rpow__"><code>__rpow__</code></a>
+methods, each with a covariant return value.</p>
 <p>(<a href="#numerary.types._SupportsIntegralPow"><code>_SupportsIntegralPow</code></a> is the raw,
 non-caching version that defines the actual methods.)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsIntegralPow</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyIntegralPowT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyIntegralPowT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsIntegralPow</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">integral_pow_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyIntegralPowT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MyIntegralPowT</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsIntegralPow</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="nb">pow</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">integral_pow_my_thing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">integral_pow_my_thing</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">int</span><span class="s1">&#39;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyIntegralPowT&quot; of &quot;integral_pow_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">integral_pow_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2630,6 +3036,59 @@ and
 properties.</p>
 <p>(<a href="#numerary.types._SupportsNumeratorDenominatorProperties"><code>_SupportsNumeratorDenominatorProperties</code></a>
 is the raw, non-caching version that defines the actual properties.)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsNumeratorDenominatorProperties</span><span class="p">,</span> <span class="n">denominator</span><span class="p">,</span> <span class="n">numerator</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyNumDenomT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyNumDenomT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsNumeratorDenominatorProperties</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">num_denom_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyNumDenomT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsNumeratorDenominatorProperties</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">numerator</span><span class="p">(</span><span class="n">arg</span><span class="p">),</span> <span class="n">denominator</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_denom_my_thing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_denom_my_thing</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_denom_my_thing</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">_</span><span class="p">)</span>
+<span class="p">(</span><span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">int</span><span class="s1">&#39;&gt;, &lt;class &#39;</span><span class="nb">int</span><span class="s1">&#39;&gt;)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyNumDenomT&quot; of &quot;num_denom_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_denom_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2678,6 +3137,47 @@ SupportsRealImag            (<a title="numerary.types._SupportsRealImag" href="#
 properties.</p>
 <p>(<a href="#numerary.types._SupportsRealImag"><code>_SupportsRealImag</code></a> is the raw, non-caching
 version that defines the actual methods.)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsRealImag</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyRealImagT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyRealImagT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsRealImag</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">real_imag_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyRealImagT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsRealImag</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">arg</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_imag_my_thing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_imag_my_thing</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="mf">2.5</span><span class="p">))</span>
+<span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;2.5&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyRealImagT&quot; of &quot;real_imag_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_imag_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2725,6 +3225,59 @@ methods</a> with covariant
 return values.</p>
 <p>(<a href="#numerary.types._SupportsRealOps"><code>_SupportsRealOps</code></a> is the raw, non-caching
 version that defines the actual methods.)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsRealOps</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyRealOpsT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyRealOpsT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsRealOps</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">real_ops_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyRealOpsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsRealOps</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">arg</span> <span class="o">//</span> <span class="o">-</span><span class="mi">2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_ops_my_thing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_ops_my_thing</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;2.5&quot;</span><span class="p">))</span>
+<span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;-1&#39;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_ops_my_thing</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">3.5</span><span class="p">))</span>
+<span class="o">-</span><span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="s1">&#39;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyRealOpsT&quot; of &quot;real_ops_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_ops_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2767,8 +3320,9 @@ SupportsRound            (<span title="typing.SupportsRound">SupportsRound</span
 
     <div class="doc doc-contents ">
 
-      <p>A caching version of the <code class="highlight"><span class="n">typing</span><span class="o">.</span><span class="n">SupportsRound</span></code> ABC defining the
-<a href="https://docs.python.org/3/reference/datamodel.html#object.__round__"><code>__round__</code>
+      <p>A caching version of the
+<a href="https://docs.python.org/3/library/typing.html#typing.SupportsRound"><code>typing.SupportsRound</code></a>
+ABC defining the <a href="https://docs.python.org/3/reference/datamodel.html#object.__round__"><code>__round__</code>
 method</a> with a
 covariant return value.</p>
 
@@ -2818,6 +3372,59 @@ method</a>.</p>
 <p>See also the <a href="#numerary.types.trunc"><code>trunc</code> helper function</a>.</p>
 <p>(<a href="#numerary.types._SupportsTrunc"><code>_SupportsTrunc</code></a> is the raw, non-caching version
 that defines the actual methods.)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsTrunc</span><span class="p">,</span> <span class="n">trunc</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyTruncT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;MyTruncT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">SupportsTrunc</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">trunc_my_thing</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">MyTruncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsTrunc</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">trunc</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">trunc_my_thing</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">3</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">trunc_my_thing</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="mf">2.5</span><span class="p">))</span>
+<span class="mi">2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">trunc_my_thing</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">3.5</span><span class="p">))</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="s1">&#39;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># error: Value of type variable &quot;MyTruncT&quot; of &quot;trunc_my_thing&quot; cannot be &quot;str&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">trunc_my_thing</span><span class="p">(</span><span class="s2">&quot;not-a-number&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore [type-var]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+</td></tr></table>
 
 
 
@@ -2851,7 +3458,7 @@ that defines the actual methods.)</p>
 
 
 <h2 id="numerary.types.ceil" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">ceil</span><span class="p">(</span><span class="n">operand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsCeil</span><span class="p">])</span></code>
+<code class="highlight language-python"><span class="n">ceil</span><span class="p">(</span><span class="n">operand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">])</span></code>
 
 
 </h2>
@@ -2870,8 +3477,8 @@ that defines the actual methods.)</p>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
-<span class="normal">12</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsCeil</span><span class="p">,</span> <span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">ceil</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">my_ceil</span><span class="p">:</span> <span class="n">SupportsCeil</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">,</span> <span class="n">ceil</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_ceil</span><span class="p">:</span> <span class="n">SupportsFloorCeil</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">my_ceil</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">ceil</span><span class="p">(</span><span class="n">my_ceil</span><span class="p">)</span>
 <span class="mi">1</span>
@@ -2888,13 +3495,13 @@ that defines the actual methods.)</p>
         <details class="quote">
           <summary>Source code in <code>numerary/types.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@beartype</span>
-<span class="k">def</span> <span class="nf">ceil</span><span class="p">(</span><span class="n">operand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsCeil</span><span class="p">]):</span>
+<span class="k">def</span> <span class="nf">ceil</span><span class="p">(</span><span class="n">operand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">]):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function that wraps ``math.ceil``.</span>
 
 <span class="sd">    ``` python</span>
-<span class="sd">    &gt;&gt;&gt; from numerary.types import SupportsCeil, SupportsFloat, ceil</span>
-<span class="sd">    &gt;&gt;&gt; my_ceil: SupportsCeil</span>
+<span class="sd">    &gt;&gt;&gt; from numerary.types import SupportsFloat, SupportsFloorCeil, ceil</span>
+<span class="sd">    &gt;&gt;&gt; my_ceil: SupportsFloorCeil</span>
 <span class="sd">    &gt;&gt;&gt; my_ceil = 1</span>
 <span class="sd">    &gt;&gt;&gt; ceil(my_ceil)</span>
 <span class="sd">    1</span>
@@ -2988,7 +3595,7 @@ and
 
 
 <h2 id="numerary.types.floor" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">floor</span><span class="p">(</span><span class="n">operand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsFloor</span><span class="p">])</span></code>
+<code class="highlight language-python"><span class="n">floor</span><span class="p">(</span><span class="n">operand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">])</span></code>
 
 
 </h2>
@@ -3007,8 +3614,8 @@ and
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
-<span class="normal">12</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsFloor</span><span class="p">,</span> <span class="n">floor</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">my_floor</span><span class="p">:</span> <span class="n">SupportsFloor</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">,</span> <span class="n">floor</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_floor</span><span class="p">:</span> <span class="n">SupportsFloorCeil</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">my_floor</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">floor</span><span class="p">(</span><span class="n">my_floor</span><span class="p">)</span>
 <span class="mi">1</span>
@@ -3025,13 +3632,13 @@ and
         <details class="quote">
           <summary>Source code in <code>numerary/types.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@beartype</span>
-<span class="k">def</span> <span class="nf">floor</span><span class="p">(</span><span class="n">operand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsFloor</span><span class="p">]):</span>
+<span class="k">def</span> <span class="nf">floor</span><span class="p">(</span><span class="n">operand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">]):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function that wraps ``math.floor``.</span>
 
 <span class="sd">    ``` python</span>
-<span class="sd">    &gt;&gt;&gt; from numerary.types import SupportsFloat, SupportsFloor, floor</span>
-<span class="sd">    &gt;&gt;&gt; my_floor: SupportsFloor</span>
+<span class="sd">    &gt;&gt;&gt; from numerary.types import SupportsFloat, SupportsFloorCeil, floor</span>
+<span class="sd">    &gt;&gt;&gt; my_floor: SupportsFloorCeil</span>
 <span class="sd">    &gt;&gt;&gt; my_floor = 1</span>
 <span class="sd">    &gt;&gt;&gt; floor(my_floor)</span>
 <span class="sd">    1</span>
@@ -3290,190 +3897,6 @@ and
 
   </div>
 
-
-
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h2 id="numerary.types._SupportsCeil" class="doc doc-heading">
-        <code>
-_SupportsCeil            (<span title="typing.Protocol">Protocol</span>)
-        </code>
-
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-private"><code>private</code></small>
-  </span>
-
-</h2>
-
-    <div class="doc doc-contents ">
-
-      <p>The raw, non-caching version of <a href="#numerary.types.SupportsCeil"><code>SupportsCeil</code></a>.</p>
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="numerary.types._SupportsCeil.__slots__" class="doc doc-heading">
-<code class="highlight language-python"><span class="vm">__slots__</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h3 id="numerary.types._SupportsCeil.__ceil__" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">__ceil__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>numerary/types.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@abstractmethod</span>
-<span class="k">def</span> <span class="nf">__ceil__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="k">pass</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h3 id="numerary.types._SupportsCeil.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>numerary/types.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_no_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Protocols cannot be instantiated&#39;</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h3 id="numerary.types._SupportsCeil.__subclasshook__" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">__subclasshook__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>numerary/types.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_proto_hook</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_is_protocol&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">NotImplemented</span>
-
-    <span class="c1"># First, perform various sanity checks.</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;_is_runtime_protocol&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">_allow_reckless_class_cheks</span><span class="p">():</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Instance and class checks can only be used with&quot;</span>
-                        <span class="s2">&quot; @runtime_checkable protocols&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_callable_members_only</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">_allow_reckless_class_cheks</span><span class="p">():</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Protocols with non-method members&quot;</span>
-                        <span class="s2">&quot; don&#39;t support issubclass()&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
-        <span class="c1"># Same error message as for issubclass(1, int).</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;issubclass() arg 1 must be a class&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Second, perform the actual structural compatibility check.</span>
-    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">_get_protocol_attrs</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">:</span>
-            <span class="c1"># Check if the members appears in the class dictionary...</span>
-            <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">base</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="bp">NotImplemented</span>
-                <span class="k">break</span>
-
-            <span class="c1"># ...or in annotations, if it is a sub-protocol.</span>
-            <span class="n">annotations</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="s1">&#39;__annotations__&#39;</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">annotations</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Mapping</span><span class="p">)</span> <span class="ow">and</span>
-                    <span class="n">attr</span> <span class="ow">in</span> <span class="n">annotations</span> <span class="ow">and</span>
-                    <span class="nb">issubclass</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Generic</span><span class="p">)</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">_is_protocol</span><span class="p">):</span>
-                <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span>
-    <span class="k">return</span> <span class="kc">True</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
 
 
 
@@ -4536,9 +4959,9 @@ _SupportsDivmod            (<span title="typing.Protocol">Protocol</span>)
 
 
 
-<h2 id="numerary.types._SupportsFloor" class="doc doc-heading">
+<h2 id="numerary.types._SupportsFloorCeil" class="doc doc-heading">
         <code>
-_SupportsFloor            (<span title="typing.Protocol">Protocol</span>)
+_SupportsFloorCeil            (<span title="typing.Protocol">Protocol</span>)
         </code>
 
 
@@ -4550,7 +4973,8 @@ _SupportsFloor            (<span title="typing.Protocol">Protocol</span>)
 
     <div class="doc doc-contents ">
 
-      <p>The raw, non-caching version of <a href="#numerary.types.SupportsFloor"><code>SupportsFloor</code></a>.</p>
+      <p>The raw, non-caching version of
+<a href="#numerary.types.SupportsFloorCeil"><code>SupportsFloorCeil</code></a>.</p>
 
 
 
@@ -4566,7 +4990,7 @@ _SupportsFloor            (<span title="typing.Protocol">Protocol</span>)
 
 
 
-<h3 id="numerary.types._SupportsFloor.__slots__" class="doc doc-heading">
+<h3 id="numerary.types._SupportsFloorCeil.__slots__" class="doc doc-heading">
 <code class="highlight language-python"><span class="vm">__slots__</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span></code>
 
   <span class="doc doc-properties">
@@ -4590,7 +5014,7 @@ _SupportsFloor            (<span title="typing.Protocol">Protocol</span>)
 
 
 
-<h3 id="numerary.types._SupportsFloor.__floor__" class="doc doc-heading">
+<h3 id="numerary.types._SupportsFloorCeil.__floor__" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">__floor__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
 
   <span class="doc doc-properties">
@@ -4619,7 +5043,7 @@ _SupportsFloor            (<span title="typing.Protocol">Protocol</span>)
 
 
 
-<h3 id="numerary.types._SupportsFloor.__init__" class="doc doc-heading">
+<h3 id="numerary.types._SupportsFloorCeil.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
@@ -4647,7 +5071,7 @@ _SupportsFloor            (<span title="typing.Protocol">Protocol</span>)
 
 
 
-<h3 id="numerary.types._SupportsFloor.__subclasshook__" class="doc doc-heading">
+<h3 id="numerary.types._SupportsFloorCeil.__subclasshook__" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">__subclasshook__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">

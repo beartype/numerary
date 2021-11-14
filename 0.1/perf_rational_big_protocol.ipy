@@ -1,10 +1,9 @@
 from fractions import Fraction
 from numbers import Rational
 from numerary.types import (  # "raw" (non-caching) versions
-  _SupportsCeil,
   _SupportsComplexOps,
   _SupportsConjugate,
-  _SupportsFloor,
+  _SupportsFloorCeil,
   _SupportsDivmod,
   _SupportsRealImag,
   _SupportsRealOps,
@@ -32,8 +31,7 @@ class SupportsLotsOfNumberStuff(
   _SupportsComplexOps,
   _SupportsDivmod,
   _SupportsTrunc,
-  _SupportsFloor,
-  _SupportsCeil,
+  _SupportsFloorCeil,
   _SupportsConjugate,
   _SupportsRealImag,
   SupportsAbs,
@@ -44,9 +42,11 @@ class SupportsLotsOfNumberStuff(
 ):
   __slots__: Union[str, Iterable[str]] = ()
   @property
-  def numerator(self) -> int: pass
+  def numerator(self) -> int:
+    pass
   @property
-  def denominator(self) -> int: pass
+  def denominator(self) -> int:
+    pass
 
 t = SupportsLotsOfNumberStuff
 

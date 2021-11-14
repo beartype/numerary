@@ -482,16 +482,51 @@ It is a composition of:</p>
 <li><a href="../numerary.types/#numerary.types.SupportsRealOps"><code>SupportsRealOps</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsComplexOps"><code>SupportsComplexOps</code></a></li>
 </ul>
-<p>This is a practically useful, but incomplete list. To enforce equivalence to
-<code class="highlight"><span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span></code>, one would also need:</p>
+<p>Basically:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+<span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">Supports</span><span class="err">…</span>
+<span class="n">T_co</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T_co&quot;</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">IntegralLike</span><span class="p">(</span>
+  <span class="n">SupportsAbs</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsFloat</span><span class="p">,</span>
+  <span class="n">SupportsIndex</span><span class="p">,</span>
+  <span class="n">SupportsInt</span><span class="p">,</span>
+  <span class="n">SupportsIntegralOps</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsIntegralPow</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsRealOps</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsComplexOps</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">Protocol</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">,</span>
+<span class="p">):</span>
+  <span class="k">pass</span>
+</code></pre></div>
+</td></tr></table>
+<p>This is intended as a practically useful, but incomplete list. To enforce
+equivalence to <code class="highlight"><span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span></code>, one would also need:</p>
 <ul>
 <li><a href="../numerary.types/#numerary.types.SupportsComplex"><code>SupportsComplex</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsConjugate"><code>SupportsConjugate</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsRealImag"><code>SupportsRealImag</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsRound"><code>SupportsRound</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsTrunc"><code>SupportsTrunc</code></a></li>
-<li><a href="../numerary.types/#numerary.types.SupportsFloor"><code>SupportsFloor</code></a></li>
-<li><a href="../numerary.types/#numerary.types.SupportsCeil"><code>SupportsCeil</code></a></li>
+<li><a href="../numerary.types/#numerary.types.SupportsFloorCeil"><code>SupportsFloorCeil</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsDivmod"><code>SupportsDivmod</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsNumeratorDenominatorProperties"><code>SupportsNumeratorDenominatorProperties</code></a></li>
 </ul>
@@ -547,16 +582,45 @@ is a composition of:</p>
 <li><a href="../numerary.types/#numerary.types.SupportsComplexOps"><code>SupportsComplexOps</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsComplexPow"><code>SupportsComplexPow</code></a></li>
 </ul>
-<p>This is a practically useful, but incomplete list. To enforce equivalence to
-<code class="highlight"><span class="n">numbers</span><span class="o">.</span><span class="n">Real</span></code>, one would also need:</p>
+<p>Basically:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+<span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">Supports</span><span class="err">…</span>
+<span class="n">T_co</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T_co&quot;</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">RealLike</span><span class="p">(</span>
+  <span class="n">SupportsAbs</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsFloat</span><span class="p">,</span>
+  <span class="n">SupportsRealOps</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsComplexOps</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">SupportsComplexPow</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">Protocol</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+  <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">,</span>
+<span class="p">):</span>
+  <span class="k">pass</span>
+</code></pre></div>
+</td></tr></table>
+<p>This is intended as a practically useful, but incomplete list. To enforce
+equivalence to <code class="highlight"><span class="n">numbers</span><span class="o">.</span><span class="n">Real</span></code>, one would also need:</p>
 <ul>
 <li><a href="../numerary.types/#numerary.types.SupportsComplex"><code>SupportsComplex</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsConjugate"><code>SupportsConjugate</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsRealImag"><code>SupportsRealImag</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsRound"><code>SupportsRound</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsTrunc"><code>SupportsTrunc</code></a></li>
-<li><a href="../numerary.types/#numerary.types.SupportsFloor"><code>SupportsFloor</code></a></li>
-<li><a href="../numerary.types/#numerary.types.SupportsCeil"><code>SupportsCeil</code></a></li>
+<li><a href="../numerary.types/#numerary.types.SupportsFloorCeil"><code>SupportsFloorCeil</code></a></li>
 <li><a href="../numerary.types/#numerary.types.SupportsDivmod"><code>SupportsDivmod</code></a></li>
 </ul>
 

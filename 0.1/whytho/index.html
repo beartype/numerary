@@ -513,7 +513,7 @@ We want to define an API that works with <em>reals</em> (not just <code>float</c
 </code></pre></div>
 </td></tr></table>
 <h3 id="native-primitives">Native primitives</h3>
-<p>We want to tell the world how to call it and what to expect in return, so we annotate it:</p>
+<p>We want to tell the world how to call it and what to expect in return, so we annotate it according to the standard advice to <a href="https://wiki.c2.com/?JustIsaDangerousWord">just</a> use native types:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">deep_thought_typed</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -524,7 +524,7 @@ We want to define an API that works with <em>reals</em> (not just <code>float</c
 <p>So simple!
 We’re done, right?
 Not quite.
-We find that the runtime works well, but we’re Mypy errors.</p>
+We find that the runtime works well, but there are Mypy errors.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -614,8 +614,10 @@ All is right in the world again!</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>…: error: Argument 1 to &quot;deep_thought_crumbling&quot; has incompatible type &quot;Decimal&quot;; expected &quot;Union[float, Real]&quot;
 </code></pre></div>
 </td></tr></table>
-<h3 id="native-primitives-the-numeric-tower-or-other-things-that-define-all-the-methods-but-didnt-or-couldnt-register-in-the-numeric-tower-for-some-reason">Native primitives, the numeric tower, or other things that define all the methods, but didn’t (or couldn’t) register in the numeric tower for some reason</h3>
 <p>Oh, come <em>on</em>!</p>
+<h3 id="native-primitives-the-numeric-tower-or-other-things-that-define-all-the-methods-but-didnt-or-couldnt-register-in-the-numeric-tower-for-some-reason">Native primitives, the numeric tower, or other things that define all the methods, but didn’t (or couldn’t) register in the numeric tower for some reason</h3>
+<p>🤬 me.
+Do we just tack this onto the list?</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -631,8 +633,7 @@ All is right in the world again!</p>
 <span class="mi">42</span>
 </code></pre></div>
 </td></tr></table>
-<p>🤬 me.
-If we have to engage in these kinds of gymnastics just to reach escape velocity from the standard library, how the heck are we supposed to survive contact with numeric implementations we haven’t even heard of yet?!
+<p>If we have to engage in these kinds of gymnastics just to reach escape velocity from the standard library, how the heck are we supposed to survive contact with numeric implementations we haven’t even heard of yet?!
 We can’t enumerate them <em>all</em>!</p>
 <p>For many years, the numeric tower was declared a “dead end” by maintainers.
 Unsurprisingly, many longstanding library authors didn’t see much benefit to conforming to its API.
@@ -642,7 +643,8 @@ Surely the exalted few who have steered us <em>away</em> from one thing are prep
 Sadly, the apparent attitude of many seems to be, “Something, something, protocols? Meh. I don’t know. We’ll figure it out later.”</p>
 <h3 id="protocols">Protocols!</h3>
 <p><em>Can</em> we fix this with protocols?
-The standard library provides <a href="https://docs.python.org/3/library/typing.html#protocols">some simple precedents</a>.</p>
+The standard library <del>picked the low hanging fruit</del> <em>provides <a href="https://docs.python.org/3/library/typing.html#protocols">some simple precedents</a></em>.
+Can we imitate those?</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -665,7 +667,9 @@ The standard library provides <a href="https://docs.python.org/3/library/typing.
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
-<span class="normal">23</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
 <span class="o">...</span>   <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 <span class="o">...</span> <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 <span class="o">...</span>   <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>  <span class="c1"># type: ignore [misc]</span>
@@ -675,16 +679,18 @@ The standard library provides <a href="https://docs.python.org/3/library/typing.
 <span class="o">...</span> <span class="k">class</span> <span class="nc">SupportsNumeratorDenominator</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
 <span class="o">...</span>   <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">()</span>
 <span class="o">...</span>   <span class="nd">@property</span>
-<span class="o">...</span>   <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="k">pass</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
 <span class="o">...</span>   <span class="nd">@property</span>
-<span class="o">...</span>   <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="k">pass</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">require_rational</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsNumeratorDenominator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsNumeratorDenominator</span><span class="p">)</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">require_rational</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">require_rational</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">require_rational</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">require_rational</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># yup</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">require_rational</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># nice</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">require_rational</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]  # floats don&#39;t have numerator/denominator properties</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
   <span class="o">...</span>
 <span class="ne">AssertionError</span>
@@ -787,7 +793,9 @@ First, let’s get a baseline.</p>
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
-<span class="normal">22</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Rational</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
@@ -800,9 +808,11 @@ First, let’s get a baseline.</p>
 <span class="k">class</span> <span class="nc">SupportsNumeratorDenominator</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
   <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">()</span>
   <span class="nd">@property</span>
-  <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="k">pass</span>
+  <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">pass</span>
   <span class="nd">@property</span>
-  <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="k">pass</span>
+  <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">pass</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">SupportsNumeratorDenominator</span>
 
@@ -822,11 +832,11 @@ How much worse would it be if we had enumerated all the dunder methods? 😰</p>
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">SupportsLotsOfNumberStuff</span><span class="p">)</span>
-<span class="mi">132</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">238</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="mi">132</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">1.15</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
 <span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fractions</span><span class="o">.</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">SupportsLotsOfNumberStuff</span><span class="p">)</span>
-<span class="mi">151</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">7.27</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="mi">139</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">2.01</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
 <span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="mf">3.0</span><span class="p">),</span> <span class="n">SupportsLotsOfNumberStuff</span><span class="p">)</span>
-<span class="mi">134</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">835</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="mi">131</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">1.13</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
 </code></pre></div>
 </td></tr></table>
 <details>
@@ -889,10 +899,9 @@ How much worse would it be if we had enumerated all the dunder methods? 😰</p>
 <span class="normal">55</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Rational</span>
 <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># &quot;raw&quot; (non-caching) versions</span>
-  <span class="n">_SupportsCeil</span><span class="p">,</span>
   <span class="n">_SupportsComplexOps</span><span class="p">,</span>
   <span class="n">_SupportsConjugate</span><span class="p">,</span>
-  <span class="n">_SupportsFloor</span><span class="p">,</span>
+  <span class="n">_SupportsFloorCeil</span><span class="p">,</span>
   <span class="n">_SupportsDivmod</span><span class="p">,</span>
   <span class="n">_SupportsRealImag</span><span class="p">,</span>
   <span class="n">_SupportsRealOps</span><span class="p">,</span>
@@ -920,8 +929,7 @@ How much worse would it be if we had enumerated all the dunder methods? 😰</p>
   <span class="n">_SupportsComplexOps</span><span class="p">,</span>
   <span class="n">_SupportsDivmod</span><span class="p">,</span>
   <span class="n">_SupportsTrunc</span><span class="p">,</span>
-  <span class="n">_SupportsFloor</span><span class="p">,</span>
-  <span class="n">_SupportsCeil</span><span class="p">,</span>
+  <span class="n">_SupportsFloorCeil</span><span class="p">,</span>
   <span class="n">_SupportsConjugate</span><span class="p">,</span>
   <span class="n">_SupportsRealImag</span><span class="p">,</span>
   <span class="n">SupportsAbs</span><span class="p">,</span>
@@ -932,9 +940,11 @@ How much worse would it be if we had enumerated all the dunder methods? 😰</p>
 <span class="p">):</span>
   <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">()</span>
   <span class="nd">@property</span>
-  <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="k">pass</span>
+  <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">pass</span>
   <span class="nd">@property</span>
-  <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="k">pass</span>
+  <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">pass</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">SupportsLotsOfNumberStuff</span>
 
@@ -951,7 +961,8 @@ And that’s not even <em>all</em> the methods!</p>
 <p>You know what?
 Never mind that.
 Where there’s a will, there’s a way.
-Note to self, “Solve the performance problems with protocols later, but we’re <em>definitely</em> onto something!”</p>
+Note to self: <em>Self, solve the performance problems with protocols later.</em>
+But we’re <em>definitely</em> onto something!</p>
 <h3 id="lies-upon-lies-upon-lies-all-the-way-down">Lies! Upon lies! Upon lies! All the way down!</h3>
 <p>Let’s do another one.
 Real numbers have comparisons that complex ones don’t.
@@ -982,7 +993,11 @@ That seems as good a place as any to tackle next.</p>
 <span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
-<span class="normal">27</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
 <span class="o">...</span>   <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 <span class="o">...</span> <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 <span class="o">...</span>   <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>  <span class="c1"># type: ignore [misc]</span>
@@ -994,13 +1009,17 @@ That seems as good a place as any to tackle next.</p>
 <span class="o">...</span> <span class="k">class</span> <span class="nc">SupportsRealComparisons</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
 <span class="o">...</span>   <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">()</span>
 <span class="o">...</span>   <span class="nd">@abstractmethod</span>
-<span class="o">...</span>   <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="k">pass</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
 <span class="o">...</span>   <span class="nd">@abstractmethod</span>
-<span class="o">...</span>   <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="k">pass</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
 <span class="o">...</span>   <span class="nd">@abstractmethod</span>
-<span class="o">...</span>   <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="k">pass</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
 <span class="o">...</span>   <span class="nd">@abstractmethod</span>
-<span class="o">...</span>   <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="k">pass</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">require_real</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsRealComparisons</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsRealComparisons</span><span class="p">)</span>

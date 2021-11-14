@@ -315,8 +315,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pass-through-caching-with-composition-implementation-is-pretty-sketchy" class="md-nav__link">
-    Pass-through caching with composition implementation is pretty sketchy
+  <a href="#pass-through-caching-with-composition-is-pretty-sketchy" class="md-nav__link">
+    Pass-through caching with composition is pretty sketchy
   </a>
   
 </li>
@@ -541,11 +541,11 @@ Please see the accompanying <code>LICENSE</code> file for rights and restriction
 All rights not expressly waived or licensed are reserved.
 If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.</em></p>
 <p><a href="https://github.com/posita/numerary/actions/workflows/unit-tests.yaml"><img alt="Tests" src="https://github.com/posita/numerary/actions/workflows/unit-tests.yaml/badge.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.1.0/"><img alt="Version" src="https://img.shields.io/pypi/v/numerary/0.1.0.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.1.0/"><img alt="Development Stage" src="https://img.shields.io/pypi/status/numerary/0.1.0.svg" /></a>
-<a href="http://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/pypi/l/numerary/0.1.0.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.1.0/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/numerary/0.1.0.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.1.0/"><img alt="Supported Python Implementations" src="https://img.shields.io/pypi/implementation/numerary/0.1.0.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.1.1/"><img alt="Version" src="https://img.shields.io/pypi/v/numerary/0.1.1.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.1.1/"><img alt="Development Stage" src="https://img.shields.io/pypi/status/numerary/0.1.1.svg" /></a>
+<a href="http://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/pypi/l/numerary/0.1.1.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.1.1/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/numerary/0.1.1.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.1.1/"><img alt="Supported Python Implementations" src="https://img.shields.io/pypi/implementation/numerary/0.1.1.svg" /></a>
 <a href="https://github.com/pre-commit/pre-commit"><img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&amp;logoColor=white" /></a>
 <a href="https://beartype.rtfd.io/"><img alt="Bear-ified™" src="https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg" /></a></p>
 <p>Are you defining a numeric interface that should work with more than just <code>int</code>s and <code>float</code>s?
@@ -554,7 +554,7 @@ Were you excited by <a href="https://www.python.org/dev/peps/pep-3141/">PEP 3141
 Do you now wonder whether numbers were something new to computing in general because nothing else would explain such a gaping hole in a programming language so popular with the STEM crowd that has been around since the early 1990s?
 Does the number <a href="https://github.com/python/mypy/issues/3186">3186</a> haunt you in your dreams?
 Do you find yourself shouting to no one in particular, “There <em>has</em> to be a better way?”</p>
-<p>Well I’m here to tell you there ain’t.
+<p>Well I’m here to tell you there isn’t.
 But until there is, there’s …</p>
 <h1 id="numerarynow-with-protocol-powertm"><em><code>numerary</code>—Now with Protocol Power™</em></h1>
 <p>That’s right!</p>
@@ -685,7 +685,8 @@ For example, let’s say one wanted to ensure type compatibility with primitives
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
-<span class="normal">44</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+<span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">T_co</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T_co&quot;</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="p">(</span>
 <span class="o">...</span>   <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span><span class="p">,</span>
@@ -696,7 +697,8 @@ For example, let’s say one wanted to ensure type compatibility with primitives
 <span class="o">...</span> <span class="k">class</span> <span class="nc">MyType</span><span class="p">(</span>
 <span class="o">...</span>   <span class="n">SupportsAbs</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span> <span class="n">SupportsDivmod</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
 <span class="o">...</span>   <span class="n">Protocol</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">,</span>
-<span class="o">...</span> <span class="p">):</span> <span class="k">pass</span>
+<span class="o">...</span> <span class="p">):</span>
+<span class="o">...</span>   <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">my_type</span><span class="p">:</span> <span class="n">MyType</span>
 
@@ -767,32 +769,34 @@ Yeah, that shit ends <em>here</em>.</p>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
-<span class="normal">21</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Union</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
-<span class="o">...</span> <span class="k">class</span> <span class="nc">SupportsOne</span><span class="p">(</span><span class="n">Protocol</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">):</span>
+<span class="o">...</span> <span class="k">class</span> <span class="nc">MySupportsOne</span><span class="p">(</span><span class="n">Protocol</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">):</span>
 <span class="o">...</span>   <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">()</span>
 <span class="o">...</span>   <span class="nd">@abstractmethod</span>
-<span class="o">...</span>   <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="k">pass</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Imposter</span><span class="p">:</span>
 <span class="o">...</span>   <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="o">...</span>     <span class="k">return</span> <span class="s2">&quot;one&quot;</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">imp</span><span class="p">:</span> <span class="n">SupportsOne</span> <span class="o">=</span> <span class="n">Imposter</span><span class="p">()</span>  <span class="c1"># type: ignore [assignment]  # properly caught by Mypy</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imp</span><span class="p">,</span> <span class="n">SupportsOne</span><span class="p">)</span>  <span class="c1"># fool me once, shame on you ...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">imp</span><span class="p">:</span> <span class="n">MySupportsOne</span> <span class="o">=</span> <span class="n">Imposter</span><span class="p">()</span>  <span class="c1"># type: ignore [assignment]  # properly caught by Mypy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imp</span><span class="p">,</span> <span class="n">MySupportsOne</span><span class="p">)</span>  <span class="c1"># fool me once, shame on you ...</span>
 <span class="kc">True</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsOne</span><span class="o">.</span><span class="n">excludes</span><span class="p">(</span><span class="n">Imposter</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imp</span><span class="p">,</span> <span class="n">SupportsOne</span><span class="p">)</span>  <span class="c1"># ... can&#39;t get fooled again</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MySupportsOne</span><span class="o">.</span><span class="n">excludes</span><span class="p">(</span><span class="n">Imposter</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imp</span><span class="p">,</span> <span class="n">MySupportsOne</span><span class="p">)</span>  <span class="c1"># ... can&#39;t get fooled again</span>
 <span class="kc">False</span>
 </code></pre></div>
 </td></tr></table>
 <p><code>numerary</code> has default overrides to correct for known oddities with native types (like our old friend, <code>complex</code>) and with popular libraries like <a href="https://numpy.org/"><code>numpy</code></a> and <a href="https://www.sympy.org/"><code>sympy</code></a>.
 Others will be added as they are identified.
-If I’ve missed any, or if you would like <code>numerary</code> to support additional number implementations out of the box, please <a href="https://posita.github.io/numerary/0.1/contrib/#filing-issues">let me know</a>.</p>
+If I’ve missed any, or if you would like <code>numerary</code> to support additional number implementations out of the box, please <a href="https://posita.github.io/numerary/0.1/contrib/#starting-discussions-and-filing-issues">let me know</a>.</p>
 <h2 id="performance-enhanced-protocolsa-different-kind-of-pep-for-your-step">Performance Enhanced Protocols—A <em>different</em> kind of “PEP” for your step</h2>
 <p>By default, <a href="https://bugs.python.org/issue30505">protocols frustrate runtime type-checking performance</a>.</p>
 <p><a href="https://posita.github.io/numerary/0.1/whytho/#puh-roh-tih-caaahhhlllz">A lot.</a></p>
@@ -807,7 +811,7 @@ At runtime (i.e., via <code>isinstance</code>), the <a href="https://github.com/
 More attributes means more comparisons.
 Further, it performs these comparisons … Every. Single. 🤬ing. Time.</p>
 <p>Protocols provided by <code>numerary</code> use instead <a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.CachingProtocolMeta"><code>CachingProtocolMeta</code></a> as their meta class.
-<code>CachingProtocolMeta</code> derives from <code>_ProtocolMeta</code> and overrides <code>__instancecheck__</code> to cache the default implementation’s results based on instance type.</p>
+<code>CachingProtocolMeta</code> derives from <code>_ProtocolMeta</code> and overrides <code>__instancecheck__</code> to cache results based on instance type.</p>
 <p>Conceptually:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -877,7 +881,7 @@ Further, it performs these comparisons … Every. Single. 🤬ing. Time.</p>
 </code></pre></div>
 </td></tr></table>
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.1.0/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.1.1/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
 
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -961,14 +965,14 @@ As one example, for the aforementioned <code>SupportsIntegralOps</code>, <code>n
 </code></pre></div>
 </td></tr></table>
 <p>Where do <code>…SCU</code> protocols help?
-In a word, <em><a href="https://pypi.org/project/beartype/"><code>beartype</code></a></em>.
+In a word, <em><a href="https://github.com/beartype/beartype/"><code>beartype</code></a></em>.
 <code>beartype</code> is <em>awesome</em>.
 Its author is even <em>awesomer</em>.<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">2</a></sup>
 More generally, runtime checkers that inspect and enforce annotations may benefit from short-circuiting where protocol validation is expensive.</p>
 <p><code>Union</code>s are <em>also</em> useful when trying to accommodate non-compliant primitives that fail static type-checking, but will work anyway at runtime.
 <code>float</code>s in Python versions prior to 3.9 are an excellent example, because they officially lacked <code>__floor__</code> and <code>__ceil__</code> methods, but were registered with the numeric tower and worked just fine with <code>math.floor</code> and <code>math.ceil</code>.</p>
-<p>How do <code>numerary</code>’s <a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.SupportsFloor"><code>SupportsFloor</code></a> and <a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.SupportsCeil"><code>SupportsCeil</code></a> deal with this situation?
-Not super well on their own, unfortunately.</p>
+<p>How does <code>numerary</code>’s <a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.SupportsFloorCeil"><code>SupportsFloorCeil</code></a> deal with this situation?
+Not very well, unfortunately, at least not on its own.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -978,17 +982,17 @@ Not super well on their own, unfortunately.</p>
 <span class="normal">7</span>
 <span class="normal">8</span>
 <span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">math</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloor</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloorCeil</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">my_dumb_floor_func</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsFloor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsFloor</span><span class="p">)</span>  <span class="c1"># will work, even for floats, thanks to default overrides</span>
-<span class="o">...</span>   <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]  # doesn&#39;t understand SupportsFloor</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">my_dumb_floor_func</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsFloorCeil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">)</span>  <span class="c1"># will work, even for floats, thanks to default overrides</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]  # doesn&#39;t understand SupportsFloorCeil</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">my_dumb_floor_func</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="mf">1.2</span><span class="p">))</span>  <span class="c1"># type: ignore [arg-type]  # still results in a Mypy error for Python version &lt;3.9</span>
 <span class="mi">1</span>
 </code></pre></div>
 </td></tr></table>
-<p><code>Union</code>s allow a work-around for the static type-checking issue.</p>
+<p><code>…SCU</code> <code>Union</code>s allow a work-around for the static type-checking issue.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -999,13 +1003,13 @@ Not super well on their own, unfortunately.</p>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloor</span><span class="p">,</span> <span class="n">SupportsFloorSCU</span><span class="p">,</span> <span class="n">floor</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloorSCU</span>  <span class="c1"># float is included here</span>
-<span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Real</span><span class="p">,</span> <span class="n">numerary</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">SupportsFloor</span><span class="p">]</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloorCeil</span><span class="p">,</span> <span class="n">SupportsFloorCeilSCU</span><span class="p">,</span> <span class="n">floor</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloorCeilSCU</span>  <span class="c1"># float is included here</span>
+<span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Real</span><span class="p">,</span> <span class="n">numerary</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">SupportsFloorCeil</span><span class="p">]</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">my_floor_func</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsFloorSCU</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsFloor</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">my_floor_func</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsFloorCeilSCU</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">)</span>
 <span class="o">...</span>   <span class="k">return</span> <span class="n">floor</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">my_floor_func</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="mf">1.2</span><span class="p">))</span>  <span class="c1"># works in 3.7+</span>
@@ -1088,7 +1092,7 @@ Further, if the short-circuiting approach is used, because <code>sage.rings.inte
 </td></tr></table>
 <p>Known warts <em>could</em> be cured by cache overriding as discussed above.
 However, to combat this particular situation, <code>numerary</code> provides an alternative: the <a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods"><code>SupportsNumeratorDenominatorMethods</code></a> protocol and the <a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.numerator"><code>numerator</code></a> and <a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.denominator"><code>denominator</code></a> helper functions.
-These allow accommodation of rational implementations like Sage’s that are mostly compliant with the exception of their respective <code>numerator</code> and <code>denominator</code> implementations.</p>
+These accommodate rational implementations like Sage’s that are mostly compliant with the exception of their respective <code>numerator</code> and <code>denominator</code> implementations.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -1146,10 +1150,9 @@ These allow accommodation of rational implementations like Sage’s that are mos
 </code></pre></div>
 </td></tr></table>
 <p>The <code>SupportsNumeratorDenominator*</code> primitives provide the basis for analogous <a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.RationalLikeMethods"><code>numerary.types.RationalLike*</code> primitives</a>, which <em>should</em> provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.</p>
-<h4 id="pass-through-caching-with-composition-implementation-is-pretty-sketchy">Pass-through caching with composition implementation is pretty sketchy</h4>
-<p>This is really getting into where the sausage is made.
-However, in the spirit of full transparency, this must be disclosed.</p>
-<p>Let’s say we register an errant implementation as non-compliant.</p>
+<h4 id="pass-through-caching-with-composition-is-pretty-sketchy">Pass-through caching with composition is pretty sketchy</h4>
+<p>This is really getting into where the sausage is made, but full transparency is important, because <code>CachingProtocolMeta</code> does change how protocols are validated at runtime.</p>
+<p>Let’s say we register an errant implementation as non-compliant using the <a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.CachingProtocolMeta.excludes"><code>CachingProtocolMeta.excludes</code>method</a>.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -1179,7 +1182,7 @@ However, in the spirit of full transparency, this must be disclosed.</p>
 <span class="kc">False</span>
 </code></pre></div>
 </td></tr></table>
-<p>For composition to be ergonomic, this registration should be indelible, survive composition, but allow overriding by inheritors.</p>
+<p>For composition to be ergonomic, such registration should be indelible, survive composition, and afford preference to overrides by inheritors.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -1214,56 +1217,61 @@ However, in the spirit of full transparency, this must be disclosed.</p>
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
-<span class="normal">35</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="normal">35</span>
+<span class="normal">36</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="p">(</span>
 <span class="o">...</span>   <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span><span class="p">,</span>
 <span class="o">...</span>   <span class="n">SupportsInt</span><span class="p">,</span>
 <span class="o">...</span> <span class="p">)</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
-<span class="o">...</span> <span class="k">class</span> <span class="nc">MyFloatInt</span><span class="p">(</span>
+<span class="o">...</span> <span class="k">class</span> <span class="nc">MySupportsFloatInt</span><span class="p">(</span>
 <span class="o">...</span>   <span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsInt</span><span class="p">,</span>
 <span class="o">...</span>   <span class="n">Protocol</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">,</span>
-<span class="o">...</span> <span class="p">):</span> <span class="k">pass</span>
+<span class="o">...</span> <span class="p">):</span>
+<span class="o">...</span>   <span class="k">pass</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MyFloatInt</span><span class="p">)</span>  <span class="c1"># picks up excludes override from SupportsFloat</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>  <span class="c1"># composition picks up override from base</span>
 <span class="kc">False</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloat</span><span class="o">.</span><span class="n">reset_for</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloat</span><span class="o">.</span><span class="n">reset_for</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>  <span class="c1"># base resets override</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">SupportsFloat</span><span class="p">)</span>
 <span class="kc">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MyFloatInt</span><span class="p">)</span>  <span class="c1"># picks up resetting of SupportsFloat override</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>  <span class="c1"># picks up base’s changes</span>
 <span class="kc">True</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">MyFloatInt</span><span class="o">.</span><span class="n">excludes</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>  <span class="c1"># overrides in composition</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MyFloatInt</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MySupportsFloatInt</span><span class="o">.</span><span class="n">excludes</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>  <span class="c1"># composition overrides</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>
 <span class="kc">False</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloat</span><span class="o">.</span><span class="n">includes</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloat</span><span class="o">.</span><span class="n">includes</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>  <span class="c1"># base changes</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">FloatImposter</span><span class="p">)</span>
 <span class="kc">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MyFloatInt</span><span class="p">)</span>  <span class="c1"># overrides/resets in member protocols are hidden</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>  <span class="c1"># composition remains unchanged</span>
 <span class="kc">False</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">MyFloatInt</span><span class="o">.</span><span class="n">reset_for</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>  <span class="c1"># removes override in composition</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MyFloatInt</span><span class="p">)</span>  <span class="c1"># member protocol is visible again</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MySupportsFloatInt</span><span class="o">.</span><span class="n">reset_for</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>  <span class="c1"># removes override in composition</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>  <span class="c1"># base is visible again</span>
 <span class="kc">True</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloat</span><span class="o">.</span><span class="n">excludes</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MyFloatInt</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>  <span class="c1"># base’s changes are visible to composition again</span>
 <span class="kc">False</span>
 </code></pre></div>
 </td></tr></table>
-<p>For this to work under the current implementation, we cannot rely exclusively on the <a href="https://github.com/python/cpython/blob/main/Lib/typing.py">standard library’s implementation of <code>__instancecheck__</code></a>, since it flattens and inspects all properties (with some proprietary exceptions) of all classes in order of the MRO, not just the current instance.
-In lay terms, this means that an ancestor’s <code>__instancecheck__</code> cache is effectively hidden from its progeny.
-Without intervention, that would require one to register exceptions with every inheritor, which would suck.</p>
-<p>Overriding the behavior is problematic, because the standard library uses a non-public function called <code>_get_protocol_attrs</code> to perform its attribute enumeration.</p>
-<p><a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.CachingProtocolMeta"><code>CachingProtocolMeta</code></a> tries to work around this by importing <code>_get_protocol_attrs</code> and performing some set arithmetic to limit its evaluation to directly defined attributes, and then delegate <code>isinstance</code> evaluation to its <code>__base__</code> classes.
+<p>For this to work under the current implementation, we cannot rely exclusively on the <a href="https://github.com/python/cpython/blob/main/Lib/typing.py">standard library’s implementation of <code>__instancecheck__</code></a>, since it flattens and inspects <em>all</em> properties (with some proprietary exceptions) of all classes in the inheritance tree (in order of the MRO).
+In practical terms, this means one can’t easily delegate to an ancestor’s <code>__instancecheck__</code> method and a protocol’s cache is effectively hidden from its progeny.
+In other words, leaning on the default behavior would require one to register exceptions with every inheritor.
+That would suck, so let’s not do that.</p>
+<p>However, overriding the behavior is problematic, because the standard library uses a non-public function called <code>_get_protocol_attrs</code> to perform its attribute enumeration.
+We certainly don’t want to re-implement protocol runtime checking from scratch.
+(At least not yet.)</p>
+<p><a href="https://posita.github.io/numerary/0.1/numerary.types/#numerary.types.CachingProtocolMeta"><code>CachingProtocolMeta</code></a> tries to work around this by importing <code>_get_protocol_attrs</code> and performing some set arithmetic to limit its evaluation to directly defined attributes, and then delegating <code>isinstance</code> evaluation to its <code>__base__</code> classes.
 In doing so, it picks up its bases’ then-cached values, but at the cost of re-implementing the attribute check as well as taking a dependency on an implementation detail of the standard library, which creates a fragility.
 Further, for post-inheritance updates, <code>CachingProtocolMeta</code> implements a simplistic publish/subscribe mechanism that dirties non-overridden caches in inheritors when member protocols caches are updated.
-These are deliberate compromises.
-(See the <a href="https://github.com/posita/numerary/blob/v0.1.0/numerary/types.py">implementation</a> for details.)</p>
+That’s completely off the beaten path and there are probably some gremlins hiding out there.</p>
 <p>One subtlety is that the implementation deviates from performing checks in MRO order (and may perform redundant checks).
 This is probably fine as long as runtime comparisons remain limited to crude checks whether attributes merely exist.
 It would likely fail if runtime checking becomes more sophisticated, at which time, this implementation will need to be revisited.
 Hopefully by then, we can just delete <code>numerary</code> as the aspirationally unnecessary hack it is and move on with our lives.</p>
+<p>(See the <a href="https://github.com/posita/numerary/blob/v0.1.1/numerary/types.py">implementation</a> for details.)</p>
 <h2 id="license">License</h2>
 <p><code>numerary</code> is licensed under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.
 See the included <a href="https://posita.github.io/numerary/0.1/license/"><code>LICENSE</code></a> file for details.
@@ -1304,13 +1312,13 @@ Source code is <a href="https://github.com/posita/numerary">available on GitHub<
 </ul>
 <p>If you use <code>beartype</code> for type-checking your code that interacts with <code>numerary</code>, but don’t want <code>numerary</code> to use it internally (e.g., for some strange reason), set the <code>NUMERARY_BEARTYPE</code> environment variable to a falsy<sup id="fnref:6"><a class="footnote-ref" href="#fn:6">4</a></sup> value before <code>numerary</code> is loaded.</p>
 <p>See the <a href="https://posita.github.io/numerary/0.1/contrib/#hacking-quick-start">hacking quick-start</a> for additional development and testing dependencies.</p>
-<h2 id="customers">Customers <a href="https://posita.github.io/numerary/"><img alt="numerary-encumbered" src="https://raw.githubusercontent.com/posita/numerary/v0.1.0/docs/numerary-encumbered.svg" /></a></h2>
+<h2 id="customers">Customers <a href="https://posita.github.io/numerary/"><img alt="numerary-encumbered" src="https://raw.githubusercontent.com/posita/numerary/v0.1.1/docs/numerary-encumbered.svg" /></a></h2>
 <ul>
-<li><a href="https://pypi.org/project/dyce/"><code>dyce</code></a> - a pure-Python library for modeling arbitrarily complex dice mechanics and <del>mother</del> <em>birthing code base</em> of <code>numerary</code>!</li>
+<li><a href="https://github.com/posita/dyce/"><code>dyce</code></a> - a pure-Python library for modeling arbitrarily complex dice mechanics and <del>mother</del> <em>birthing code base</em> of <code>numerary</code>!</li>
 <li>The next one could be <em>you</em>! 👋</li>
 </ul>
 <p>Do you have a project that suffers problems made slightly less annoying by <code>numerary</code>?
-<a href="https://posita.github.io/numerary/0.1/contrib/#filing-issues">Let me know</a>, and I’ll promote it here!</p>
+<a href="https://posita.github.io/numerary/0.1/contrib/#starting-discussions-and-filing-issues">Let me know</a>, and I’ll promote it here!</p>
 <p>And don’t forget to do your part in perpetuating gratuitous badge-ification!</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
