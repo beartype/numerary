@@ -19,6 +19,11 @@
 
 * Removes obsoleted ``…SCT`` aliases.
 * Corrects release notes which erroneously identified version 0.1.0 as 0.0.6.
+* Adds ``IntEnum``, ``IntFlag``, and ``Flag`` to testing.
+* Merges ``SupportsFloor`` and ``SupportsCeil`` into [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil].
+* Gets rid of ``MANIFEST.in`` nonsense since we’re not distributing sources via PyPI anymore.
+* Adds a ton of examples to protocol docs.
+* Better identifies false positives in tests.
 
 ## [0.1.0](https://github.com/posita/numerary/releases/tag/v0.1.0)
 

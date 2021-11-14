@@ -171,14 +171,23 @@ def test_rational_like_numpy() -> None:
         assert good_val.numerator, f"{good_val!r}"
         assert good_val.denominator, f"{good_val!r}"
 
+    # TODO(posita): These should not validate
+    float16_val: RationalLikeProperties = numpy.float16(-1.8)
+    float32_val: RationalLikeProperties = numpy.float32(-273.15)
+    float64_val: RationalLikeProperties = numpy.float64(-273.15)
+    float128_val: RationalLikeProperties = numpy.float128(-273.15)
+    csingle_val: RationalLikeProperties = numpy.csingle(-273.15)
+    cdouble_val: RationalLikeProperties = numpy.cdouble(-273.15)
+    clongdouble_val: RationalLikeProperties = numpy.clongdouble(-273.15)
+
     for bad_val in (
-        numpy.float16(-1.8),
-        numpy.float32(-273.15),
-        numpy.float64(-273.15),
-        numpy.float128(-273.15),
-        numpy.csingle(-273.15),
-        numpy.cdouble(-273.15),
-        numpy.clongdouble(-273.15),
+        float16_val,
+        float32_val,
+        float64_val,
+        float128_val,
+        csingle_val,
+        cdouble_val,
+        clongdouble_val,
     ):
         assert not isinstance(bad_val, RationalLikeMixedT), f"{bad_val!r}"
 
@@ -242,9 +251,13 @@ def test_rational_like_sympy() -> None:
         assert good_val.numerator, f"{good_val!r}"
         assert good_val.denominator, f"{good_val!r}"
 
+    # TODO(posita): These should not validate
+    sym_float: RationalLikeProperties = sympy.Float(-273.15)
+    sym_sym: RationalLikeProperties = sympy.symbols("x")
+
     for bad_val in (
-        sympy.Float(-273.15),
-        sympy.symbols("x"),
+        sym_float,
+        sym_sym,
     ):
         assert not isinstance(bad_val, RationalLikeMixedT), f"{bad_val!r}"
 

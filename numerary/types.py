@@ -36,6 +36,15 @@ __all__ = (
     "RealLikeSCU",
 )
 
+r"""
+<!-- BEGIN MONKEY PATCH --
+
+>>> from typing import Any
+>>> _: Any
+
+  -- END MONKEY PATCH -->
+"""
+
 
 # ---- Types ---------------------------------------------------------------------------
 
@@ -122,7 +131,7 @@ def _bases_pass_muster_gen(cls: CachingProtocolMeta, inst: Any) -> Iterator[bool
 
 
 class CachingProtocolMeta(_ProtocolMeta):
-    """
+    r"""
     Stand-in for ``#!python Protocol``’s base class that caches results of ``#!python
     __instancecheck__``, (which is otherwise [really 🤬ing
     expensive](https://github.com/python/mypy/issues/3186#issuecomment-885718629)).
@@ -132,6 +141,38 @@ class CachingProtocolMeta(_ProtocolMeta):
     results for objects whose methods don’t stem from any type (e.g., are assembled at
     runtime). I don’t know of any real-world case where that would be true. We’ll jump
     off that bridge when we come to it.
+
+    Note that one can make an existing protocol a caching protocol through inheritance,
+    but in order to be ``@runtime_checkable``, the parent protocol also has to be
+    @runtime_checkable.
+
+    ``` python
+    >>> from abc import abstractmethod
+    >>> from numerary.types import Protocol, runtime_checkable
+
+    >>> @runtime_checkable
+    ... class _MyProtocol(Protocol):  # plain vanilla protocol
+    ...   @abstractmethod
+    ...   def myfunc(self, arg: int) -> str:
+    ...     pass
+
+    >>> @runtime_checkable  # redundant, but useful for documentation
+    ... class MyProtocol(
+    ...   _MyProtocol,
+    ...   Protocol,
+    ...   metaclass=CachingProtocolMeta,  # caching version
+    ... ):
+    ...   pass
+
+    >>> class MyImplementation:
+    ...   def myfunc(self, arg: int) -> str:
+    ...     return str(arg * -2 + 5)
+
+    >>> my_thing: MyProtocol = MyImplementation()
+    >>> isinstance(my_thing, MyProtocol)
+    True
+
+    ```
     """
 
     def __new__(
@@ -182,14 +223,19 @@ class CachingProtocolMeta(_ProtocolMeta):
         ``` python
         >>> from abc import abstractmethod
         >>> from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
+
         >>> @runtime_checkable
         ... class SupportsSpam(
         ...   Protocol,
         ...   metaclass=CachingProtocolMeta
         ... ):
         ...   @abstractmethod
-        ...   def spam(self) -> str: pass
-        >>> class NoSpam: pass
+        ...   def spam(self) -> str:
+        ...     pass
+
+        >>> class NoSpam:
+        ...   pass
+
         >>> isinstance(NoSpam(), SupportsSpam)
         False
         >>> SupportsSpam.includes(NoSpam)
@@ -219,16 +265,20 @@ class CachingProtocolMeta(_ProtocolMeta):
         ``` python
         >>> from abc import abstractmethod
         >>> from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
+
         >>> @runtime_checkable
         ... class SupportsHam(
         ...   Protocol,
         ...   metaclass=CachingProtocolMeta
         ... ):
         ...   @abstractmethod
-        ...   def ham(self) -> str: pass
+        ...   def ham(self) -> str:
+        ...     pass
+
         >>> class NoHam:
         ...   def ham(self) -> str:
         ...     raise NotImplementedError
+
         >>> isinstance(NoHam(), SupportsHam)
         True
         >>> SupportsHam.excludes(NoHam)
@@ -422,6 +472,36 @@ class SupportsConjugate(
 
     ([``_SupportsConjugate``][numerary.types._SupportsConjugate] is the raw, non-caching
     version that defines the actual methods.)
+
+    ``` python
+    >>> from typing import TypeVar
+    >>> from numerary.types import SupportsConjugate
+    >>> MyConjugateT = TypeVar("MyConjugateT", bound=SupportsConjugate)
+
+    >>> def conjugate_my_thing(arg: MyConjugateT) -> MyConjugateT:
+    ...   assert isinstance(arg, SupportsConjugate)
+    ...   return arg.conjugate()
+
+    >>> conjugate_my_thing(3)
+    3
+
+    >>> from decimal import Decimal
+    >>> conjugate_my_thing(Decimal(2.5))
+    Decimal('2.5')
+
+    >>> import sympy
+    >>> conjugate_my_thing(sympy.core.numbers.Float(3.5))
+    3.5
+    >>> type(_)
+    <class 'sympy.core.numbers.Float'>
+
+    >>> # error: Value of type variable "MyConjugateT" of "conjugate_my_thing" cannot be "str"
+    >>> conjugate_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -463,6 +543,30 @@ class SupportsRealImag(
 
     ([``_SupportsRealImag``][numerary.types._SupportsRealImag] is the raw, non-caching
     version that defines the actual methods.)
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsRealImag
+    >>> MyRealImagT = TypeVar("MyRealImagT", bound=SupportsRealImag)
+
+    >>> def real_imag_my_thing(arg: MyRealImagT) -> Tuple[Any, Any]:
+    ...   assert isinstance(arg, SupportsRealImag)
+    ...   return (arg.real, arg.imag)
+
+    >>> real_imag_my_thing(3)
+    (3, 0)
+
+    >>> from decimal import Decimal
+    >>> real_imag_my_thing(Decimal(2.5))
+    (Decimal('2.5'), Decimal('0'))
+
+    >>> # error: Value of type variable "MyRealImagT" of "real_imag_my_thing" cannot be "str"
+    >>> real_imag_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -497,6 +601,36 @@ class SupportsTrunc(
 
     ([``_SupportsTrunc``][numerary.types._SupportsTrunc] is the raw, non-caching version
     that defines the actual methods.)
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsTrunc, trunc
+    >>> MyTruncT = TypeVar("MyTruncT", bound=SupportsTrunc)
+
+    >>> def trunc_my_thing(arg: MyTruncT) -> Tuple[Any, Any]:
+    ...   assert isinstance(arg, SupportsTrunc)
+    ...   return trunc(arg)
+
+    >>> trunc_my_thing(3)
+    3
+
+    >>> from decimal import Decimal
+    >>> trunc_my_thing(Decimal(2.5))
+    2
+
+    >>> import sympy
+    >>> trunc_my_thing(sympy.core.numbers.Float(3.5))
+    3
+    >>> type(_)
+    <class 'sympy.core.numbers.Integer'>
+
+    >>> # error: Value of type variable "MyTruncT" of "trunc_my_thing" cannot be "str"
+    >>> trunc_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -537,12 +671,42 @@ class SupportsFloorCeil(
     !!! note
 
         This is of limited value for Python versions prior to 3.9, since ``#!python
-        float.__floor__`` was not defined. If support for those environments is
-        important, consider using [``SupportsFloat``][numerary.types.SupportsFloat]
-        instead.
+        float.__floor__`` and ``#!python float.__ceil__`` were not defined. If support
+        for those environments is important, consider using
+        [``SupportsFloat``][numerary.types.SupportsFloat] instead.
 
         See also the [``floor``][numerary.types.floor] and
         [``ceil``][numerary.types.ceil] helper functions.
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsFloorCeil, ceil, floor
+    >>> MyFloorCeilT = TypeVar("MyFloorCeilT", bound=SupportsFloorCeil)
+
+    >>> def floor_ceil_my_thing(arg: MyFloorCeilT) -> Tuple[int, int]:
+    ...   assert isinstance(arg, SupportsFloorCeil)
+    ...   return floor(arg), ceil(arg)
+
+    >>> floor_ceil_my_thing(3)
+    (3, 3)
+
+    >>> from decimal import Decimal
+    >>> floor_ceil_my_thing(Decimal(2.5))
+    (2, 3)
+
+    >>> import sympy
+    >>> floor_ceil_my_thing(sympy.core.numbers.Float(3.5))
+    (3, 4)
+    >>> tuple(type(i) for i in _)
+    (<class 'sympy.core.numbers.Integer'>, <class 'sympy.core.numbers.Integer'>)
+
+    >>> # error: Value of type variable "MyFloorCeilT" of "floor_ceil_my_thing" cannot be "str"
+    >>> floor_ceil_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -588,6 +752,36 @@ class SupportsDivmod(
 
     ([``_SupportsDivmod``][numerary.types._SupportsDivmod] is the raw, non-caching
     version that defines the actual methods.)
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsDivmod
+    >>> MyDivmodT = TypeVar("MyDivmodT", bound=SupportsDivmod)
+
+    >>> def divmod_my_thing(arg: MyDivmodT, other: Any) -> Tuple[MyDivmodT, MyDivmodT]:
+    ...   assert isinstance(arg, SupportsDivmod)
+    ...   return divmod(arg, other)
+
+    >>> divmod_my_thing(2, 1)
+    (2, 0)
+
+    >>> from decimal import Decimal
+    >>> divmod_my_thing(Decimal(2.5), Decimal(1.5))
+    (Decimal('1'), Decimal('1.0'))
+
+    >>> import sympy
+    >>> divmod_my_thing(sympy.core.numbers.Float(3.5), sympy.core.numbers.Float(1.5))
+    (2, 0.5)
+    >>> tuple(type(i) for i in _)
+    (<class 'sympy.core.numbers.Integer'>, <class 'sympy.core.numbers.Float'>)
+
+    >>> # error: Value of type variable "MyDivmodT" of "divmod_my_thing" cannot be "str"
+    >>> divmod_my_thing("not-a-number", "still-not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -630,6 +824,36 @@ class SupportsNumeratorDenominatorProperties(
 
     ([``_SupportsNumeratorDenominatorProperties``][numerary.types._SupportsNumeratorDenominatorProperties]
     is the raw, non-caching version that defines the actual properties.)
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsNumeratorDenominatorProperties, denominator, numerator
+    >>> MyNumDenomT = TypeVar("MyNumDenomT", bound=SupportsNumeratorDenominatorProperties)
+
+    >>> def num_denom_my_thing(arg: MyNumDenomT) -> Tuple[int, int]:
+    ...   assert isinstance(arg, SupportsNumeratorDenominatorProperties)
+    ...   return numerator(arg), denominator(arg)
+
+    >>> num_denom_my_thing(3)
+    (3, 1)
+
+    >>> from fractions import Fraction
+    >>> num_denom_my_thing(Fraction(2, 3))
+    (2, 3)
+
+    >>> import sympy
+    >>> num_denom_my_thing(sympy.core.numbers.Rational(3, 4))
+    (3, 4)
+    >>> tuple(type(i) for i in _)
+    (<class 'int'>, <class 'int'>)
+
+    >>> # error: Value of type variable "MyNumDenomT" of "num_denom_my_thing" cannot be "str"
+    >>> num_denom_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -761,6 +985,36 @@ class SupportsComplexOps(
 
     ([``_SupportsComplexOps``][numerary.types._SupportsComplexOps] is the raw,
     non-caching version that defines the actual methods.)
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsComplexOps
+    >>> MyComplexOpsT = TypeVar("MyComplexOpsT", bound=SupportsComplexOps)
+
+    >>> def complex_ops_my_thing(arg: MyComplexOpsT) -> MyComplexOpsT:
+    ...   assert isinstance(arg, SupportsComplexOps)
+    ...   return arg * -2 + 5
+
+    >>> complex_ops_my_thing(3)
+    -1
+
+    >>> from decimal import Decimal
+    >>> complex_ops_my_thing(Decimal("2.5"))
+    Decimal('0.0')
+
+    >>> import sympy
+    >>> complex_ops_my_thing(sympy.core.numbers.Float(3.5))
+    -2.0
+    >>> type(_)
+    <class 'sympy.core.numbers.Float'>
+
+    >>> # error: Value of type variable "MyComplexOpsT" of "complex_ops_my_thing" cannot be "str"
+    >>> complex_ops_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -800,6 +1054,36 @@ class SupportsComplexPow(
 
     ([``_SupportsComplexPow``][numerary.types._SupportsComplexPow] is the raw,
     non-caching version that defines the actual methods.)
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsComplexPow
+    >>> MyComplexPowT = TypeVar("MyComplexPowT", bound=SupportsComplexPow)
+
+    >>> def complex_pow_my_thing(arg: MyComplexPowT) -> MyComplexPowT:
+    ...   assert isinstance(arg, SupportsComplexPow)
+    ...   return arg ** -2
+
+    >>> complex_pow_my_thing(3)
+    0.1111111111111111
+
+    >>> from decimal import Decimal
+    >>> complex_pow_my_thing(Decimal("2.5"))
+    Decimal('0.16')
+
+    >>> import sympy
+    >>> complex_pow_my_thing(sympy.core.numbers.Float(3.5))
+    0.0816326530612245
+    >>> type(_)
+    <class 'sympy.core.numbers.Float'>
+
+    >>> # error: Value of type variable "MyComplexPowT" of "complex_pow_my_thing" cannot be "str"
+    >>> complex_pow_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -862,6 +1146,36 @@ class SupportsRealOps(
 
     ([``_SupportsRealOps``][numerary.types._SupportsRealOps] is the raw, non-caching
     version that defines the actual methods.)
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsRealOps
+    >>> MyRealOpsT = TypeVar("MyRealOpsT", bound=SupportsRealOps)
+
+    >>> def real_ops_my_thing(arg: MyRealOpsT) -> Any:
+    ...   assert isinstance(arg, SupportsRealOps)
+    ...   return arg // -2
+
+    >>> real_ops_my_thing(3)
+    -2
+
+    >>> from decimal import Decimal
+    >>> real_ops_my_thing(Decimal("2.5"))
+    Decimal('-1')
+
+    >>> import sympy
+    >>> real_ops_my_thing(sympy.core.numbers.Float(3.5))
+    -2
+    >>> type(_)
+    <class 'sympy.core.numbers.Integer'>
+
+    >>> # error: Value of type variable "MyRealOpsT" of "real_ops_my_thing" cannot be "str"
+    >>> real_ops_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -938,6 +1252,32 @@ class SupportsIntegralOps(
 
     ([``_SupportsIntegralOps``][numerary.types._SupportsIntegralOps] is the raw,
     non-caching version that defines the actual methods.)
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsIntegralOps
+    >>> MyIntegralOpsT = TypeVar("MyIntegralOpsT", bound=SupportsIntegralOps)
+
+    >>> def integral_ops_my_thing(arg: MyIntegralOpsT) -> MyIntegralOpsT:
+    ...   assert isinstance(arg, SupportsIntegralOps)
+    ...   return arg << 1
+
+    >>> integral_ops_my_thing(3)
+    6
+
+    >>> import sympy
+    >>> integral_ops_my_thing(sympy.core.numbers.Integer(3))
+    6
+    >>> type(_)
+    <class 'sympy.core.numbers.Integer'>
+
+    >>> # error: Value of type variable "MyIntegralOpsT" of "integral_ops_my_thing" cannot be "str"
+    >>> integral_ops_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -977,6 +1317,32 @@ class SupportsIntegralPow(
 
     ([``_SupportsIntegralPow``][numerary.types._SupportsIntegralPow] is the raw,
     non-caching version that defines the actual methods.)
+
+    ``` python
+    >>> from typing import Any, Tuple, TypeVar
+    >>> from numerary.types import SupportsIntegralPow
+    >>> MyIntegralPowT = TypeVar("MyIntegralPowT", bound=SupportsIntegralPow)
+
+    >>> def integral_pow_my_thing(arg: MyIntegralPowT) -> MyIntegralPowT:
+    ...   assert isinstance(arg, SupportsIntegralPow)
+    ...   return pow(arg, 2, 2)
+
+    >>> integral_pow_my_thing(3)
+    1
+
+    >>> import sympy
+    >>> integral_pow_my_thing(sympy.core.numbers.Integer(3))
+    1
+    >>> type(_)
+    <class 'int'>
+
+    >>> # error: Value of type variable "MyIntegralPowT" of "integral_pow_my_thing" cannot be "str"
+    >>> integral_pow_my_thing("not-a-number")  # type: ignore [type-var]
+    Traceback (most recent call last):
+      ...
+    AssertionError
+
+    ```
     """
     __slots__: Union[str, Iterable[str]] = ()
 
@@ -1004,6 +1370,25 @@ class RealLike(
     * [``SupportsRealOps``][numerary.types.SupportsRealOps]
     * [``SupportsComplexOps``][numerary.types.SupportsComplexOps]
     * [``SupportsComplexPow``][numerary.types.SupportsComplexPow]
+
+    Basically:
+
+    ``` python
+    from typing import TypeVar
+    from numerary.types import CachingProtocolMeta, Protocol, Supports…
+    T_co = TypeVar("T_co", covariant=True)
+
+    class RealLike(
+      SupportsAbs[T_co],
+      SupportsFloat,
+      SupportsRealOps[T_co],
+      SupportsComplexOps[T_co],
+      SupportsComplexPow[T_co],
+      Protocol[T_co],
+      metaclass=CachingProtocolMeta,
+    ):
+      pass
+    ```
 
     This is a practically useful, but incomplete list. To enforce equivalence to
     ``#!python numbers.Real``, one would also need:
@@ -1053,6 +1438,26 @@ class RationalLikeProperties(
     * [``SupportsRealOps``][numerary.types.SupportsRealOps]
     * [``SupportsComplexOps``][numerary.types.SupportsComplexOps]
     * [``SupportsComplexPow``][numerary.types.SupportsComplexPow]
+
+    Basically:
+
+    ``` python
+    from typing import TypeVar
+    from numerary.types import CachingProtocolMeta, Protocol, Supports…
+    T_co = TypeVar("T_co", covariant=True)
+
+    class RationalLikeProperties(
+      SupportsAbs[T_co],
+      SupportsFloat,
+      SupportsNumeratorDenominatorProperties,
+      SupportsRealOps[T_co],
+      SupportsComplexOps[T_co],
+      SupportsComplexPow[T_co],
+      Protocol[T_co],
+      metaclass=CachingProtocolMeta,
+    ):
+      pass
+    ```
 
     This is a practically useful, but incomplete list. To enforce equivalence to
     ``#!python numbers.Rational``, one would also need:
@@ -1105,6 +1510,26 @@ class RationalLikeMethods(
     [``SupportsNumeratorDenominatorProperties``][numerary.types.SupportsNumeratorDenominatorProperties],
     this protocol provides
     [``SupportsNumeratorDenominatorMethods``][numerary.types.SupportsNumeratorDenominatorMethods].
+
+    Basically:
+
+    ``` python
+    from typing import TypeVar
+    from numerary.types import CachingProtocolMeta, Protocol, Supports…
+    T_co = TypeVar("T_co", covariant=True)
+
+    class RationalLikeMethods(
+      SupportsAbs[T_co],
+      SupportsFloat,
+      SupportsNumeratorDenominatorMethods,
+      SupportsRealOps[T_co],
+      SupportsComplexOps[T_co],
+      SupportsComplexPow[T_co],
+      Protocol[T_co],
+      metaclass=CachingProtocolMeta,
+    ):
+      pass
+    ```
 
     This is probably not very useful on its own, but is important to the construction of
     [``RationalLikeMixedU``][numerary.types.RationalLikeMixedU] and
@@ -1172,6 +1597,28 @@ class IntegralLike(
     * [``SupportsIntegralPow``][numerary.types.SupportsIntegralPow]
     * [``SupportsRealOps``][numerary.types.SupportsRealOps]
     * [``SupportsComplexOps``][numerary.types.SupportsComplexOps]
+
+    Basically:
+
+    ``` python
+    from typing import TypeVar
+    from numerary.types import CachingProtocolMeta, Protocol, Supports…
+    T_co = TypeVar("T_co", covariant=True)
+
+    class IntegralLike(
+      SupportsAbs[T_co],
+      SupportsFloat,
+      SupportsIndex,
+      SupportsInt,
+      SupportsIntegralOps[T_co],
+      SupportsIntegralPow[T_co],
+      SupportsRealOps[T_co],
+      SupportsComplexOps[T_co],
+      Protocol[T_co],
+      metaclass=CachingProtocolMeta,
+    ):
+      pass
+    ```
 
     This is a practically useful, but incomplete list. To enforce equivalence to
     ``#!python numbers.Integral``, one would also need:
@@ -1338,6 +1785,7 @@ def denominator(operand: SupportsNumeratorDenominatorMixedU):
 
 
 try:
+    # Register known numpy exceptions
     import numpy
 
     for t in (
@@ -1376,6 +1824,7 @@ except ImportError:
     pass
 
 try:
+    # Register known sympy exceptions
     import sympy.core.symbol
 
     SupportsTrunc.excludes(sympy.core.symbol.Symbol)

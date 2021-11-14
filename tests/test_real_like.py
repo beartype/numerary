@@ -183,10 +183,15 @@ def test_real_like_numpy() -> None:
         assert good_val >= good_val - 1, f"{good_val!r}"
         assert good_val > good_val - 1, f"{good_val!r}"
 
+    # TODO(posita): These should not validate
+    csingle_val: RealLike = numpy.csingle(-273.15)
+    cdouble_val: RealLike = numpy.cdouble(-273.15)
+    clongdouble_val: RealLike = numpy.clongdouble(-273.15)
+
     for bad_val in (
-        numpy.csingle(-273.15),
-        numpy.cdouble(-273.15),
-        numpy.clongdouble(-273.15),
+        csingle_val,
+        cdouble_val,
+        clongdouble_val,
     ):
         assert not isinstance(bad_val, RealLike), f"{bad_val!r}"
 
@@ -229,13 +234,13 @@ def test_real_like_sympy() -> None:
     integer_val: RealLike = sympy.Integer(-273)
     rational_val: RealLike = sympy.Rational(-27315, 100)
     float_val: RealLike = sympy.Float(-273.15)
-    symbol_val: RealLike = sympy.symbols("x")
+    sym_val: RealLike = sympy.symbols("x")
 
     for good_val in (
         integer_val,
         rational_val,
         float_val,
-        symbol_val,
+        sym_val,
     ):
         assert isinstance(good_val, RealLike), f"{good_val!r}"
         assert good_val + 0 == good_val, f"{good_val!r}"

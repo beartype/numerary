@@ -178,9 +178,11 @@ The standard library provides [some simple precedents](https://docs.python.org/3
 ... class SupportsNumeratorDenominator(Protocol):
 ...   __slots__: Union[str, Iterable[str]] = ()
 ...   @property
-...   def numerator(self) -> int: pass
+...   def numerator(self) -> int:
+...     pass
 ...   @property
-...   def denominator(self) -> int: pass
+...   def denominator(self) -> int:
+...     pass
 
 >>> def require_rational(arg: SupportsNumeratorDenominator) -> None:
 ...   assert isinstance(arg, SupportsNumeratorDenominator)
@@ -284,13 +286,17 @@ That seems as good a place as any to tackle next.
 ... class SupportsRealComparisons(Protocol):
 ...   __slots__: Union[str, Iterable[str]] = ()
 ...   @abstractmethod
-...   def __lt__(self, other: Any) -> bool: pass
+...   def __lt__(self, other: Any) -> bool:
+...     pass
 ...   @abstractmethod
-...   def __le__(self, other: Any) -> bool: pass
+...   def __le__(self, other: Any) -> bool:
+...     pass
 ...   @abstractmethod
-...   def __ge__(self, other: Any) -> bool: pass
+...   def __ge__(self, other: Any) -> bool:
+...     pass
 ...   @abstractmethod
-...   def __gt__(self, other: Any) -> bool: pass
+...   def __gt__(self, other: Any) -> bool:
+...     pass
 
 >>> def require_real(arg: SupportsRealComparisons) -> None:
 ...   assert isinstance(arg, SupportsRealComparisons)

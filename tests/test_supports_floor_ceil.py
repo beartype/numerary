@@ -147,10 +147,6 @@ def test_floor_ceil_numpy() -> None:
     float32_val: SupportsFloorCeil = numpy.float32(-273.15)
     float64_val: SupportsFloorCeil = numpy.float64(-273.15)
     float128_val: SupportsFloorCeil = numpy.float128(-273.15)
-    # TODO(posita): These should not validate
-    csingle_val: SupportsFloorCeil = numpy.csingle(-273.15)
-    cdouble_val: SupportsFloorCeil = numpy.cdouble(-273.15)
-    clongdouble_val: SupportsFloorCeil = numpy.clongdouble(-273.15)
 
     for good_val in (
         uint8_val,
@@ -169,6 +165,11 @@ def test_floor_ceil_numpy() -> None:
         assert isinstance(good_val, SupportsFloorCeil), f"{good_val!r}"
         assert floor(good_val), f"{good_val!r}"
         assert ceil(good_val), f"{good_val!r}"
+
+    # TODO(posita): These should not validate
+    csingle_val: SupportsFloorCeil = numpy.csingle(-273.15)
+    cdouble_val: SupportsFloorCeil = numpy.cdouble(-273.15)
+    clongdouble_val: SupportsFloorCeil = numpy.clongdouble(-273.15)
 
     for bad_val in (
         csingle_val,
@@ -215,7 +216,6 @@ def test_floor_ceil_sympy() -> None:
     integer_val: SupportsFloorCeil = sympy.Integer(-273)
     rational_val: SupportsFloorCeil = sympy.Rational(-27315, 100)
     float_val: SupportsFloorCeil = sympy.Float(-273.15)
-    symbol_val: SupportsFloorCeil = sympy.symbols("x")
 
     for good_val in (
         integer_val,
@@ -226,7 +226,10 @@ def test_floor_ceil_sympy() -> None:
         assert floor(good_val), f"{good_val!r}"
         assert ceil(good_val), f"{good_val!r}"
 
-    for bad_val in (symbol_val,):
+    # TODO(posita): These should not validate
+    sym_val: SupportsFloorCeil = sympy.symbols("x")
+
+    for bad_val in (sym_val,):
         assert not isinstance(bad_val, SupportsFloorCeil), f"{bad_val!r}"
 
 

@@ -124,6 +124,15 @@ def test_trunc_beartype() -> None:
 
 def test_trunc_numpy() -> None:
     numpy = pytest.importorskip("numpy", reason="requires numpy")
+    float64_val: SupportsTrunc = numpy.float64(-273.15)
+
+    # numpy.float64 seems to have a closer relationship to the native float than the
+    # other numpy.float* types
+    for good_val in (float64_val,):
+        assert isinstance(good_val, SupportsTrunc), f"{good_val!r}"
+        assert trunc(good_val), f"{good_val!r}"
+
+    # TODO(posita): These should not validate
     uint8_val: SupportsTrunc = numpy.uint8(2)
     uint16_val: SupportsTrunc = numpy.uint16(273)
     uint32_val: SupportsTrunc = numpy.uint32(273)
@@ -134,14 +143,7 @@ def test_trunc_numpy() -> None:
     int64_val: SupportsTrunc = numpy.int64(-273)
     float16_val: SupportsTrunc = numpy.float16(-1.8)
     float32_val: SupportsTrunc = numpy.float32(-273.15)
-    float64_val: SupportsTrunc = numpy.float64(-273.15)
     float128_val: SupportsTrunc = numpy.float128(-273.15)
-
-    # numpy.float64 seems to have a closer relationship to the native float than the
-    # other numpy.float* types
-    for good_val in (float64_val,):
-        assert isinstance(good_val, SupportsTrunc), f"{good_val!r}"
-        assert trunc(good_val), f"{good_val!r}"
 
     for bad_val in (
         uint8_val,
@@ -208,8 +210,6 @@ def test_trunc_sympy() -> None:
     integer_val: SupportsTrunc = sympy.Integer(-273)
     rational_val: SupportsTrunc = sympy.Rational(-27315, 100)
     float_val: SupportsTrunc = sympy.Float(-273.15)
-    # TODO(posita): These should not validate
-    sym_val: SupportsTrunc = sympy.symbols("x")
 
     for good_val in (
         integer_val,
@@ -218,6 +218,9 @@ def test_trunc_sympy() -> None:
     ):
         assert isinstance(good_val, SupportsTrunc), f"{good_val!r}"
         assert trunc(good_val), f"{good_val!r}"
+
+    # TODO(posita): These should not validate
+    sym_val: SupportsTrunc = sympy.symbols("x")
 
     for lying_val in (sym_val,):
         assert not isinstance(lying_val, SupportsTrunc), f"{lying_val!r}"

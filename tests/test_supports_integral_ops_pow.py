@@ -156,14 +156,6 @@ def test_supports_integral_ops_pow_numpy() -> None:
     int16_val: SupportsIntegralOps = numpy.int16(-273)
     int32_val: SupportsIntegralOps = numpy.int32(-273)
     int64_val: SupportsIntegralOps = numpy.int64(-273)
-    # TODO(posita): These should not validate
-    float16_val: SupportsIntegralOps = numpy.float16(-1.8)
-    float32_val: SupportsIntegralOps = numpy.float32(-273.15)
-    float64_val: SupportsIntegralOps = numpy.float64(-273.15)
-    float128_val: SupportsIntegralOps = numpy.float128(-273.15)
-    csingle_val: SupportsIntegralOps = numpy.csingle(-273.15)
-    cdouble_val: SupportsIntegralOps = numpy.cdouble(-273.15)
-    clongdouble_val: SupportsIntegralOps = numpy.clongdouble(-273.15)
     _: SupportsIntegralPow
     _ = numpy.uint8(2)
     _ = numpy.uint16(273)
@@ -173,14 +165,6 @@ def test_supports_integral_ops_pow_numpy() -> None:
     _ = numpy.int16(-273)
     _ = numpy.int32(-273)
     _ = numpy.int64(-273)
-    # TODO(posita): These should not validate
-    _ = numpy.float16(-1.8)
-    _ = numpy.float32(-273.15)
-    _ = numpy.float64(-273.15)
-    _ = numpy.float128(-273.15)
-    _ = numpy.csingle(-273.15)
-    _ = numpy.cdouble(-273.15)
-    _ = numpy.clongdouble(-273.15)
 
     for good_val in (
         uint8_val,
@@ -208,6 +192,22 @@ def test_supports_integral_ops_pow_numpy() -> None:
 
         assert isinstance(good_val, SupportsIntegralPow), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
+
+    # TODO(posita): These should not validate
+    float16_val: SupportsIntegralOps = numpy.float16(-1.8)
+    float32_val: SupportsIntegralOps = numpy.float32(-273.15)
+    float64_val: SupportsIntegralOps = numpy.float64(-273.15)
+    float128_val: SupportsIntegralOps = numpy.float128(-273.15)
+    csingle_val: SupportsIntegralOps = numpy.csingle(-273.15)
+    cdouble_val: SupportsIntegralOps = numpy.cdouble(-273.15)
+    clongdouble_val: SupportsIntegralOps = numpy.clongdouble(-273.15)
+    _ = numpy.float16(-1.8)
+    _ = numpy.float32(-273.15)
+    _ = numpy.float64(-273.15)
+    _ = numpy.float128(-273.15)
+    _ = numpy.csingle(-273.15)
+    _ = numpy.cdouble(-273.15)
+    _ = numpy.clongdouble(-273.15)
 
     for bad_val in (
         float16_val,
@@ -274,16 +274,8 @@ def test_supports_integral_ops_pow_numpy_beartype() -> None:
 def test_supports_integral_ops_pow_sympy() -> None:
     sympy = pytest.importorskip("sympy", reason="requires numpy")
     integral_val: SupportsIntegralOps = sympy.Integer(-273)
-    # TODO(posita): These should not validate
-    sym_val: SupportsIntegralOps = sympy.symbols("x")
-    float_val: SupportsIntegralOps = sympy.Float(-273.15)
-    rational_val: SupportsIntegralOps = sympy.Rational(-27315, 100)
     _: SupportsIntegralPow
     _ = sympy.Integer(-273)
-    # TODO(posita): These should not validate
-    _ = sympy.symbols("x")
-    _ = sympy.Float(-273.15)
-    _ = sympy.Rational(-27315, 100)
 
     for good_val in (integral_val,):
         assert isinstance(good_val, SupportsIntegralOps), f"{good_val!r}"
@@ -293,6 +285,14 @@ def test_supports_integral_ops_pow_sympy() -> None:
         assert good_val | 0 == good_val, f"{good_val!r}"
         assert isinstance(good_val, SupportsIntegralPow), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
+
+    # TODO(posita): These should not validate
+    sym_val: SupportsIntegralOps = sympy.symbols("x")
+    float_val: SupportsIntegralOps = sympy.Float(-273.15)
+    rational_val: SupportsIntegralOps = sympy.Rational(-27315, 100)
+    _ = sympy.symbols("x")
+    _ = sympy.Float(-273.15)
+    _ = sympy.Rational(-27315, 100)
 
     for lying_val in (sym_val,):
         assert not isinstance(lying_val, SupportsIntegralOps), f"{lying_val!r}"

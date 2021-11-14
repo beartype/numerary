@@ -188,14 +188,23 @@ def test_numerator_denominator_numpy() -> None:
         assert numerator(good_val), f"{good_val!r}"
         assert denominator(good_val), f"{good_val!r}"
 
+    # TODO(posita): These should not validate
+    float16_val: SupportsNumeratorDenominatorProperties = numpy.float16(-1.8)
+    float32_val: SupportsNumeratorDenominatorProperties = numpy.float32(-273.15)
+    float64_val: SupportsNumeratorDenominatorProperties = numpy.float64(-273.15)
+    float128_val: SupportsNumeratorDenominatorProperties = numpy.float128(-273.15)
+    csingle_val: SupportsNumeratorDenominatorProperties = numpy.csingle(-273.15)
+    cdouble_val: SupportsNumeratorDenominatorProperties = numpy.cdouble(-273.15)
+    clongdouble_val: SupportsNumeratorDenominatorProperties = numpy.clongdouble(-273.15)
+
     for bad_val in (
-        numpy.float16(-1.8),
-        numpy.float32(-273.15),
-        numpy.float64(-273.15),
-        numpy.float128(-273.15),
-        numpy.csingle(-273.15),
-        numpy.cdouble(-273.15),
-        numpy.clongdouble(-273.15),
+        float16_val,
+        float32_val,
+        float64_val,
+        float128_val,
+        csingle_val,
+        cdouble_val,
+        clongdouble_val,
     ):
         assert not isinstance(
             bad_val, SupportsNumeratorDenominatorMixedT
@@ -256,9 +265,13 @@ def test_numerator_denominator_sympy() -> None:
         assert numerator(good_val), f"{good_val!r}"
         assert denominator(good_val), f"{good_val!r}"
 
+    # TODO(posita): These should not validate
+    float_val: SupportsNumeratorDenominatorProperties = sympy.Float(-273.15)
+    sym_val: SupportsNumeratorDenominatorProperties = sympy.symbols("x")
+
     for bad_val in (
-        sympy.Float(-273.15),
-        sympy.symbols("x"),
+        float_val,
+        sym_val,
     ):
         assert not isinstance(
             bad_val, SupportsNumeratorDenominatorMixedT

@@ -197,12 +197,17 @@ def test_supports_real_imag_numpy_beartype() -> None:
 
 def test_supports_real_imag_sympy() -> None:
     sympy = pytest.importorskip("sympy", reason="requires numpy")
+    # TODO(posita): These should not validate
+    integer_val: SupportsRealImag = sympy.Integer(-273)
+    rational_val: SupportsRealImag = sympy.Rational(-27315, 100)
+    float_val: SupportsRealImag = sympy.Float(-273.15)
+    sym_val: SupportsRealImag = sympy.symbols("x")
 
     for bad_val in (
-        sympy.Integer(-273),
-        sympy.Rational(-27315, 100),
-        sympy.Float(-273.15),
-        sympy.symbols("x"),
+        integer_val,
+        rational_val,
+        float_val,
+        sym_val,
     ):
         assert not isinstance(bad_val, SupportsRealImag), f"{bad_val!r}"
 

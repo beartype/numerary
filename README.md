@@ -132,7 +132,8 @@ For example, let’s say one wanted to ensure type compatibility with primitives
 ... class MyType(
 ...   SupportsAbs[T_co], SupportsDivmod[T_co],
 ...   Protocol, metaclass=CachingProtocolMeta,
-... ): pass
+... ):
+...   pass
 
 >>> my_type: MyType
 
@@ -192,7 +193,8 @@ That is because ``numerary`` not only caches runtime protocol evaluations, but a
 ... class MySupportsOne(Protocol, metaclass=CachingProtocolMeta):
 ...   __slots__: Union[str, Iterable[str]] = ()
 ...   @abstractmethod
-...   def one(self) -> int: pass
+...   def one(self) -> int:
+...     pass
 
 >>> class Imposter:
 ...   def one(self) -> str:
@@ -481,7 +483,8 @@ For composition to be ergonomic, such registration should be indelible, survive 
 ... class MySupportsFloatInt(
 ...   SupportsFloat, SupportsInt,
 ...   Protocol, metaclass=CachingProtocolMeta,
-... ): pass
+... ):
+...   pass
 
 >>> isinstance(float_imp, MySupportsFloatInt)  # composition picks up override from base
 False
