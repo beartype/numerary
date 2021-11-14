@@ -658,6 +658,10 @@ class _SupportsFloorCeil(Protocol):
     def __floor__(self) -> int:
         pass
 
+    @abstractmethod
+    def __ceil__(self) -> int:
+        pass
+
 
 @runtime_checkable
 class SupportsFloorCeil(

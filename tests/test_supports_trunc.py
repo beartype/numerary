@@ -81,9 +81,12 @@ def test_trunc() -> None:
         assert isinstance(good_val, SupportsTrunc), f"{good_val!r}"
         assert trunc(good_val), f"{good_val!r}"
 
+    complex_bad_val: SupportsTrunc = complex(-273.15)  # type: ignore [assignment]
+    test_flag_bad_val: SupportsTrunc = TestFlag.B  # type: ignore [assignment]
+
     for bad_val in (
-        complex(-273.15),
-        TestFlag.B,
+        complex_bad_val,
+        test_flag_bad_val,
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsTrunc), f"{bad_val!r}"
@@ -144,6 +147,9 @@ def test_trunc_numpy() -> None:
     float16_val: SupportsTrunc = numpy.float16(-1.8)
     float32_val: SupportsTrunc = numpy.float32(-273.15)
     float128_val: SupportsTrunc = numpy.float128(-273.15)
+    csingle_val: SupportsTrunc = numpy.csingle(-273.15)
+    cdouble_val: SupportsTrunc = numpy.cdouble(-273.15)
+    clongdouble_val: SupportsTrunc = numpy.clongdouble(-273.15)
 
     for bad_val in (
         uint8_val,
@@ -157,9 +163,9 @@ def test_trunc_numpy() -> None:
         float16_val,
         float32_val,
         float128_val,
-        numpy.csingle(-273.15),
-        numpy.cdouble(-273.15),
-        numpy.clongdouble(-273.15),
+        csingle_val,
+        cdouble_val,
+        clongdouble_val,
     ):
         assert not isinstance(bad_val, SupportsTrunc), f"{bad_val!r}"
 

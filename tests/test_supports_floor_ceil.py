@@ -81,9 +81,12 @@ def test_floor_ceil() -> None:
         assert floor(good_val), f"{good_val!r}"
         assert ceil(good_val), f"{good_val!r}"
 
+    complex_bad_val: SupportsFloorCeil = complex(-273.15)  # type: ignore [assignment]
+    test_flag_bad_val: SupportsFloorCeil = TestFlag.B  # type: ignore [assignment]
+
     for bad_val in (
-        complex(-273.15),
-        TestFlag.B,
+        complex_bad_val,
+        test_flag_bad_val,
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsFloorCeil), f"{bad_val!r}"

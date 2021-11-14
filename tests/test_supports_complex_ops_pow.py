@@ -119,8 +119,11 @@ def test_supports_complex_ops_pow() -> None:
         assert isinstance(good_val, SupportsComplexPow), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
+    test_flag_bad_val: SupportsComplexOps = TestFlag.B  # type: ignore [assignment]
+    _ = TestFlag.B  # type: ignore [assignment]
+
     for bad_val in (
-        TestFlag.B,
+        test_flag_bad_val,
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsComplexOps), f"{bad_val!r}"

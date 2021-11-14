@@ -97,15 +97,33 @@ def test_supports_integral_ops_pow() -> None:
         assert isinstance(good_val, SupportsIntegralPow), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
+    float_bad_val: SupportsIntegralOps = -273.15  # type: ignore [assignment]
+    complex_bad_val: SupportsIntegralOps = complex(-273.15)  # type: ignore [assignment]
+    frac_bad_val: SupportsIntegralOps = Fraction(-27315, 100)  # type: ignore [assignment]
+    dec_bad_val: SupportsIntegralOps = Decimal("-273.15")  # type: ignore [assignment]
+    test_flag_bad_val: SupportsIntegralOps = TestFlag.B  # type: ignore [assignment]
+    wn_bad_val: SupportsIntegralOps = Wangernumb(-273.15)  # type: ignore [assignment]
+    wnd_bad_val: SupportsIntegralOps = WangernumbDerived(-273.15)  # type: ignore [assignment]
+    wnr_bad_val: SupportsIntegralOps = WangernumbRegistered(-273.15)  # type: ignore [assignment]
+    # TODO(posita): These should not validate
+    _ = -273.15
+    _ = complex(-273.15)
+    _ = Fraction(-27315, 100)  # type: ignore [assignment]
+    _ = Decimal("-273.15")
+    _ = TestFlag.B  # type: ignore [assignment]
+    _ = Wangernumb(-273.15)  # type: ignore [assignment]
+    _ = WangernumbDerived(-273.15)  # type: ignore [assignment]
+    _ = WangernumbRegistered(-273.15)  # type: ignore [assignment]
+
     for bad_val in (
-        -273.15,
-        complex(-273.15),
-        Fraction(-27315, 100),
-        Decimal("-273.15"),
-        TestFlag.B,
-        Wangernumb(-273.15),
-        WangernumbDerived(-273.15),
-        WangernumbRegistered(-273.15),
+        float_bad_val,
+        complex_bad_val,
+        frac_bad_val,
+        dec_bad_val,
+        test_flag_bad_val,
+        wn_bad_val,
+        wnd_bad_val,
+        wnr_bad_val,
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsIntegralOps), f"{bad_val!r}"
@@ -287,12 +305,12 @@ def test_supports_integral_ops_pow_sympy() -> None:
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
     # TODO(posita): These should not validate
-    sym_val: SupportsIntegralOps = sympy.symbols("x")
     float_val: SupportsIntegralOps = sympy.Float(-273.15)
     rational_val: SupportsIntegralOps = sympy.Rational(-27315, 100)
-    _ = sympy.symbols("x")
+    sym_val: SupportsIntegralOps = sympy.symbols("x")
     _ = sympy.Float(-273.15)
     _ = sympy.Rational(-27315, 100)
+    _ = sympy.symbols("x")
 
     for lying_val in (sym_val,):
         assert not isinstance(lying_val, SupportsIntegralOps), f"{lying_val!r}"

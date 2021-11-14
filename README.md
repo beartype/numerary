@@ -309,14 +309,19 @@ How does ``numerary``’s [``SupportsFloorCeil``](https://posita.github.io/numer
 Not very well, unfortunately, at least not on its own.
 
 ``` python
->>> import math
+>>> import math, sys
 >>> from numerary.types import SupportsFloorCeil
 
 >>> def my_dumb_floor_func(arg: SupportsFloorCeil) -> int:
 ...   assert isinstance(arg, SupportsFloorCeil)  # will work, even for floats, thanks to default overrides
 ...   return math.floor(arg)  # type: ignore [arg-type]  # doesn't understand SupportsFloorCeil
 
->>> my_dumb_floor_func(float(1.2))  # type: ignore [arg-type]  # still results in a Mypy error for Python version <3.9
+>>> float_val: float = 1.6180339887
+>>> # For illustration only until <https://github.com/python/mypy/issues/5940> is fixed
+>>> if sys.version_info < (3, 9):
+...   my_dumb_floor_func(float_val)  # type: ignore [arg-type]  # still results in a Mypy error for Python version <3.9
+... else:
+...   my_dumb_floor_func(float_val)  # validates
 1
 
 ```

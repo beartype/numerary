@@ -91,14 +91,22 @@ def test_rational_like() -> None:
         assert good_val.numerator, f"{good_val!r}"
         assert good_val.denominator, f"{good_val!r}"
 
+    float_bad_val: RationalLikeProperties = -273.15  # type: ignore [assignment]
+    complex_bad_val: RationalLikeProperties = complex(-273.15)  # type: ignore [assignment]
+    dec_bad_val: RationalLikeProperties = Decimal("-273.15")  # type: ignore [assignment]
+    test_flag_bad_val: RationalLikeProperties = TestFlag.B  # type: ignore [assignment]
+    wn_bad_val: RationalLikeProperties = Wangernumb(-273.15)  # type: ignore [assignment]
+    wnd_bad_val: RationalLikeProperties = WangernumbDerived(-273.15)  # type: ignore [assignment]
+    wnr_bad_val: RationalLikeProperties = WangernumbRegistered(-273.15)  # type: ignore [assignment]
+
     for bad_val in (
-        -273.15,
-        complex(-273.15),
-        Decimal("-273.15"),
-        TestFlag.B,
-        Wangernumb(-273.15),
-        WangernumbDerived(-273.15),
-        WangernumbRegistered(-273.15),
+        float_bad_val,
+        complex_bad_val,
+        dec_bad_val,
+        test_flag_bad_val,
+        wn_bad_val,
+        wnd_bad_val,
+        wnr_bad_val,
         "-273",
     ):
         assert not isinstance(bad_val, RationalLikeMixedT), f"{bad_val!r}"

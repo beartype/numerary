@@ -75,12 +75,18 @@ def test_supports_real_imag() -> None:
         assert hasattr(good_val, "real"), f"{good_val!r}"
         assert hasattr(good_val, "imag"), f"{good_val!r}"
 
+    test_flag_bad_val: SupportsRealImag = TestFlag.B  # type: ignore [assignment]
+    nw_bad_val: SupportsRealImag = Numberwang(-273)  # type: ignore [assignment]
+    nwr_bad_val: SupportsRealImag = NumberwangRegistered(-273)  # type: ignore [assignment]
+    wn_bad_val: SupportsRealImag = Wangernumb(-273.15)  # type: ignore [assignment]
+    wnr_bad_val: SupportsRealImag = WangernumbRegistered(-273.15)  # type: ignore [assignment]
+
     for bad_val in (
-        TestFlag.B,
-        Numberwang(-273),
-        NumberwangRegistered(-273),
-        Wangernumb(-273.15),
-        WangernumbRegistered(-273.15),
+        test_flag_bad_val,
+        nw_bad_val,
+        nwr_bad_val,
+        wn_bad_val,
+        wnr_bad_val,
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsRealImag), f"{bad_val!r}"

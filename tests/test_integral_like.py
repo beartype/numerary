@@ -86,15 +86,24 @@ def test_integral_like() -> None:
         assert good_val & 0 == 0, f"{good_val!r}"
         assert good_val | 0 == good_val, f"{good_val!r}"
 
+    float_bad_val: IntegralLike = -273.15  # type: ignore [assignment]
+    complex_bad_val: IntegralLike = complex(-273.15)  # type: ignore [assignment]
+    frac_bad_val: IntegralLike = Fraction(-27315, 100)  # type: ignore [assignment]
+    dec_bad_val: IntegralLike = Decimal("-273.15")  # type: ignore [assignment]
+    test_flag_bad_val: IntegralLike = TestFlag.B  # type: ignore [assignment]
+    wn_bad_val: IntegralLike = Wangernumb(-273.15)  # type: ignore [assignment]
+    wnd_bad_val: IntegralLike = WangernumbDerived(-273.15)  # type: ignore [assignment]
+    wnr_bad_val: IntegralLike = WangernumbRegistered(-273.15)  # type: ignore [assignment]
+
     for bad_val in (
-        -273.15,
-        complex(-273.15),
-        Fraction(-27315, 100),
-        Decimal("-273.15"),
-        TestFlag.B,
-        Wangernumb(-273.15),
-        WangernumbDerived(-273.15),
-        WangernumbRegistered(-273.15),
+        float_bad_val,
+        complex_bad_val,
+        frac_bad_val,
+        dec_bad_val,
+        test_flag_bad_val,
+        wn_bad_val,
+        wnd_bad_val,
+        wnr_bad_val,
         "-273",
     ):
         assert not isinstance(bad_val, IntegralLike), f"{bad_val!r}"

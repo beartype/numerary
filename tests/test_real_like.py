@@ -94,9 +94,12 @@ def test_real_like() -> None:
         assert math.floor(good_val), f"{good_val!r}"
         assert math.ceil(good_val), f"{good_val!r}"
 
+    complex_bad_val: RealLike = complex(-273.15)  # type: ignore [assignment]
+    test_flag_bad_val: RealLike = TestFlag.B  # type: ignore [assignment]
+
     for bad_val in (
-        complex(-273.15),
-        TestFlag.B,
+        complex_bad_val,
+        test_flag_bad_val,
         "-273.15",
     ):
         assert not isinstance(bad_val, RealLike), f"{bad_val!r}"

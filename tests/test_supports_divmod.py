@@ -74,19 +74,27 @@ def test_supports_divmod() -> None:
         assert isinstance(good_val, SupportsDivmod), f"{good_val!r}"
         assert divmod(good_val, good_val), f"{good_val!r}"
 
+    nwr_bad_val: SupportsDivmod = NumberwangRegistered(-273)  # type: ignore [assignment]
+    wnr_bad_val: SupportsDivmod = WangernumbRegistered(-273.15)  # type: ignore [assignment]
+
     for lying_val in (
         # These have lied about supporting this interface when they registered
         # themselves in the number tower
-        NumberwangRegistered(-273),
-        WangernumbRegistered(-273.15),
+        nwr_bad_val,
+        wnr_bad_val,
     ):
         assert not isinstance(lying_val, SupportsDivmod), f"{lying_val!r}"
 
+    complex_bad_val: SupportsDivmod = complex(-273.15)  # type: ignore [assignment]
+    test_flag_bad_val: SupportsDivmod = TestFlag.B  # type: ignore [assignment]
+    nw_bad_val: SupportsDivmod = Numberwang(-273)  # type: ignore [assignment]
+    wn_bad_val: SupportsDivmod = Wangernumb(-273.15)  # type: ignore [assignment]
+
     for bad_val in (
-        complex(-273.15),
-        TestFlag.B,
-        Numberwang(-273),
-        Wangernumb(-273.15),
+        complex_bad_val,
+        test_flag_bad_val,
+        nw_bad_val,
+        wn_bad_val,
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsDivmod), f"{bad_val!r}"

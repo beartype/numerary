@@ -106,14 +106,22 @@ def test_numerator_denominator() -> None:
         assert numerator(good_val), f"{good_val!r}"
         assert denominator(good_val), f"{good_val!r}"
 
+    float_bad_val: SupportsNumeratorDenominatorMixedU = -273.15  # type: ignore [assignment]
+    complex_bad_val: SupportsNumeratorDenominatorMixedU = complex(-273.15)  # type: ignore [assignment]
+    dec_bad_val: SupportsNumeratorDenominatorMixedU = Decimal("-273.15")  # type: ignore [assignment]
+    test_flag_bad_val: SupportsNumeratorDenominatorMixedU = TestFlag.B  # type: ignore [assignment]
+    wn_bad_val: SupportsNumeratorDenominatorMixedU = Wangernumb(-273.15)  # type: ignore [assignment]
+    wnd_bad_val: SupportsNumeratorDenominatorMixedU = WangernumbDerived(-273.15)  # type: ignore [assignment]
+    wnr_bad_val: SupportsNumeratorDenominatorMixedU = WangernumbRegistered(-273.15)  # type: ignore [assignment]
+
     for bad_val in (
-        -273.15,
-        complex(-273.15),
-        Decimal("-273.15"),
-        TestFlag.B,
-        Wangernumb(-273.15),
-        WangernumbDerived(-273.15),
-        WangernumbRegistered(-273.15),
+        float_bad_val,
+        complex_bad_val,
+        dec_bad_val,
+        test_flag_bad_val,
+        wn_bad_val,
+        wnd_bad_val,
+        wnr_bad_val,
         "-273",
     ):
         assert not isinstance(
@@ -189,13 +197,13 @@ def test_numerator_denominator_numpy() -> None:
         assert denominator(good_val), f"{good_val!r}"
 
     # TODO(posita): These should not validate
-    float16_val: SupportsNumeratorDenominatorProperties = numpy.float16(-1.8)
-    float32_val: SupportsNumeratorDenominatorProperties = numpy.float32(-273.15)
-    float64_val: SupportsNumeratorDenominatorProperties = numpy.float64(-273.15)
-    float128_val: SupportsNumeratorDenominatorProperties = numpy.float128(-273.15)
-    csingle_val: SupportsNumeratorDenominatorProperties = numpy.csingle(-273.15)
-    cdouble_val: SupportsNumeratorDenominatorProperties = numpy.cdouble(-273.15)
-    clongdouble_val: SupportsNumeratorDenominatorProperties = numpy.clongdouble(-273.15)
+    float16_val: SupportsNumeratorDenominatorMixedU = numpy.float16(-1.8)
+    float32_val: SupportsNumeratorDenominatorMixedU = numpy.float32(-273.15)
+    float64_val: SupportsNumeratorDenominatorMixedU = numpy.float64(-273.15)
+    float128_val: SupportsNumeratorDenominatorMixedU = numpy.float128(-273.15)
+    csingle_val: SupportsNumeratorDenominatorMixedU = numpy.csingle(-273.15)
+    cdouble_val: SupportsNumeratorDenominatorMixedU = numpy.cdouble(-273.15)
+    clongdouble_val: SupportsNumeratorDenominatorMixedU = numpy.clongdouble(-273.15)
 
     for bad_val in (
         float16_val,
@@ -266,8 +274,8 @@ def test_numerator_denominator_sympy() -> None:
         assert denominator(good_val), f"{good_val!r}"
 
     # TODO(posita): These should not validate
-    float_val: SupportsNumeratorDenominatorProperties = sympy.Float(-273.15)
-    sym_val: SupportsNumeratorDenominatorProperties = sympy.symbols("x")
+    float_val: SupportsNumeratorDenominatorMixedU = sympy.Float(-273.15)
+    sym_val: SupportsNumeratorDenominatorMixedU = sympy.symbols("x")
 
     for bad_val in (
         float_val,
