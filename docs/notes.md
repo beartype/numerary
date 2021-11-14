@@ -15,6 +15,8 @@
 
 # ``numerary`` release notes
 
+## [0.1.2](https://github.com/posita/numerary/releases/tag/v0.1.2)
+
 ## [0.1.1](https://github.com/posita/numerary/releases/tag/v0.1.1)
 
 * Removes obsoleted ``…SCT`` aliases.

@@ -182,7 +182,7 @@ False
 
 ```
 
-That is because ``numerary`` not only caches runtime protocol evaluations, but allows overriding those evaluations when the default machinery gets it wrong.
+``numerary`` not only caches runtime protocol evaluations, but allows overriding those evaluations when the default machinery gets it wrong.
 
 ``` python
 >>> from abc import abstractmethod
