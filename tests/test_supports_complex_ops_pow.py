@@ -20,6 +20,7 @@ from numerary.types import (
     SupportsComplexOpsSCU,
     SupportsComplexPow,
     SupportsComplexPowSCU,
+    __pow__,
 )
 
 from .numberwang import (
@@ -116,7 +117,7 @@ def test_supports_complex_ops_pow() -> None:
         assert good_val / 1 == good_val, f"{good_val!r}"
         assert 0 - good_val == -good_val, f"{good_val!r}"
         assert isinstance(good_val, SupportsComplexPow), f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert __pow__(good_val, 1) == good_val, f"{good_val!r}"
 
     for bad_val in ("-273.15",):
         assert not isinstance(bad_val, SupportsComplexOps), f"{bad_val!r}"
@@ -174,9 +175,9 @@ def test_supports_complex_ops_pow_numpy() -> None:
     float32_val: SupportsComplexOps = numpy.float32(-273.15)
     float64_val: SupportsComplexOps = numpy.float64(-273.15)
     float128_val: SupportsComplexOps = numpy.float128(-273.15)
-    csingle_val: SupportsComplexOps = numpy.float32(-273.15)
-    cdouble_val: SupportsComplexOps = numpy.float64(-273.15)
-    clongdouble_val: SupportsComplexOps = numpy.float128(-273.15)
+    csingle_val: SupportsComplexOps = numpy.csingle(-273.15)
+    cdouble_val: SupportsComplexOps = numpy.cdouble(-273.15)
+    clongdouble_val: SupportsComplexOps = numpy.clongdouble(-273.15)
     _: SupportsComplexPow
     _ = numpy.uint8(2)
     _ = numpy.uint16(273)
@@ -193,6 +194,9 @@ def test_supports_complex_ops_pow_numpy() -> None:
     _ = numpy.float32(-273.15)
     _ = numpy.float64(-273.15)
     _ = numpy.float128(-273.15)
+    _ = numpy.csingle(-273.15)
+    _ = numpy.cdouble(-273.15)
+    _ = numpy.clongdouble(-273.15)
 
     for good_val in (
         uint8_val,
@@ -225,7 +229,7 @@ def test_supports_complex_ops_pow_numpy() -> None:
             assert 0 - good_val == -good_val, f"{good_val!r}"
 
         assert isinstance(good_val, SupportsComplexPow), f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert __pow__(good_val, 1) == good_val, f"{good_val!r}"
 
 
 def test_supports_complex_ops_pow_numpy_beartype() -> None:
@@ -281,7 +285,7 @@ def test_supports_complex_ops_pow_sympy() -> None:
         assert 0 - good_val == -good_val, f"{good_val!r}"
 
         assert isinstance(good_val, SupportsComplexPow), f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert __pow__(good_val, 1) == good_val, f"{good_val!r}"
 
 
 def test_supports_complex_ops_pow_sympy_beartype() -> None:

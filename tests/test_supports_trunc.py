@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsTrunc, SupportsTruncSCU, trunc
+from numerary.types import SupportsTrunc, SupportsTruncSCU, __trunc__
 
 from .numberwang import (
     Numberwang,
@@ -78,7 +78,7 @@ def test_trunc() -> None:
         wnr_val,
     ):
         assert isinstance(good_val, SupportsTrunc), f"{good_val!r}"
-        assert trunc(good_val), f"{good_val!r}"
+        assert __trunc__(good_val), f"{good_val!r}"
 
     complex_bad_val: SupportsTrunc = complex(-273.15)  # type: ignore [assignment]
 
@@ -129,7 +129,7 @@ def test_trunc_numpy() -> None:
     # other numpy.float* types
     for good_val in (float64_val,):
         assert isinstance(good_val, SupportsTrunc), f"{good_val!r}"
-        assert trunc(good_val), f"{good_val!r}"
+        assert __trunc__(good_val), f"{good_val!r}"
 
     # TODO(posita): These should not validate
     uint8_val: SupportsTrunc = numpy.uint8(2)
@@ -219,7 +219,7 @@ def test_trunc_sympy() -> None:
         float_val,
     ):
         assert isinstance(good_val, SupportsTrunc), f"{good_val!r}"
-        assert trunc(good_val), f"{good_val!r}"
+        assert __trunc__(good_val), f"{good_val!r}"
 
     # TODO(posita): These should not validate
     sym_val: SupportsTrunc = sympy.symbols("x")
@@ -229,7 +229,7 @@ def test_trunc_sympy() -> None:
 
         # Relationals have, but don't implement this function
         with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
-            trunc(lying_val)
+            __trunc__(lying_val)
 
 
 def test_trunc_sympy_beartype() -> None:

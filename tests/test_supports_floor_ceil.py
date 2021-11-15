@@ -16,7 +16,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsFloorCeil, SupportsFloorCeilSCU, ceil, floor
+from numerary.types import SupportsFloorCeil, SupportsFloorCeilSCU, __ceil__, __floor__
 
 from .numberwang import (
     Numberwang,
@@ -77,8 +77,8 @@ def test_floor_ceil() -> None:
         wnr_val,
     ):
         assert isinstance(good_val, SupportsFloorCeil), f"{good_val!r}"
-        assert floor(good_val), f"{good_val!r}"
-        assert ceil(good_val), f"{good_val!r}"
+        assert __floor__(good_val), f"{good_val!r}"
+        assert __ceil__(good_val), f"{good_val!r}"
 
     complex_bad_val: SupportsFloorCeil = complex(-273.15)  # type: ignore [assignment]
 
@@ -96,8 +96,8 @@ def test_floor_ceil_float() -> None:
 
         for good_val in (float_val,):
             assert isinstance(good_val, SupportsFloorCeil), f"{good_val!r}"
-            assert floor(good_val), f"{good_val!r}"
-            assert ceil(good_val), f"{good_val!r}"
+            assert __floor__(good_val), f"{good_val!r}"
+            assert __ceil__(good_val), f"{good_val!r}"
 
 
 def test_floor_ceil_beartype() -> None:
@@ -162,8 +162,8 @@ def test_floor_ceil_numpy() -> None:
         float128_val,
     ):
         assert isinstance(good_val, SupportsFloorCeil), f"{good_val!r}"
-        assert floor(good_val), f"{good_val!r}"
-        assert ceil(good_val), f"{good_val!r}"
+        assert __floor__(good_val), f"{good_val!r}"
+        assert __ceil__(good_val), f"{good_val!r}"
 
     # TODO(posita): These should not validate
     csingle_val: SupportsFloorCeil = numpy.csingle(-273.15)
@@ -222,8 +222,8 @@ def test_floor_ceil_sympy() -> None:
         float_val,
     ):
         assert isinstance(good_val, SupportsFloorCeil), f"{good_val!r}"
-        assert floor(good_val), f"{good_val!r}"
-        assert ceil(good_val), f"{good_val!r}"
+        assert __floor__(good_val), f"{good_val!r}"
+        assert __ceil__(good_val), f"{good_val!r}"
 
     # TODO(posita): These should not validate
     sym_val: SupportsFloorCeil = sympy.symbols("x")

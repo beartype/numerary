@@ -22,6 +22,7 @@
   ``SupportsNumeratorDenominatorProperties`` and ``SupportsNumeratorDenominatorPropertiesSCU`` are maintained as aliases for limited backward compatibility and will be removed in the next version.
 * Removes ``enum.Flag`` from testing as a non-sequitur.
   (It matches none of the presented protocols.)
+* Introduces [``__pow__``][numerary.types.__pow__] helper function and renames ``trunc``, ``floor``, and ``ceil`` to [``__trunc__``][numerary.types.__trunc__], [``__floor__``][numerary.types.__floor__], and [``__ceil__``][numerary.types.__ceil__], respectively.
 
 ## [0.1.1](https://github.com/posita/numerary/releases/tag/v0.1.1)
 

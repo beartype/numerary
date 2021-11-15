@@ -256,12 +256,12 @@ def test_rational_like_sympy() -> None:
         assert good_val.denominator, f"{good_val!r}"
 
     # TODO(posita): These should not validate
-    sym_float: RationalLike = sympy.Float(-273.15)
-    sym_sym: RationalLike = sympy.symbols("x")
+    float_val: RationalLike = sympy.Float(-273.15)
+    sym_val: RationalLike = sympy.symbols("x")
 
     for bad_val in (
-        sym_float,
-        sym_sym,
+        float_val,
+        sym_val,
     ):
         assert not isinstance(bad_val, RationalLikeMixedT), f"{bad_val!r}"
 

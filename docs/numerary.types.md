@@ -80,6 +80,7 @@ from numerary.bt import beartype  # will resolve to the identity decorator if be
         - "SupportsIntegralPow"
         - "real"
         - "imag"
+        - "__pow__"
         - "trunc"
         - "floor"
         - "ceil"

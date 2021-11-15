@@ -25,6 +25,7 @@ from typing import (
     Type,
     TypeVar,
     Union,
+    overload,
 )
 
 from .bt import beartype
@@ -44,7 +45,6 @@ r"""
 
   -- END MONKEY PATCH -->
 """
-
 
 # ---- Types ---------------------------------------------------------------------------
 
@@ -707,12 +707,12 @@ class SupportsTrunc(
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
-    >>> from numerary.types import SupportsTrunc, trunc
+    >>> from numerary.types import SupportsTrunc, __trunc__
     >>> MyTruncT = TypeVar("MyTruncT", bound=SupportsTrunc)
 
     >>> def trunc_my_thing(arg: MyTruncT) -> Tuple[Any, Any]:
     ...   assert isinstance(arg, SupportsTrunc)
-    ...   return trunc(arg)
+    ...   return __trunc__(arg)
 
     >>> trunc_my_thing(3)
     3
@@ -787,12 +787,12 @@ class SupportsFloorCeil(
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
-    >>> from numerary.types import SupportsFloorCeil, ceil, floor
+    >>> from numerary.types import SupportsFloorCeil, __ceil__, __floor__
     >>> MyFloorCeilT = TypeVar("MyFloorCeilT", bound=SupportsFloorCeil)
 
     >>> def floor_ceil_my_thing(arg: MyFloorCeilT) -> Tuple[int, int]:
     ...   assert isinstance(arg, SupportsFloorCeil)
-    ...   return floor(arg), ceil(arg)
+    ...   return __floor__(arg), __ceil__(arg)
 
     >>> floor_ceil_my_thing(3)
     (3, 3)
@@ -1138,7 +1138,7 @@ SupportsComplexOpsSCU = Union[int, float, bool, Complex, SupportsComplexOps]
 
 
 @runtime_checkable
-class _SupportsComplexPow(Protocol[_T_co]):
+class _SupportsComplexPow(Protocol):
     r"""
     The raw, non-caching version of
     [``SupportsComplexPow``][numerary.types.SupportsComplexPow].
@@ -1146,25 +1146,24 @@ class _SupportsComplexPow(Protocol[_T_co]):
     __slots__: Union[str, Iterable[str]] = ()
 
     @abstractmethod
-    def __pow__(self, exponent: Any) -> _T_co:
+    def __pow__(self, exponent: Any) -> Any:
         pass
 
     @abstractmethod
-    def __rpow__(self, exponent: Any) -> _T_co:
+    def __rpow__(self, exponent: Any) -> Any:
         pass
 
 
 @runtime_checkable
 class SupportsComplexPow(
-    _SupportsComplexPow[_T_co],
-    Protocol[_T_co],
+    _SupportsComplexPow,
+    Protocol,
     metaclass=CachingProtocolMeta,
 ):
     r"""
     A caching ABC defining the ``#!python Complex`` (i.e., non-modulo) versions of the
     [``__pow__``](https://docs.python.org/3/reference/datamodel.html#object.__pow__) and
-    [``__rpow__``](https://docs.python.org/3/reference/datamodel.html#object.__rpow__),
-    each with a covariant return value.
+    [``__rpow__``](https://docs.python.org/3/reference/datamodel.html#object.__rpow__).
 
     ([``_SupportsComplexPow``][numerary.types._SupportsComplexPow] is the raw,
     non-caching version that defines the actual methods.)
@@ -1401,7 +1400,7 @@ SupportsIntegralOpsSCU = Union[int, bool, Integral, SupportsIntegralOps]
 
 
 @runtime_checkable
-class _SupportsIntegralPow(Protocol[_T_co]):
+class _SupportsIntegralPow(Protocol):
     r"""
     The raw, non-caching version of
     [``SupportsIntegralPow``][numerary.types.SupportsIntegralPow].
@@ -1409,25 +1408,25 @@ class _SupportsIntegralPow(Protocol[_T_co]):
     __slots__: Union[str, Iterable[str]] = ()
 
     @abstractmethod
-    def __pow__(self, exponent: Any, modulus: Optional[Any] = None) -> _T_co:
+    def __pow__(self, exponent: Any, modulus: Optional[Any] = None) -> Any:
         pass
 
     @abstractmethod
-    def __rpow__(self, exponent: Any, modulus: Optional[Any] = None) -> _T_co:
+    def __rpow__(self, exponent: Any, modulus: Optional[Any] = None) -> Any:
         pass
 
 
 @runtime_checkable
 class SupportsIntegralPow(
-    _SupportsIntegralPow[_T_co],
-    Protocol[_T_co],
+    _SupportsIntegralPow,
+    Protocol,
     metaclass=CachingProtocolMeta,
 ):
     r"""
     A caching ABC defining the ``#!python Integral`` (i.e., modulo) versions of the
     [``__pow__``](https://docs.python.org/3/reference/datamodel.html#object.__pow__) and
     [``__rpow__``](https://docs.python.org/3/reference/datamodel.html#object.__rpow__)
-    methods, each with a covariant return value.
+    methods.
 
     ([``_SupportsIntegralPow``][numerary.types._SupportsIntegralPow] is the raw,
     non-caching version that defines the actual methods.)
@@ -1471,7 +1470,7 @@ class RealLike(
     SupportsFloat,
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
-    SupportsComplexPow[_T_co],
+    SupportsComplexPow,
     Protocol[_T_co],
 ):
     r"""
@@ -1536,7 +1535,7 @@ class RationalLike(
     SupportsNumeratorDenominator,
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
-    SupportsComplexPow[_T_co],
+    SupportsComplexPow,
     Protocol[_T_co],
 ):
     r"""
@@ -1608,7 +1607,7 @@ class RationalLikeMethods(
     SupportsNumeratorDenominatorMethods,
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
-    SupportsComplexPow[_T_co],
+    SupportsComplexPow,
     Protocol[_T_co],
 ):
     r"""
@@ -1689,7 +1688,7 @@ class IntegralLike(
     SupportsIndex,
     SupportsInt,
     SupportsIntegralOps[_T_co],
-    SupportsIntegralPow[_T_co],
+    SupportsIntegralPow,
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
     Protocol[_T_co],
@@ -1819,23 +1818,118 @@ def imag(operand: SupportsRealImagMixedU):
         raise TypeError(f"{operand!r} has no real or as_real_imag")
 
 
+# TODO(posita): Are these sufficient? Could these be more specific? See:
+# <https://github.com/python/typeshed/issues/6303#issuecomment-969392257>.
+@overload
+def __pow__(arg: Union[SupportsComplexPow, SupportsIntegralPow], exponent: Any) -> Any:
+    ...
+
+
+@overload
+def __pow__(
+    arg: Union[SupportsComplexPow, SupportsIntegralPow], exponent: Any, modulus: None
+) -> Any:
+    ...
+
+
+@overload
+def __pow__(arg: SupportsIntegralPow, exponent: Any, modulus: Any) -> Any:
+    ...
+
+
 @beartype
-def trunc(operand: Union[SupportsFloat, SupportsTrunc]):
+def __pow__(
+    arg: Union[SupportsComplexPow, SupportsIntegralPow],
+    exponent: Any,
+    modulus: Optional[Any] = None,
+) -> Any:
+    r"""
+    Helper function that wraps ``pow`` to work with
+    [``SupportsComplexPow``][numerary.types.SupportsComplexPow],
+    [``SupportsIntegralPow``][numerary.types.SupportsIntegralPow].
+
+    ``` python
+    >>> from numerary.types import SupportsComplexPow, SupportsIntegralPow, __pow__
+    >>> my_complex_pow: SupportsComplexPow = complex(2)
+    >>> __pow__(my_complex_pow, 1)
+    (2+0j)
+    >>> __pow__(my_complex_pow, 1, None)
+    (2+0j)
+    >>> __pow__(my_complex_pow, 1, 1)  # type: ignore [operator]  # properly caught by Mypy
+    Traceback (most recent call last):
+      ...
+    ValueError: complex modulo
+
+    >>> my_complex_pow = 1.2
+    >>> __pow__(my_complex_pow, 1)
+    1.2
+    >>> __pow__(my_complex_pow, 1, None)
+    1.2
+    >>> __pow__(my_complex_pow, 1, 1)  # ugh; *not* caught by Mypy because it treats floats as equivalent to ints?
+    Traceback (most recent call last):
+      ...
+    TypeError: pow() 3rd argument not allowed unless all arguments are integers
+    >>> from fractions import Fraction
+
+    >>> my_complex_pow = Fraction(1, 2)
+    >>> __pow__(my_complex_pow, 1)
+    Fraction(1, 2)
+    >>> __pow__(my_complex_pow, 1, None)
+    Fraction(1, 2)
+    >>> __pow__(my_complex_pow, 1, 1)  # type: ignore [operator]  # properly caught by Mypy
+    Traceback (most recent call last):
+      ...
+    TypeError: __pow__() takes 2 positional arguments but 3 were given
+
+    >>> from decimal import Decimal
+    >>> my_integral_pow: SupportsIntegralPow = Decimal("2")
+    >>> __pow__(my_integral_pow, 1)
+    Decimal('2')
+    >>> __pow__(my_integral_pow, 1, None)
+    Decimal('2')
+    >>> __pow__(my_integral_pow, 1, 2)
+    Decimal('0')
+
+    >>> my_integral_pow = Decimal("1.2")  # ruh-roh
+    >>> __pow__(my_integral_pow, 1)
+    Decimal('1.2')
+    >>> __pow__(my_integral_pow, 1, None)
+    Decimal('1.2')
+    >>> __pow__(my_integral_pow, 1, 2)  # not catchable by Mypy, since it works *some* of the time
+    Traceback (most recent call last):
+      ...
+    decimal.InvalidOperation: [<class 'decimal.InvalidOperation'>]
+
+    >>> my_integral_pow = 2
+    >>> __pow__(my_integral_pow, 1)
+    2
+    >>> __pow__(my_integral_pow, 1, None)
+    2
+    >>> __pow__(my_integral_pow, 1, 2)
+    0
+
+    ```
+    """
+    return pow(arg, exponent, modulus)  # type: ignore [arg-type]
+
+
+@beartype
+def __trunc__(operand: Union[SupportsFloat, SupportsTrunc]):
     r"""
     Helper function that wraps ``math.trunc``.
 
     ``` python
-    >>> from numerary.types import SupportsFloat, SupportsTrunc, trunc
+    >>> from numerary.types import SupportsFloat, SupportsTrunc, __trunc__
     >>> my_trunc: SupportsTrunc
     >>> my_trunc = 1
-    >>> trunc(my_trunc)
+    >>> __trunc__(my_trunc)
     1
     >>> from fractions import Fraction
     >>> my_trunc = Fraction(1, 2)
-    >>> trunc(my_trunc)
+    >>> __trunc__(my_trunc)
     0
     >>> my_trunc_float: SupportsFloat = 1.2
-    >>> trunc(my_trunc_float)
+    >>> __trunc__(my_trunc_float)
     1
 
     ```
@@ -1844,22 +1938,22 @@ def trunc(operand: Union[SupportsFloat, SupportsTrunc]):
 
 
 @beartype
-def floor(operand: Union[SupportsFloat, SupportsFloorCeil]):
+def __floor__(operand: Union[SupportsFloat, SupportsFloorCeil]):
     r"""
     Helper function that wraps ``math.floor``.
 
     ``` python
-    >>> from numerary.types import SupportsFloat, SupportsFloorCeil, floor
+    >>> from numerary.types import SupportsFloat, SupportsFloorCeil, __floor__
     >>> my_floor: SupportsFloorCeil
     >>> my_floor = 1
-    >>> floor(my_floor)
+    >>> __floor__(my_floor)
     1
     >>> from fractions import Fraction
     >>> my_floor = Fraction(1, 2)
-    >>> floor(my_floor)
+    >>> __floor__(my_floor)
     0
     >>> my_floor_float: SupportsFloat = 1.2
-    >>> floor(my_floor_float)
+    >>> __floor__(my_floor_float)
     1
 
     ```
@@ -1868,22 +1962,22 @@ def floor(operand: Union[SupportsFloat, SupportsFloorCeil]):
 
 
 @beartype
-def ceil(operand: Union[SupportsFloat, SupportsFloorCeil]):
+def __ceil__(operand: Union[SupportsFloat, SupportsFloorCeil]):
     r"""
     Helper function that wraps ``math.ceil``.
 
     ``` python
-    >>> from numerary.types import SupportsFloat, SupportsFloorCeil, ceil
+    >>> from numerary.types import SupportsFloat, SupportsFloorCeil, __ceil__
     >>> my_ceil: SupportsFloorCeil
     >>> my_ceil = 1
-    >>> ceil(my_ceil)
+    >>> __ceil__(my_ceil)
     1
     >>> from fractions import Fraction
     >>> my_ceil = Fraction(1, 2)
-    >>> ceil(my_ceil)
+    >>> __ceil__(my_ceil)
     1
     >>> my_ceil_float: SupportsFloat = 1.2
-    >>> ceil(my_ceil_float)
+    >>> __ceil__(my_ceil_float)
     2
 
     ```

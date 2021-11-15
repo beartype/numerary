@@ -329,14 +329,14 @@ Not very well, unfortunately, at least not on its own.
 ``…SCU`` ``Union``s allow a work-around for the static type-checking issue.
 
 ``` python
->>> from numerary.types import SupportsFloorCeil, SupportsFloorCeilSCU, floor
+>>> from numerary.types import SupportsFloorCeil, SupportsFloorCeilSCU, __floor__
 >>> SupportsFloorCeilSCU  # float is included here
 typing.Union[int, float, bool, numbers.Real, numerary.types.SupportsFloorCeil]
 
 >>> import sys
 >>> def my_floor_func(arg: SupportsFloorCeilSCU) -> int:
 ...   assert isinstance(arg, SupportsFloorCeil)
-...   return floor(arg)
+...   return __floor__(arg)
 
 >>> my_floor_func(float(1.2))  # works in 3.7+
 1
