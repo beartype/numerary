@@ -26,7 +26,6 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
-    TestFlag,
     TestIntEnum,
     TestIntFlag,
     Wangernumb,
@@ -119,13 +118,7 @@ def test_supports_complex_ops_pow() -> None:
         assert isinstance(good_val, SupportsComplexPow), f"{good_val!r}"
         assert good_val ** 1 == good_val, f"{good_val!r}"
 
-    test_flag_bad_val: SupportsComplexOps = TestFlag.B  # type: ignore [assignment]
-    _ = TestFlag.B  # type: ignore [assignment]
-
-    for bad_val in (
-        test_flag_bad_val,
-        "-273.15",
-    ):
+    for bad_val in ("-273.15",):
         assert not isinstance(bad_val, SupportsComplexOps), f"{bad_val!r}"
 
 
@@ -153,10 +146,7 @@ def test_supports_complex_ops_pow_beartype() -> None:
         supports_complex_pow_func(cast(SupportsComplexPow, good_val))
         supports_complex_pow_func_t(cast(SupportsComplexPowSCU, good_val))
 
-    for bad_val in (
-        TestFlag.B,
-        "-273.15",
-    ):
+    for bad_val in ("-273.15",):
         with pytest.raises(roar.BeartypeException):
             supports_complex_ops_func(cast(SupportsComplexOps, bad_val))
 

@@ -26,7 +26,6 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
-    TestFlag,
     TestIntEnum,
     TestIntFlag,
     Wangernumb,
@@ -101,7 +100,6 @@ def test_supports_integral_ops_pow() -> None:
     complex_bad_val: SupportsIntegralOps = complex(-273.15)  # type: ignore [assignment]
     frac_bad_val: SupportsIntegralOps = Fraction(-27315, 100)  # type: ignore [assignment]
     dec_bad_val: SupportsIntegralOps = Decimal("-273.15")  # type: ignore [assignment]
-    test_flag_bad_val: SupportsIntegralOps = TestFlag.B  # type: ignore [assignment]
     wn_bad_val: SupportsIntegralOps = Wangernumb(-273.15)  # type: ignore [assignment]
     wnd_bad_val: SupportsIntegralOps = WangernumbDerived(-273.15)  # type: ignore [assignment]
     wnr_bad_val: SupportsIntegralOps = WangernumbRegistered(-273.15)  # type: ignore [assignment]
@@ -110,7 +108,6 @@ def test_supports_integral_ops_pow() -> None:
     _ = complex(-273.15)
     _ = Fraction(-27315, 100)  # type: ignore [assignment]
     _ = Decimal("-273.15")
-    _ = TestFlag.B  # type: ignore [assignment]
     _ = Wangernumb(-273.15)  # type: ignore [assignment]
     _ = WangernumbDerived(-273.15)  # type: ignore [assignment]
     _ = WangernumbRegistered(-273.15)  # type: ignore [assignment]
@@ -120,7 +117,6 @@ def test_supports_integral_ops_pow() -> None:
         complex_bad_val,
         frac_bad_val,
         dec_bad_val,
-        test_flag_bad_val,
         wn_bad_val,
         wnd_bad_val,
         wnr_bad_val,
@@ -151,7 +147,6 @@ def test_supports_integral_ops_pow_beartype() -> None:
         complex(-273.15),
         Fraction(-27315, 100),
         Decimal("-273.15"),
-        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),

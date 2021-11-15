@@ -29,7 +29,6 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
-    TestFlag,
     TestIntEnum,
     TestIntFlag,
     Wangernumb,
@@ -109,7 +108,6 @@ def test_numerator_denominator() -> None:
     float_bad_val: SupportsNumeratorDenominatorMixedU = -273.15  # type: ignore [assignment]
     complex_bad_val: SupportsNumeratorDenominatorMixedU = complex(-273.15)  # type: ignore [assignment]
     dec_bad_val: SupportsNumeratorDenominatorMixedU = Decimal("-273.15")  # type: ignore [assignment]
-    test_flag_bad_val: SupportsNumeratorDenominatorMixedU = TestFlag.B  # type: ignore [assignment]
     wn_bad_val: SupportsNumeratorDenominatorMixedU = Wangernumb(-273.15)  # type: ignore [assignment]
     wnd_bad_val: SupportsNumeratorDenominatorMixedU = WangernumbDerived(-273.15)  # type: ignore [assignment]
     wnr_bad_val: SupportsNumeratorDenominatorMixedU = WangernumbRegistered(-273.15)  # type: ignore [assignment]
@@ -118,7 +116,6 @@ def test_numerator_denominator() -> None:
         float_bad_val,
         complex_bad_val,
         dec_bad_val,
-        test_flag_bad_val,
         wn_bad_val,
         wnd_bad_val,
         wnr_bad_val,
@@ -154,7 +151,6 @@ def test_numerator_denominator_beartype() -> None:
         -273.15,
         complex(-273.15),
         Decimal("-273.15"),
-        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),

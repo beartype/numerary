@@ -21,7 +21,6 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
-    TestFlag,
     TestIntEnum,
     TestIntFlag,
     Wangernumb,
@@ -83,11 +82,9 @@ def test_supports_real_ops() -> None:
         assert good_val >= good_val, f"{good_val!r}"
 
     complex_bad_val: SupportsRealOps = complex(-273.15)  # type: ignore [assignment]
-    test_flag_bad_val: SupportsRealOps = TestFlag.B  # type: ignore [assignment]
 
     for bad_val in (
         complex_bad_val,
-        test_flag_bad_val,
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsRealOps), f"{bad_val!r}"
@@ -116,7 +113,6 @@ def test_supports_real_ops_beartype() -> None:
 
     for bad_val in (
         complex(-273.15),
-        TestFlag.B,
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):

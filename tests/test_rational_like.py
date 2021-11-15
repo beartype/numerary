@@ -27,7 +27,6 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
-    TestFlag,
     TestIntEnum,
     TestIntFlag,
     Wangernumb,
@@ -94,7 +93,6 @@ def test_rational_like() -> None:
     float_bad_val: RationalLike = -273.15  # type: ignore [assignment]
     complex_bad_val: RationalLike = complex(-273.15)  # type: ignore [assignment]
     dec_bad_val: RationalLike = Decimal("-273.15")  # type: ignore [assignment]
-    test_flag_bad_val: RationalLike = TestFlag.B  # type: ignore [assignment]
     wn_bad_val: RationalLike = Wangernumb(-273.15)  # type: ignore [assignment]
     wnd_bad_val: RationalLike = WangernumbDerived(-273.15)  # type: ignore [assignment]
     wnr_bad_val: RationalLike = WangernumbRegistered(-273.15)  # type: ignore [assignment]
@@ -103,7 +101,6 @@ def test_rational_like() -> None:
         float_bad_val,
         complex_bad_val,
         dec_bad_val,
-        test_flag_bad_val,
         wn_bad_val,
         wnd_bad_val,
         wnr_bad_val,
@@ -132,7 +129,6 @@ def test_rational_like_beartype() -> None:
         -273.15,
         complex(-273.15),
         Decimal("-273.15"),
-        TestFlag.B,
         Wangernumb(-273.15),
         WangernumbDerived(-273.15),
         WangernumbRegistered(-273.15),

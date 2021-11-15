@@ -30,7 +30,6 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
-    TestFlag,
     TestIntEnum,
     TestIntFlag,
     Wangernumb,
@@ -94,14 +93,12 @@ def test_supports_real_imag() -> None:
         assert real(good_val) is not None, f"{good_val!r}"
         assert imag(good_val) is not None, f"{good_val!r}"
 
-    test_flag_bad_val: SupportsRealImagMixedU = TestFlag.B  # type: ignore [assignment]
     nw_bad_val: SupportsRealImagMixedU = Numberwang(-273)  # type: ignore [assignment]
     nwr_bad_val: SupportsRealImagMixedU = NumberwangRegistered(-273)  # type: ignore [assignment]
     wn_bad_val: SupportsRealImagMixedU = Wangernumb(-273.15)  # type: ignore [assignment]
     wnr_bad_val: SupportsRealImagMixedU = WangernumbRegistered(-273.15)  # type: ignore [assignment]
 
     for bad_val in (
-        test_flag_bad_val,
         nw_bad_val,
         nwr_bad_val,
         wn_bad_val,
@@ -131,7 +128,6 @@ def test_supports_real_imag_beartype() -> None:
         supports_real_imag_func_t(cast(SupportsRealImagMixedSCU, good_val))
 
     for bad_val in (
-        TestFlag.B,
         Numberwang(-273),
         Wangernumb(-273.15),
         "-273.15",

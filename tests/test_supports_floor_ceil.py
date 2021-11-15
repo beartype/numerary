@@ -22,7 +22,6 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
-    TestFlag,
     TestIntEnum,
     TestIntFlag,
     Wangernumb,
@@ -82,11 +81,9 @@ def test_floor_ceil() -> None:
         assert ceil(good_val), f"{good_val!r}"
 
     complex_bad_val: SupportsFloorCeil = complex(-273.15)  # type: ignore [assignment]
-    test_flag_bad_val: SupportsFloorCeil = TestFlag.B  # type: ignore [assignment]
 
     for bad_val in (
         complex_bad_val,
-        test_flag_bad_val,
         "-273.15",
     ):
         assert not isinstance(bad_val, SupportsFloorCeil), f"{bad_val!r}"
@@ -126,7 +123,6 @@ def test_floor_ceil_beartype() -> None:
 
     for bad_val in (
         complex(-273.15),
-        TestFlag.B,
         "-273.15",
     ):
         with pytest.raises(roar.BeartypeException):

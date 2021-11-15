@@ -21,7 +21,6 @@ from .numberwang import (
     Numberwang,
     NumberwangDerived,
     NumberwangRegistered,
-    TestFlag,
     TestIntEnum,
     TestIntFlag,
     Wangernumb,
@@ -75,13 +74,11 @@ def test_supports_divmod() -> None:
         assert divmod(good_val, good_val), f"{good_val!r}"
 
     complex_bad_val: SupportsDivmod = complex(-273.15)  # type: ignore [assignment]
-    test_flag_bad_val: SupportsDivmod = TestFlag.B  # type: ignore [assignment]
     nw_bad_val: SupportsDivmod = Numberwang(-273)  # type: ignore [assignment]
     wn_bad_val: SupportsDivmod = Wangernumb(-273.15)  # type: ignore [assignment]
 
     for bad_val in (
         complex_bad_val,
-        test_flag_bad_val,
         nw_bad_val,
         wn_bad_val,
         "-273.15",
@@ -120,7 +117,6 @@ def test_supports_divmod_beartype() -> None:
 
     for bad_val in (
         complex(-273.15),
-        TestFlag.B,
         Numberwang(-273),
         Wangernumb(-273.15),
         "-273.15",

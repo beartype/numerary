@@ -9,7 +9,7 @@
 from __future__ import annotations
 
 from decimal import Decimal
-from enum import Flag, IntEnum, IntFlag, auto
+from enum import IntEnum, IntFlag, auto
 from math import ceil, floor, trunc
 from numbers import Integral, Real
 from operator import (
@@ -74,12 +74,6 @@ class TestIntEnum(IntEnum):
 
 
 class TestIntFlag(IntFlag):
-    A = auto()
-    B = auto()
-    C = auto()
-
-
-class TestFlag(Flag):
     A = auto()
     B = auto()
     C = auto()
