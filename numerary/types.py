@@ -953,6 +953,10 @@ SupportsNumeratorDenominatorSCU = Union[
     SupportsNumeratorDenominator,
 ]
 
+# TODO(posita): For limited backward compatibility (will be removed in next version)
+SupportsNumeratorDenominatorProperties = SupportsNumeratorDenominator
+SupportsNumeratorDenominatorPropertiesSCU = SupportsNumeratorDenominatorSCU
+
 
 @runtime_checkable
 class _SupportsNumeratorDenominatorMethods(Protocol):
