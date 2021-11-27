@@ -15,10 +15,10 @@ from decimal import Decimal
 from fractions import Fraction
 from numbers import Complex, Integral, Rational, Real
 from typing import (
+    TYPE_CHECKING,
     Any,
     Dict,
     Iterable,
-    Iterator,
     Optional,
     Set,
     Tuple,
@@ -119,15 +119,19 @@ else:
             pass
 
 
-_ProtocolMeta: Any = type(Protocol)
+if TYPE_CHECKING:
+    # Warning: Deep typing voodoo ahead. See
+    # <https://github.com/python/mypy/issues/11614>.
+    from abc import ABCMeta as _ProtocolMeta
+else:
+    _ProtocolMeta = type(Protocol)
 
-
-def _bases_pass_muster_gen(cls: CachingProtocolMeta, inst: Any) -> Iterator[bool]:
-    for base in cls.__bases__:
-        if base is cls or base.__name__ in ("Protocol", "Generic", "object"):
-            continue
-
-        yield isinstance(inst, base)
+# TODO(posita): Once <https://github.com/python/typeshed/pull/6394> is released,
+# consider adding something this above instead:
+# if sys.version_info >= (3, 8):
+#     from typing import _ProtocolMeta
+# else:
+#     from typing_extensions import _ProtocolMeta
 
 
 class CachingProtocolMeta(_ProtocolMeta):
@@ -175,6 +179,10 @@ class CachingProtocolMeta(_ProtocolMeta):
     ```
     """
 
+    _abc_inst_check_cache: Dict[Type, bool]
+    _abc_inst_check_cache_overridden: Dict[Type, bool]
+    _abc_inst_check_cache_listeners: Set[CachingProtocolMeta]
+
     def __new__(
         mcls: Type[_TT],
         name: str,
@@ -187,12 +195,9 @@ class CachingProtocolMeta(_ProtocolMeta):
         # Prefixing this class member with "_abc_" is necessary to prevent it from being
         # considered part of the Protocol. (See
         # <https://github.com/python/cpython/blob/main/Lib/typing.py>.)
-        cache: Dict[Type, bool] = {}
-        cls._abc_inst_check_cache = cache
-        overridden: Dict[Type, bool] = {}
-        cls._abc_inst_check_cache_overridden = overridden
-        listeners: Set[CachingProtocolMeta] = set()
-        cls._abc_inst_check_cache_listeners = listeners
+        cls._abc_inst_check_cache = {}
+        cls._abc_inst_check_cache_overridden = {}
+        cls._abc_inst_check_cache_listeners = set()
 
         for base in bases:
             if hasattr(base, "_abc_inst_check_cache_listeners"):
@@ -201,19 +206,30 @@ class CachingProtocolMeta(_ProtocolMeta):
         return cls
 
     def __instancecheck__(cls, inst: Any) -> bool:
-        # This has to stay *super* tight! Even adding a mere assertion can add ~50% to
-        # the best case runtime!
-        inst_t = type(inst)
-
-        if inst_t not in cls._abc_inst_check_cache:
+        try:
+            # This has to stay *super* tight! Even adding a mere assertion can add ~50%
+            # to the best case runtime!
+            return cls._abc_inst_check_cache[type(inst)]
+        except KeyError:
             # If you're going to do *anything*, do it here. Don't touch the rest of this
             # method if you can avoid it.
-            cls._abc_inst_check_cache[inst_t] = all(
-                _bases_pass_muster_gen(cls, inst)
-            ) and cls._check_only_my_attrs(inst)
+            inst_t = type(inst)
+            bases_pass_muster = True
+
+            for base in cls.__bases__:
+                if base is cls or base.__name__ in ("Protocol", "Generic", "object"):
+                    continue
+
+                if not isinstance(inst, base):
+                    bases_pass_muster = False
+                    break
+
+            cls._abc_inst_check_cache[
+                inst_t
+            ] = bases_pass_muster and cls._check_only_my_attrs(inst)
             cls._abc_inst_check_cache_overridden[inst_t] = False
 
-        return cls._abc_inst_check_cache[inst_t]
+            return cls._abc_inst_check_cache[inst_t]
 
     def includes(cls, inst_t: Type) -> None:
         r"""
@@ -333,6 +349,10 @@ class CachingProtocolMeta(_ProtocolMeta):
 
 
 def _assert_isinstance(*num_ts: type, target_t: type) -> None:
+    assert issubclass(
+        target_t.__class__, CachingProtocolMeta
+    ), f"{target_t.__class__} is not subclass of {CachingProtocolMeta}"
+
     for num_t in num_ts:
         assert isinstance(num_t(0), target_t), f"{num_t!r}, {target_t!r}"
 
@@ -1453,7 +1473,6 @@ class RealLike(
     SupportsComplexOps[_T_co],
     SupportsComplexPow[_T_co],
     Protocol[_T_co],
-    metaclass=CachingProtocolMeta,
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with reals. It
@@ -1479,7 +1498,6 @@ class RealLike(
       SupportsComplexOps[T_co],
       SupportsComplexPow[T_co],
       Protocol[T_co],
-      metaclass=CachingProtocolMeta,
     ):
       pass
     ```
@@ -1520,7 +1538,6 @@ class RationalLike(
     SupportsComplexOps[_T_co],
     SupportsComplexPow[_T_co],
     Protocol[_T_co],
-    metaclass=CachingProtocolMeta,
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with rationals.
@@ -1548,7 +1565,6 @@ class RationalLike(
       SupportsComplexOps[T_co],
       SupportsComplexPow[T_co],
       Protocol[T_co],
-      metaclass=CachingProtocolMeta,
     ):
       pass
     ```
@@ -1594,7 +1610,6 @@ class RationalLikeMethods(
     SupportsComplexOps[_T_co],
     SupportsComplexPow[_T_co],
     Protocol[_T_co],
-    metaclass=CachingProtocolMeta,
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with rationals.
@@ -1619,7 +1634,6 @@ class RationalLikeMethods(
       SupportsComplexOps[T_co],
       SupportsComplexPow[T_co],
       Protocol[T_co],
-      metaclass=CachingProtocolMeta,
     ):
       pass
     ```
@@ -1679,7 +1693,6 @@ class IntegralLike(
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
     Protocol[_T_co],
-    metaclass=CachingProtocolMeta,
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with integrals.
@@ -1711,7 +1724,6 @@ class IntegralLike(
       SupportsRealOps[T_co],
       SupportsComplexOps[T_co],
       Protocol[T_co],
-      metaclass=CachingProtocolMeta,
     ):
       pass
     ```

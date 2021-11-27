@@ -502,7 +502,7 @@ For composition to be ergonomic, such registration should be indelible, survive 
 >>> @runtime_checkable
 ... class MySupportsFloatInt(
 ...   SupportsFloat, SupportsInt,
-...   Protocol, metaclass=CachingProtocolMeta,
+...   Protocol,
 ... ):
 ...   pass
 
