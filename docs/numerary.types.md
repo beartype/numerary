@@ -81,9 +81,9 @@ from numerary.bt import beartype  # will resolve to the identity decorator if be
         - "real"
         - "imag"
         - "__pow__"
-        - "trunc"
-        - "floor"
-        - "ceil"
+        - "__trunc__"
+        - "__floor__"
+        - "__ceil__"
         - "numerator"
         - "denominator"
 

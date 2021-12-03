@@ -700,7 +700,7 @@ class SupportsTrunc(
     A caching ABC defining the [``__trunc__``
     method](https://docs.python.org/3/reference/datamodel.html#object.__trunc__).
 
-    See also the [``trunc`` helper function][numerary.types.trunc].
+    See also the [``__trunc__`` helper function][numerary.types.__trunc__].
 
     ([``_SupportsTrunc``][numerary.types._SupportsTrunc] is the raw, non-caching version
     that defines the actual methods.)
@@ -782,8 +782,8 @@ class SupportsFloorCeil(
         for those environments is important, consider using
         [``SupportsFloat``][numerary.types.SupportsFloat] instead.
 
-        See also the [``floor``][numerary.types.floor] and
-        [``ceil``][numerary.types.ceil] helper functions.
+        See also the [``__floor__``][numerary.types.__floor__] and
+        [``__ceil__``][numerary.types.__ceil__] helper functions.
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
