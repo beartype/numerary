@@ -15,18 +15,16 @@
 
 # ``numerary`` release notes
 
-## [0.1.3](https://github.com/posita/numerary/releases/tag/v0.1.3)
+## [0.2.0](https://github.com/posita/numerary/releases/tag/v0.2.0)
 
-* Fixes `sympy` import issue that results in `AttributeError`s being thrown on import in some environments.
-
-## [0.1.2](https://github.com/posita/numerary/releases/tag/v0.1.2)
-
+* ``numerary`` goes beta!
 * Splits [``SupportsRealImagAsMethod``][numerary.types.SupportsRealImagAsMethod] out of [``SupportsRealImag``][numerary.types.SupportsRealImag] and provides the [``real``][numerary.types.real] and [``imag``][numerary.types.imag] helper functions for better support of ``sympy``’s number primitives.
 * Renames ``SupportsNumeratorDenominatorProperties`` to [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator] to mirror [``SupportsRealImag``][numerary.types.SupportsRealImag] and reflect that it captures the numeric tower interface.
   ``SupportsNumeratorDenominatorProperties`` and ``SupportsNumeratorDenominatorPropertiesSCU`` are maintained as aliases for limited backward compatibility and will be removed in the next version.
 * Removes ``enum.Flag`` from testing as a non-sequitur.
   (It matches none of the presented protocols.)
 * Introduces [``__pow__``][numerary.types.__pow__] helper function and renames ``trunc``, ``floor``, and ``ceil`` to [``__trunc__``][numerary.types.__trunc__], [``__floor__``][numerary.types.__floor__], and [``__ceil__``][numerary.types.__ceil__], respectively.
+* Fixes `sympy` import issue that results in `AttributeError`s being thrown on import in some environments.
 
 ## [0.1.1](https://github.com/posita/numerary/releases/tag/v0.1.1)
 
