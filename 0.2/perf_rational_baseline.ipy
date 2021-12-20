@@ -1,0 +1,12 @@
+from fractions import Fraction
+from numbers import Rational
+
+one_int = 1
+two_frac = Fraction(2)
+three_float = 3.0
+vals = (one_int, two_frac, three_float)
+t = Rational
+
+for v in vals:
+  print(f"%timeit isinstance({type(v).__module__}.{type(v).__name__}({v}), {t.__name__})")
+  %timeit isinstance(v, t)
