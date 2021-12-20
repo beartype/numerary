@@ -8,7 +8,6 @@
 
 from __future__ import annotations
 
-import math
 from decimal import Decimal
 from fractions import Fraction
 from typing import cast
@@ -21,6 +20,9 @@ from numerary.types import (
     RationalLikeMixedSCU,
     RationalLikeMixedT,
     RationalLikeMixedU,
+    __ceil__,
+    __floor__,
+    __trunc__,
 )
 
 from .numberwang import (
@@ -84,9 +86,9 @@ def test_rational_like() -> None:
         assert good_val - 1 <= good_val, f"{good_val!r}"
         assert good_val >= good_val - 1, f"{good_val!r}"
         assert good_val > good_val - 1, f"{good_val!r}"
-        assert math.trunc(good_val), f"{good_val!r}"
-        assert math.floor(good_val), f"{good_val!r}"
-        assert math.ceil(good_val), f"{good_val!r}"
+        assert __trunc__(good_val), f"{good_val!r}"
+        assert __floor__(good_val), f"{good_val!r}"
+        assert __ceil__(good_val), f"{good_val!r}"
         assert good_val.numerator, f"{good_val!r}"
         assert good_val.denominator, f"{good_val!r}"
 
@@ -249,9 +251,9 @@ def test_rational_like_sympy() -> None:
         assert good_val - 1 <= good_val, f"{good_val!r}"
         assert good_val >= good_val - 1, f"{good_val!r}"
         assert good_val > good_val - 1, f"{good_val!r}"
-        assert math.trunc(good_val), f"{good_val!r}"
-        assert math.floor(good_val), f"{good_val!r}"
-        assert math.ceil(good_val), f"{good_val!r}"
+        assert __trunc__(good_val), f"{good_val!r}"
+        assert __floor__(good_val), f"{good_val!r}"
+        assert __ceil__(good_val), f"{good_val!r}"
         assert good_val.numerator, f"{good_val!r}"
         assert good_val.denominator, f"{good_val!r}"
 

@@ -517,7 +517,7 @@ class SupportsConjugate(
     Decimal('2.5')
 
     >>> import sympy
-    >>> conjugate_my_thing(sympy.core.numbers.Float(3.5))
+    >>> conjugate_my_thing(sympy.Float(3.5))
     3.5
     >>> type(_)
     <class 'sympy.core.numbers.Float'>
@@ -639,7 +639,7 @@ class SupportsRealImagAsMethod(
     ...   assert isinstance(arg, SupportsRealImagAsMethod)
     ...   return (real(arg), imag(arg))
 
-    >>> as_real_imag_my_thing(sympy.core.numbers.Float(3.5))
+    >>> as_real_imag_my_thing(sympy.Float(3.5))
     (3.5, 0)
     >>> tuple(type(i) for i in _)
     (<class 'sympy.core.numbers.Float'>, <class 'sympy.core.numbers.Zero'>)
@@ -722,7 +722,7 @@ class SupportsTrunc(
     2
 
     >>> import sympy
-    >>> trunc_my_thing(sympy.core.numbers.Float(3.5))
+    >>> trunc_my_thing(sympy.Float(3.5))
     3
     >>> type(_)
     <class 'sympy.core.numbers.Integer'>
@@ -802,7 +802,7 @@ class SupportsFloorCeil(
     (2, 3)
 
     >>> import sympy
-    >>> floor_ceil_my_thing(sympy.core.numbers.Float(3.5))
+    >>> floor_ceil_my_thing(sympy.Float(3.5))
     (3, 4)
     >>> tuple(type(i) for i in _)
     (<class 'sympy.core.numbers.Integer'>, <class 'sympy.core.numbers.Integer'>)
@@ -877,7 +877,7 @@ class SupportsDivmod(
     (Decimal('1'), Decimal('1.0'))
 
     >>> import sympy
-    >>> divmod_my_thing(sympy.core.numbers.Float(3.5), sympy.core.numbers.Float(1.5))
+    >>> divmod_my_thing(sympy.Float(3.5), sympy.Float(1.5))
     (2, 0.5)
     >>> tuple(type(i) for i in _)
     (<class 'sympy.core.numbers.Integer'>, <class 'sympy.core.numbers.Float'>)
@@ -949,7 +949,7 @@ class SupportsNumeratorDenominator(
     (2, 3)
 
     >>> import sympy
-    >>> num_denom_my_thing(sympy.core.numbers.Rational(3, 4))
+    >>> num_denom_my_thing(sympy.Rational(3, 4))
     (3, 4)
     >>> tuple(type(i) for i in _)
     (<class 'int'>, <class 'int'>)
@@ -1117,7 +1117,7 @@ class SupportsComplexOps(
     Decimal('0.0')
 
     >>> import sympy
-    >>> complex_ops_my_thing(sympy.core.numbers.Float(3.5))
+    >>> complex_ops_my_thing(sympy.Float(3.5))
     -2.0
     >>> type(_)
     <class 'sympy.core.numbers.Float'>
@@ -1185,7 +1185,7 @@ class SupportsComplexPow(
     Decimal('0.16')
 
     >>> import sympy
-    >>> complex_pow_my_thing(sympy.core.numbers.Float(3.5))
+    >>> complex_pow_my_thing(sympy.Float(3.5))
     0.0816326530612245
     >>> type(_)
     <class 'sympy.core.numbers.Float'>
@@ -1277,7 +1277,7 @@ class SupportsRealOps(
     Decimal('-1')
 
     >>> import sympy
-    >>> real_ops_my_thing(sympy.core.numbers.Float(3.5))
+    >>> real_ops_my_thing(sympy.Float(3.5))
     -2
     >>> type(_)
     <class 'sympy.core.numbers.Integer'>
@@ -1379,7 +1379,7 @@ class SupportsIntegralOps(
     6
 
     >>> import sympy
-    >>> integral_ops_my_thing(sympy.core.numbers.Integer(3))
+    >>> integral_ops_my_thing(sympy.Integer(3))
     6
     >>> type(_)
     <class 'sympy.core.numbers.Integer'>
@@ -1444,7 +1444,7 @@ class SupportsIntegralPow(
     1
 
     >>> import sympy
-    >>> integral_pow_my_thing(sympy.core.numbers.Integer(3))
+    >>> integral_pow_my_thing(sympy.Integer(3))
     1
     >>> type(_)
     <class 'int'>
@@ -1768,7 +1768,7 @@ def real(operand: SupportsRealImagMixedU):
     ``` python
     >>> import sympy
     >>> from numerary.types import real
-    >>> real(sympy.core.numbers.Float(3.5))
+    >>> real(sympy.Float(3.5))
     3.5
 
     ```
@@ -1798,7 +1798,7 @@ def imag(operand: SupportsRealImagMixedU):
     ``` python
     >>> import sympy
     >>> from numerary.types import real
-    >>> imag(sympy.core.numbers.Float(3.5))
+    >>> imag(sympy.Float(3.5))
     0
 
     ```
@@ -2089,8 +2089,8 @@ try:
     # Register known sympy exceptions
     import sympy.core.symbol
 
-    SupportsTrunc.excludes(sympy.core.symbol.Symbol)
-    SupportsIntegralOps.excludes(sympy.core.symbol.Symbol)
-    SupportsIntegralPow.excludes(sympy.core.symbol.Symbol)
+    SupportsTrunc.excludes(sympy.Symbol)
+    SupportsIntegralOps.excludes(sympy.Symbol)
+    SupportsIntegralPow.excludes(sympy.Symbol)
 except ImportError:
     pass

@@ -217,7 +217,7 @@ def test_supports_real_ops_sympy() -> None:
         assert isinstance(good_val, SupportsRealOps), f"{good_val!r}"
 
         # Symbolic relationals can't be reduced to a boolean
-        if isinstance(good_val, sympy.core.symbol.Symbol):
+        if isinstance(good_val, sympy.Symbol):
             good_val <= good_val
             good_val >= good_val
         else:

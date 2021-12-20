@@ -8,7 +8,6 @@
 
 from __future__ import annotations
 
-import math
 from decimal import Decimal
 from fractions import Fraction
 from typing import cast
@@ -17,6 +16,7 @@ import pytest
 
 from numerary import RealLike, RealLikeSCU
 from numerary.bt import beartype
+from numerary.types import __ceil__, __floor__, __trunc__
 
 from .numberwang import (
     Numberwang,
@@ -89,9 +89,9 @@ def test_real_like() -> None:
         assert good_val - 1 <= good_val, f"{good_val!r}"
         assert good_val >= good_val - 1, f"{good_val!r}"
         assert good_val > good_val - 1, f"{good_val!r}"
-        assert math.trunc(good_val), f"{good_val!r}"
-        assert math.floor(good_val), f"{good_val!r}"
-        assert math.ceil(good_val), f"{good_val!r}"
+        assert __trunc__(good_val), f"{good_val!r}"
+        assert __floor__(good_val), f"{good_val!r}"
+        assert __ceil__(good_val), f"{good_val!r}"
 
     complex_bad_val: RealLike = complex(-273.15)  # type: ignore [assignment]
 
@@ -250,7 +250,7 @@ def test_real_like_sympy() -> None:
         assert 0 - good_val == -good_val, f"{good_val!r}"
 
         # Symbolic relationals can't be reduced to a boolean or truncated
-        if isinstance(good_val, sympy.core.symbol.Symbol):
+        if isinstance(good_val, sympy.Symbol):
             good_val - 1 < good_val
             good_val - 1 <= good_val
             good_val >= good_val - 1
@@ -260,9 +260,9 @@ def test_real_like_sympy() -> None:
             assert good_val - 1 <= good_val, f"{good_val!r}"
             assert good_val >= good_val - 1, f"{good_val!r}"
             assert good_val > good_val - 1, f"{good_val!r}"
-            assert math.trunc(good_val), f"{good_val!r}"
-            assert math.floor(good_val), f"{good_val!r}"
-            assert math.ceil(good_val), f"{good_val!r}"
+            assert __trunc__(good_val), f"{good_val!r}"
+            assert __floor__(good_val), f"{good_val!r}"
+            assert __ceil__(good_val), f"{good_val!r}"
 
 
 def test_real_like_sympy_beartype() -> None:

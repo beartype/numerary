@@ -113,7 +113,7 @@ AssertionError
 
 !!! note
 
-    Until 1.9, ``sympy.core.numbers.Integer`` [lacked the requisite bitwise operators](https://github.com/sympy/sympy/issues/19311).
+    Until 1.9, ``sympy.Integer`` [lacked the requisite bitwise operators](https://github.com/sympy/sympy/issues/19311).
     ``numerary`` catches that!
     The above properly results in both a type-checking error as well as a runtime failure for [SymPy](https://www.sympy.org/) versions prior to 1.9.
 
@@ -363,7 +363,7 @@ Consider:
 >>> hasattr(Integral, "real") and hasattr(Integral, "imag")
 True
 >>> import sympy.core.numbers
->>> pants_on_fire = sympy.core.numbers.Integer(1)
+>>> pants_on_fire = sympy.Integer(1)
 >>> isinstance(pants_on_fire, Integral)
 True
 >>> hasattr(pants_on_fire, "real") or hasattr(pants_on_fire, "imag")  # somebody's tellin' stories
