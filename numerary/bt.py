@@ -8,8 +8,10 @@
 
 from __future__ import annotations
 
+import logging
 import os
 import sys
+import traceback
 import warnings
 from typing import TypeVar, cast
 
@@ -64,12 +66,17 @@ except ValueError:
 if _use_beartype_if_available:
     try:
         import beartype as _beartype
-
+    except ImportError:
+        pass
+    except Exception:
+        logging.getLogger(__name__).warning(
+            "unexpected error when attempting to load beartype"
+        )
+        logging.getLogger(__name__).debug(traceback.format_exc())
+    else:
         if _beartype.__version_info__ >= (0, 8):
             beartype = cast(_DecoratorT, _beartype.beartype)
         else:
             warnings.warn(
                 f"beartype>=0.8 required, but beartype=={_beartype.__version__} found; disabled"
             )
-    except ImportError:
-        pass

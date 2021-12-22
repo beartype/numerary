@@ -362,7 +362,7 @@ Consider:
 >>> from numbers import Integral
 >>> hasattr(Integral, "real") and hasattr(Integral, "imag")
 True
->>> import sympy.core.numbers
+>>> import sympy
 >>> pants_on_fire = sympy.Integer(1)
 >>> isinstance(pants_on_fire, Integral)
 True

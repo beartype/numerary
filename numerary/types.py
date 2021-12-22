@@ -8,8 +8,10 @@
 
 from __future__ import annotations
 
+import logging
 import math
 import sys
+import traceback
 from abc import abstractmethod
 from decimal import Decimal
 from fractions import Fraction
@@ -1910,7 +1912,7 @@ def __pow__(
 
     ```
     """
-    return pow(arg, exponent, modulus)  # type: ignore [arg-type]
+    return pow(arg, exponent, modulus)
 
 
 @beartype
@@ -2049,7 +2051,14 @@ def denominator(operand: SupportsNumeratorDenominatorMixedU):
 try:
     # Register known numpy exceptions
     import numpy
-
+except ImportError:
+    pass
+except Exception:
+    logging.getLogger(__name__).warning(
+        "unexpected error when attempting to load numpy"
+    )
+    logging.getLogger(__name__).debug(traceback.format_exc())
+else:
     for t in (
         numpy.uint8,
         numpy.uint16,
@@ -2082,15 +2091,18 @@ try:
         SupportsRealOps.excludes(t)
         SupportsIntegralOps.excludes(t)
         SupportsIntegralPow.excludes(t)
-except ImportError:
-    pass
 
 try:
     # Register known sympy exceptions
-    import sympy.core.symbol
-
+    import sympy
+except ImportError:
+    pass
+except Exception:
+    logging.getLogger(__name__).warning(
+        "unexpected error when attempting to load sympy"
+    )
+    logging.getLogger(__name__).debug(traceback.format_exc())
+else:
     SupportsTrunc.excludes(sympy.Symbol)
     SupportsIntegralOps.excludes(sympy.Symbol)
     SupportsIntegralPow.excludes(sympy.Symbol)
-except ImportError:
-    pass

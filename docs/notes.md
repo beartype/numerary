@@ -15,6 +15,10 @@
 
 # ``numerary`` release notes
 
+## [0.2.1](https://github.com/posita/numerary/releases/tag/v0.2.1)
+
+* Trailing fixes for `sympy` import issue that results in `ValueError`s being thrown on import in some environments.
+
 ## [0.2.0](https://github.com/posita/numerary/releases/tag/v0.2.0)
 
 * ``numerary`` goes beta!
