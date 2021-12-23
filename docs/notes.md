@@ -15,9 +15,13 @@
 
 # ``numerary`` release notes
 
+## [0.2.2](https://github.com/posita/numerary/releases/tag/v0.2.2)
+
+* TODO
+
 ## [0.2.1](https://github.com/posita/numerary/releases/tag/v0.2.1)
 
-* Trailing fixes for `sympy` import issue that results in `ValueError`s being thrown on import in some environments.
+* Fixes trailing issues for `sympy` import issue resulting in `ValueError`s being thrown on import in some environments.
 
 ## [0.2.0](https://github.com/posita/numerary/releases/tag/v0.2.0)
 
@@ -28,7 +32,7 @@
 * Removes ``enum.Flag`` from testing as a non-sequitur.
   (It matches none of the presented protocols.)
 * Introduces [``__pow__``][numerary.types.__pow__] helper function and renames ``trunc``, ``floor``, and ``ceil`` to [``__trunc__``][numerary.types.__trunc__], [``__floor__``][numerary.types.__floor__], and [``__ceil__``][numerary.types.__ceil__], respectively.
-* Fixes `sympy` import issue that results in `AttributeError`s being thrown on import in some environments.
+* Fixes `sympy` import issue resulting in `AttributeError`s being thrown on import in some environments.
 
 ## [0.1.1](https://github.com/posita/numerary/releases/tag/v0.1.1)
 
