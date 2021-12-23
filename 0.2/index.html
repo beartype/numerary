@@ -541,11 +541,11 @@ Please see the accompanying <code>LICENSE</code> file for rights and restriction
 All rights not expressly waived or licensed are reserved.
 If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.</em></p>
 <p><a href="https://github.com/posita/numerary/actions/workflows/unit-tests.yaml"><img alt="Tests" src="https://github.com/posita/numerary/actions/workflows/unit-tests.yaml/badge.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.2.0/"><img alt="Version" src="https://img.shields.io/pypi/v/numerary/0.2.0.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.2.0/"><img alt="Development Stage" src="https://img.shields.io/pypi/status/numerary/0.2.0.svg" /></a>
-<a href="http://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/pypi/l/numerary/0.2.0.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.2.0/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/numerary/0.2.0.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.2.0/"><img alt="Supported Python Implementations" src="https://img.shields.io/pypi/implementation/numerary/0.2.0.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.2.1/"><img alt="Version" src="https://img.shields.io/pypi/v/numerary/0.2.1.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.2.1/"><img alt="Development Stage" src="https://img.shields.io/pypi/status/numerary/0.2.1.svg" /></a>
+<a href="http://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/pypi/l/numerary/0.2.1.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.2.1/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/numerary/0.2.1.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.2.1/"><img alt="Supported Python Implementations" src="https://img.shields.io/pypi/implementation/numerary/0.2.1.svg" /></a>
 <a href="https://github.com/pre-commit/pre-commit"><img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&amp;logoColor=white" /></a>
 <a href="https://beartype.rtfd.io/"><img alt="Bear-ified™" src="https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg" /></a></p>
 <p>Are you defining a numeric interface that should work with more than just <code>int</code>s and <code>float</code>s?
@@ -881,7 +881,7 @@ Further, it performs these comparisons … Every. Single. 🤬ing. Time.</p>
 </code></pre></div>
 </td></tr></table>
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.2.0/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.2.1/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
 
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1052,7 +1052,7 @@ But sometimes, out there in the real world, implementations <em>lie</em>.</p>
 <span class="normal">15</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Integral</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Integral</span><span class="p">,</span> <span class="s2">&quot;imag&quot;</span><span class="p">)</span>
 <span class="kc">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy.core.numbers</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">pants_on_fire</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pants_on_fire</span><span class="p">,</span> <span class="n">Integral</span><span class="p">)</span>
 <span class="kc">True</span>
@@ -1303,7 +1303,7 @@ That’s completely off the beaten path and there are probably some gremlins hid
 This is probably fine as long as runtime comparisons remain limited to crude checks whether attributes merely exist.
 It would likely fail if runtime checking becomes more sophisticated, at which time, this implementation will need to be revisited.
 Hopefully by then, we can just delete <code>numerary</code> as the aspirationally unnecessary hack it is and move on with our lives.</p>
-<p>(See the <a href="https://github.com/posita/numerary/blob/v0.2.0/numerary/types.py">implementation</a> for details.)</p>
+<p>(See the <a href="https://github.com/posita/numerary/blob/v0.2.1/numerary/types.py">implementation</a> for details.)</p>
 <h2 id="license">License</h2>
 <p><code>numerary</code> is licensed under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.
 See the included <a href="https://posita.github.io/numerary/0.2/license/"><code>LICENSE</code></a> file for details.
@@ -1344,7 +1344,7 @@ Source code is <a href="https://github.com/posita/numerary">available on GitHub<
 </ul>
 <p>If you use <code>beartype</code> for type-checking your code that interacts with <code>numerary</code>, but don’t want <code>numerary</code> to use it internally (e.g., for some strange reason), set the <code>NUMERARY_BEARTYPE</code> environment variable to a falsy<sup id="fnref:6"><a class="footnote-ref" href="#fn:6">4</a></sup> value before <code>numerary</code> is loaded.</p>
 <p>See the <a href="https://posita.github.io/numerary/0.2/contrib/#hacking-quick-start">hacking quick-start</a> for additional development and testing dependencies.</p>
-<h2 id="customers">Customers <a href="https://posita.github.io/numerary/"><img alt="numerary-encumbered" src="https://raw.githubusercontent.com/posita/numerary/v0.2.0/docs/numerary-encumbered.svg" /></a></h2>
+<h2 id="customers">Customers <a href="https://posita.github.io/numerary/"><img alt="numerary-encumbered" src="https://raw.githubusercontent.com/posita/numerary/v0.2.1/docs/numerary-encumbered.svg" /></a></h2>
 <ul>
 <li><a href="https://github.com/posita/dyce/"><code>dyce</code></a> - a pure-Python library for modeling arbitrarily complex dice mechanics and <del>mother</del> <em>birthing code base</em> of <code>numerary</code>!</li>
 <li>The next one could be <em>you</em>! 👋</li>
