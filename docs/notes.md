@@ -17,7 +17,8 @@
 
 ## [0.2.2](https://github.com/posita/numerary/releases/tag/v0.2.2)
 
-* TODO
+* Removes misleading advice that SCUs offer a performance benefit over merely using caching protocols.
+  They *could* under very specific circumstances (where ``numerary`` probably isn’t going to be helpful anyway), but not always, and probably aren’t worth the trouble if performance is the only concern.
 
 ## [0.2.1](https://github.com/posita/numerary/releases/tag/v0.2.1)
 

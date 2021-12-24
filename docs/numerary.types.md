@@ -49,6 +49,14 @@ Further, if you want to opportunistically take advantage of [``beartype``](https
 from numerary.bt import beartype  # will resolve to the identity decorator if beartype is unavailable at runtime
 ```
 
+Which you should totally do, because ``beartype`` is *awesome*.
+Its author is even *awesomer*.[^1]
+
+[^1]:
+
+    I acknowledge that the subject of who is awesomer, beartype or the man who made it, is [hotly contested](https://github.com/beartype/beartype/issues/66#issuecomment-960495976).
+
+
 ::: numerary.types
     rendering:
       show_if_no_docstring: false

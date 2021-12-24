@@ -265,8 +265,6 @@ These offer significant performance improvements, especially where protocols def
 
 ### Short-circuit type enumerations
 
-If the interface is to be used most often with native types (``int``s, ``float``s, ``bool``s), an additional optimization may be had at runtime by short-circuiting protocol type-checking.
-
 ``…SCU`` objects provide ``Union``s for compliant types.
 As one example, for the aforementioned ``SupportsIntegralOps``, ``numerary`` defines an additional interface.
 
@@ -292,18 +290,9 @@ AssertionError
 
 ```
 
-Where do ``…SCU`` protocols help?
-In a word, *[``beartype``](https://github.com/beartype/beartype/)*.
-``beartype`` is *awesome*.
-Its author is even *awesomer*.[^4]
-More generally, runtime checkers that inspect and enforce annotations may benefit from short-circuiting where protocol validation is expensive.
-
-[^4]:
-
-    I acknowledge that the subject of who is awesomer, beartype or the man who made it, is [hotly contested](https://github.com/beartype/beartype/issues/66#issuecomment-960495976).
-
-``Union``s are *also* useful when trying to accommodate non-compliant primitives that fail static type-checking, but will work anyway at runtime.
-``float``s in Python versions prior to 3.9 are an excellent example, because they officially lacked ``__floor__`` and ``__ceil__`` methods, but were registered with the numeric tower and worked just fine with ``math.floor`` and ``math.ceil``.
+Where do ``…SCU``s help?
+Mostly when trying to accommodate non-compliant primitives that fail static type-checking, but will work anyway at runtime.
+For example, ``float``s in Python versions prior to 3.9 officially lacked ``__floor__`` and ``__ceil__`` methods, but were registered with the numeric tower and worked just fine with ``math.floor`` and ``math.ceil``.
 
 How does ``numerary``’s [``SupportsFloorCeil``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsFloorCeil) deal with this situation?
 Not very well, unfortunately, at least not on its own.
