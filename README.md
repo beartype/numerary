@@ -263,35 +263,9 @@ These offer significant performance improvements, especially where protocols def
 ```
 </details>
 
-### Short-circuit type enumerations
+### ``Union``s for inclusion
 
-``…SCU`` objects provide ``Union``s for compliant types.
-As one example, for the aforementioned ``SupportsIntegralOps``, ``numerary`` defines an additional interface.
-
-``` python
-SupportsIntegralOpsSCU = Union[int, bool, Integral, SupportsIntegralOps]
-```
-
-``` python
->>> from numerary.types import SupportsIntegralOpsSCU
-
->>> def shift_left_one(arg: SupportsIntegralOpsSCU) -> SupportsIntegralOpsSCU:
-...   assert isinstance(arg, SupportsIntegralOps)
-...   return arg << 1
-
->>> shift_left_one(1)
-2
->>> shift_left_one(sympify("1"))
-2
->>> shift_left_one(Fraction(1, 2))  # type: ignore [arg-type]
-Traceback (most recent call last):
-  ...
-AssertionError
-
-```
-
-Where do ``…SCU``s help?
-Mostly when trying to accommodate non-compliant primitives that fail static type-checking, but will work anyway at runtime.
+Sometimes we might want types that don’t comply with protocol definitions to validate anyway (e.g., because we know they will work at runtime).
 For example, ``float``s in Python versions prior to 3.9 officially lacked ``__floor__`` and ``__ceil__`` methods, but were registered with the numeric tower and worked just fine with ``math.floor`` and ``math.ceil``.
 
 How does ``numerary``’s [``SupportsFloorCeil``](https://posita.github.io/numerary/latest/numerary.types/#numerary.types.SupportsFloorCeil) deal with this situation?
@@ -315,15 +289,15 @@ Not very well, unfortunately, at least not on its own.
 
 ```
 
-``…SCU`` ``Union``s allow a work-around for the static type-checking issue.
+``Union``s allow a work-around.
 
 ``` python
->>> from numerary.types import SupportsFloorCeil, SupportsFloorCeilSCU, __floor__
->>> SupportsFloorCeilSCU  # float is included here
-typing.Union[int, float, bool, numbers.Real, numerary.types.SupportsFloorCeil]
+>>> from typing import Union
+>>> from numerary.types import SupportsFloorCeil, __floor__
+>>> SupportsFloorCeilU = Union[float, SupportsFloorCeil]
 
 >>> import sys
->>> def my_floor_func(arg: SupportsFloorCeilSCU) -> int:
+>>> def my_floor_func(arg: SupportsFloorCeilU) -> int:
 ...   assert isinstance(arg, SupportsFloorCeil)
 ...   return __floor__(arg)
 

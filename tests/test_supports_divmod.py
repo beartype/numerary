@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsDivmod, SupportsDivmodSCU
+from numerary.types import SupportsDivmod
 
 from .numberwang import (
     Numberwang,
@@ -36,11 +36,6 @@ __all__ = ()
 
 @beartype
 def supports_divmod_func(arg: SupportsDivmod):
-    assert isinstance(arg, SupportsDivmod), f"{arg!r}"
-
-
-@beartype
-def supports_divmod_func_t(arg: SupportsDivmodSCU):
     assert isinstance(arg, SupportsDivmod), f"{arg!r}"
 
 
@@ -113,7 +108,6 @@ def test_supports_divmod_beartype() -> None:
         WangernumbDerived(-273.15),
     ):
         supports_divmod_func(cast(SupportsDivmod, good_val))
-        supports_divmod_func_t(cast(SupportsDivmodSCU, good_val))
 
     for bad_val in (
         complex(-273.15),
@@ -124,9 +118,6 @@ def test_supports_divmod_beartype() -> None:
         with pytest.raises(roar.BeartypeException):
             supports_divmod_func(cast(SupportsDivmod, bad_val))
 
-        with pytest.raises(roar.BeartypeException):
-            supports_divmod_func_t(cast(SupportsDivmodSCU, bad_val))
-
     for lying_val in (
         # These have lied about supporting this interface when they registered
         # themselves in the number tower
@@ -135,9 +126,6 @@ def test_supports_divmod_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_divmod_func(cast(SupportsDivmod, lying_val))
-
-        with pytest.raises(AssertionError):  # gets past beartype
-            supports_divmod_func_t(cast(SupportsDivmodSCU, lying_val))
 
 
 def test_supports_divmod_numpy() -> None:
@@ -204,7 +192,6 @@ def test_supports_divmod_numpy_beartype() -> None:
         numpy.float128(-273.15),
     ):
         supports_divmod_func(cast(SupportsDivmod, good_val))
-        supports_divmod_func_t(cast(SupportsDivmodSCU, good_val))
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -213,9 +200,6 @@ def test_supports_divmod_numpy_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_divmod_func(cast(SupportsDivmod, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_divmod_func_t(cast(SupportsDivmodSCU, bad_val))
 
 
 def test_supports_divmod_sympy() -> None:
@@ -246,4 +230,3 @@ def test_supports_divmod_sympy_beartype() -> None:
         sympy.symbols("x"),
     ):
         supports_divmod_func(cast(SupportsDivmod, good_val))
-        supports_divmod_func_t(cast(SupportsDivmodSCU, good_val))

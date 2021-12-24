@@ -17,7 +17,6 @@ import pytest
 from numerary.bt import beartype
 from numerary.types import (
     RationalLike,
-    RationalLikeMixedSCU,
     RationalLikeMixedT,
     RationalLikeMixedU,
     __ceil__,
@@ -44,11 +43,6 @@ __all__ = ()
 
 @beartype
 def rational_like_func(arg: RationalLikeMixedU):
-    assert isinstance(arg, RationalLikeMixedT), f"{arg!r}"
-
-
-@beartype
-def rational_like_func_t(arg: RationalLikeMixedSCU):
     assert isinstance(arg, RationalLikeMixedT), f"{arg!r}"
 
 
@@ -125,7 +119,6 @@ def test_rational_like_beartype() -> None:
         NumberwangRegistered(-273),
     ):
         rational_like_func(cast(RationalLikeMixedU, good_val))
-        rational_like_func_t(cast(RationalLikeMixedSCU, good_val))
 
     for bad_val in (
         -273.15,
@@ -138,9 +131,6 @@ def test_rational_like_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             rational_like_func(cast(RationalLikeMixedU, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            rational_like_func_t(cast(RationalLikeMixedSCU, bad_val))
 
 
 def test_rational_like_numpy() -> None:
@@ -213,7 +203,6 @@ def test_rational_like_numpy_beartype() -> None:
         numpy.int64(-273),
     ):
         rational_like_func(cast(RationalLikeMixedU, good_val))
-        rational_like_func_t(cast(RationalLikeMixedSCU, good_val))
 
     for bad_val in (
         numpy.float16(-1.8),
@@ -226,9 +215,6 @@ def test_rational_like_numpy_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             rational_like_func(cast(RationalLikeMixedU, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            rational_like_func_t(cast(RationalLikeMixedSCU, bad_val))
 
 
 def test_rational_like_sympy() -> None:
@@ -277,7 +263,6 @@ def test_rational_like_sympy_beartype() -> None:
         sympy.Integer(-273),
     ):
         rational_like_func(cast(RationalLikeMixedU, good_val))
-        rational_like_func_t(cast(RationalLikeMixedSCU, good_val))
 
     for bad_val in (
         sympy.Float(-273.15),
@@ -285,6 +270,3 @@ def test_rational_like_sympy_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             rational_like_func(cast(RationalLikeMixedU, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            rational_like_func_t(cast(RationalLikeMixedSCU, bad_val))

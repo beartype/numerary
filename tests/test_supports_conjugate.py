@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsConjugate, SupportsConjugateSCU
+from numerary.types import SupportsConjugate
 
 from .numberwang import (
     Numberwang,
@@ -36,11 +36,6 @@ __all__ = ()
 
 @beartype
 def supports_conjugate_func(arg: SupportsConjugate):
-    assert isinstance(arg, SupportsConjugate), f"{arg!r}"
-
-
-@beartype
-def supports_conjugate_func_t(arg: SupportsConjugateSCU):
     assert isinstance(arg, SupportsConjugate), f"{arg!r}"
 
 
@@ -107,7 +102,6 @@ def test_supports_conjugate_beartype() -> None:
         WangernumbDerived(-273.15),
     ):
         supports_conjugate_func(cast(SupportsConjugate, good_val))
-        supports_conjugate_func_t(cast(SupportsConjugateSCU, good_val))
 
     for bad_val in (
         Numberwang(-273),
@@ -117,9 +111,6 @@ def test_supports_conjugate_beartype() -> None:
         with pytest.raises(roar.BeartypeException):
             supports_conjugate_func(cast(SupportsConjugate, bad_val))
 
-        with pytest.raises(roar.BeartypeException):
-            supports_conjugate_func_t(cast(SupportsConjugateSCU, bad_val))
-
     for lying_val in (
         # These have lied about supporting this interface when they registered
         # themselves in the number tower
@@ -128,9 +119,6 @@ def test_supports_conjugate_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_conjugate_func(cast(SupportsConjugate, lying_val))
-
-        with pytest.raises(AssertionError):  # gets past beartype
-            supports_conjugate_func_t(cast(SupportsConjugateSCU, lying_val))
 
 
 def test_supports_conjugate_numpy() -> None:
@@ -194,7 +182,6 @@ def test_supports_conjugate_numpy_beartype() -> None:
         numpy.clongdouble(-273.15),
     ):
         supports_conjugate_func(cast(SupportsConjugate, good_val))
-        supports_conjugate_func_t(cast(SupportsConjugateSCU, good_val))
 
 
 def test_supports_conjugate_sympy() -> None:
@@ -225,4 +212,3 @@ def test_supports_conjugate_sympy_beartype() -> None:
         sympy.symbols("x"),
     ):
         supports_conjugate_func(cast(SupportsConjugate, good_val))
-        supports_conjugate_func_t(cast(SupportsConjugateSCU, good_val))

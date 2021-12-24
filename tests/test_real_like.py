@@ -14,7 +14,7 @@ from typing import cast
 
 import pytest
 
-from numerary import RealLike, RealLikeSCU
+from numerary import RealLike
 from numerary.bt import beartype
 from numerary.types import __ceil__, __floor__, __trunc__
 
@@ -37,11 +37,6 @@ __all__ = ()
 
 @beartype
 def real_like_func(arg: RealLike):
-    assert isinstance(arg, RealLike), f"{arg!r}"
-
-
-@beartype
-def real_like_func_t(arg: RealLikeSCU):
     assert isinstance(arg, RealLike), f"{arg!r}"
 
 
@@ -121,7 +116,6 @@ def test_real_like_beartype() -> None:
         WangernumbRegistered(-273.15),
     ):
         real_like_func(cast(RealLike, good_val))
-        real_like_func_t(cast(RealLikeSCU, good_val))
 
     for bad_val in (
         complex(-273.15),
@@ -129,9 +123,6 @@ def test_real_like_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             real_like_func(cast(RealLike, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            real_like_func_t(cast(RealLikeSCU, bad_val))
 
 
 def test_real_like_numpy() -> None:
@@ -214,7 +205,6 @@ def test_real_like_numpy_beartype() -> None:
         numpy.float128(-273.15),
     ):
         real_like_func(cast(RealLike, good_val))
-        real_like_func_t(cast(RealLikeSCU, good_val))
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -223,9 +213,6 @@ def test_real_like_numpy_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             real_like_func(cast(RealLike, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            real_like_func_t(cast(RealLikeSCU, bad_val))
 
 
 def test_real_like_sympy() -> None:
@@ -276,4 +263,3 @@ def test_real_like_sympy_beartype() -> None:
         sympy.symbols("x"),
     ):
         real_like_func(cast(RealLike, good_val))
-        real_like_func_t(cast(RealLikeSCU, good_val))

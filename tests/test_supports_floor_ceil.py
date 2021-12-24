@@ -16,7 +16,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsFloorCeil, SupportsFloorCeilSCU, __ceil__, __floor__
+from numerary.types import SupportsFloorCeil, __ceil__, __floor__
 
 from .numberwang import (
     Numberwang,
@@ -37,11 +37,6 @@ __all__ = ()
 
 @beartype
 def supports_floor_ceil_func(arg: SupportsFloorCeil):
-    assert isinstance(arg, SupportsFloorCeil), f"{arg!r}"
-
-
-@beartype
-def supports_floor_ceil_func_t(arg: SupportsFloorCeilSCU):
     assert isinstance(arg, SupportsFloorCeil), f"{arg!r}"
 
 
@@ -119,7 +114,6 @@ def test_floor_ceil_beartype() -> None:
         WangernumbRegistered(-273.15),
     ):
         supports_floor_ceil_func(cast(SupportsFloorCeil, good_val))
-        supports_floor_ceil_func_t(cast(SupportsFloorCeilSCU, good_val))
 
     for bad_val in (
         complex(-273.15),
@@ -127,9 +121,6 @@ def test_floor_ceil_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_floor_ceil_func(cast(SupportsFloorCeil, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_floor_ceil_func_t(cast(SupportsFloorCeilSCU, bad_val))
 
 
 def test_floor_ceil_numpy() -> None:
@@ -206,9 +197,6 @@ def test_floor_ceil_numpy_beartype() -> None:
         with pytest.raises(roar.BeartypeException):
             supports_floor_ceil_func(cast(SupportsFloorCeil, bad_val))
 
-        with pytest.raises(roar.BeartypeException):
-            supports_floor_ceil_func_t(cast(SupportsFloorCeilSCU, bad_val))
-
 
 def test_floor_ceil_sympy() -> None:
     sympy = pytest.importorskip("sympy", reason="requires sympy")
@@ -242,11 +230,7 @@ def test_floor_ceil_sympy_beartype() -> None:
         sympy.Rational(-27315, 100),
     ):
         supports_floor_ceil_func(cast(SupportsFloorCeil, good_val))
-        supports_floor_ceil_func_t(cast(SupportsFloorCeilSCU, good_val))
 
     for bad_val in (sympy.symbols("x"),):
         with pytest.raises(roar.BeartypeException):
             supports_floor_ceil_func(cast(SupportsFloorCeil, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_floor_ceil_func_t(cast(SupportsFloorCeilSCU, bad_val))

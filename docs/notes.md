@@ -15,10 +15,12 @@
 
 # ``numerary`` release notes
 
-## [0.2.2](https://github.com/posita/numerary/releases/tag/v0.2.2)
+## [0.3.0](https://github.com/posita/numerary/releases/tag/v0.3.0)
 
-* Removes misleading advice that SCUs offer a performance benefit over merely using caching protocols.
-  They *could* under very specific circumstances (where ``numerary`` probably isn’t going to be helpful anyway), but not always, and probably aren’t worth the trouble if performance is the only concern.
+* ~~Removes misleading advice that SCUs offer a performance benefit over merely using caching protocols.
+  They *could* under very specific circumstances (where ``numerary`` probably isn’t going to be helpful anyway), but not always, and probably aren’t worth the trouble if performance is the only concern.~~
+  Actually, removes SCUs altogether and documents a surgical example for those rare occasions where it might be needed.
+* Finally removes ``SupportsNumeratorDenominatorProperties`` as promised.
 
 ## [0.2.1](https://github.com/posita/numerary/releases/tag/v0.2.1)
 

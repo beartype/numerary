@@ -15,12 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import (
-    SupportsIntegralOps,
-    SupportsIntegralOpsSCU,
-    SupportsIntegralPow,
-    SupportsIntegralPowSCU,
-)
+from numerary.types import SupportsIntegralOps, SupportsIntegralPow
 
 from .numberwang import (
     Numberwang,
@@ -45,17 +40,7 @@ def supports_integral_ops_func(arg: SupportsIntegralOps):
 
 
 @beartype
-def supports_integral_ops_func_t(arg: SupportsIntegralOpsSCU):
-    assert isinstance(arg, SupportsIntegralOps), f"{arg!r}"
-
-
-@beartype
 def supports_integral_pow_func(arg: SupportsIntegralPow):
-    assert isinstance(arg, SupportsIntegralPow), f"{arg!r}"
-
-
-@beartype
-def supports_integral_pow_func_t(arg: SupportsIntegralPowSCU):
     assert isinstance(arg, SupportsIntegralPow), f"{arg!r}"
 
 
@@ -138,9 +123,7 @@ def test_supports_integral_ops_pow_beartype() -> None:
         NumberwangRegistered(-273),
     ):
         supports_integral_ops_func(cast(SupportsIntegralOps, good_val))
-        supports_integral_ops_func_t(cast(SupportsIntegralOpsSCU, good_val))
         supports_integral_pow_func(cast(SupportsIntegralPow, good_val))
-        supports_integral_pow_func_t(cast(SupportsIntegralPowSCU, good_val))
 
     for bad_val in (
         -273.15,
@@ -154,9 +137,6 @@ def test_supports_integral_ops_pow_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_integral_ops_func(cast(SupportsIntegralOps, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_integral_ops_func_t(cast(SupportsIntegralOpsSCU, bad_val))
 
 
 def test_supports_integral_ops_pow_numpy() -> None:
@@ -264,9 +244,7 @@ def test_supports_integral_ops_pow_numpy_beartype() -> None:
         numpy.int64(-273),
     ):
         supports_integral_ops_func(cast(SupportsIntegralOps, good_val))
-        supports_integral_ops_func_t(cast(SupportsIntegralOpsSCU, good_val))
         supports_integral_pow_func(cast(SupportsIntegralPow, good_val))
-        supports_integral_pow_func_t(cast(SupportsIntegralPowSCU, good_val))
 
     for bad_val in (
         numpy.float16(-1.8),
@@ -279,9 +257,6 @@ def test_supports_integral_ops_pow_numpy_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_integral_ops_func(cast(SupportsIntegralOps, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_integral_ops_func_t(cast(SupportsIntegralOpsSCU, bad_val))
 
 
 def test_supports_integral_ops_pow_sympy() -> None:
@@ -327,16 +302,11 @@ def test_supports_integral_ops_pow_sympy_beartype() -> None:
 
     for good_val in (sympy.Integer(-273),):
         supports_integral_ops_func(cast(SupportsIntegralOps, good_val))
-        supports_integral_ops_func_t(cast(SupportsIntegralOpsSCU, good_val))
         supports_integral_pow_func(cast(SupportsIntegralPow, good_val))
-        supports_integral_pow_func_t(cast(SupportsIntegralPowSCU, good_val))
 
     for lying_val in (sympy.symbols("x"),):
         with pytest.raises(roar.BeartypeException):
             supports_integral_ops_func(cast(SupportsIntegralOps, lying_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_integral_ops_func_t(cast(SupportsIntegralOpsSCU, lying_val))
 
     for bad_val in (
         sympy.Float(-273.15),
@@ -344,6 +314,3 @@ def test_supports_integral_ops_pow_sympy_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_integral_ops_func(cast(SupportsIntegralOps, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_integral_ops_func_t(cast(SupportsIntegralOpsSCU, bad_val))

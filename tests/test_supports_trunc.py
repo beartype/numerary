@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsTrunc, SupportsTruncSCU, __trunc__
+from numerary.types import SupportsTrunc, __trunc__
 
 from .numberwang import (
     Numberwang,
@@ -36,11 +36,6 @@ __all__ = ()
 
 @beartype
 def supports_trunc_func(arg: SupportsTrunc):
-    assert isinstance(arg, SupportsTrunc), f"{arg!r}"
-
-
-@beartype
-def supports_trunc_func_t(arg: SupportsTruncSCU):
     assert isinstance(arg, SupportsTrunc), f"{arg!r}"
 
 
@@ -108,7 +103,6 @@ def test_trunc_beartype() -> None:
         WangernumbRegistered(-273.15),
     ):
         supports_trunc_func(cast(SupportsTrunc, good_val))
-        supports_trunc_func_t(cast(SupportsTruncSCU, good_val))
 
     for bad_val in (
         complex(-273.15),
@@ -116,9 +110,6 @@ def test_trunc_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_trunc_func(cast(SupportsTrunc, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_trunc_func_t(cast(SupportsTruncSCU, bad_val))
 
 
 def test_trunc_numpy() -> None:
@@ -174,7 +165,6 @@ def test_trunc_numpy_beartype() -> None:
     # other numpy.float* types
     for good_val in (numpy.float64(-273.15),):
         supports_trunc_func(cast(SupportsTrunc, good_val))
-        supports_trunc_func_t(cast(SupportsTruncSCU, good_val))
 
     for lying_val in (
         numpy.uint8(2),
@@ -192,9 +182,6 @@ def test_trunc_numpy_beartype() -> None:
         with pytest.raises(roar.BeartypeException):
             supports_trunc_func(cast(SupportsTrunc, lying_val))
 
-        with pytest.raises(AssertionError):  # gets past beartype
-            supports_trunc_func_t(cast(SupportsTruncSCU, lying_val))
-
     for bad_val in (
         numpy.csingle(-273.15),
         numpy.cdouble(-273.15),
@@ -202,9 +189,6 @@ def test_trunc_numpy_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_trunc_func(cast(SupportsTrunc, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_trunc_func_t(cast(SupportsTruncSCU, bad_val))
 
 
 def test_trunc_sympy() -> None:
@@ -242,8 +226,6 @@ def test_trunc_sympy_beartype() -> None:
         sympy.Float(-273.15),
     ):
         supports_trunc_func(cast(SupportsTrunc, good_val))
-        supports_trunc_func_t(cast(SupportsTruncSCU, good_val))
 
     for lying_val in (sympy.symbols("x"),):
         supports_trunc_func(cast(SupportsTrunc, good_val))
-        supports_trunc_func_t(cast(SupportsTruncSCU, good_val))

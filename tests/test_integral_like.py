@@ -14,7 +14,7 @@ from typing import cast
 
 import pytest
 
-from numerary import IntegralLike, IntegralLikeSCU
+from numerary import IntegralLike
 from numerary.bt import beartype
 from numerary.types import __ceil__, __floor__, __trunc__
 
@@ -37,11 +37,6 @@ __all__ = ()
 
 @beartype
 def integral_like_func(arg: IntegralLike):
-    assert isinstance(arg, IntegralLike)
-
-
-@beartype
-def integral_like_func_t(arg: IntegralLikeSCU):
     assert isinstance(arg, IntegralLike)
 
 
@@ -119,7 +114,6 @@ def test_integral_like_beartype() -> None:
         NumberwangRegistered(-273),
     ):
         integral_like_func(cast(IntegralLike, good_val))
-        integral_like_func_t(cast(IntegralLikeSCU, good_val))
 
     for bad_val in (
         -273.15,
@@ -133,9 +127,6 @@ def test_integral_like_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             integral_like_func(cast(IntegralLike, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            integral_like_func_t(cast(IntegralLikeSCU, bad_val))
 
 
 def test_integral_like_numpy() -> None:
@@ -214,7 +205,6 @@ def test_integral_like_numpy_beartype() -> None:
         numpy.int64(-273),
     ):
         integral_like_func(cast(IntegralLike, good_val))
-        integral_like_func_t(cast(IntegralLikeSCU, good_val))
 
     for bad_val in (
         numpy.float16(-1.8),
@@ -227,9 +217,6 @@ def test_integral_like_numpy_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             integral_like_func(cast(IntegralLike, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            integral_like_func_t(cast(IntegralLikeSCU, bad_val))
 
 
 def test_integral_like_sympy() -> None:
@@ -276,7 +263,6 @@ def test_integral_like_sympy_beartype() -> None:
 
     for good_val in (sympy.Integer(-273),):
         integral_like_func(cast(IntegralLike, good_val))
-        integral_like_func_t(cast(IntegralLikeSCU, good_val))
 
     for bad_val in (
         sympy.Float(-273.15),
@@ -286,6 +272,3 @@ def test_integral_like_sympy_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             integral_like_func(cast(IntegralLike, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            integral_like_func_t(cast(IntegralLikeSCU, bad_val))

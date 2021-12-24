@@ -15,7 +15,6 @@ import traceback
 from abc import abstractmethod
 from decimal import Decimal
 from fractions import Fraction
-from numbers import Complex, Integral, Rational, Real
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -34,9 +33,7 @@ from .bt import beartype
 
 __all__ = (
     "IntegralLike",
-    "IntegralLikeSCU",
     "RealLike",
-    "RealLikeSCU",
 )
 
 r"""
@@ -127,13 +124,6 @@ if TYPE_CHECKING:
     from abc import ABCMeta as _ProtocolMeta
 else:
     _ProtocolMeta = type(Protocol)
-
-# TODO(posita): Once <https://github.com/python/typeshed/pull/6394> is released,
-# consider adding something this above instead:
-# if sys.version_info >= (3, 8):
-#     from typing import _ProtocolMeta
-# else:
-#     from typing_extensions import _ProtocolMeta
 
 
 class CachingProtocolMeta(_ProtocolMeta):
@@ -376,7 +366,6 @@ class SupportsAbs(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsAbs)
-SupportsAbsSCU = Union[int, float, bool, Complex, SupportsAbs]
 
 
 @runtime_checkable
@@ -395,7 +384,6 @@ class SupportsComplex(
 
 
 _assert_isinstance(Decimal, Fraction, target_t=SupportsComplex)
-SupportsComplexSCU = Union[Complex, SupportsComplex]
 
 
 @runtime_checkable
@@ -414,7 +402,6 @@ class SupportsFloat(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloat)
-SupportsFloatSCU = Union[int, float, bool, Real, SupportsFloat]
 
 
 @runtime_checkable
@@ -434,7 +421,6 @@ class SupportsInt(
 
 
 _assert_isinstance(int, float, bool, target_t=SupportsInt)
-SupportsIntSCU = Union[int, float, bool, Integral, SupportsInt]
 
 
 @runtime_checkable
@@ -453,7 +439,6 @@ class SupportsIndex(
 
 
 _assert_isinstance(int, bool, target_t=SupportsIndex)
-SupportsIndexSCU = Union[int, bool, Integral, SupportsIndex]
 
 
 @runtime_checkable
@@ -473,7 +458,6 @@ class SupportsRound(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRound)
-SupportsRoundSCU = Union[int, float, bool, Real, SupportsRound]
 
 
 @runtime_checkable
@@ -538,7 +522,6 @@ class SupportsConjugate(
 _assert_isinstance(
     int, float, bool, complex, Decimal, Fraction, target_t=SupportsConjugate
 )
-SupportsConjugateSCU = Union[int, float, bool, complex, Complex, SupportsConjugate]
 
 
 @runtime_checkable
@@ -601,7 +584,6 @@ class SupportsRealImag(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealImag)
-SupportsRealImagSCU = Union[int, float, bool, Complex, SupportsRealImag]
 
 
 @runtime_checkable
@@ -674,11 +656,6 @@ fr"""
 """
 assert SupportsRealImagMixedU.__args__ == SupportsRealImagMixedT  # type: ignore [attr-defined]
 
-SupportsRealImagMixedSCU = Union[
-    SupportsRealImagSCU,
-    SupportsRealImagAsMethod,
-]
-
 
 @runtime_checkable
 class _SupportsTrunc(Protocol):
@@ -741,7 +718,6 @@ class SupportsTrunc(
 
 
 _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
-SupportsTruncSCU = Union[int, float, bool, Real, SupportsTrunc]
 
 
 @runtime_checkable
@@ -827,7 +803,6 @@ if sys.version_info < (3, 9):
     SupportsFloorCeil.includes(float)
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloorCeil)
-SupportsFloorCeilSCU = Union[int, float, bool, Real, SupportsFloorCeil]
 
 
 @runtime_checkable
@@ -898,7 +873,6 @@ class SupportsDivmod(
 # complex defines these methods, but only to raise exceptions
 SupportsDivmod.excludes(complex)
 _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsDivmod)
-SupportsDivmodSCU = Union[int, float, bool, Real, SupportsDivmod]
 
 
 @runtime_checkable
@@ -968,16 +942,6 @@ class SupportsNumeratorDenominator(
 
 
 _assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominator)
-SupportsNumeratorDenominatorSCU = Union[
-    int,
-    bool,
-    Rational,
-    SupportsNumeratorDenominator,
-]
-
-# TODO(posita): For limited backward compatibility (will be removed in next version)
-SupportsNumeratorDenominatorProperties = SupportsNumeratorDenominator
-SupportsNumeratorDenominatorPropertiesSCU = SupportsNumeratorDenominatorSCU
 
 
 @runtime_checkable
@@ -1032,11 +996,6 @@ fr"""
 {SupportsNumeratorDenominatorMixedT!r}
 """
 assert SupportsNumeratorDenominatorMixedU.__args__ == SupportsNumeratorDenominatorMixedT  # type: ignore [attr-defined]
-
-SupportsNumeratorDenominatorMixedSCU = Union[
-    SupportsNumeratorDenominatorSCU,
-    SupportsNumeratorDenominatorMethods,
-]
 
 
 @runtime_checkable
@@ -1136,7 +1095,6 @@ class SupportsComplexOps(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexOps)
-SupportsComplexOpsSCU = Union[int, float, bool, Complex, SupportsComplexOps]
 
 
 @runtime_checkable
@@ -1204,7 +1162,6 @@ class SupportsComplexPow(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexPow)
-SupportsComplexPowSCU = Union[int, float, bool, Complex, SupportsComplexPow]
 
 
 @runtime_checkable
@@ -1298,7 +1255,6 @@ class SupportsRealOps(
 # complex defines these methods, but only to raise exceptions
 SupportsRealOps.excludes(complex)
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealOps)
-SupportsRealOpsSCU = Union[int, float, bool, Real, SupportsRealOps]
 
 
 @runtime_checkable
@@ -1398,7 +1354,6 @@ class SupportsIntegralOps(
 
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralOps)
-SupportsIntegralOpsSCU = Union[int, bool, Integral, SupportsIntegralOps]
 
 
 @runtime_checkable
@@ -1463,7 +1418,6 @@ class SupportsIntegralPow(
 
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralPow)
-SupportsIntegralPowSCU = Union[int, bool, Integral, SupportsIntegralPow]
 
 
 @runtime_checkable
@@ -1527,7 +1481,6 @@ class RealLike(
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=RealLike)
-RealLikeSCU = Union[int, float, bool, Real, RealLike]
 
 
 @runtime_checkable
@@ -1594,12 +1547,6 @@ class RationalLike(
 
 
 _assert_isinstance(int, bool, Fraction, target_t=RationalLike)
-RationalLikeSCU = Union[
-    int,
-    bool,
-    Rational,
-    RationalLike,
-]
 
 
 @runtime_checkable
@@ -1677,11 +1624,6 @@ RationalLikeMethods.__doc__ += fr"""
     ```
 """
 
-RationalLikeMixedSCU = Union[
-    RationalLikeSCU,
-    RationalLikeMethods,
-]
-
 
 @runtime_checkable
 class IntegralLike(
@@ -1754,7 +1696,6 @@ class IntegralLike(
 
 
 _assert_isinstance(int, bool, target_t=IntegralLike)
-IntegralLikeSCU = Union[int, bool, Integral, IntegralLike]
 
 
 # ---- Functions -----------------------------------------------------------------------
@@ -2053,9 +1994,9 @@ try:
     import numpy
 except ImportError:
     pass
-except Exception:
+except Exception as exc:
     logging.getLogger(__name__).warning(
-        "unexpected error when attempting to load numpy"
+        f"unexpected error when attempting to load numpy ({exc})"
     )
     logging.getLogger(__name__).debug(traceback.format_exc())
 else:
@@ -2097,9 +2038,9 @@ try:
     import sympy
 except ImportError:
     pass
-except Exception:
+except Exception as exc:
     logging.getLogger(__name__).warning(
-        "unexpected error when attempting to load sympy"
+        f"unexpected error when attempting to load sympy ({exc})"
     )
     logging.getLogger(__name__).debug(traceback.format_exc())
 else:

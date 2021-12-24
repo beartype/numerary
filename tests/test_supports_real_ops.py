@@ -15,7 +15,7 @@ from typing import cast
 import pytest
 
 from numerary.bt import beartype
-from numerary.types import SupportsRealOps, SupportsRealOpsSCU
+from numerary.types import SupportsRealOps
 
 from .numberwang import (
     Numberwang,
@@ -36,11 +36,6 @@ __all__ = ()
 
 @beartype
 def supports_real_ops_func(arg: SupportsRealOps):
-    assert isinstance(arg, SupportsRealOps), f"{arg!r}"
-
-
-@beartype
-def supports_real_ops_func_t(arg: SupportsRealOpsSCU):
     assert isinstance(arg, SupportsRealOps), f"{arg!r}"
 
 
@@ -109,7 +104,6 @@ def test_supports_real_ops_beartype() -> None:
         WangernumbRegistered(-273.15),
     ):
         supports_real_ops_func(cast(SupportsRealOps, good_val))
-        supports_real_ops_func_t(cast(SupportsRealOpsSCU, good_val))
 
     for bad_val in (
         complex(-273.15),
@@ -117,9 +111,6 @@ def test_supports_real_ops_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_real_ops_func(cast(SupportsRealOps, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_real_ops_func_t(cast(SupportsRealOpsSCU, bad_val))
 
 
 def test_supports_real_ops_numpy() -> None:
@@ -187,7 +178,6 @@ def test_supports_real_ops_numpy_beartype() -> None:
         numpy.float128(-273.15),
     ):
         supports_real_ops_func(cast(SupportsRealOps, good_val))
-        supports_real_ops_func_t(cast(SupportsRealOpsSCU, good_val))
 
     for bad_val in (
         numpy.csingle(-273.15),
@@ -196,9 +186,6 @@ def test_supports_real_ops_numpy_beartype() -> None:
     ):
         with pytest.raises(roar.BeartypeException):
             supports_real_ops_func(cast(SupportsRealOps, bad_val))
-
-        with pytest.raises(roar.BeartypeException):
-            supports_real_ops_func_t(cast(SupportsRealOpsSCU, bad_val))
 
 
 def test_supports_real_ops_sympy() -> None:
@@ -236,4 +223,3 @@ def test_supports_real_ops_sympy_beartype() -> None:
         sympy.symbols("x"),
     ):
         supports_real_ops_func(cast(SupportsRealOps, good_val))
-        supports_real_ops_func_t(cast(SupportsRealOpsSCU, good_val))
