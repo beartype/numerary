@@ -223,7 +223,7 @@ First, let’s get a baseline.
 ```
 
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/latest/docs/perf_rational_baseline.ipy"><code>perf_rational_baseline.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v{{ __vers_str__ }}/docs/perf_rational_baseline.ipy"><code>perf_rational_baseline.ipy</code></a></summary>
 
 ``` python
 --8<-- "docs/perf_rational_baseline.ipy"
@@ -237,7 +237,7 @@ Now let’s compare that with our two-property protocol.
 ```
 
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/latest/docs/perf_rational_protocol.ipy"><code>perf_rational_protocol.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v{{ __vers_str__ }}/docs/perf_rational_protocol.ipy"><code>perf_rational_protocol.ipy</code></a></summary>
 
 ``` python
 --8<-- "docs/perf_rational_protocol.ipy"
@@ -253,7 +253,7 @@ How much worse would it be if we had enumerated all the dunder methods? 😰
 ```
 
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/latest/docs/perf_rational_big_protocol.ipy"><code>perf_rational_big_protocol.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v{{ __vers_str__ }}/docs/perf_rational_big_protocol.ipy"><code>perf_rational_big_protocol.ipy</code></a></summary>
 
 ``` python
 --8<-- "docs/perf_rational_big_protocol.ipy"

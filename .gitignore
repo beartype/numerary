@@ -11,6 +11,7 @@
 /.tox/
 /build/
 /dist/
+/numerary/_version.py
 /site/
 /htmlcov/
 .dmypy.json
