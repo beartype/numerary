@@ -34,10 +34,6 @@ markdown_extensions:
   - admonition
   - def_list
   - footnotes
-  # ---- BEGIN MathJax config ----
-  - pymdownx.arithmatex:
-      generic: true
-  # ----- END MathJax config -----
   - pymdownx.emoji
   - pymdownx.highlight:
       linenums: true
@@ -69,7 +65,7 @@ plugins:
   - search
 
 theme:
-  name: "material"  # required by arithmatex and mkdocstrings
+  name: "material"  # required by mkdocstrings
   features:
     - content.code.annotate
     - navigation.expand

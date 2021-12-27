@@ -584,7 +584,7 @@ It has the following runtime dependencies:
 * [``beartype``](https://pypi.org/project/beartype/) for yummy runtime type-checking goodness (0.8+)
   [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
-If you use ``beartype`` for type-checking your code that interacts with ``numerary``, but don’t want ``numerary`` to use it internally (e.g., for some strange reason), set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^6] value before ``numerary`` is loaded.
+If you use ``beartype`` for type-checking your code, but don’t want ``numerary`` to use it internally, set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^6] value before ``numerary`` is loaded.
 
 [^6]:
 
