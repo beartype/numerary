@@ -140,7 +140,7 @@ class CachingProtocolMeta(_ProtocolMeta):
 
     Note that one can make an existing protocol a caching protocol through inheritance,
     but in order to be ``@runtime_checkable``, the parent protocol also has to be
-    @runtime_checkable.
+    ``@runtime_checkable``.
 
     ``` python
     >>> from abc import abstractmethod

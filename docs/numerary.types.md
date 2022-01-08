@@ -24,7 +24,7 @@
     [Feedback, suggestions, and contributions](contrib.md) are desperately appreciated.
 
 In addition to the following protocols and helper functions, ``numerary.types`` also resolves importing ``Annotated``, ``Protocol``, and ``runtime_checkable`` from the best available source.
-This can be helpful if you need to support Python versions prior to 3.9, but don’t want to take a runtime dependency on ``typing_extensions`` unless needed.
+This can be helpful if you need to support Python versions prior to 3.9, but don’t want to make a conditional import of ``typing_extensions`` everywhere.
 Instead of doing this all over the place …
 
 ``` python
