@@ -569,6 +569,7 @@ See the [hacking quick-start](https://posita.github.io/numerary/0.3/contrib/#hac
 ## Customers [![``numerary``-encumbered](https://raw.githubusercontent.com/posita/numerary/v0.3.0/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
 
 * [``dyce``](https://github.com/posita/dyce/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
+* [👻 ``phantom-types``](https://github.com/antonagestam/phantom-types) - predicates and other type constraints without runtime overhead
 * The next one could be _you_! 👋
 
 Do you have a project that suffers problems made slightly less annoying by ``numerary``?
