@@ -19,9 +19,7 @@ write_to = "numerary/_version.py"
 [tool.mypy]  # -------------------------------------------------------------------------
 
 check_untyped_defs = true
-# See <https://github.com/python/mypy/issues/10250#issuecomment-899187636>,
-# <https://github.com/python/mypy/issues/10310>, and
-# <https://github.com/python/mypy/issues/11825>
+# See <https://mypy.readthedocs.io/en/stable/config_file.html#confval-exclude>
 exclude = "(?x)( (^|/)build/ )"
 ignore_missing_imports = true
 strict_optional = true
