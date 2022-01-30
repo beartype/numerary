@@ -19,6 +19,7 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Dict,
+    Generic,
     Iterable,
     Optional,
     Set,
@@ -70,7 +71,10 @@ else:
     from typing_extensions import Protocol, _get_protocol_attrs, runtime_checkable
 
     @runtime_checkable
-    class _SupportsAbs(Protocol[_T_co]):
+    class _SupportsAbs(
+        Protocol,
+        Generic[_T_co],
+    ):
         __slots__: Union[str, Iterable[str]] = ()
 
         @abstractmethod
@@ -110,7 +114,10 @@ else:
             pass
 
     @runtime_checkable
-    class _SupportsRound(Protocol[_T_co]):
+    class _SupportsRound(
+        Protocol,
+        Generic[_T_co],
+    ):
         __slots__: Union[str, Iterable[str]] = ()
 
         @abstractmethod
@@ -352,7 +359,8 @@ def _assert_isinstance(*num_ts: type, target_t: type) -> None:
 @runtime_checkable
 class SupportsAbs(
     _SupportsAbs[_T_co],
-    Protocol[_T_co],
+    Protocol,
+    Generic[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
@@ -444,7 +452,8 @@ _assert_isinstance(int, bool, target_t=SupportsIndex)
 @runtime_checkable
 class SupportsRound(
     _SupportsRound[_T_co],
-    Protocol[_T_co],
+    Protocol,
+    Generic[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
@@ -806,7 +815,10 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloorCe
 
 
 @runtime_checkable
-class _SupportsDivmod(Protocol[_T_co]):
+class _SupportsDivmod(
+    Protocol,
+    Generic[_T_co],
+):
     r"""
     The raw, non-caching version of [``SupportsDivmod``][numerary.types.SupportsDivmod].
     """
@@ -824,7 +836,8 @@ class _SupportsDivmod(Protocol[_T_co]):
 @runtime_checkable
 class SupportsDivmod(
     _SupportsDivmod[_T_co],
-    Protocol[_T_co],
+    Protocol,
+    Generic[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
@@ -999,7 +1012,10 @@ assert SupportsNumeratorDenominatorMixedU.__args__ == SupportsNumeratorDenominat
 
 
 @runtime_checkable
-class _SupportsComplexOps(Protocol[_T_co]):
+class _SupportsComplexOps(
+    Protocol,
+    Generic[_T_co],
+):
     r"""
     The raw, non-caching version of
     [``SupportsComplexOps``][numerary.types.SupportsComplexOps].
@@ -1050,7 +1066,8 @@ class _SupportsComplexOps(Protocol[_T_co]):
 @runtime_checkable
 class SupportsComplexOps(
     _SupportsComplexOps[_T_co],
-    Protocol[_T_co],
+    Protocol,
+    Generic[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
@@ -1165,7 +1182,10 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplex
 
 
 @runtime_checkable
-class _SupportsRealOps(Protocol[_T_co]):
+class _SupportsRealOps(
+    Protocol,
+    Generic[_T_co],
+):
     r"""
     The raw, non-caching version of
     [``SupportsRealOps``][numerary.types.SupportsRealOps].
@@ -1208,7 +1228,8 @@ class _SupportsRealOps(Protocol[_T_co]):
 @runtime_checkable
 class SupportsRealOps(
     _SupportsRealOps[_T_co],
-    Protocol[_T_co],
+    Protocol,
+    Generic[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
@@ -1258,7 +1279,10 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealOps
 
 
 @runtime_checkable
-class _SupportsIntegralOps(Protocol[_T_co]):
+class _SupportsIntegralOps(
+    Protocol,
+    Generic[_T_co],
+):
     r"""
     The raw, non-caching version of
     [``SupportsIntegralOps``][numerary.types.SupportsIntegralOps].
@@ -1313,7 +1337,8 @@ class _SupportsIntegralOps(Protocol[_T_co]):
 @runtime_checkable
 class SupportsIntegralOps(
     _SupportsIntegralOps[_T_co],
-    Protocol[_T_co],
+    Protocol,
+    Generic[_T_co],
     metaclass=CachingProtocolMeta,
 ):
     r"""
@@ -1427,7 +1452,8 @@ class RealLike(
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
     SupportsComplexPow,
-    Protocol[_T_co],
+    Protocol,
+    Generic[_T_co],
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with reals. It
@@ -1452,7 +1478,8 @@ class RealLike(
       SupportsRealOps[T_co],
       SupportsComplexOps[T_co],
       SupportsComplexPow[T_co],
-      Protocol[T_co],
+      Protocol,
+      Generic[_T_co],
     ):
       pass
     ```
@@ -1491,7 +1518,8 @@ class RationalLike(
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
     SupportsComplexPow,
-    Protocol[_T_co],
+    Protocol,
+    Generic[_T_co],
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with rationals.
@@ -1518,7 +1546,8 @@ class RationalLike(
       SupportsRealOps[T_co],
       SupportsComplexOps[T_co],
       SupportsComplexPow[T_co],
-      Protocol[T_co],
+      Protocol,
+      Generic[_T_co],
     ):
       pass
     ```
@@ -1557,7 +1586,8 @@ class RationalLikeMethods(
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
     SupportsComplexPow,
-    Protocol[_T_co],
+    Protocol,
+    Generic[_T_co],
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with rationals.
@@ -1581,7 +1611,8 @@ class RationalLikeMethods(
       SupportsRealOps[T_co],
       SupportsComplexOps[T_co],
       SupportsComplexPow[T_co],
-      Protocol[T_co],
+      Protocol,
+      Generic[_T_co],
     ):
       pass
     ```
@@ -1635,7 +1666,8 @@ class IntegralLike(
     SupportsIntegralPow,
     SupportsRealOps[_T_co],
     SupportsComplexOps[_T_co],
-    Protocol[_T_co],
+    Protocol,
+    Generic[_T_co],
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with integrals.
@@ -1666,7 +1698,8 @@ class IntegralLike(
       SupportsIntegralPow[T_co],
       SupportsRealOps[T_co],
       SupportsComplexOps[T_co],
-      Protocol[T_co],
+      Protocol,
+      Generic[_T_co],
     ):
       pass
     ```
