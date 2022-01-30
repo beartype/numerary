@@ -57,6 +57,11 @@ Its author is even *awesomer*.[^1]
     I acknowledge that the subject of who is awesomer, beartype or the man who made it, is [hotly contested](https://github.com/beartype/beartype/issues/66#issuecomment-960495976).
 
 
+::: numerary._protocol.CachingProtocolMeta
+    rendering:
+      show_if_no_docstring: false
+      show_root_heading: true
+
 ::: numerary.types
     rendering:
       show_if_no_docstring: false
@@ -64,7 +69,6 @@ Its author is even *awesomer*.[^1]
       show_root_toc_entry: false
     selection:
       members:
-        - "CachingProtocolMeta"
         - "RationalLike"
         - "RationalLikeMethods"
         - "SupportsAbs"

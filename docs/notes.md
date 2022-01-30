@@ -49,9 +49,9 @@
 
 ## [0.1.0](https://github.com/posita/numerary/releases/tag/v0.1.0)
 
-* Adds [``CachingProtocolMeta.includes``][numerary.types.CachingProtocolMeta.includes],
-  [``CachingProtocolMeta.excludes``][numerary.types.CachingProtocolMeta.excludes], and
-  [``CachingProtocolMeta.reset_for``][numerary.types.CachingProtocolMeta.reset_for]
+* Adds [``CachingProtocolMeta.includes``][numerary._protocol.CachingProtocolMeta.includes],
+  [``CachingProtocolMeta.excludes``][numerary._protocol.CachingProtocolMeta.excludes], and
+  [``CachingProtocolMeta.reset_for``][numerary._protocol.CachingProtocolMeta.reset_for]
   cache override functions.
 * Retires ``…SCT`` tuples as unnecessary, especially in light of cache overrides.
   (Runtime ``isinstance`` protocol checking is fast enough.)
