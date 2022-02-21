@@ -9,12 +9,12 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import Iterable, Tuple, Union
 
 import pytest
+from beartype import beartype
+from beartype.typing import Iterable, Tuple, Union
 
 from numerary import IntegralLike, RealLike
-from numerary.bt import beartype
 from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
 
 __all__ = ()

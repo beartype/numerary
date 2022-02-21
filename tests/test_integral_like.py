@@ -10,12 +10,12 @@ from __future__ import annotations
 
 from decimal import Decimal
 from fractions import Fraction
-from typing import cast
 
 import pytest
+from beartype import beartype
+from beartype.typing import cast
 
 from numerary import IntegralLike
-from numerary.bt import beartype
 from numerary.types import __ceil__, __floor__, __trunc__
 
 from .numberwang import (

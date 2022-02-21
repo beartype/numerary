@@ -121,7 +121,7 @@ AssertionError
 For example, let’s say one wanted to ensure type compatibility with primitives that support both ``__abs__`` and ``__divmod__``.
 
 ``` python
->>> from typing import TypeVar
+>>> from beartype.typing import TypeVar
 >>> T_co = TypeVar("T_co", covariant=True)
 >>> from numerary.types import (
 ...   CachingProtocolMeta, Protocol, runtime_checkable,
@@ -186,7 +186,7 @@ False
 
 ``` python
 >>> from abc import abstractmethod
->>> from typing import Iterable, Union
+>>> from beartype.typing import Iterable, Union
 >>> from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
 
 >>> @runtime_checkable
@@ -292,7 +292,7 @@ Not very well, unfortunately, at least not on its own.
 ``Union``s allow a work-around.
 
 ``` python
->>> from typing import Union
+>>> from beartype.typing import Union
 >>> from numerary.types import SupportsFloorCeil, __floor__
 >>> SupportsFloorCeilU = Union[float, SupportsFloorCeil]
 
@@ -301,7 +301,7 @@ Not very well, unfortunately, at least not on its own.
 ...   assert isinstance(arg, SupportsFloorCeil)
 ...   return __floor__(arg)
 
->>> my_floor_func(float(1.2))  # works in 3.7+
+>>> my_floor_func(float(1.2))  # works in 3.8+
 1
 
 ```
@@ -546,23 +546,20 @@ Alternately, you can download [the source](https://github.com/posita/numerary) a
 
 ``numerary`` requires a relatively modern version of Python:
 
-* [CPython](https://www.python.org/) (3.7+)
-* [PyPy](http://pypy.org/) (CPython 3.7+ compatible)
+* [CPython](https://www.python.org/) (3.8+)
+* [PyPy](http://pypy.org/) (CPython 3.8+ compatible)
 
 It has the following runtime dependencies:
 
 * [``typing-extensions``](https://pypi.org/project/typing-extensions/) (with Python <3.9)
-
-``numerary`` will opportunistically use the following, if available at runtime:
-
-* [``beartype``](https://pypi.org/project/beartype/) for yummy runtime type-checking goodness (0.8+)
+* [``beartype``](https://pypi.org/project/beartype/) for caching protocols (0.10.1+)
   [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
-If you use ``beartype`` for type-checking your code, but don’t want ``numerary`` to use it internally, set the ``NUMERARY_BEARTYPE`` environment variable to a falsy[^6] value before ``numerary`` is loaded.
+``numerary`` will not use ``beartype`` internally unless the ``NUMERARY_BEARTYPE`` environment variable is set to a truthy[^6] value before ``numerary`` is loaded.
 
 [^6]:
 
-    I.E., one of: ``0``, ``off``, ``f``, ``false``, and ``no``.
+    I.E., one of: ``1``, ``on``, ``t``, ``true``, and ``yes``.
 
 See the [hacking quick-start](https://posita.github.io/numerary/0.3/contrib/#hacking-quick-start) for additional development and testing dependencies.
 

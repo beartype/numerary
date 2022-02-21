@@ -36,7 +36,9 @@ from operator import (
     __truediv__,
     __xor__,
 )
-from typing import Iterable, Optional, Union, overload
+from typing import overload
+
+from beartype.typing import Iterable, Optional, Union
 
 from numerary.bt import beartype
 from numerary.types import SupportsInt
@@ -119,7 +121,7 @@ class NumberwangBase:
         return hash((type(self).__name__, self.val))
 
     @overload
-    def __add__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
+    def __add__(self, other: _IntegralT) -> _IntegralT:  # type: ignore[misc]
         ...
 
     @overload

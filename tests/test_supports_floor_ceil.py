@@ -11,11 +11,11 @@ from __future__ import annotations
 import sys
 from decimal import Decimal
 from fractions import Fraction
-from typing import cast
 
 import pytest
+from beartype import beartype
+from beartype.typing import cast
 
-from numerary.bt import beartype
 from numerary.types import SupportsFloorCeil, __ceil__, __floor__
 
 from .numberwang import (

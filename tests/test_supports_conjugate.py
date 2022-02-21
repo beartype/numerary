@@ -10,11 +10,11 @@ from __future__ import annotations
 
 from decimal import Decimal
 from fractions import Fraction
-from typing import cast
 
 import pytest
+from beartype import beartype
+from beartype.typing import cast
 
-from numerary.bt import beartype
 from numerary.types import SupportsConjugate
 
 from .numberwang import (

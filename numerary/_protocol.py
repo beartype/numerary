@@ -8,12 +8,13 @@
 
 from __future__ import annotations
 
-import sys
-from abc import abstractmethod
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any, Dict, Iterable, Set, Tuple, Type, TypeVar, Union
 
-__all__ = ("CachingProtocolMeta",)
+from beartype.typing import TYPE_CHECKING, Any, Dict
+from beartype.typing import Protocol as _BeartypeCachingProtocol
+from beartype.typing import Set, Tuple, Type, TypeVar
+
+__all__ = ("CachingProtocolMeta", "Protocol")
 
 
 # ---- Types ---------------------------------------------------------------------------
@@ -22,195 +23,29 @@ __all__ = ("CachingProtocolMeta",)
 _T_co = TypeVar("_T_co", covariant=True)
 _TT = TypeVar("_TT", bound="type")
 
-if sys.version_info >= (3, 8):
-    from typing import _get_protocol_attrs  # type: ignore [attr-defined]
-    from typing import (
-        Protocol,
-        SupportsAbs,
-        SupportsComplex,
-        SupportsFloat,
-        SupportsIndex,
-        SupportsInt,
-        SupportsRound,
-        runtime_checkable,
-    )
-else:
-    from typing_extensions import Protocol, _get_protocol_attrs, runtime_checkable
-
-    @runtime_checkable
-    class SupportsAbs(Protocol[_T_co]):
-        __slots__: Union[str, Iterable[str]] = ()
-
-        @abstractmethod
-        def __abs__(self) -> _T_co:
-            pass
-
-    @runtime_checkable
-    class SupportsComplex(Protocol):
-        __slots__: Union[str, Iterable[str]] = ()
-
-        @abstractmethod
-        def __complex__(self) -> complex:
-            pass
-
-    @runtime_checkable
-    class SupportsFloat(Protocol):
-        __slots__: Union[str, Iterable[str]] = ()
-
-        @abstractmethod
-        def __float__(self) -> float:
-            pass
-
-    @runtime_checkable
-    class SupportsIndex(Protocol):
-        __slots__: Union[str, Iterable[str]] = ()
-
-        @abstractmethod
-        def __index__(self) -> int:
-            pass
-
-    @runtime_checkable
-    class SupportsInt(Protocol):
-        __slots__: Union[str, Iterable[str]] = ()
-
-        @abstractmethod
-        def __int__(self) -> int:
-            pass
-
-    @runtime_checkable
-    class SupportsRound(Protocol[_T_co]):
-        __slots__: Union[str, Iterable[str]] = ()
-
-        @abstractmethod
-        def __round__(self, ndigits: int = 0) -> _T_co:
-            pass
-
 
 if TYPE_CHECKING:
     # Warning: Deep typing voodoo ahead. See
     # <https://github.com/python/mypy/issues/11614>.
-    from abc import ABCMeta as _ProtocolMeta
+    from abc import ABCMeta as _BeartypeCachingProtocolMeta
 else:
-    _ProtocolMeta = type(Protocol)
+    _BeartypeCachingProtocolMeta = type(_BeartypeCachingProtocol)
 
 
-class _CachingProtocolMeta(_ProtocolMeta):
+class CachingProtocolMeta(_BeartypeCachingProtocolMeta):
+    # TODO(posita): Add more precise link to beartype.typing.Protocol documentation once
+    # it becomes available.
     r"""
-    TODO
-    """
-
-    _abc_inst_check_cache: Dict[Type, bool]
-
-    def __new__(
-        mcls: Type[_TT],
-        name: str,
-        bases: Tuple[Type, ...],
-        namespace: Dict[str, Any],
-        **kw: Any,
-    ) -> _TT:
-        # See <https://github.com/python/mypy/issues/9282>
-        cls = super().__new__(mcls, name, bases, namespace, **kw)  # type: ignore [misc]
-
-        # This is required because, despite deriving from typing.Protocol, our
-        # redefinition below gets its _is_protocol class member set to False. It being
-        # True is required for compatibility with @runtime_checkable. So we lie to tell
-        # the truth.
-        cls._is_protocol = True
-
-        # Prefixing this class member with "_abc_" is necessary to prevent it from being
-        # considered part of the Protocol. (See
-        # <https://github.com/python/cpython/blob/main/Lib/typing.py>.)
-        cls._abc_inst_check_cache = {}
-
-        return cls
-
-    def __instancecheck__(cls, inst: Any) -> bool:
-        try:
-            # This has to stay *super* tight! Even adding a mere assertion can add ~50%
-            # to the best case runtime!
-            return cls._abc_inst_check_cache[type(inst)]
-        except KeyError:
-            # If you're going to do *anything*, do it here. Don't touch the rest of this
-            # method if you can avoid it.
-            inst_t = type(inst)
-            bases_pass_muster = True
-
-            for base in cls.__bases__:
-                # TODO(posita): Checking names seems off to me. Is there a better way?
-                if base is cls or base.__name__ in ("Protocol", "Generic", "object"):
-                    continue
-
-                if not isinstance(inst, base):
-                    bases_pass_muster = False
-                    break
-
-            cls._abc_inst_check_cache[
-                inst_t
-            ] = bases_pass_muster and cls._check_only_my_attrs(inst)
-
-            return cls._abc_inst_check_cache[inst_t]
-
-    def _check_only_my_attrs(cls, inst: Any) -> bool:
-        attrs = set(cls.__dict__)
-        attrs.update(cls.__dict__.get("__annotations__", {}))
-        attrs.intersection_update(_get_protocol_attrs(cls))
-
-        for attr in attrs:
-            if not hasattr(inst, attr):
-                return False
-            elif callable(getattr(cls, attr, None)) and getattr(inst, attr) is None:
-                return False
-
-        return True
-
-
-class CachingProtocolMeta(_CachingProtocolMeta):
-    r"""
-    Stand-in for ``#!python typing.Protocol``’s base class that caches results of
-    ``#!python __instancecheck__``, (which is otherwise [really 🤬ing
-    expensive](https://github.com/python/mypy/issues/3186#issuecomment-885718629)).
-    (When this was introduced, it resulted in about a 5× performance increase for
-    [``dyce``](https://github.com/posita/dyce)’s unit tests, which was the only
-    benchmark I had at the time.) The downside is that this will yield unpredictable
-    results for objects whose methods don’t stem from any type (e.g., are assembled at
-    runtime). I don’t know of any real-world case where that would be true. We’ll jump
-    off that bridge when we come to it.
-
-    Note that one can make an existing protocol a caching protocol through inheritance,
-    but in order to be ``@runtime_checkable``, the parent protocol also has to be
-    ``@runtime_checkable``.
-
-    ``` python
-    >>> from abc import abstractmethod
-    >>> from numerary.types import Protocol, runtime_checkable
-
-    >>> @runtime_checkable
-    ... class _MyProtocol(Protocol):  # plain vanilla protocol
-    ...   @abstractmethod
-    ...   def myfunc(self, arg: int) -> str:
-    ...     pass
-
-    >>> @runtime_checkable  # redundant, but useful for documentation
-    ... class MyProtocol(
-    ...   _MyProtocol,
-    ...   Protocol,
-    ...   metaclass=CachingProtocolMeta,  # caching version
-    ... ):
-    ...   pass
-
-    >>> class MyImplementation:
-    ...   def myfunc(self, arg: int) -> str:
-    ...     return str(arg * -2 + 5)
-
-    >>> my_thing: MyProtocol = MyImplementation()
-    >>> isinstance(my_thing, MyProtocol)
-    True
-
-    ```
+    An augmented version of the [``#!python
+    beartype.typing.Protocol``](https://github.com/beartype/beartype) caching protocol
+    that allows for overriding runtime checks.
     """
 
     _abc_inst_check_cache_overridden: Dict[Type, bool]
     _abc_inst_check_cache_listeners: Set[CachingProtocolMeta]
+
+    # Defined in beartype.typing.Protocol from which we inherit
+    _abc_inst_check_cache: Dict[type, bool]
 
     def __new__(
         mcls: Type[_TT],
@@ -336,3 +171,7 @@ class CachingProtocolMeta(_CachingProtocolMeta):
             ):
                 del inheriting_cls._abc_inst_check_cache[inst_t]
                 del inheriting_cls._abc_inst_check_cache_overridden[inst_t]
+
+
+class Protocol(_BeartypeCachingProtocol, metaclass=CachingProtocolMeta):
+    pass

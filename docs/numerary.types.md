@@ -23,7 +23,7 @@
     I am working toward stability as quickly as possible, but be warned that future release may introduce incompatibilities or remove this package altogether.
     [Feedback, suggestions, and contributions](contrib.md) are desperately appreciated.
 
-In addition to the following protocols and helper functions, ``numerary.types`` also resolves importing ``Annotated``, ``Protocol``, and ``runtime_checkable`` from the best available source.
+Because ``numerary`` uses ``beartype`` in its implementation, you can use both to resolve importing ``Annotated``, ``Protocol``, and ``runtime_checkable`` from the best available source.
 This can be helpful if you need to support Python versions prior to 3.9, but don’t want to make a conditional import of ``typing_extensions`` everywhere.
 Instead of doing this all over the place …
 
@@ -37,17 +37,12 @@ except ImportError:
 … you can do this instead …
 
 ``` python
-from numerary.types import Annotated, Protocol, runtime_checkable
+from beartype.typing import Annotated, runtime_checkable
+from numerary.types import Protocol
 ```
 
 Bang.
 Done.
-
-Further, if you want to opportunistically take advantage of [``beartype``](https://github.com/beartype/beartype/) without imposing a strict runtime dependency, you can do this:
-
-``` python
-from numerary.bt import beartype  # will resolve to the identity decorator if beartype is unavailable at runtime
-```
 
 Which you should totally do, because ``beartype`` is *awesome*.
 Its author is even *awesomer*.[^1]
@@ -90,6 +85,7 @@ Its author is even *awesomer*.[^1]
         - "SupportsRealOps"
         - "SupportsIntegralOps"
         - "SupportsIntegralPow"
+        - "Protocol"
         - "real"
         - "imag"
         - "__pow__"

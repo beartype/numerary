@@ -15,6 +15,20 @@
 
 # ``numerary`` release notes
 
+## [0.4.0](https://github.com/posita/numerary/releases/tag/v0.4.0)
+
+* Now relies on ``#!python beartype.typing.Protocol`` as the underlying caching protocol implementation.
+  This means that ``beartype`` has emerged as ``numerary``’s sole runtime dependency.
+  (``numerary`` still layers on its own runtime override mechanism via [CachingProtocolMeta][numerary._protocol.CachingProtocolMeta], which derives from ``beartype``’s.)
+  It also means that ``numerary`` loses Python 3.7 support.
+
+  This decision was not made lightly.
+  ``numerary`` is intended as a temporary work-around.
+  It’s obsolescence will be something to celebrate.
+  Caching protocols, however, have much broader performance applications.
+  They deserve more.
+  ``beartype`` will provide what ``numerary`` was never meant to: a loving, stable, and permanent home.
+
 ## [0.3.0](https://github.com/posita/numerary/releases/tag/v0.3.0)
 
 * ~~Removes misleading advice that SCUs offer a performance benefit over merely using caching protocols.

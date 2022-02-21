@@ -8,12 +8,9 @@
 
 from __future__ import annotations
 
-import logging
 import os
-import sys
-import traceback
-import warnings
-from typing import TypeVar, cast
+
+from beartype.typing import Protocol, TypeVar, cast
 
 __all__ = ("beartype",)
 
@@ -22,11 +19,6 @@ __all__ = ("beartype",)
 
 
 _T = TypeVar("_T")
-
-if sys.version_info >= (3, 8):
-    from typing import Protocol
-else:
-    from typing_extensions import Protocol
 
 
 # ---- Functions -----------------------------------------------------------------------
@@ -46,37 +38,24 @@ class _DecoratorT(Protocol):
 
 beartype: _DecoratorT = identity
 
-_NUMERARY_BEARTYPE = os.environ.get("NUMERARY_BEARTYPE", "on")
+_NUMERARY_BEARTYPE = os.environ.get("NUMERARY_BEARTYPE", "no")
 _truthy = ("on", "t", "true", "yes")
 _falsy = ("off", "f", "false", "no")
-_use_beartype_if_available: bool
+_use_beartype_internally: bool
 
 try:
-    _use_beartype_if_available = bool(int(_NUMERARY_BEARTYPE))
+    _use_beartype_internally = bool(int(_NUMERARY_BEARTYPE))
 except ValueError:
     if _NUMERARY_BEARTYPE.lower() in _truthy:
-        _use_beartype_if_available = True
+        _use_beartype_internally = True
     elif _NUMERARY_BEARTYPE.lower() in _falsy:
-        _use_beartype_if_available = False
+        _use_beartype_internally = False
     else:
         raise EnvironmentError(
             f"""unrecognized value ({_NUMERARY_BEARTYPE}) for NUMERARY_BEARTYPE environment variable (should be "{'", "'.join(_truthy + _falsy)}", or an integer)"""
         )
 
-if _use_beartype_if_available:
-    try:
-        import beartype as _beartype
-    except ImportError:
-        pass
-    except Exception:
-        logging.getLogger(__name__).warning(
-            "unexpected error when attempting to load beartype"
-        )
-        logging.getLogger(__name__).debug(traceback.format_exc())
-    else:
-        if _beartype.__version_info__ >= (0, 8):
-            beartype = cast(_DecoratorT, _beartype.beartype)
-        else:
-            warnings.warn(
-                f"beartype>=0.8 required, but beartype=={_beartype.__version__} found; disabled"
-            )
+if _use_beartype_internally:
+    import beartype as _beartype
+
+    beartype = cast(_DecoratorT, _beartype.beartype)
