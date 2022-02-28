@@ -301,7 +301,7 @@ Not very well, unfortunately, at least not on its own.
 ...   assert isinstance(arg, SupportsFloorCeil)
 ...   return __floor__(arg)
 
->>> my_floor_func(float(1.2))  # works in 3.8+
+>>> my_floor_func(float(1.2))  # works in 3.7+
 1
 
 ```
@@ -454,7 +454,7 @@ False
 
 ```
 
-For composition to be ergonomic, such registration should be indelible, survive composition, and afford preference to overrides by inheritors.
+For registration to be ergonomic, it should be indelible, survive composition, and afford preference to subsequent overrides by inheritors.
 
 ``` python
 >>> from numerary.types import (
@@ -501,13 +501,13 @@ In practical terms, this means one can’t easily delegate to an ancestor’s ``
 In other words, leaning on the default behavior would require one to register exceptions with every inheritor.
 That would suck, so let’s not do that.
 
-However, overriding the behavior is problematic, because the standard library uses a non-public function called ``_get_protocol_attrs`` to perform its attribute enumeration.
+However, overriding the behavior is problematic, because the standard library uses non-public interfaces to perform its attribute enumeration.
 We certainly don’t want to re-implement protocol runtime checking from scratch.
 (At least not yet.)
 
-[``CachingProtocolMeta``](https://posita.github.io/numerary/0.3/numerary.types/#numerary.types.CachingProtocolMeta) tries to work around this by importing ``_get_protocol_attrs`` and performing some set arithmetic to limit its evaluation to directly defined attributes, and then delegating ``isinstance`` evaluation to its ``__base__`` classes.
-In doing so, it picks up its bases’ then-cached values, but at the cost of re-implementing the attribute check as well as taking a dependency on an implementation detail of the standard library, which creates a fragility.
-Further, for post-inheritance updates, ``CachingProtocolMeta`` implements a simplistic publish/subscribe mechanism that dirties non-overridden caches in inheritors when member protocols caches are updated.
+``beartype.typing.Protocol``’s meta class tries to work around this by sneakily limiting its evaluation to directly defined attributes, and then delegating ``isinstance`` evaluation to its ``__base__`` classes.
+In doing so, it picks up its bases’ then-cached values, but at the cost of re-implementing the attribute check as well as taking a dependency on various implementation details of the standard library, which creates a fragility.
+Further, for post-inheritance updates, [``CachingProtocolMeta``](https://posita.github.io/numerary/0.3/numerary.types/#numerary.types.CachingProtocolMeta) extends ``beartype``’s version to implement a simplistic publish/subscribe mechanism that dirties non-overridden caches in inheritors when member protocols caches are updated.
 That’s completely off the beaten path and there are probably some gremlins hiding out there.
 
 One subtlety is that the implementation deviates from performing checks in MRO order (and may perform redundant checks).
@@ -515,7 +515,7 @@ This is probably fine as long as runtime comparisons remain limited to crude che
 It would likely fail if runtime checking becomes more sophisticated, at which time, this implementation will need to be revisited.
 Hopefully by then, we can just delete ``numerary`` as the aspirationally unnecessary hack it is and move on with our lives.
 
-(See the [implementation](https://github.com/posita/numerary/blob/v0.3.0/numerary/types.py) for details.)
+(See [``beartype.typing``](https://github.com/beartype/beartype/tree/main/beartype/typing) and [``numerary``’s extension](https://github.com/posita/numerary/blob/v0.3.0/numerary/types.py) for details.)
 
 ## License
 
@@ -546,12 +546,12 @@ Alternately, you can download [the source](https://github.com/posita/numerary) a
 
 ``numerary`` requires a relatively modern version of Python:
 
-* [CPython](https://www.python.org/) (3.8+)
-* [PyPy](http://pypy.org/) (CPython 3.8+ compatible)
+* [CPython](https://www.python.org/) (3.7+)
+* [PyPy](http://pypy.org/) (CPython 3.7+ compatible)
 
 It has the following runtime dependencies:
 
-* [``typing-extensions``](https://pypi.org/project/typing-extensions/) (with Python <3.9)
+* [``typing-extensions``](https://pypi.org/project/typing-extensions/) (with Python <3.8)
 * [``beartype``](https://pypi.org/project/beartype/) for caching protocols (0.10.1+)
   [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 

@@ -25,12 +25,13 @@ from beartype.typing import SupportsIndex as _SupportsIndex
 from beartype.typing import SupportsInt as _SupportsInt
 from beartype.typing import SupportsRound as _SupportsRound
 from beartype.typing import Tuple, TypeVar, Union, runtime_checkable
+from beartype.typing._typingpep544 import _ProtocolSlow as _Protocol
 
 from ._protocol import CachingProtocolMeta
 from .bt import beartype
 
 if TYPE_CHECKING:
-    from typing import Protocol
+    from beartype.typing import Protocol
 else:
     from ._protocol import Protocol
 
@@ -52,11 +53,6 @@ r"""
 
 
 _T_co = TypeVar("_T_co", covariant=True)
-
-if sys.version_info >= (3, 9):
-    from beartype.typing import Annotated
-else:
-    from typing_extensions import Annotated  # noqa: F401
 
 
 def _assert_isinstance(*num_ts: type, target_t: type) -> None:
@@ -182,7 +178,7 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRound)
 
 
 @runtime_checkable
-class _SupportsConjugate(Protocol):
+class _SupportsConjugate(_Protocol):
     r"""
     The raw, non-caching version of
     [``SupportsConjugate``][numerary.types.SupportsConjugate].
@@ -246,7 +242,7 @@ _assert_isinstance(
 
 
 @runtime_checkable
-class _SupportsRealImag(Protocol):
+class _SupportsRealImag(_Protocol):
     r"""
     The raw, non-caching version of
     [``SupportsRealImag``][numerary.types.SupportsRealImag].
@@ -308,7 +304,7 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealIma
 
 
 @runtime_checkable
-class _SupportsRealImagAsMethod(Protocol):
+class _SupportsRealImagAsMethod(_Protocol):
     r"""
     The raw, non-caching version of
     [``SupportsRealImagAsMethod``][numerary.types.SupportsRealImagAsMethod].
@@ -379,7 +375,7 @@ assert SupportsRealImagMixedU.__args__ == SupportsRealImagMixedT  # type: ignore
 
 
 @runtime_checkable
-class _SupportsTrunc(Protocol):
+class _SupportsTrunc(_Protocol):
     r"""
     The raw, non-caching version of [``SupportsTrunc``][numerary.types.SupportsTrunc].
     """
@@ -442,7 +438,7 @@ _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
 
 
 @runtime_checkable
-class _SupportsFloorCeil(Protocol):
+class _SupportsFloorCeil(_Protocol):
     r"""
     The raw, non-caching version of
     [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil].
@@ -528,7 +524,7 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloorCe
 
 @runtime_checkable
 class _SupportsDivmod(
-    Protocol,
+    _Protocol,
     Generic[_T_co],
 ):
     r"""
@@ -601,7 +597,7 @@ _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsDivmod)
 
 
 @runtime_checkable
-class _SupportsNumeratorDenominator(Protocol):
+class _SupportsNumeratorDenominator(_Protocol):
     r"""
     The raw, non-caching version of
     [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator].
@@ -670,7 +666,7 @@ _assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominator)
 
 
 @runtime_checkable
-class _SupportsNumeratorDenominatorMethods(Protocol):
+class _SupportsNumeratorDenominatorMethods(_Protocol):
     r"""
     The raw, non-caching version of
     [``SupportsNumeratorDenominatorMethods``][numerary.types.SupportsNumeratorDenominatorMethods].
@@ -725,7 +721,7 @@ assert SupportsNumeratorDenominatorMixedU.__args__ == SupportsNumeratorDenominat
 
 @runtime_checkable
 class _SupportsComplexOps(
-    Protocol,
+    _Protocol,
     Generic[_T_co],
 ):
     r"""
@@ -827,7 +823,7 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplex
 
 
 @runtime_checkable
-class _SupportsComplexPow(Protocol):
+class _SupportsComplexPow(_Protocol):
     r"""
     The raw, non-caching version of
     [``SupportsComplexPow``][numerary.types.SupportsComplexPow].
@@ -895,7 +891,7 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplex
 
 @runtime_checkable
 class _SupportsRealOps(
-    Protocol,
+    _Protocol,
     Generic[_T_co],
 ):
     r"""
@@ -992,7 +988,7 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealOps
 
 @runtime_checkable
 class _SupportsIntegralOps(
-    Protocol,
+    _Protocol,
     Generic[_T_co],
 ):
     r"""
@@ -1094,7 +1090,7 @@ _assert_isinstance(int, bool, target_t=SupportsIntegralOps)
 
 
 @runtime_checkable
-class _SupportsIntegralPow(Protocol):
+class _SupportsIntegralPow(_Protocol):
     r"""
     The raw, non-caching version of
     [``SupportsIntegralPow``][numerary.types.SupportsIntegralPow].

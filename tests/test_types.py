@@ -12,6 +12,7 @@ from abc import abstractmethod
 
 import pytest
 from beartype import beartype
+from beartype.roar import BeartypeException
 from beartype.typing import Iterable, Tuple, Union
 
 from numerary import IntegralLike, RealLike
@@ -52,28 +53,28 @@ class Two:
 
 
 def test_beartype_detection() -> None:
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
-
     @beartype
     def _real_like_identity(arg: RealLike) -> RealLike:
         return arg
 
-    with pytest.raises(roar.BeartypeException):
+    with pytest.raises(BeartypeException):
         _real_like_identity("-273")  # type: ignore [arg-type]
 
     @beartype
     def _lies_all_lies(arg: RealLike) -> Tuple[str]:
         return (arg,)  # type: ignore [return-value]
 
-    with pytest.raises(roar.BeartypeException):
+    with pytest.raises(BeartypeException):
         _lies_all_lies(-273)
 
 
 def test_beartype_validators() -> None:
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
-    from beartype.vale import Is
+    try:
+        from typing_extensions import Annotated
+    except ImportError:
+        from beartype.typing import Annotated  # type: ignore [no-redef]
 
-    from numerary.types import Annotated
+    from beartype.vale import Is
 
     NonZero = Annotated[IntegralLike, Is[lambda x: x != 0]]
 
@@ -81,10 +82,10 @@ def test_beartype_validators() -> None:
     def _divide_it(n: IntegralLike, d: NonZero) -> RealLike:
         return n / d
 
-    with pytest.raises(roar.BeartypeException):
+    with pytest.raises(BeartypeException):
         _divide_it(0, 0)
 
-    with pytest.raises(roar.BeartypeException):
+    with pytest.raises(BeartypeException):
         _divide_it(0, "1")  # type: ignore [arg-type]
 
     If = Annotated[
@@ -105,7 +106,7 @@ def test_beartype_validators() -> None:
             "And treat those two impostors just the same;",
         )
 
-    with pytest.raises(roar.BeartypeException):
+    with pytest.raises(BeartypeException):
         _if(())
 
 

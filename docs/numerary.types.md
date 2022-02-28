@@ -23,29 +23,8 @@
     I am working toward stability as quickly as possible, but be warned that future release may introduce incompatibilities or remove this package altogether.
     [Feedback, suggestions, and contributions](contrib.md) are desperately appreciated.
 
-Because ``numerary`` uses ``beartype`` in its implementation, you can use both to resolve importing ``Annotated``, ``Protocol``, and ``runtime_checkable`` from the best available source.
-This can be helpful if you need to support Python versions prior to 3.9, but don’t want to make a conditional import of ``typing_extensions`` everywhere.
-Instead of doing this all over the place …
-
-``` python
-try:
-  from typing import Annotated, Protocol, runtime_checkable
-except ImportError:
-  from typing_extensions import Annotated, Protocol, runtime_checkable
-```
-
-… you can do this instead …
-
-``` python
-from beartype.typing import Annotated, runtime_checkable
-from numerary.types import Protocol
-```
-
-Bang.
-Done.
-
-Which you should totally do, because ``beartype`` is *awesome*.
-Its author is even *awesomer*.[^1]
+``numerary`` has donated its core caching protocol implementation to (and now depends on) ``beartype``.
+``beartype`` is *awesome*, and its author is even *awesomer*.[^1]
 
 [^1]:
 

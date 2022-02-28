@@ -36,9 +36,9 @@ class CachingProtocolMeta(_BeartypeCachingProtocolMeta):
     # TODO(posita): Add more precise link to beartype.typing.Protocol documentation once
     # it becomes available.
     r"""
-    An augmented version of the [``#!python
-    beartype.typing.Protocol``](https://github.com/beartype/beartype) caching protocol
-    that allows for overriding runtime checks.
+    An extension of [``#!python
+    beartype.typing.Protocol``](https://github.com/beartype/beartype) that allows
+    overriding runtime checks.
     """
 
     _abc_inst_check_cache_overridden: Dict[Type, bool]
