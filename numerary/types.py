@@ -653,14 +653,14 @@ SupportsRealImagMixedU = Union[
     SupportsRealImag,
     SupportsRealImagAsMethod,
 ]
-fr"""
+rf"""
 {SupportsRealImagMixedU!r}
 """
 SupportsRealImagMixedT = (
     SupportsRealImag,
     SupportsRealImagAsMethod,
 )
-fr"""
+rf"""
 {SupportsRealImagMixedT!r}
 """
 assert SupportsRealImagMixedU.__args__ == SupportsRealImagMixedT  # type: ignore [attr-defined]
@@ -998,14 +998,14 @@ SupportsNumeratorDenominatorMixedU = Union[
     SupportsNumeratorDenominator,
     SupportsNumeratorDenominatorMethods,
 ]
-fr"""
+rf"""
 {SupportsNumeratorDenominatorMixedU!r}
 """
 SupportsNumeratorDenominatorMixedT = (
     SupportsNumeratorDenominator,
     SupportsNumeratorDenominatorMethods,
 )
-fr"""
+rf"""
 {SupportsNumeratorDenominatorMixedT!r}
 """
 assert SupportsNumeratorDenominatorMixedU.__args__ == SupportsNumeratorDenominatorMixedT  # type: ignore [attr-defined]
@@ -1638,16 +1638,16 @@ class RationalLikeMethods(
 
 # See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
 RationalLikeMixedU = Union[RationalLike, RationalLikeMethods]
-fr"""
+rf"""
 {RationalLikeMixedU!r}
 """
 RationalLikeMixedT = (RationalLike, RationalLikeMethods)
-fr"""
+rf"""
 {RationalLikeMixedT!r}
 """
 assert RationalLikeMixedU.__args__ == RationalLikeMixedT  # type: ignore [attr-defined]
 assert RationalLikeMethods.__doc__
-RationalLikeMethods.__doc__ += fr"""
+RationalLikeMethods.__doc__ += rf"""
 
     ``` python
     RationalLikeMixedU = {RationalLikeMixedU!r}

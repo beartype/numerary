@@ -79,7 +79,7 @@ def test_supports_integral_ops_pow() -> None:
         assert good_val & 0 == 0, f"{good_val!r}"
         assert good_val | 0 == good_val, f"{good_val!r}"
         assert isinstance(good_val, SupportsIntegralPow), f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert good_val**1 == good_val, f"{good_val!r}"
 
     float_bad_val: SupportsIntegralOps = -273.15  # type: ignore [assignment]
     complex_bad_val: SupportsIntegralOps = complex(-273.15)  # type: ignore [assignment]
@@ -184,7 +184,7 @@ def test_supports_integral_ops_pow_numpy() -> None:
             assert good_val | 0 == good_val, f"{good_val!r}"
 
         assert isinstance(good_val, SupportsIntegralPow), f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert good_val**1 == good_val, f"{good_val!r}"
 
     # TODO(posita): These should not validate
     float16_val: SupportsIntegralOps = numpy.float16(-1.8)
@@ -272,7 +272,7 @@ def test_supports_integral_ops_pow_sympy() -> None:
         assert good_val & 0 == 0, f"{good_val!r}"
         assert good_val | 0 == good_val, f"{good_val!r}"
         assert isinstance(good_val, SupportsIntegralPow), f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert good_val**1 == good_val, f"{good_val!r}"
 
     # TODO(posita): These should not validate
     float_val: SupportsIntegralOps = sympy.Float(-273.15)

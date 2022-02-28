@@ -66,7 +66,7 @@ def test_integral_like() -> None:
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
         assert good_val / 1 == good_val, f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert good_val**1 == good_val, f"{good_val!r}"
         assert 0 - good_val == -good_val, f"{good_val!r}"
         assert good_val - 1 < good_val, f"{good_val!r}"
         assert good_val - 1 <= good_val, f"{good_val!r}"
@@ -155,7 +155,7 @@ def test_integral_like_numpy() -> None:
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
         assert good_val / 1 == good_val, f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert good_val**1 == good_val, f"{good_val!r}"
 
         # I have no idea why numpy.uint64 is special in this regard
         if isinstance(good_val, numpy.uint64):
@@ -229,7 +229,7 @@ def test_integral_like_sympy() -> None:
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
         assert good_val / 1 == good_val, f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert good_val**1 == good_val, f"{good_val!r}"
         assert 0 - good_val == -good_val, f"{good_val!r}"
         assert good_val - 1 < good_val, f"{good_val!r}"
         assert good_val - 1 <= good_val, f"{good_val!r}"

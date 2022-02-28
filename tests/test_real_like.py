@@ -78,7 +78,7 @@ def test_real_like() -> None:
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
         assert good_val / 1 == good_val, f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert good_val**1 == good_val, f"{good_val!r}"
         assert 0 - good_val == -good_val, f"{good_val!r}"
         assert good_val - 1 < good_val, f"{good_val!r}"
         assert good_val - 1 <= good_val, f"{good_val!r}"
@@ -159,7 +159,7 @@ def test_real_like_numpy() -> None:
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
         assert good_val / 1 == good_val, f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert good_val**1 == good_val, f"{good_val!r}"
 
         # numpy.uint*.__neg__ means something different than what we're testing for
         if not isinstance(
@@ -233,7 +233,7 @@ def test_real_like_sympy() -> None:
         assert good_val - 0 == good_val, f"{good_val!r}"
         assert good_val * 1 == good_val, f"{good_val!r}"
         assert good_val / 1 == good_val, f"{good_val!r}"
-        assert good_val ** 1 == good_val, f"{good_val!r}"
+        assert good_val**1 == good_val, f"{good_val!r}"
         assert 0 - good_val == -good_val, f"{good_val!r}"
 
         # Symbolic relationals can't be reduced to a boolean or truncated
