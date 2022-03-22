@@ -20,7 +20,10 @@ write_to = "numerary/_version.py"
 
 check_untyped_defs = true
 # See <https://mypy.readthedocs.io/en/stable/config_file.html#confval-exclude>
-exclude = "(?x)( (^|/)build/ )"
+exclude = '''(?x)(
+  ^build/
+  | /build/
+)'''
 ignore_missing_imports = true
 strict_optional = true
 show_error_codes = true

@@ -36,7 +36,7 @@ from operator import (
     __truediv__,
     __xor__,
 )
-from typing import overload
+from typing import Any, overload
 
 from beartype.typing import Iterable, Optional, Union
 
@@ -647,7 +647,7 @@ assert not issubclass(NumberwangBase, Integral)
 
 
 class Numberwang(NumberwangBase):
-    __slots__: Union[str, Iterable[str]] = ()
+    __slots__: Any = ()
 
     @beartype
     def __float__(self) -> float:
@@ -663,7 +663,7 @@ assert not issubclass(Numberwang, Integral)
 
 
 class NumberwangRegistered(Numberwang):
-    __slots__: Union[str, Iterable[str]] = ()
+    __slots__: Any = ()
 
 
 assert not issubclass(NumberwangRegistered, Real)
@@ -675,7 +675,7 @@ assert issubclass(NumberwangRegistered, Integral)
 
 
 class NumberwangDerived(NumberwangBase, Integral):  # type: ignore [misc]
-    __slots__: Union[str, Iterable[str]] = ()
+    __slots__: Any = ()
 
 
 assert issubclass(NumberwangDerived, Real)
@@ -988,7 +988,7 @@ assert not issubclass(Wangernumb, Real)
 
 
 class WangernumbRegistered(Wangernumb):
-    __slots__: Union[str, Iterable[str]] = ()
+    __slots__: Any = ()
 
 
 assert not issubclass(WangernumbRegistered, Real)
@@ -998,7 +998,7 @@ assert issubclass(WangernumbRegistered, Real)
 
 
 class WangernumbDerived(Wangernumb, Real):  # type: ignore [misc]
-    __slots__: Union[str, Iterable[str]] = ()
+    __slots__: Any = ()
 
 
 assert issubclass(WangernumbDerived, Real)

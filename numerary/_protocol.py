@@ -21,7 +21,7 @@ __all__ = ("CachingProtocolMeta", "Protocol")
 
 
 _T_co = TypeVar("_T_co", covariant=True)
-_TT = TypeVar("_TT", bound="type")
+_TT = TypeVar("_TT", bound="CachingProtocolMeta")
 
 
 if TYPE_CHECKING:
@@ -54,8 +54,7 @@ class CachingProtocolMeta(_BeartypeCachingProtocolMeta):
         namespace: Dict[str, Any],
         **kw: Any,
     ) -> _TT:
-        # See <https://github.com/python/mypy/issues/9282>
-        cls = super().__new__(mcls, name, bases, namespace, **kw)  # type: ignore [misc]
+        cls = super().__new__(mcls, name, bases, namespace, **kw)
 
         # Prefixing this class member with "_abc_" is necessary to prevent it from being
         # considered part of the Protocol. (See

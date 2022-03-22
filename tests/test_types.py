@@ -13,7 +13,7 @@ from abc import abstractmethod
 import pytest
 from beartype import beartype
 from beartype.roar import BeartypeException
-from beartype.typing import Iterable, Tuple, Union
+from beartype.typing import Any, Tuple
 
 from numerary import IntegralLike, RealLike
 from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
@@ -29,7 +29,7 @@ class SupportsOne(
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
-    __slots__: Union[str, Iterable[str]] = ()
+    __slots__: Any = ()
 
     @abstractmethod
     def one(self) -> int:

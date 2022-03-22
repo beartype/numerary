@@ -40,7 +40,7 @@ class SupportsLotsOfNumberStuff(
   SupportsRound,
   Protocol,
 ):
-  __slots__: Union[str, Iterable[str]] = ()
+  __slots__: Any = ()
   @property
   def numerator(self) -> int:
     pass

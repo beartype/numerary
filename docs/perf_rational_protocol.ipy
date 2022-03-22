@@ -9,7 +9,7 @@ vals = (one_int, two_frac, three_float)
 
 @runtime_checkable
 class SupportsNumeratorDenominator(Protocol):
-  __slots__: Union[str, Iterable[str]] = ()
+  __slots__: Any = ()
   @property
   def numerator(self) -> int:
     pass

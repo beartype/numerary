@@ -15,9 +15,9 @@ import traceback
 from abc import abstractmethod
 from decimal import Decimal
 from fractions import Fraction
-from typing import overload
+from typing import Type, overload
 
-from beartype.typing import TYPE_CHECKING, Any, Generic, Iterable, Optional
+from beartype.typing import TYPE_CHECKING, Any, Generic, Optional
 from beartype.typing import SupportsAbs as _SupportsAbs
 from beartype.typing import SupportsComplex as _SupportsComplex
 from beartype.typing import SupportsFloat as _SupportsFloat
@@ -72,13 +72,10 @@ class SupportsAbs(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the
-    [``typing.SupportsAbs``](https://docs.python.org/3/library/typing.html#typing.SupportsAbs)
-    ABC defining the [``__abs__``
-    method](https://docs.python.org/3/reference/datamodel.html#object.__abs__) with a
-    covariant return value.
+    A derivative of ``beartype.typing.SupportsAbs`` with an override-able cache.
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsAbs)
@@ -91,12 +88,10 @@ class SupportsComplex(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the
-    [``typing.SupportsComplex``](https://docs.python.org/3/library/typing.html#typing.SupportsComplex)
-    ABC defining the [``__complex__``
-    method](https://docs.python.org/3/reference/datamodel.html#object.__complex__).
+    A derivative of ``beartype.typing.SupportsComplex`` with an override-able cache.
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(Decimal, Fraction, target_t=SupportsComplex)
@@ -109,12 +104,10 @@ class SupportsFloat(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the
-    [``typing.SupportsFloat``](https://docs.python.org/3/library/typing.html#typing.SupportsFloat)
-    ABC defining the [``__float__``
-    method](https://docs.python.org/3/reference/datamodel.html#object.__float__).
+    A derivative of ``beartype.typing.SupportsFloat`` with an override-able cache.
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloat)
@@ -127,13 +120,10 @@ class SupportsInt(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the
-    [``typing.SupportsInt``](https://docs.python.org/3/library/typing.html#typing.SupportsInt)
-    ABC defining the
-    [``__int__``
-    method](https://docs.python.org/3/reference/datamodel.html#object.__int__).
+    A derivative of ``beartype.typing.SupportsInt`` with an override-able cache.
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, target_t=SupportsInt)
@@ -146,12 +136,10 @@ class SupportsIndex(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the
-    [``typing.SupportsIndex``](https://docs.python.org/3/library/typing.html#typing.SupportsIndex)
-    ABC defining the [``__index__``
-    method](https://docs.python.org/3/reference/datamodel.html#object.__index__).
+    A derivative of ``beartype.typing.SupportsIndex`` with an override-able cache.
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, bool, target_t=SupportsIndex)
@@ -165,13 +153,10 @@ class SupportsRound(
     metaclass=CachingProtocolMeta,
 ):
     r"""
-    A caching version of the
-    [``typing.SupportsRound``](https://docs.python.org/3/library/typing.html#typing.SupportsRound)
-    ABC defining the [``__round__``
-    method](https://docs.python.org/3/reference/datamodel.html#object.__round__) with a
-    covariant return value.
+    A derivative of ``beartype.typing.SupportsRound`` with an override-able cache.
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRound)
@@ -180,10 +165,11 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRound)
 @runtime_checkable
 class _SupportsConjugate(_Protocol):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsConjugate``][numerary.types.SupportsConjugate].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def conjugate(self) -> Any:
@@ -233,7 +219,8 @@ class SupportsConjugate(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(
@@ -244,10 +231,11 @@ _assert_isinstance(
 @runtime_checkable
 class _SupportsRealImag(_Protocol):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsRealImag``][numerary.types.SupportsRealImag].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @property
     def real(self) -> Any:
@@ -297,7 +285,8 @@ class SupportsRealImag(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealImag)
@@ -306,10 +295,11 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealIma
 @runtime_checkable
 class _SupportsRealImagAsMethod(_Protocol):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsRealImagAsMethod``][numerary.types.SupportsRealImagAsMethod].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def as_real_imag(self) -> Tuple[Any, Any]:
@@ -353,7 +343,8 @@ class SupportsRealImagAsMethod(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 # See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
@@ -377,9 +368,11 @@ assert SupportsRealImagMixedU.__args__ == SupportsRealImagMixedT  # type: ignore
 @runtime_checkable
 class _SupportsTrunc(_Protocol):
     r"""
-    The raw, non-caching version of [``SupportsTrunc``][numerary.types.SupportsTrunc].
+    The ``beartype.typing.Protocol`` version of
+    [``SupportsTrunc``][numerary.types.SupportsTrunc].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def __trunc__(self) -> int:
@@ -431,7 +424,8 @@ class SupportsTrunc(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
@@ -440,10 +434,11 @@ _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
 @runtime_checkable
 class _SupportsFloorCeil(_Protocol):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def __floor__(self) -> int:
@@ -510,7 +505,8 @@ class SupportsFloorCeil(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 # Prior to Python 3.9, floats didn't have an explicit __floor__ method; it was
@@ -528,9 +524,11 @@ class _SupportsDivmod(
     Generic[_T_co],
 ):
     r"""
-    The raw, non-caching version of [``SupportsDivmod``][numerary.types.SupportsDivmod].
+    The ``beartype.typing.Protocol`` version of
+    [``SupportsDivmod``][numerary.types.SupportsDivmod].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def __divmod__(self, other: Any) -> Tuple[_T_co, _T_co]:
@@ -588,7 +586,8 @@ class SupportsDivmod(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 # complex defines these methods, but only to raise exceptions
@@ -599,10 +598,11 @@ _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsDivmod)
 @runtime_checkable
 class _SupportsNumeratorDenominator(_Protocol):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @property
     def numerator(self) -> int:
@@ -659,7 +659,8 @@ class SupportsNumeratorDenominator(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominator)
@@ -668,10 +669,11 @@ _assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominator)
 @runtime_checkable
 class _SupportsNumeratorDenominatorMethods(_Protocol):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsNumeratorDenominatorMethods``][numerary.types.SupportsNumeratorDenominatorMethods].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def numerator(self) -> SupportsInt:
@@ -698,7 +700,8 @@ class SupportsNumeratorDenominatorMethods(
     See also the [``numerator``][numerary.types.numerator] and
     [``denominator``][numerary.types.denominator] helper functions.
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 # See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
@@ -725,10 +728,11 @@ class _SupportsComplexOps(
     Generic[_T_co],
 ):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsComplexOps``][numerary.types.SupportsComplexOps].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def __add__(self, other: Any) -> _T_co:
@@ -816,7 +820,8 @@ class SupportsComplexOps(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexOps)
@@ -825,10 +830,11 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplex
 @runtime_checkable
 class _SupportsComplexPow(_Protocol):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsComplexPow``][numerary.types.SupportsComplexPow].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def __pow__(self, exponent: Any) -> Any:
@@ -883,7 +889,8 @@ class SupportsComplexPow(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexPow)
@@ -895,10 +902,11 @@ class _SupportsRealOps(
     Generic[_T_co],
 ):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsRealOps``][numerary.types.SupportsRealOps].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def __lt__(self, other: Any) -> bool:
@@ -978,7 +986,8 @@ class SupportsRealOps(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 # complex defines these methods, but only to raise exceptions
@@ -992,10 +1001,11 @@ class _SupportsIntegralOps(
     Generic[_T_co],
 ):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsIntegralOps``][numerary.types.SupportsIntegralOps].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def __lshift__(self, other: Any) -> _T_co:
@@ -1083,7 +1093,8 @@ class SupportsIntegralOps(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralOps)
@@ -1092,10 +1103,11 @@ _assert_isinstance(int, bool, target_t=SupportsIntegralOps)
 @runtime_checkable
 class _SupportsIntegralPow(_Protocol):
     r"""
-    The raw, non-caching version of
+    The ``beartype.typing.Protocol`` version of
     [``SupportsIntegralPow``][numerary.types.SupportsIntegralPow].
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     @abstractmethod
     def __pow__(self, exponent: Any, modulus: Optional[Any] = None) -> Any:
@@ -1147,7 +1159,8 @@ class SupportsIntegralPow(
 
     ```
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralPow)
@@ -1203,7 +1216,8 @@ class RealLike(
     * [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil]
     * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     # Must be able to instantiate it
     @abstractmethod
@@ -1271,7 +1285,8 @@ class RationalLike(
     * [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil]
     * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     # Must be able to instantiate it
     @abstractmethod
@@ -1332,7 +1347,8 @@ class RationalLikeMethods(
     See also the [``numerator``][numerary.types.numerator] and
     [``denominator``][numerary.types.denominator] helper functions.
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     # Must be able to instantiate it
     @abstractmethod
@@ -1424,7 +1440,8 @@ class IntegralLike(
     * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     * [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator]
     """
-    __slots__: Union[str, Iterable[str]] = ()
+    # See <https://github.com/python/mypy/issues/11013>
+    __slots__: Any = ()
 
     # Must be able to instantiate it
     @abstractmethod
@@ -1741,6 +1758,8 @@ except Exception as exc:
     )
     logging.getLogger(__name__).debug(traceback.format_exc())
 else:
+    t: Type
+
     for t in (
         numpy.uint8,
         numpy.uint16,
