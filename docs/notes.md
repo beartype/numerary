@@ -20,7 +20,7 @@
 * Now relies on ``#!python beartype.typing.Protocol`` as the underlying caching protocol implementation.
   This means that ``beartype`` has emerged as ``numerary``’s sole runtime dependency.
   (``numerary`` still layers on its own runtime override mechanism via [CachingProtocolMeta][numerary._protocol.CachingProtocolMeta], which derives from ``beartype``’s.)
-  It also means that ``numerary`` loses Python 3.7 support.
+  It also means that ``numerary`` loses Python 3.7 support, but that was largely illusory anyway.
 
   This decision was not made lightly.
   ``numerary`` is intended as a temporary work-around.
