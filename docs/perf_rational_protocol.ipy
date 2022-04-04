@@ -1,6 +1,6 @@
 from fractions import Fraction
 from numbers import Rational
-from typing import Iterable, Protocol, Union, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 one_int = 1
 two_frac = Fraction(2)

@@ -15,6 +15,7 @@ import traceback
 from abc import abstractmethod
 from decimal import Decimal
 from fractions import Fraction
+from typing import Protocol as _Protocol
 from typing import Type, overload
 
 from beartype.typing import TYPE_CHECKING, Any, Generic, Optional
@@ -25,15 +26,15 @@ from beartype.typing import SupportsIndex as _SupportsIndex
 from beartype.typing import SupportsInt as _SupportsInt
 from beartype.typing import SupportsRound as _SupportsRound
 from beartype.typing import Tuple, TypeVar, Union, runtime_checkable
-from beartype.typing._typingpep544 import _ProtocolSlow as _Protocol
 
 from ._protocol import CachingProtocolMeta
 from .bt import beartype
 
 if TYPE_CHECKING:
-    from beartype.typing import Protocol
+    from typing import Protocol
 else:
-    from ._protocol import Protocol
+    from beartype.typing import Protocol
+
 
 __all__ = (
     "IntegralLike",
@@ -165,7 +166,7 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRound)
 @runtime_checkable
 class _SupportsConjugate(_Protocol):
     r"""
-    The ``beartype.typing.Protocol`` version of
+    The non-caching version of
     [``SupportsConjugate``][numerary.types.SupportsConjugate].
     """
     # See <https://github.com/python/mypy/issues/11013>
@@ -231,8 +232,7 @@ _assert_isinstance(
 @runtime_checkable
 class _SupportsRealImag(_Protocol):
     r"""
-    The ``beartype.typing.Protocol`` version of
-    [``SupportsRealImag``][numerary.types.SupportsRealImag].
+    The non-caching version of [``SupportsRealImag``][numerary.types.SupportsRealImag].
     """
     # See <https://github.com/python/mypy/issues/11013>
     __slots__: Any = ()
@@ -295,7 +295,7 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealIma
 @runtime_checkable
 class _SupportsRealImagAsMethod(_Protocol):
     r"""
-    The ``beartype.typing.Protocol`` version of
+    The non-caching version of
     [``SupportsRealImagAsMethod``][numerary.types.SupportsRealImagAsMethod].
     """
     # See <https://github.com/python/mypy/issues/11013>
@@ -368,8 +368,7 @@ assert SupportsRealImagMixedU.__args__ == SupportsRealImagMixedT  # type: ignore
 @runtime_checkable
 class _SupportsTrunc(_Protocol):
     r"""
-    The ``beartype.typing.Protocol`` version of
-    [``SupportsTrunc``][numerary.types.SupportsTrunc].
+    The non-caching version of [``SupportsTrunc``][numerary.types.SupportsTrunc].
     """
     # See <https://github.com/python/mypy/issues/11013>
     __slots__: Any = ()
@@ -434,7 +433,7 @@ _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
 @runtime_checkable
 class _SupportsFloorCeil(_Protocol):
     r"""
-    The ``beartype.typing.Protocol`` version of
+    The non-caching version of
     [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil].
     """
     # See <https://github.com/python/mypy/issues/11013>
@@ -524,8 +523,7 @@ class _SupportsDivmod(
     Generic[_T_co],
 ):
     r"""
-    The ``beartype.typing.Protocol`` version of
-    [``SupportsDivmod``][numerary.types.SupportsDivmod].
+    The non-caching version of [``SupportsDivmod``][numerary.types.SupportsDivmod].
     """
     # See <https://github.com/python/mypy/issues/11013>
     __slots__: Any = ()
@@ -598,7 +596,7 @@ _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsDivmod)
 @runtime_checkable
 class _SupportsNumeratorDenominator(_Protocol):
     r"""
-    The ``beartype.typing.Protocol`` version of
+    The non-caching version of
     [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator].
     """
     # See <https://github.com/python/mypy/issues/11013>
@@ -669,7 +667,7 @@ _assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominator)
 @runtime_checkable
 class _SupportsNumeratorDenominatorMethods(_Protocol):
     r"""
-    The ``beartype.typing.Protocol`` version of
+    The non-caching version of
     [``SupportsNumeratorDenominatorMethods``][numerary.types.SupportsNumeratorDenominatorMethods].
     """
     # See <https://github.com/python/mypy/issues/11013>
@@ -728,7 +726,7 @@ class _SupportsComplexOps(
     Generic[_T_co],
 ):
     r"""
-    The ``beartype.typing.Protocol`` version of
+    The non-caching version of
     [``SupportsComplexOps``][numerary.types.SupportsComplexOps].
     """
     # See <https://github.com/python/mypy/issues/11013>
@@ -830,7 +828,7 @@ _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplex
 @runtime_checkable
 class _SupportsComplexPow(_Protocol):
     r"""
-    The ``beartype.typing.Protocol`` version of
+    The non-caching version of
     [``SupportsComplexPow``][numerary.types.SupportsComplexPow].
     """
     # See <https://github.com/python/mypy/issues/11013>
@@ -902,8 +900,7 @@ class _SupportsRealOps(
     Generic[_T_co],
 ):
     r"""
-    The ``beartype.typing.Protocol`` version of
-    [``SupportsRealOps``][numerary.types.SupportsRealOps].
+    The non-caching version of [``SupportsRealOps``][numerary.types.SupportsRealOps].
     """
     # See <https://github.com/python/mypy/issues/11013>
     __slots__: Any = ()
@@ -1001,7 +998,7 @@ class _SupportsIntegralOps(
     Generic[_T_co],
 ):
     r"""
-    The ``beartype.typing.Protocol`` version of
+    The non-caching version of
     [``SupportsIntegralOps``][numerary.types.SupportsIntegralOps].
     """
     # See <https://github.com/python/mypy/issues/11013>
@@ -1103,7 +1100,7 @@ _assert_isinstance(int, bool, target_t=SupportsIntegralOps)
 @runtime_checkable
 class _SupportsIntegralPow(_Protocol):
     r"""
-    The ``beartype.typing.Protocol`` version of
+    The non-caching version of
     [``SupportsIntegralPow``][numerary.types.SupportsIntegralPow].
     """
     # See <https://github.com/python/mypy/issues/11013>
@@ -1175,6 +1172,7 @@ class RealLike(
     SupportsComplexPow,
     Protocol,
     Generic[_T_co],
+    metaclass=CachingProtocolMeta,
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with reals. It
@@ -1189,8 +1187,8 @@ class RealLike(
     Basically:
 
     ``` python
-    from beartype.typing import TypeVar
-    from numerary.types import CachingProtocolMeta, Protocol, Supports…
+    from beartype.typing import Protocol, TypeVar
+    from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
     class RealLike(
@@ -1201,6 +1199,7 @@ class RealLike(
       SupportsComplexPow[T_co],
       Protocol,
       Generic[_T_co],
+      metaclass=CachingProtocolMeta,
     ):
       pass
     ```
@@ -1242,6 +1241,7 @@ class RationalLike(
     SupportsComplexPow,
     Protocol,
     Generic[_T_co],
+    metaclass=CachingProtocolMeta,
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with rationals.
@@ -1257,8 +1257,8 @@ class RationalLike(
     Basically:
 
     ``` python
-    from beartype.typing import TypeVar
-    from numerary.types import CachingProtocolMeta, Protocol, Supports…
+    from beartype.typing import Protocol, TypeVar
+    from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
     class RationalLike(
@@ -1270,6 +1270,7 @@ class RationalLike(
       SupportsComplexPow[T_co],
       Protocol,
       Generic[_T_co],
+      metaclass=CachingProtocolMeta,
     ):
       pass
     ```
@@ -1311,6 +1312,7 @@ class RationalLikeMethods(
     SupportsComplexPow,
     Protocol,
     Generic[_T_co],
+    metaclass=CachingProtocolMeta,
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with rationals.
@@ -1323,8 +1325,8 @@ class RationalLikeMethods(
     Basically:
 
     ``` python
-    from beartype.typing import TypeVar
-    from numerary.types import CachingProtocolMeta, Protocol, Supports…
+    from beartype.typing import Protocol, TypeVar
+    from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
     class RationalLikeMethods(
@@ -1336,6 +1338,7 @@ class RationalLikeMethods(
       SupportsComplexPow[T_co],
       Protocol,
       Generic[_T_co],
+      metaclass=CachingProtocolMeta,
     ):
       pass
     ```
@@ -1392,6 +1395,7 @@ class IntegralLike(
     SupportsComplexOps[_T_co],
     Protocol,
     Generic[_T_co],
+    metaclass=CachingProtocolMeta,
 ):
     r"""
     A caching ABC that defines a core set of operations for interacting with integrals.
@@ -1409,8 +1413,8 @@ class IntegralLike(
     Basically:
 
     ``` python
-    from beartype.typing import TypeVar
-    from numerary.types import CachingProtocolMeta, Protocol, Supports…
+    from beartype.typing import Protocol, TypeVar
+    from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
     class IntegralLike(
@@ -1424,6 +1428,7 @@ class IntegralLike(
       SupportsComplexOps[T_co],
       Protocol,
       Generic[_T_co],
+      metaclass=CachingProtocolMeta,
     ):
       pass
     ```

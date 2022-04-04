@@ -10,13 +10,12 @@ from numerary.types import (  # "raw" (non-caching) versions
   _SupportsTrunc,
 )
 from typing import (
-  Iterable,
+  Any,
   Protocol,
   SupportsAbs,
   SupportsFloat,
   SupportsComplex,
   SupportsRound,
-  Union,
   runtime_checkable,
 )
 

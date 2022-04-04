@@ -14,7 +14,7 @@ from beartype.typing import TYPE_CHECKING, Any, Dict
 from beartype.typing import Protocol as _BeartypeCachingProtocol
 from beartype.typing import Set, Tuple, Type, TypeVar
 
-__all__ = ("CachingProtocolMeta", "Protocol")
+__all__ = ("CachingProtocolMeta",)
 
 
 # ---- Types ---------------------------------------------------------------------------
@@ -170,7 +170,3 @@ class CachingProtocolMeta(_BeartypeCachingProtocolMeta):
             ):
                 del inheriting_cls._abc_inst_check_cache[inst_t]
                 del inheriting_cls._abc_inst_check_cache_overridden[inst_t]
-
-
-class Protocol(_BeartypeCachingProtocol, metaclass=CachingProtocolMeta):
-    pass

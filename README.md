@@ -228,21 +228,21 @@ By default, [protocols frustrate runtime type-checking performance](https://bugs
 ### Cached ``__instancecheck__`` results
 
 To understand why ``numerary`` protocols are faster for runtime checks, it helps to understand why non-``numerary`` protocols are so slow.
-At runtime (i.e., via ``isinstance``), the [default ``Protocol`` implementation](https://github.com/python/cpython/blob/main/Lib/typing.py) delegates to ``_ProtocolMeta.__instancecheck__`` to perform a crude comparison of an instance’s callable attributes against the protocol’s.
+At runtime (i.e., via ``isinstance``), the [default ``Protocol`` implementation](https://github.com/python/cpython/blob/main/Lib/typing.py) delegates to ``type(Protocol).__instancecheck__`` to perform a crude comparison of an instance’s callable attributes against the protocol’s.
 More attributes means more comparisons.
 Further, it performs these comparisons … Every. Single. 🤬ing. Time.
 
 Protocols provided by ``numerary`` use instead [``CachingProtocolMeta``](https://posita.github.io/numerary/0.3/numerary.types/#numerary.types.CachingProtocolMeta) as their meta class.
-``CachingProtocolMeta`` derives from ``_ProtocolMeta`` and overrides ``__instancecheck__ `` to cache results based on instance type.
+``CachingProtocolMeta`` derives from ``type(Protocol)`` and overrides ``__instancecheck__ `` to cache results based on instance type.
 
 Conceptually:
 
 ``` python
->>> isinstance(1, SupportsIntegralOps)  # first check for an int is delegated to _ProtcolMeta.__instancecheck__
+>>> isinstance(1, SupportsIntegralOps)  # first check for an int is delegated to type(Protocol).__instancecheck__
 True
 >>> isinstance(2, SupportsIntegralOps)  # cached result
 True
->>> isinstance(1.0, SupportsIntegralOps)  # the first check for a float is delegated to _ProtcolMeta.__instancecheck__
+>>> isinstance(1.0, SupportsIntegralOps)  # the first check for a float is delegated to type(Protocol).__instancecheck__
 False
 >>> isinstance(2.0, SupportsIntegralOps)  # cached result
 False
