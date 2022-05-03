@@ -75,8 +75,6 @@ class SupportsAbs(
     r"""
     A derivative of ``beartype.typing.SupportsAbs`` with an override-able cache.
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsAbs)
@@ -91,8 +89,6 @@ class SupportsComplex(
     r"""
     A derivative of ``beartype.typing.SupportsComplex`` with an override-able cache.
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(Decimal, Fraction, target_t=SupportsComplex)
@@ -107,8 +103,6 @@ class SupportsFloat(
     r"""
     A derivative of ``beartype.typing.SupportsFloat`` with an override-able cache.
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsFloat)
@@ -123,8 +117,6 @@ class SupportsInt(
     r"""
     A derivative of ``beartype.typing.SupportsInt`` with an override-able cache.
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, target_t=SupportsInt)
@@ -139,8 +131,6 @@ class SupportsIndex(
     r"""
     A derivative of ``beartype.typing.SupportsIndex`` with an override-able cache.
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, bool, target_t=SupportsIndex)
@@ -156,8 +146,6 @@ class SupportsRound(
     r"""
     A derivative of ``beartype.typing.SupportsRound`` with an override-able cache.
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRound)
@@ -169,8 +157,6 @@ class _SupportsConjugate(_Protocol):
     The non-caching version of
     [``SupportsConjugate``][numerary.types.SupportsConjugate].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def conjugate(self) -> Any:
@@ -220,8 +206,6 @@ class SupportsConjugate(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(
@@ -234,8 +218,6 @@ class _SupportsRealImag(_Protocol):
     r"""
     The non-caching version of [``SupportsRealImag``][numerary.types.SupportsRealImag].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @property
     def real(self) -> Any:
@@ -285,8 +267,6 @@ class SupportsRealImag(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsRealImag)
@@ -298,8 +278,6 @@ class _SupportsRealImagAsMethod(_Protocol):
     The non-caching version of
     [``SupportsRealImagAsMethod``][numerary.types.SupportsRealImagAsMethod].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def as_real_imag(self) -> Tuple[Any, Any]:
@@ -343,8 +321,6 @@ class SupportsRealImagAsMethod(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 # See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
@@ -370,8 +346,6 @@ class _SupportsTrunc(_Protocol):
     r"""
     The non-caching version of [``SupportsTrunc``][numerary.types.SupportsTrunc].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def __trunc__(self) -> int:
@@ -423,8 +397,6 @@ class SupportsTrunc(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, bool, float, Decimal, Fraction, target_t=SupportsTrunc)
@@ -436,8 +408,6 @@ class _SupportsFloorCeil(_Protocol):
     The non-caching version of
     [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def __floor__(self) -> int:
@@ -504,8 +474,6 @@ class SupportsFloorCeil(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 # Prior to Python 3.9, floats didn't have an explicit __floor__ method; it was
@@ -525,8 +493,6 @@ class _SupportsDivmod(
     r"""
     The non-caching version of [``SupportsDivmod``][numerary.types.SupportsDivmod].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def __divmod__(self, other: Any) -> Tuple[_T_co, _T_co]:
@@ -584,8 +550,6 @@ class SupportsDivmod(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 # complex defines these methods, but only to raise exceptions
@@ -599,8 +563,6 @@ class _SupportsNumeratorDenominator(_Protocol):
     The non-caching version of
     [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @property
     def numerator(self) -> int:
@@ -657,8 +619,6 @@ class SupportsNumeratorDenominator(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, bool, Fraction, target_t=SupportsNumeratorDenominator)
@@ -670,8 +630,6 @@ class _SupportsNumeratorDenominatorMethods(_Protocol):
     The non-caching version of
     [``SupportsNumeratorDenominatorMethods``][numerary.types.SupportsNumeratorDenominatorMethods].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def numerator(self) -> SupportsInt:
@@ -698,8 +656,6 @@ class SupportsNumeratorDenominatorMethods(
     See also the [``numerator``][numerary.types.numerator] and
     [``denominator``][numerary.types.denominator] helper functions.
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 # See <https://github.com/mkdocstrings/mkdocstrings/issues/333>
@@ -729,8 +685,6 @@ class _SupportsComplexOps(
     The non-caching version of
     [``SupportsComplexOps``][numerary.types.SupportsComplexOps].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def __add__(self, other: Any) -> _T_co:
@@ -818,8 +772,6 @@ class SupportsComplexOps(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexOps)
@@ -831,8 +783,6 @@ class _SupportsComplexPow(_Protocol):
     The non-caching version of
     [``SupportsComplexPow``][numerary.types.SupportsComplexPow].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def __pow__(self, exponent: Any) -> Any:
@@ -887,8 +837,6 @@ class SupportsComplexPow(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, float, bool, Decimal, Fraction, target_t=SupportsComplexPow)
@@ -902,8 +850,6 @@ class _SupportsRealOps(
     r"""
     The non-caching version of [``SupportsRealOps``][numerary.types.SupportsRealOps].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def __lt__(self, other: Any) -> bool:
@@ -983,8 +929,6 @@ class SupportsRealOps(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 # complex defines these methods, but only to raise exceptions
@@ -1001,8 +945,6 @@ class _SupportsIntegralOps(
     The non-caching version of
     [``SupportsIntegralOps``][numerary.types.SupportsIntegralOps].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def __lshift__(self, other: Any) -> _T_co:
@@ -1090,8 +1032,6 @@ class SupportsIntegralOps(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralOps)
@@ -1103,8 +1043,6 @@ class _SupportsIntegralPow(_Protocol):
     The non-caching version of
     [``SupportsIntegralPow``][numerary.types.SupportsIntegralPow].
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     @abstractmethod
     def __pow__(self, exponent: Any, modulus: Optional[Any] = None) -> Any:
@@ -1156,8 +1094,6 @@ class SupportsIntegralPow(
 
     ```
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
 
 _assert_isinstance(int, bool, target_t=SupportsIntegralPow)
@@ -1215,8 +1151,6 @@ class RealLike(
     * [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil]
     * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     # Must be able to instantiate it
     @abstractmethod
@@ -1286,8 +1220,6 @@ class RationalLike(
     * [``SupportsFloorCeil``][numerary.types.SupportsFloorCeil]
     * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     # Must be able to instantiate it
     @abstractmethod
@@ -1350,8 +1282,6 @@ class RationalLikeMethods(
     See also the [``numerator``][numerary.types.numerator] and
     [``denominator``][numerary.types.denominator] helper functions.
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     # Must be able to instantiate it
     @abstractmethod
@@ -1445,8 +1375,6 @@ class IntegralLike(
     * [``SupportsDivmod``][numerary.types.SupportsDivmod]
     * [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator]
     """
-    # See <https://github.com/python/mypy/issues/11013>
-    __slots__: Any = ()
 
     # Must be able to instantiate it
     @abstractmethod

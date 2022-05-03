@@ -175,11 +175,9 @@ Can we imitate those?
 ...   from typing import Protocol, runtime_checkable
 ... except ImportError:
 ...   from typing_extensions import Protocol, runtime_checkable  # type: ignore [misc]
->>> from typing import Any
 
 >>> @runtime_checkable
 ... class SupportsNumeratorDenominator(Protocol):
-...   __slots__: Any = ()
 ...   @property
 ...   def numerator(self) -> int:
 ...     pass
@@ -284,11 +282,10 @@ That seems as good a place as any to tackle next.
 ...   from typing_extensions import Protocol, runtime_checkable  # type: ignore [misc]
 
 >>> from abc import abstractmethod
->>> from typing import Any, Iterable, Union
+>>> from typing import Any
 
 >>> @runtime_checkable
 ... class SupportsRealComparisons(Protocol):
-...   __slots__: Any = ()
 ...   @abstractmethod
 ...   def __lt__(self, other: Any) -> bool:
 ...     pass

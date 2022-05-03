@@ -13,7 +13,7 @@ from abc import abstractmethod
 import pytest
 from beartype import beartype
 from beartype.roar import BeartypeException
-from beartype.typing import Any, Tuple
+from beartype.typing import Tuple
 
 from numerary import IntegralLike, RealLike
 from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
@@ -29,8 +29,6 @@ class SupportsOne(
     Protocol,
     metaclass=CachingProtocolMeta,
 ):
-    __slots__: Any = ()
-
     @abstractmethod
     def one(self) -> int:
         pass

@@ -186,12 +186,10 @@ False
 
 ``` python
 >>> from abc import abstractmethod
->>> from beartype.typing import Any
 >>> from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
 
 >>> @runtime_checkable
 ... class MySupportsOne(Protocol, metaclass=CachingProtocolMeta):
-...   __slots__: Any = ()
 ...   @abstractmethod
 ...   def one(self) -> int:
 ...     pass

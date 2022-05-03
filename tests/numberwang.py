@@ -36,9 +36,9 @@ from operator import (
     __truediv__,
     __xor__,
 )
-from typing import Any, overload
+from typing import overload
 
-from beartype.typing import Iterable, Optional, Union
+from beartype.typing import Any, Optional, Union
 
 from numerary.bt import beartype
 from numerary.types import SupportsInt
@@ -82,7 +82,7 @@ class TestIntFlag(IntFlag):
 
 
 class NumberwangBase:
-    __slots__: Union[str, Iterable[str]] = ("val",)
+    __slots__: Any = ("val",)
 
     @beartype
     def __init__(self, arg: SupportsInt = 0):
@@ -688,7 +688,7 @@ assert not issubclass(Numberwang, Integral)
 
 
 class Wangernumb:
-    __slots__: Union[str, Iterable[str]] = ("val",)
+    __slots__: Any = ("val",)
 
     @beartype
     def __init__(self, arg: _RealT = 0):
