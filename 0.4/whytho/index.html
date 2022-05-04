@@ -1,0 +1,1175 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Python hacks for type-checking numbers">
+      
+      
+        <meta name="author" content="Matt Bogosian">
+      
+      
+        <link rel="canonical" href="https://posita.github.io/numerary/0.4/whytho/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.13">
+    
+    
+      
+        <title>Why would you do this? - numerary</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e411adfe.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-calculation-functionan-allegory" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        <aside class="md-banner md-banner--warning">
+          
+        </aside>
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="numerary" class="md-header__button md-logo" aria-label="numerary" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            numerary
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Why would you do this?
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_1">
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/posita/numerary" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="numerary" class="md-nav__button md-logo" aria-label="numerary" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    numerary
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/posita/numerary" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Why would you do this?
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Why would you do this?
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-calculation-functionan-allegory" class="md-nav__link">
+    The calculation function—An allegory
+  </a>
+  
+    <nav class="md-nav" aria-label="The calculation function—An allegory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#native-primitives" class="md-nav__link">
+    Native primitives
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numeric-tower" class="md-nav__link">
+    Numeric tower
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erm-we-mean-native-primitives-or-the-numeric-tower" class="md-nav__link">
+    Erm … we mean native primitives or the numeric tower?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#native-primitives-the-numeric-tower-or-other-things-that-define-all-the-methods-but-didnt-or-couldnt-register-in-the-numeric-tower-for-some-reason" class="md-nav__link">
+    Native primitives, the numeric tower, or other things that define all the methods, but didn’t (or couldn’t) register in the numeric tower for some reason
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocols" class="md-nav__link">
+    Protocols!
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#puh-roh-tih-caaahhhlllz" class="md-nav__link">
+    Puh … ROH … tih … caaahhhlllz … !
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lies-upon-lies-upon-lies-all-the-way-down" class="md-nav__link">
+    Lies! Upon lies! Upon lies! All the way down!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-do-we-do" class="md-nav__link">
+    What do we do?!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notes/" class="md-nav__link">
+        Release notes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contrib/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" data-md-state="indeterminate" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../numerary/" class="md-nav__link">
+        <tt>numerary</tt>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../numerary.types/" class="md-nav__link">
+        <tt>numerary.types</tt>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/posita/numerary/edit/master/docs/whytho.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+  <h1>Why would you do this?</h1>
+
+<!---
+  Copyright and other protections apply. Please see the accompanying LICENSE file for
+  rights and restrictions governing use of this software. All rights not expressly
+  waived or licensed are reserved. If that file is missing or appears to be modified
+  from its original, then please contact the author before viewing or using this
+  software in any capacity.
+
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!!!!!!!!!!!!!! IMPORTANT: READ THIS BEFORE EDITING! !!!!!!!!!!!!!!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  Please keep each sentence on its own unwrapped line.
+  It looks like crap in a text editor, but it has no effect on rendering, and it allows much more useful diffs.
+  Thank you!
+-->
+
+<p>This story may feel familiar.
+If it does, you are in good company.
+Your pain is my pain.
+May it motivate us to grow and adapt.</p>
+<h2 id="the-calculation-functionan-allegory">The calculation function—An allegory</h2>
+<p>We have a simple vision.
+We want to define an API that works with <em>reals</em> (not just <code>float</code>s), performs a calculation, and returns <em>integers</em> (not just <code>int</code>s).</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">deep_thought</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<span class="o">...</span>   <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="o">...</span>   <span class="n">sleep</span><span class="p">(</span><span class="mi">7_500_000</span> <span class="o">*</span> <span class="mf">365.24219265</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>  <span class="c1"># doctest: +SKIP</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="n">arg</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">arg</span> <span class="o">**</span> <span class="mi">0</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="mi">42</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="native-primitives">Native primitives</h3>
+<p>We want to tell the world how to call it and what to expect in return, so we annotate it according to the standard advice to <a href="https://wiki.c2.com/?JustIsaDangerousWord">just</a> use native types:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">deep_thought_typed</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="n">arg</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">arg</span> <span class="o">**</span> <span class="mi">0</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="mi">42</span>
+</code></pre></div></td></tr></table></div>
+<p>So simple!
+We’re done, right?
+Not quite.
+We find that the runtime works well, but there are Mypy errors.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">deep_thought_typed</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># this is fine ...</span>
+<span class="mi">42</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">deep_thought_typed</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># type: ignore [arg-type]  # ... but this fails</span>
+<span class="mi">42</span>
+</code></pre></div></td></tr></table></div>
+<p>Without the <code># type: ignore</code>, we get:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>…: error: Argument 1 to &quot;deep_thought_typed&quot; has incompatible type &quot;Fraction&quot;; expected &quot;float&quot;
+</code></pre></div></td></tr></table></div>
+<h3 id="numeric-tower">Numeric tower</h3>
+<p>With a little research, we learn about <em>the <a href="https://docs.python.org/3/library/numbers.html">numeric tower</a> [cue angelic singing]</em>.
+Surely, it has the answer!
+Both <code>float</code> and <code>Fraction</code> are <code>Real</code>s.
+Let’s test that to make sure.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="n">Integral</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">Real</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">Real</span><span class="p">)</span>
+<span class="kc">True</span>
+</code></pre></div></td></tr></table></div>
+<p>Huzzah!
+What could be simpler?
+It appears a small tweak is all that is required!</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">deep_thought_towered</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Real</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Integral</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="n">arg</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">arg</span> <span class="o">**</span> <span class="mi">0</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="mi">42</span>  <span class="c1"># type: ignore [return-value]  # now this fails</span>
+</code></pre></div></td></tr></table></div>
+<p>Without the <code># type: ignore</code>, we get:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>…: error: Incompatible return value type (got &quot;int&quot;, expected &quot;Integral&quot;)
+</code></pre></div></td></tr></table></div>
+<p>Hold the phone.
+<code>isinstance(42, Integral)</code> was <code>True</code>, was it not?
+This is starting to get confusing.</p>
+<h3 id="erm-we-mean-native-primitives-or-the-numeric-tower">Erm … we mean native primitives <em>or</em> the numeric tower?</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">IntegralT</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Integral</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">RealT</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Real</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">deep_thought_crumbling</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">RealT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IntegralT</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="n">arg</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">arg</span> <span class="o">**</span> <span class="mi">0</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="mi">42</span>
+</code></pre></div></td></tr></table></div>
+<p>Well, that was <em>odd</em>, but such warts are a small price to pay.
+All is right in the world again!</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">deep_thought_crumbling</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">42</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">deep_thought_crumbling</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="mi">42</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">deep_thought_crumbling</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;0.123&quot;</span><span class="p">))</span>  <span class="c1"># type: ignore [arg-type]  # fail</span>
+<span class="mi">42</span>
+</code></pre></div></td></tr></table></div>
+<p>Without the <code># type: ignore</code>, we get:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>…: error: Argument 1 to &quot;deep_thought_crumbling&quot; has incompatible type &quot;Decimal&quot;; expected &quot;Union[float, Real]&quot;
+</code></pre></div></td></tr></table></div>
+<p>Oh, come <em>on</em>!</p>
+<h3 id="native-primitives-the-numeric-tower-or-other-things-that-define-all-the-methods-but-didnt-or-couldnt-register-in-the-numeric-tower-for-some-reason">Native primitives, the numeric tower, or other things that define all the methods, but didn’t (or couldn’t) register in the numeric tower for some reason</h3>
+<p>🤬 me.
+Do we just tack this onto the list?</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">RealAndDecimalT</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Real</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">deep_thought_toppled</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">RealAndDecimalT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IntegralT</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="n">arg</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">arg</span> <span class="o">**</span> <span class="mi">0</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="mi">42</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">deep_thought_toppled</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;0.123&quot;</span><span class="p">))</span>
+<span class="mi">42</span>
+</code></pre></div></td></tr></table></div>
+<p>If we have to engage in these kinds of gymnastics just to reach escape velocity from the standard library, how the heck are we supposed to survive contact with numeric implementations we haven’t even heard of yet?!
+We can’t enumerate them <em>all</em>!</p>
+<p>For many years, the numeric tower was declared a “dead end” by maintainers.
+Unsurprisingly, many longstanding library authors didn’t see much benefit to conforming to its API.
+Adoption has grown, but we can’t rely on it.</p>
+<p>What <em>should</em> we rely on, then?
+Surely the exalted few who have steered us <em>away</em> from one thing are prepared to steer us <em>toward</em> something else, no?
+Sadly, the apparent attitude of many seems to be, “Something, something, protocols? Meh. I don’t know. We’ll figure it out later.”</p>
+<h3 id="protocols">Protocols!</h3>
+<p><em>Can</em> we fix this with protocols?
+The standard library <del>picked the low hanging fruit</del> <em>provides <a href="https://docs.python.org/3/library/typing.html#protocols">some simple precedents</a></em>.
+Can we imitate those?</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>   <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
+<span class="o">...</span> <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<span class="o">...</span>   <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>  <span class="c1"># type: ignore [misc]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
+<span class="o">...</span> <span class="k">class</span> <span class="nc">SupportsNumeratorDenominator</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="o">...</span>   <span class="nd">@property</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
+<span class="o">...</span>   <span class="nd">@property</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">require_rational</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsNumeratorDenominator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsNumeratorDenominator</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">require_rational</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># yup</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">require_rational</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># nice</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">require_rational</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]  # floats don&#39;t have numerator/denominator properties</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div></td></tr></table></div>
+<p>Without the <code># type: ignore</code>, we get:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>…: error: Argument 1 to &quot;require_rational&quot; has incompatible type &quot;float&quot;; expected &quot;SupportsNumeratorDenominator&quot;
+…: note: &quot;float&quot; is missing following &quot;SupportsNumeratorDenominator&quot; protocol members:
+…: note:     denominator, numerator
+</code></pre></div></td></tr></table></div>
+<p>Oh.
+My.
+Godetia.
+Could this be it?
+Have we stumbled into the promised land?</p>
+<h3 id="puh-roh-tih-caaahhhlllz">Puh … ROH … tih … <em>caaahhhlllz</em> … !</h3>
+<p>Let’s see how they perform.
+First, let’s get a baseline.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Rational</span><span class="p">)</span>
+<span class="mi">238</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">3.91</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fractions</span><span class="o">.</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Rational</span><span class="p">)</span>
+<span class="mi">233</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">2.49</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="mf">3.0</span><span class="p">),</span> <span class="n">Rational</span><span class="p">)</span>
+<span class="mi">249</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">1.67</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<details>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.0/docs/perf_rational_baseline.ipy"><code>perf_rational_baseline.ipy</code></a></summary>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Rational</span>
+
+<span class="n">one_int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">two_frac</span> <span class="o">=</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">three_float</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="n">vals</span> <span class="o">=</span> <span class="p">(</span><span class="n">one_int</span><span class="p">,</span> <span class="n">two_frac</span><span class="p">,</span> <span class="n">three_float</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Rational</span>
+
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%timeit isinstance(</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">), </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+  <span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+</details>
+
+<p>Now let’s compare that with our two-property protocol.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">SupportsNumeratorDenominator</span><span class="p">)</span>
+<span class="mf">10.2</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">136</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fractions</span><span class="o">.</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">SupportsNumeratorDenominator</span><span class="p">)</span>
+<span class="mf">10.4</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">177</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="mf">3.0</span><span class="p">),</span> <span class="n">SupportsNumeratorDenominator</span><span class="p">)</span>
+<span class="mf">10.5</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">171</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<details>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.0/docs/perf_rational_protocol.ipy"><code>perf_rational_protocol.ipy</code></a></summary>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Rational</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
+
+<span class="n">one_int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">two_frac</span> <span class="o">=</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">three_float</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="n">vals</span> <span class="o">=</span> <span class="p">(</span><span class="n">one_int</span><span class="p">,</span> <span class="n">two_frac</span><span class="p">,</span> <span class="n">three_float</span><span class="p">)</span>
+
+<span class="nd">@runtime_checkable</span>
+<span class="k">class</span> <span class="nc">SupportsNumeratorDenominator</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+  <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">()</span>
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">pass</span>
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">SupportsNumeratorDenominator</span>
+
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%timeit isinstance(</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">), </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+  <span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+</details>
+
+<p>That’s <em>forty times</em> slower. 😶
+And that’s just with a two-property protocol.
+How much worse would it be if we had enumerated all the dunder methods? 😰</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">SupportsLotsOfNumberStuff</span><span class="p">)</span>
+<span class="mi">111</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">1.2</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fractions</span><span class="o">.</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">SupportsLotsOfNumberStuff</span><span class="p">)</span>
+<span class="mi">117</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">2.69</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="mf">3.0</span><span class="p">),</span> <span class="n">SupportsLotsOfNumberStuff</span><span class="p">)</span>
+<span class="mi">108</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">1.75</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<details>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.0/docs/perf_rational_big_protocol.ipy"><code>perf_rational_big_protocol.ipy</code></a></summary>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Rational</span>
+<span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># &quot;raw&quot; (non-caching) versions</span>
+  <span class="n">_SupportsComplexOps</span><span class="p">,</span>
+  <span class="n">_SupportsConjugate</span><span class="p">,</span>
+  <span class="n">_SupportsFloorCeil</span><span class="p">,</span>
+  <span class="n">_SupportsDivmod</span><span class="p">,</span>
+  <span class="n">_SupportsRealImag</span><span class="p">,</span>
+  <span class="n">_SupportsRealOps</span><span class="p">,</span>
+  <span class="n">_SupportsTrunc</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+  <span class="n">Any</span><span class="p">,</span>
+  <span class="n">Protocol</span><span class="p">,</span>
+  <span class="n">SupportsAbs</span><span class="p">,</span>
+  <span class="n">SupportsFloat</span><span class="p">,</span>
+  <span class="n">SupportsComplex</span><span class="p">,</span>
+  <span class="n">SupportsRound</span><span class="p">,</span>
+  <span class="n">runtime_checkable</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">one_int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">two_frac</span> <span class="o">=</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">three_float</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="n">vals</span> <span class="o">=</span> <span class="p">(</span><span class="n">one_int</span><span class="p">,</span> <span class="n">two_frac</span><span class="p">,</span> <span class="n">three_float</span><span class="p">)</span>
+
+<span class="nd">@runtime_checkable</span>
+<span class="k">class</span> <span class="nc">SupportsLotsOfNumberStuff</span><span class="p">(</span>
+  <span class="n">_SupportsRealOps</span><span class="p">,</span>
+  <span class="n">_SupportsComplexOps</span><span class="p">,</span>
+  <span class="n">_SupportsDivmod</span><span class="p">,</span>
+  <span class="n">_SupportsTrunc</span><span class="p">,</span>
+  <span class="n">_SupportsFloorCeil</span><span class="p">,</span>
+  <span class="n">_SupportsConjugate</span><span class="p">,</span>
+  <span class="n">_SupportsRealImag</span><span class="p">,</span>
+  <span class="n">SupportsAbs</span><span class="p">,</span>
+  <span class="n">SupportsFloat</span><span class="p">,</span>
+  <span class="n">SupportsComplex</span><span class="p">,</span>
+  <span class="n">SupportsRound</span><span class="p">,</span>
+  <span class="n">Protocol</span><span class="p">,</span>
+<span class="p">):</span>
+  <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">()</span>
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">pass</span>
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">SupportsLotsOfNumberStuff</span>
+
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%timeit isinstance(</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">), </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+  <span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+</details>
+
+<p>Over. Four. Hundred. Times. Slower.
+And that’s not even <em>all</em> the methods!</p>
+<p><img alt="Holy moly!" src="https://c.tenor.com/DZrc0EXTCLgAAAAM/holy-mother-forking-shirt-balls-oh-my-god.gif" /></p>
+<p>You know what?
+Never mind that.
+Where there’s a will, there’s a way.
+Note to self: <em>Self, solve the performance problems with protocols later.</em>
+But we’re <em>definitely</em> onto something!</p>
+<h3 id="lies-upon-lies-upon-lies-all-the-way-down">Lies! Upon lies! Upon lies! All the way down!</h3>
+<p>Let’s do another one.
+Real numbers have comparisons that complex ones don’t.
+That seems as good a place as any to tackle next.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>   <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
+<span class="o">...</span> <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<span class="o">...</span>   <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>  <span class="c1"># type: ignore [misc]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
+<span class="o">...</span> <span class="k">class</span> <span class="nc">SupportsRealComparisons</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="o">...</span>   <span class="nd">@abstractmethod</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
+<span class="o">...</span>   <span class="nd">@abstractmethod</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
+<span class="o">...</span>   <span class="nd">@abstractmethod</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
+<span class="o">...</span>   <span class="nd">@abstractmethod</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">require_real</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsRealComparisons</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsRealComparisons</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">require_real</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">require_real</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">require_real</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">require_real</span><span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># type: ignore [arg-type]  # should go ka-boom!</span>
+</code></pre></div></td></tr></table></div>
+<p>Where was the ka-boom?
+<a href="https://youtu.be/t9wmWZbr_wQ">There was <em>supposed</em> to be an earth-shattering ka-boom!</a>
+Mypy spotted the error.
+Without the <code># type: ignore</code>, we get:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>…: error: Argument 1 to &quot;require_real&quot; has incompatible type &quot;complex&quot;; expected &quot;SupportsRealComparisons&quot;
+</code></pre></div></td></tr></table></div>
+<p>So what gives?
+Why does our protocol think a <code>complex</code> has comparisons at runtime?
+It’s a complex number and complex numbers don’t have those.
+The <a href="https://docs.python.org/3/library/numbers.html#the-numeric-tower">standard library says so</a>!</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Complex</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Complex</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Complex</span><span class="p">,</span> <span class="s2">&quot;__le__&quot;</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="fm">__le__</span>  <span class="c1"># type: ignore [operator]</span>
+<span class="o">&lt;...</span><span class="n">method</span><span class="o">...</span><span class="n">complex</span><span class="o">...&gt;</span>
+</code></pre></div></td></tr></table></div>
+<p>What the shit?
+Do they work?</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># type: ignore [operator]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">TypeError</span><span class="p">:</span> <span class="s1">&#39;&lt;=&#39;</span> <span class="ow">not</span> <span class="n">supported</span> <span class="n">between</span> <span class="n">instances</span> <span class="n">of</span> <span class="s1">&#39;complex&#39;</span> <span class="ow">and</span> <span class="s1">&#39;complex&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Wait.
+Complex numbers implement comparisons <em>in complete contradiction to the documentation</em> just to return <code>NotImplemented</code>?!
+🤬 <em>off</em>!</p>
+<p>How does Mypy know?
+Because the type definitions for <a href="https://github.com/python/typeshed/blob/f4143c40e85db42dc98549e09329e196668395ee/stdlib/builtins.pyi#L304-L331"><code>complex</code></a> and <a href="https://github.com/python/typeshed/blob/f4143c40e85db42dc98549e09329e196668395ee/stdlib/numbers.pyi#L11-L45"><code>Complex</code></a> are lies that conveniently omit mention of those methods.</p>
+<div class="admonition quote">
+<p class="admonition-title">Quote</p>
+<p>“When it becomes serious, you have to lie.”</p>
+<p>—Jean-Claude Juncker</p>
+</div>
+<p>Do you see?!
+Do you see now why we can’t have nice things?!
+I mean, I get <em>casting</em> as a rare case, but who builds <em>sophisticated deception tooling</em> into the very fabric a type definition mechanism to claim that non-compliant native primitives comply?
+How can you trust <em>anything</em> anymore?!
+Shouldn’t that be a pretty strong hint that maybe you should step back and rethink your approach?</p>
+<p>Astute readers may note <a href="https://pypi.org/project/beartype/"><code>beartype</code></a> could help restore Truth for us.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
+<span class="kn">from</span> <span class="nn">beartype.vale</span> <span class="kn">import</span> <span class="n">Is</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span>
+<span class="n">SupportsRealComparisonsNotComplexLies</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+  <span class="n">SupportsRealComparisons</span><span class="p">,</span> <span class="n">Is</span><span class="p">[</span><span class="k">lambda</span> <span class="n">arg</span><span class="p">:</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)]</span>
+<span class="p">]</span>
+
+<span class="nd">@beartype</span>
+<span class="k">def</span> <span class="nf">require_real</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsRealComparisonsNotComplexLies</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+  <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsRealComparisonsNotComplexLies</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p>That’s because Bear is hip to the scene.
+Bear is <em>down</em>.
+Bear knows what’s what.
+If you have a typing problem, if no one else can help, and if you can find them<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">1</a></sup>, maybe you can hire the Bear-Team.</p>
+<p>I digress.</p>
+<h2 id="what-do-we-do">What do we do?!</h2>
+<p>Okay.
+Can we still work with any of this shit <em>and</em> have type-checking?
+Let’s try.
+Because <em>somebody</em> 🤬ing has to.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:2">
+<p>That should be easy
+I just gave you the <a href="https://pypi.org/project/beartype/">link</a>.
+<em>Twice</em>.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Introduction" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Introduction
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../notes/" class="md-footer__link md-footer__link--next" aria-label="Next: Release notes" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Release notes
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <i>Copyright and other protections apply. Please see the accompanying <tt>LICENSE</tt> file for rights and restrictions governing use of this software. All rights not expressly waived or licensed are reserved. If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.</i>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ed9748b7.min.js"></script>
+      
+        <script src="../js/site.js"></script>
+      
+    
+  </body>
+</html>

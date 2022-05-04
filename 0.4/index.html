@@ -1,0 +1,1406 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Python hacks for type-checking numbers">
+      
+      
+        <meta name="author" content="Matt Bogosian">
+      
+      
+        <link rel="canonical" href="https://posita.github.io/numerary/0.4/">
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.13">
+    
+    
+      
+        <title>numerary</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.e411adfe.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#numerarynow-with-protocol-powertm" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        <aside class="md-banner md-banner--warning">
+          
+        </aside>
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="numerary" class="md-header__button md-logo" aria-label="numerary" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            numerary
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Introduction
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_1">
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/posita/numerary" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="numerary" class="md-nav__button md-logo" aria-label="numerary" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    numerary
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/posita/numerary" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Introduction
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        Introduction
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#you-had-me-at-numbers-and-types-can-work-together" class="md-nav__link">
+    You had me at, “numbers and types can work together”
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-enhanced-protocolsa-different-kind-of-pep-for-your-step" class="md-nav__link">
+    Performance Enhanced Protocols—A different kind of “PEP” for your step
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Enhanced Protocols—A different kind of “PEP” for your step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cached-__instancecheck__-results" class="md-nav__link">
+    Cached __instancecheck__ results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unions-for-inclusion" class="md-nav__link">
+    Unions for inclusion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    Limitations
+  </a>
+  
+    <nav class="md-nav" aria-label="Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sometimes-protocols-are-too-trusting" class="md-nav__link">
+    Sometimes protocols are too trusting
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocols-loses-fidelity-during-runtime-checking" class="md-nav__link">
+    Protocols loses fidelity during runtime checking
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pass-through-caching-with-composition-is-pretty-sketchy" class="md-nav__link">
+    Pass-through caching with composition is pretty sketchy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license" class="md-nav__link">
+    License
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customers" class="md-nav__link">
+    Customers
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="whytho/" class="md-nav__link">
+        Why would you do this?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes/" class="md-nav__link">
+        Release notes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contrib/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" data-md-state="indeterminate" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="numerary/" class="md-nav__link">
+        <tt>numerary</tt>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="numerary.types/" class="md-nav__link">
+        <tt>numerary.types</tt>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/posita/numerary/edit/master/docs/index.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<!---
+  Copyright and other protections apply. Please see the accompanying LICENSE file for
+  rights and restrictions governing use of this software. All rights not expressly
+  waived or licensed are reserved. If that file is missing or appears to be modified
+  from its original, then please contact the author before viewing or using this
+  software in any capacity.
+-->
+
+<!---
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!!!!!!!!!!!!!! IMPORTANT: READ THIS BEFORE EDITING! !!!!!!!!!!!!!!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  Please keep each sentence on its own unwrapped line.
+  It looks like crap in a text editor, but it has no effect on rendering, and it allows much more useful diffs.
+  Thank you!
+
+  WARNING: THIS DOCUMENT MUST BE SELF-CONTAINED.
+  ALL LINKS MUST BE ABSOLUTE.
+  This file is used on GitHub and PyPi (via setup.cfg).
+  There is no guarantee that other docs/resources will be available where this content is displayed.
+-->
+
+<p><em>Copyright and other protections apply.
+Please see the accompanying <code>LICENSE</code> file for rights and restrictions governing use of this software.
+All rights not expressly waived or licensed are reserved.
+If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.</em></p>
+<p><a href="https://github.com/posita/numerary/actions/workflows/unit-tests.yaml"><img alt="Tests" src="https://github.com/posita/numerary/actions/workflows/unit-tests.yaml/badge.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.4.0/"><img alt="Version" src="https://img.shields.io/pypi/v/numerary/0.4.0.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.4.0/"><img alt="Development Stage" src="https://img.shields.io/pypi/status/numerary/0.4.0.svg" /></a>
+<a href="http://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/pypi/l/numerary/0.4.0.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.4.0/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/numerary/0.4.0.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.4.0/"><img alt="Supported Python Implementations" src="https://img.shields.io/pypi/implementation/numerary/0.4.0.svg" /></a>
+<a href="https://github.com/pre-commit/pre-commit"><img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&amp;logoColor=white" /></a>
+<a href="https://beartype.rtfd.io/"><img alt="Bear-ified™" src="https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg" /></a></p>
+<p>Are you defining a numeric interface that should work with more than just <code>int</code>s and <code>float</code>s?
+Are you annotating that interface for documentation <em>and</em> type-checking?
+Were you excited by <a href="https://www.python.org/dev/peps/pep-3141/">PEP 3141</a>’s glitz and gloss promising a clean, straightforward number type definition mechanism, only to learn the hard way—after many hours of searching, tweaking, hacking, and testing ever more convoluted code, again and again—that you could’t actually make it work with Python’s type-checking system?
+Do you now wonder whether numbers were something new to computing in general because nothing else would explain such a gaping hole in a programming language so popular with the STEM crowd that has been around since the early 1990s?
+Does the number <a href="https://github.com/python/mypy/issues/3186">3186</a> haunt you in your dreams?
+Do you find yourself shouting to no one in particular, “There <em>has</em> to be a better way?”</p>
+<p>Well I’m here to tell you there isn’t.
+But until there is, there’s …</p>
+<h1 id="numerarynow-with-protocol-powertm"><em><code>numerary</code>—Now with Protocol Power™</em></h1>
+<p>That’s right!</p>
+<p>For a hopefully limited time, you too can benefit from someone else’s deranged work-arounds for the enormous chasms in Python that lie between the esoteric fields of computation that are “typing” and “numbers” instead of having to roll your own <del>out of sheer desperation</del> <em>from first principles</em>!
+If you still have no idea what I’m talking about, <a href="https://posita.github.io/numerary/0.4/whytho/">this may help illustrate</a>.</p>
+<p><code>numerary</code> is a pure-Python codified rant for signaling that your interface is usable with non-native numeric primitives<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> without breaking type-checking.
+More simply, <code>numerary</code> aspires to a world where numbers and types can work together.</p>
+<p>If you’re thinking that you shouldn’t need a 🤬ing library for that, <em>you’re right</em>.</p>
+<p>This madness should enjoy no audience.
+It should not exist.
+Yet here we are.
+Its author gauges its success by how quickly it can be forgotten, relegated to the annals of superfluous folly.</p>
+<p><code>numerary</code> is licensed under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.
+See the accompanying <code>LICENSE</code> file for details.
+It should be considered experimental for now, but should settle down quickly.
+See the <a href="https://posita.github.io/numerary/0.4/notes/">release notes</a> for a summary of version-to-version changes.
+Source code is <a href="https://github.com/posita/numerary">available on GitHub</a>.</p>
+<p>If you find it lacking in any way, please don’t hesitate to <a href="https://posita.github.io/numerary/0.4/contrib/">bring it to my attention</a>.</p>
+<h2 id="you-had-me-at-numbers-and-types-can-work-together">You had me at, “numbers and types can work together”</h2>
+<p><code>numerary</code> strives to define composable, <em>efficient</em> protocols that one can use to construct numeric requirements.
+If all you deal with are integrals and reals, and what you want is broad arithmetic operator compatibility, this will probably get you where you likely want to go:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary</span> <span class="kn">import</span> <span class="n">IntegralLike</span><span class="p">,</span> <span class="n">RealLike</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">deeper_thot</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">RealLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IntegralLike</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="n">arg</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">arg</span> <span class="o">**</span> <span class="mi">0</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">arg</span> <span class="o">//</span> <span class="n">arg</span> <span class="o">+</span> <span class="mi">42</span>
+</code></pre></div></td></tr></table></div>
+<p>Beyond default compositions for common use cases, <code>numerary</code> expands on the <a href="https://docs.python.org/3/library/typing.html#protocols"><code>Supports</code> pattern</a> used in the standard library.
+For example, <code>numerary.types.SupportsIntegralOps</code> is a <a href="https://docs.python.org/3/library/typing.html#typing.runtime_checkable"><code>@typing.runtime_checkable</code></a> protocol that approximates the unary and binary operators introduced by <a href="https://docs.python.org/3/library/numbers.html#numbers.Integral"><code>numbers.Integral</code></a>.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsIntegralOps</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">shift_right_one</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsIntegralOps</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SupportsIntegralOps</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsIntegralOps</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">arg</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">shift_right_one</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">sympify</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">two</span> <span class="o">=</span> <span class="n">sympify</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="p">;</span> <span class="nb">type</span><span class="p">(</span><span class="n">two</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="s1">&#39;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">res</span> <span class="o">=</span> <span class="n">shift_right_one</span><span class="p">(</span><span class="n">two</span><span class="p">)</span> <span class="p">;</span> <span class="n">res</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">One</span><span class="s1">&#39;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">shift_right_one</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># type: ignore [arg-type]  # properly caught by Mypy</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AssertionError</span>
+</code></pre></div></td></tr></table></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Until 1.9, <code>sympy.Integer</code> <a href="https://github.com/sympy/sympy/issues/19311">lacked the requisite bitwise operators</a>.
+<code>numerary</code> catches that!
+The above properly results in both a type-checking error as well as a runtime failure for <a href="https://www.sympy.org/">SymPy</a> versions prior to 1.9.</p>
+</div>
+<p><code>numerary</code>’s <code>Supports</code> protocols can be composed to refine requirements.
+For example, let’s say one wanted to ensure type compatibility with primitives that support both <code>__abs__</code> and <code>__divmod__</code>.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">beartype.typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">T_co</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T_co&quot;</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="o">...</span>   <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span><span class="p">,</span>
+<span class="o">...</span>   <span class="n">SupportsAbs</span><span class="p">,</span> <span class="n">SupportsDivmod</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
+<span class="o">...</span> <span class="k">class</span> <span class="nc">MyType</span><span class="p">(</span>
+<span class="o">...</span>   <span class="n">SupportsAbs</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span> <span class="n">SupportsDivmod</span><span class="p">[</span><span class="n">T_co</span><span class="p">],</span>
+<span class="o">...</span>   <span class="n">Protocol</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">):</span>
+<span class="o">...</span>   <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_type</span><span class="p">:</span> <span class="n">MyType</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_type</span> <span class="o">=</span> <span class="mf">3.5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">my_type</span><span class="p">,</span> <span class="n">MyType</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">my_type</span><span class="p">)</span>
+<span class="mf">3.5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">my_type</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_type</span> <span class="o">=</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">my_type</span><span class="p">,</span> <span class="n">MyType</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">my_type</span><span class="p">)</span>
+<span class="n">Fraction</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">my_type</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_type</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;5.2&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">my_type</span><span class="p">,</span> <span class="n">MyType</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">my_type</span><span class="p">)</span>
+<span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;5.2&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">my_type</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;2&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1.2&#39;</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_type</span> <span class="o">=</span> <span class="s2">&quot;nope&quot;</span>  <span class="c1"># type: ignore [assignment]  # properly caught by Mypy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">my_type</span><span class="p">,</span> <span class="n">MyType</span><span class="p">)</span>
+<span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+<p>Remember that scandal where <a href="https://posita.github.io/numerary/0.4/whytho/#lies-upon-lies-upon-lies-all-the-way-down"><code>complex</code> defined exception-throwing comparators it wasn’t supposed to have, which confused runtime protocol checking, and then its type definitions lied about it to cover it up</a>?
+Yeah, that shit ends <em>here</em>.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsRealOps</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">SupportsRealOps</span><span class="p">)</span>  <span class="c1"># all good</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">has_real_ops</span><span class="p">:</span> <span class="n">SupportsRealOps</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># type: ignore [assignment]  # properly caught by Mypy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">SupportsRealOps</span><span class="p">)</span>  <span class="c1"># you&#39;re not fooling anyone, buddy</span>
+<span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+<p><code>numerary</code> not only caches runtime protocol evaluations, but allows overriding those evaluations when the default machinery gets it wrong.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
+<span class="o">...</span> <span class="k">class</span> <span class="nc">MySupportsOne</span><span class="p">(</span><span class="n">Protocol</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">CachingProtocolMeta</span><span class="p">):</span>
+<span class="o">...</span>   <span class="nd">@abstractmethod</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Imposter</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="s2">&quot;one&quot;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">imp</span><span class="p">:</span> <span class="n">MySupportsOne</span> <span class="o">=</span> <span class="n">Imposter</span><span class="p">()</span>  <span class="c1"># type: ignore [assignment]  # properly caught by Mypy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imp</span><span class="p">,</span> <span class="n">MySupportsOne</span><span class="p">)</span>  <span class="c1"># fool me once, shame on you ...</span>
+<span class="kc">True</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MySupportsOne</span><span class="o">.</span><span class="n">excludes</span><span class="p">(</span><span class="n">Imposter</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imp</span><span class="p">,</span> <span class="n">MySupportsOne</span><span class="p">)</span>  <span class="c1"># ... can&#39;t get fooled again</span>
+<span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+<p><code>numerary</code> has default overrides to correct for known oddities with native types (like our old friend, <code>complex</code>) and with popular libraries like <a href="https://numpy.org/"><code>numpy</code></a> and <a href="https://www.sympy.org/"><code>sympy</code></a>.
+Others will be added as they are identified.
+If I’ve missed any, or if you would like <code>numerary</code> to support additional number implementations out of the box, please <a href="https://posita.github.io/numerary/0.4/contrib/#starting-discussions-and-filing-issues">let me know</a>.</p>
+<h2 id="performance-enhanced-protocolsa-different-kind-of-pep-for-your-step">Performance Enhanced Protocols—A <em>different</em> kind of “PEP” for your step</h2>
+<p>By default, <a href="https://bugs.python.org/issue30505">protocols frustrate runtime type-checking performance</a>.</p>
+<p><a href="https://posita.github.io/numerary/0.4/whytho/#puh-roh-tih-caaahhhlllz">A lot.</a></p>
+<p><code>numerary</code> applies two distinct, layered optimization strategies:</p>
+<ol>
+<li>Cached <code>__instancecheck__</code> results for <code>numerary</code>-defined protocols; and</li>
+<li>Optional(-ish) short-circuit type enumerations.</li>
+</ol>
+<h3 id="cached-__instancecheck__-results">Cached <code>__instancecheck__</code> results</h3>
+<p>To understand why <code>numerary</code> protocols are faster for runtime checks, it helps to understand why non-<code>numerary</code> protocols are so slow.
+At runtime (i.e., via <code>isinstance</code>), the <a href="https://github.com/python/cpython/blob/main/Lib/typing.py">default <code>Protocol</code> implementation</a> delegates to <code>type(Protocol).__instancecheck__</code> to perform a crude comparison of an instance’s callable attributes against the protocol’s.
+More attributes means more comparisons.
+Further, it performs these comparisons … Every. Single. 🤬ing. Time.</p>
+<p>Protocols provided by <code>numerary</code> use instead <a href="https://posita.github.io/numerary/0.4/numerary.types/#numerary.types.CachingProtocolMeta"><code>CachingProtocolMeta</code></a> as their meta class.
+<code>CachingProtocolMeta</code> derives from <code>type(Protocol)</code> and overrides <code>__instancecheck__</code> to cache results based on instance type.</p>
+<p>Conceptually:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SupportsIntegralOps</span><span class="p">)</span>  <span class="c1"># first check for an int is delegated to type(Protocol).__instancecheck__</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">SupportsIntegralOps</span><span class="p">)</span>  <span class="c1"># cached result</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">SupportsIntegralOps</span><span class="p">)</span>  <span class="c1"># the first check for a float is delegated to type(Protocol).__instancecheck__</span>
+<span class="kc">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">SupportsIntegralOps</span><span class="p">)</span>  <span class="c1"># cached result</span>
+<span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+<p>These offer significant performance improvements, especially where protocols define many methods.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">_SupportsComplexOps</span><span class="p">)</span>
+<span class="mf">9.69</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">157</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">SupportsComplexOps</span><span class="p">)</span>
+<span class="mi">198</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">1.94</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="mf">2.0</span><span class="p">),</span> <span class="n">_SupportsComplexOps</span><span class="p">)</span>
+<span class="mf">9.99</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">923</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">builtins</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="mf">2.0</span><span class="p">),</span> <span class="n">SupportsComplexOps</span><span class="p">)</span>
+<span class="mi">202</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">2.57</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">_SupportsComplexOps</span><span class="p">)</span>
+<span class="mf">9.94</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">267</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">SupportsComplexOps</span><span class="p">)</span>
+<span class="mi">202</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">1.24</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fractions</span><span class="o">.</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">_SupportsComplexOps</span><span class="p">)</span>
+<span class="mf">9.67</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">133</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fractions</span><span class="o">.</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">SupportsComplexOps</span><span class="p">)</span>
+<span class="mi">209</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">5.67</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">_SupportsComplexOps</span><span class="p">)</span>
+<span class="mf">9.8</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">161</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">SupportsComplexOps</span><span class="p">)</span>
+<span class="mi">199</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">1.63</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<details>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.0/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">_SupportsComplexOps</span>  <span class="c1"># non-caching version</span>
+<span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsComplexOps</span>  <span class="c1"># CachingProtocolMeta version</span>
+<span class="kn">import</span> <span class="nn">sympy</span>
+
+<span class="n">one_int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">two_float</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">three_dec</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">four_frac</span> <span class="o">=</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">five_sym</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">sympify</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">vals</span> <span class="o">=</span> <span class="p">(</span><span class="n">one_int</span><span class="p">,</span> <span class="n">two_float</span><span class="p">,</span> <span class="n">three_dec</span><span class="p">,</span> <span class="n">four_frac</span><span class="p">,</span> <span class="n">five_sym</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+  <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">(</span>
+    <span class="n">_SupportsComplexOps</span><span class="p">,</span>
+    <span class="n">SupportsComplexOps</span><span class="p">,</span>
+  <span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%timeit isinstance(</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">), </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="o">%</span><span class="n">timeit</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+</details>
+
+<h3 id="unions-for-inclusion"><code>Union</code>s for inclusion</h3>
+<p>Sometimes we might want types that don’t comply with protocol definitions to validate anyway (e.g., because we know they will work at runtime).
+For example, <code>float</code>s in Python versions prior to 3.9 officially lacked <code>__floor__</code> and <code>__ceil__</code> methods, but were registered with the numeric tower and worked just fine with <code>math.floor</code> and <code>math.ceil</code>.</p>
+<p>How does <code>numerary</code>’s <a href="https://posita.github.io/numerary/0.4/numerary.types/#numerary.types.SupportsFloorCeil"><code>SupportsFloorCeil</code></a> deal with this situation?
+Not very well, unfortunately, at least not on its own.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">math</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloorCeil</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">my_dumb_floor_func</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsFloorCeil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">)</span>  <span class="c1"># will work, even for floats, thanks to default overrides</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]  # doesn&#39;t understand SupportsFloorCeil</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">float_val</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.6180339887</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># For illustration only until &lt;https://github.com/python/mypy/issues/5940&gt; is fixed</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span>
+<span class="o">...</span>   <span class="n">my_dumb_floor_func</span><span class="p">(</span><span class="n">float_val</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]  # still results in a Mypy error for Python version &lt;3.9</span>
+<span class="o">...</span> <span class="k">else</span><span class="p">:</span>
+<span class="o">...</span>   <span class="n">my_dumb_floor_func</span><span class="p">(</span><span class="n">float_val</span><span class="p">)</span>  <span class="c1"># validates</span>
+<span class="mi">1</span>
+</code></pre></div></td></tr></table></div>
+<p><code>Union</code>s allow a work-around.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">beartype.typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloorCeil</span><span class="p">,</span> <span class="n">__floor__</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloorCeilU</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">my_floor_func</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">SupportsFloorCeilU</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">__floor__</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_floor_func</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="mf">1.2</span><span class="p">))</span>  <span class="c1"># works in 3.7+</span>
+<span class="mi">1</span>
+</code></pre></div></td></tr></table></div>
+<p>This is largely a contrived example, since <code>math.floor</code> and <code>math.ceil</code> happily accept <code>SupportsFloat</code>, but it is useful for illustration.</p>
+<h3 id="limitations">Limitations</h3>
+<p>There are some downsides, though.
+(Aren’t there always?)</p>
+<h4 id="sometimes-protocols-are-too-trusting">Sometimes protocols are too trusting</h4>
+<p>Protocols trust numeric tower registrations.
+<em>TODO(@posita): Is this really true?</em>
+But sometimes, out there in the real world, implementations <em>lie</em>.</p>
+<p>Consider:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Integral</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Integral</span><span class="p">,</span> <span class="s2">&quot;imag&quot;</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pants_on_fire</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pants_on_fire</span><span class="p">,</span> <span class="n">Integral</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">pants_on_fire</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">pants_on_fire</span><span class="p">,</span> <span class="s2">&quot;imag&quot;</span><span class="p">)</span>  <span class="c1"># somebody&#39;s tellin&#39; stories</span>
+<span class="kc">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsRealImag</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_imag</span><span class="p">:</span> <span class="n">SupportsRealImag</span> <span class="o">=</span> <span class="n">pants_on_fire</span>  <span class="c1"># fails to detect the lie</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_imag</span><span class="o">.</span><span class="n">real</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="ne">AttributeError</span><span class="p">:</span> <span class="s1">&#39;One&#39;</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s1">&#39;real&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>In this particular case, <code>numerary</code> provides us with a defensive mechanism.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsRealImagMixedU</span><span class="p">,</span> <span class="n">real</span><span class="p">,</span> <span class="n">imag</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_imag_defense</span><span class="p">:</span> <span class="n">SupportsRealImagMixedU</span> <span class="o">=</span> <span class="n">pants_on_fire</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real</span><span class="p">(</span><span class="n">real_imag_defense</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">imag</span><span class="p">(</span><span class="n">real_imag</span><span class="p">)</span>
+<span class="mi">0</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="protocols-loses-fidelity-during-runtime-checking">Protocols loses fidelity during runtime checking</h4>
+<p>At runtime, protocols match <em>names</em>, not <em>signatures</em>.
+For example, <a href="https://posita.github.io/numerary/0.4/numerary.types/#numerary.types.SupportsNumeratorDenominator"><code>SupportsNumeratorDenominator</code></a>’s  <code>numerator</code> and <code>denominator</code> <em>properties</em> will match <a href="https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer"><code>sage.rings.integer.Integer</code></a>’s similarly named <em><a href="https://trac.sagemath.org/ticket/28234">functions</a></em>.
+In other words, <code>isinstance(sage_integer, SupportsNumeratorDenominator)</code> will return <code>True</code>.
+Further, if the short-circuiting approach is used, because <code>sage.rings.integer.Integer</code> registers itself with the numeric tower, this <em>may</em><sup id="fnref:5"><a class="footnote-ref" href="#fn:5">2</a></sup> not be caught by Mypy.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">SageLikeRational</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numerator</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">denominator</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="o">...</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">=</span> <span class="n">numerator</span>
+<span class="o">...</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">=</span> <span class="n">denominator</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsNumeratorDenominator</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">frac</span><span class="p">:</span> <span class="n">SupportsNumeratorDenominator</span> <span class="o">=</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># no typing error</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sage_rational1</span><span class="p">:</span> <span class="n">SupportsNumeratorDenominator</span> <span class="o">=</span> <span class="n">SageLikeRational</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># type: ignore [assignment]  # Mypy catches this</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sage_rational1</span><span class="p">,</span> <span class="n">SupportsNumeratorDenominator</span><span class="p">)</span>  <span class="c1"># isinstance does not</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sage_rational1</span><span class="o">.</span><span class="n">numerator</span>
+<span class="o">&lt;...</span><span class="n">method</span><span class="o">...</span><span class="n">numerator</span><span class="o">...&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">frac</span><span class="o">.</span><span class="n">numerator</span>
+<span class="mi">29</span>
+</code></pre></div></td></tr></table></div>
+<p>Known warts <em>could</em> be cured by cache overriding as discussed above.
+However, to combat this particular situation, <code>numerary</code> provides an alternative: the <a href="https://posita.github.io/numerary/0.4/numerary.types/#numerary.types.SupportsNumeratorDenominatorMethods"><code>SupportsNumeratorDenominatorMethods</code></a> protocol and the <a href="https://posita.github.io/numerary/0.4/numerary.types/#numerary.types.numerator"><code>numerator</code></a> and <a href="https://posita.github.io/numerary/0.4/numerary.types/#numerary.types.denominator"><code>denominator</code></a> helper functions.
+These accommodate rational implementations like Sage’s that are mostly compliant with the exception of their respective <code>numerator</code> and <code>denominator</code> implementations.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">numerator</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numerator</span><span class="p">(</span><span class="n">sage_rational1</span><span class="p">)</span>
+<span class="mi">29</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numerator</span><span class="p">(</span><span class="n">frac</span><span class="p">)</span>
+<span class="mi">29</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsNumeratorDenominatorMethods</span><span class="p">,</span> <span class="n">numerator</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sage_rational2</span><span class="p">:</span> <span class="n">SupportsNumeratorDenominatorMethods</span> <span class="o">=</span> <span class="n">SageLikeRational</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">29</span><span class="p">)</span>  <span class="c1"># no type error</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numerator</span><span class="p">(</span><span class="n">sage_rational2</span><span class="p">)</span>
+<span class="mi">3</span>
+</code></pre></div></td></tr></table></div>
+<p><code>numerary</code> also defines:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">SupportsNumeratorDenominatorMixedU</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
+    <span class="n">SupportsNumeratorDenominator</span><span class="p">,</span>
+    <span class="n">SupportsNumeratorDenominatorMethods</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">SupportsNumeratorDenominatorMixedT</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SupportsNumeratorDenominator</span><span class="p">,</span>
+    <span class="n">SupportsNumeratorDenominatorMethods</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsNumeratorDenominatorMixedU</span><span class="p">,</span> <span class="n">numerator</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">chimera_rational</span><span class="p">:</span> <span class="n">SupportsNumeratorDenominatorMixedU</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">chimera_rational</span> <span class="o">=</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># no type error</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numerator</span><span class="p">(</span><span class="n">chimera_rational</span><span class="p">)</span>
+<span class="mi">29</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">chimera_rational</span> <span class="o">=</span> <span class="n">SageLikeRational</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">29</span><span class="p">)</span>  <span class="c1"># still no type error</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numerator</span><span class="p">(</span><span class="n">chimera_rational</span><span class="p">)</span>
+<span class="mi">3</span>
+</code></pre></div></td></tr></table></div>
+<p>The <code>SupportsNumeratorDenominator*</code> primitives provide the basis for analogous <a href="https://posita.github.io/numerary/0.4/numerary.types/#numerary.types.RationalLikeMethods"><code>numerary.types.RationalLike*</code> primitives</a>, which <em>should</em> provide sufficient (if idiosyncratic) coverage for dealing with (seemingly mis-appropriately named) rationals.</p>
+<h4 id="pass-through-caching-with-composition-is-pretty-sketchy">Pass-through caching with composition is pretty sketchy</h4>
+<p>This is really getting into where the sausage is made, but full transparency is important, because <code>CachingProtocolMeta</code> does change how protocols are validated at runtime.</p>
+<p>Let’s say we register an errant implementation as non-compliant using the <a href="https://posita.github.io/numerary/0.4/numerary.types/#numerary.types.CachingProtocolMeta.excludes"><code>CachingProtocolMeta.excludes</code>method</a>.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="n">SupportsFloat</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">FloatImposter</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__float__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Haha! JK! @#$% you!&quot;</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="fm">__int__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="mi">42</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">float_imp</span> <span class="o">=</span> <span class="n">FloatImposter</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">SupportsFloat</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloat</span><span class="o">.</span><span class="n">excludes</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">SupportsFloat</span><span class="p">)</span>
+<span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+<p>For registration to be ergonomic, it should be indelible, survive composition, and afford preference to subsequent overrides by inheritors.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">numerary.types</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="o">...</span>   <span class="n">CachingProtocolMeta</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span><span class="p">,</span>
+<span class="o">...</span>   <span class="n">SupportsInt</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
+<span class="o">...</span> <span class="k">class</span> <span class="nc">MySupportsFloatInt</span><span class="p">(</span>
+<span class="o">...</span>   <span class="n">SupportsFloat</span><span class="p">,</span> <span class="n">SupportsInt</span><span class="p">,</span>
+<span class="o">...</span>   <span class="n">Protocol</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">):</span>
+<span class="o">...</span>   <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>  <span class="c1"># composition picks up override from base</span>
+<span class="kc">False</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloat</span><span class="o">.</span><span class="n">reset_for</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>  <span class="c1"># base resets override</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">SupportsFloat</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>  <span class="c1"># picks up base’s changes</span>
+<span class="kc">True</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MySupportsFloatInt</span><span class="o">.</span><span class="n">excludes</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>  <span class="c1"># composition overrides</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>
+<span class="kc">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloat</span><span class="o">.</span><span class="n">includes</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>  <span class="c1"># base changes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">FloatImposter</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>  <span class="c1"># composition remains unchanged</span>
+<span class="kc">False</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MySupportsFloatInt</span><span class="o">.</span><span class="n">reset_for</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>  <span class="c1"># removes override in composition</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>  <span class="c1"># base is visible again</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">SupportsFloat</span><span class="o">.</span><span class="n">excludes</span><span class="p">(</span><span class="n">FloatImposter</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">float_imp</span><span class="p">,</span> <span class="n">MySupportsFloatInt</span><span class="p">)</span>  <span class="c1"># base’s changes are visible to composition again</span>
+<span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+<p>For this to work under the current implementation, we cannot rely exclusively on the <a href="https://github.com/python/cpython/blob/main/Lib/typing.py">standard library’s implementation of <code>__instancecheck__</code></a>, since it flattens and inspects <em>all</em> properties (with some proprietary exceptions) of all classes in the inheritance tree (in order of the MRO).
+In practical terms, this means one can’t easily delegate to an ancestor’s <code>__instancecheck__</code> method and a protocol’s cache is effectively hidden from its progeny.
+In other words, leaning on the default behavior would require one to register exceptions with every inheritor.
+That would suck, so let’s not do that.</p>
+<p>However, overriding the behavior is problematic, because the standard library uses non-public interfaces to perform its attribute enumeration.
+We certainly don’t want to re-implement protocol runtime checking from scratch.
+(At least not yet.)</p>
+<p><code>beartype.typing.Protocol</code>’s meta class tries to work around this by sneakily limiting its evaluation to directly defined attributes, and then delegating <code>isinstance</code> evaluation to its <code>__base__</code> classes.
+In doing so, it picks up its bases’ then-cached values, but at the cost of re-implementing the attribute check as well as taking a dependency on various implementation details of the standard library, which creates a fragility.
+Further, for post-inheritance updates, <a href="https://posita.github.io/numerary/0.4/numerary.types/#numerary.types.CachingProtocolMeta"><code>CachingProtocolMeta</code></a> extends <code>beartype</code>’s version to implement a simplistic publish/subscribe mechanism that dirties non-overridden caches in inheritors when member protocols caches are updated.
+That’s completely off the beaten path and there are probably some gremlins hiding out there.</p>
+<p>One subtlety is that the implementation deviates from performing checks in MRO order (and may perform redundant checks).
+This is probably fine as long as runtime comparisons remain limited to crude checks whether attributes merely exist.
+It would likely fail if runtime checking becomes more sophisticated, at which time, this implementation will need to be revisited.
+Hopefully by then, we can just delete <code>numerary</code> as the aspirationally unnecessary hack it is and move on with our lives.</p>
+<p>(See <a href="https://github.com/beartype/beartype/tree/main/beartype/typing"><code>beartype.typing</code></a> and <a href="https://github.com/posita/numerary/blob/v0.4.0/numerary/types.py"><code>numerary</code>’s extension</a> for details.)</p>
+<h2 id="license">License</h2>
+<p><code>numerary</code> is licensed under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.
+See the included <a href="https://posita.github.io/numerary/0.4/license/"><code>LICENSE</code></a> file for details.
+Source code is <a href="https://github.com/posita/numerary">available on GitHub</a>.</p>
+<h2 id="installation">Installation</h2>
+<p>Installation can be performed via <a href="https://pypi.python.org/pypi/numerary/">PyPI</a>.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>% pip install numerary
+...
+</code></pre></div></td></tr></table></div>
+<p>Alternately, you can download <a href="https://github.com/posita/numerary">the source</a> and install manually.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>% git clone https://github.com/posita/numerary.git
+...
+% <span class="nb">cd</span> numerary
+% python -m pip install .  <span class="c1"># -or- python -c &#39;from setuptools import setup ; setup()&#39; install .</span>
+...
+</code></pre></div></td></tr></table></div>
+<h3 id="requirements">Requirements</h3>
+<p><code>numerary</code> requires a relatively modern version of Python:</p>
+<ul>
+<li><a href="https://www.python.org/">CPython</a> (3.7+)</li>
+<li><a href="http://pypy.org/">PyPy</a> (CPython 3.7+ compatible)</li>
+</ul>
+<p>It has the following runtime dependencies:</p>
+<ul>
+<li><a href="https://pypi.org/project/typing-extensions/"><code>typing-extensions</code></a> (with Python &lt;3.8)</li>
+<li><a href="https://pypi.org/project/beartype/"><code>beartype</code></a> for caching protocols (0.10.1+)
+  <a href="https://beartype.rtfd.io/"><img alt="Bear-ified™" src="https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg" /></a></li>
+</ul>
+<p><code>numerary</code> will not use <code>beartype</code> internally unless the <code>NUMERARY_BEARTYPE</code> environment variable is set to a truthy<sup id="fnref:6"><a class="footnote-ref" href="#fn:6">3</a></sup> value before <code>numerary</code> is loaded.</p>
+<p>See the <a href="https://posita.github.io/numerary/0.4/contrib/#hacking-quick-start">hacking quick-start</a> for additional development and testing dependencies.</p>
+<h2 id="customers">Customers <a href="https://posita.github.io/numerary/"><img alt="numerary-encumbered" src="https://raw.githubusercontent.com/posita/numerary/v0.4.0/docs/numerary-encumbered.svg" /></a></h2>
+<ul>
+<li><a href="https://github.com/posita/dyce/"><code>dyce</code></a> - a pure-Python library for modeling arbitrarily complex dice mechanics and <del>mother</del> <em>birthing code base</em> of <code>numerary</code>!</li>
+<li><a href="https://github.com/antonagestam/phantom-types">👻 <code>phantom-types</code></a> - predicates and other type constraints without runtime overhead</li>
+<li>The next one could be <em>you</em>! 👋</li>
+</ul>
+<p>Do you have a project that suffers problems made slightly less annoying by <code>numerary</code>?
+<a href="https://posita.github.io/numerary/0.4/contrib/#starting-discussions-and-filing-issues">Let me know</a>, and I’ll promote it here!</p>
+<p>And don’t forget to do your part in perpetuating gratuitous badge-ification!</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>&lt;!-- Markdown --&gt;
+As of version 0.4.1, ``dyce`` is
+[<span class="nt">![numerary-encumbered</span>](<span class="na">https://raw.githubusercontent.com/posita/numerary/latest/docs/numerary-encumbered.svg</span>)][numerary-encumbered]!
+[<span class="nl">numerary-encumbered</span>]: <span class="na">https://posita.github.io/numerary/ &quot;numerary-encumbered&quot;</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">..</span>
+<span class="cp">    reStructuredText - see https://docutils.sourceforge.io/docs/ref/rst/directives.html#image</span>
+
+As of version 0.4.1, <span class="s">``dyce``</span> is |numerary-encumbered|!
+
+<span class="p">..</span> <span class="nt">|numerary-encumbered|</span> <span class="ow">image</span><span class="p">::</span> https://raw.githubusercontent.com/posita/numerary/latest/docs/numerary-encumbered.svg
+   <span class="nc">:align:</span> top
+   <span class="nc">:target:</span> https://posita.github.io/numerary/
+   <span class="nc">:alt:</span> numerary-encumbered
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cm">&lt;!-- HTML --&gt;</span>
+As of version 0.4.1, <span class="p">&lt;</span><span class="nt">code</span><span class="p">&gt;</span>dyce<span class="p">&lt;/</span><span class="nt">code</span><span class="p">&gt;</span> is <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://posita.github.io/numerary/&quot;</span><span class="p">&gt;&lt;</span><span class="nt">img</span>
+  <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://raw.githubusercontent.com/posita/numerary/latest/docs/numerary-encumbered.svg&quot;</span>
+  <span class="na">alt</span><span class="o">=</span><span class="s">&quot;numerary-encumbered&quot;</span>
+  <span class="na">style</span><span class="o">=</span><span class="s">&quot;vertical-align: middle;&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>!
+</code></pre></div></td></tr></table></div>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>You know, <em>super</em> weird, off-the-wall shit, like members of the <a href="https://docs.python.org/3/library/numbers.html">numeric tower</a>, or <a href="https://docs.python.org/3/library/decimal.html">standard library primitives that remain <em>non</em>-members for some 🤬ed up reason</a>, or <a href="https://trac.sagemath.org/ticket/28234">legitimate non-members because they predate PEP 3141 and conforming would amount to breaking changes</a>, or—I don’t know—oodles of libraries and applications that have been around for literally decades that bring huge value to vast scientific and mathematic audiences, but whose number primitives break type-checking if one abides by the ubiquitous bum steer, “I don’t have any experience trying to do what you’re doing, but just use <code>float</code>, bro.”</p>
+<p>Because, hey, <em>🤬</em> numbers!
+Am I right?&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>I say <em>may</em> because I don’t really understand how Sage’s number registrations work.&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:6">
+<p>I.E., one of: <code>1</code>, <code>on</code>, <code>t</code>, <code>true</code>, and <code>yes</code>.&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+      
+        
+        <a href="whytho/" class="md-footer__link md-footer__link--next" aria-label="Next: Why would you do this?" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Why would you do this?
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <i>Copyright and other protections apply. Please see the accompanying <tt>LICENSE</tt> file for rights and restrictions governing use of this software. All rights not expressly waived or licensed are reserved. If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.</i>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": ".", "features": ["content.code.annotate", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.ed9748b7.min.js"></script>
+      
+        <script src="js/site.js"></script>
+      
+    
+  </body>
+</html>
