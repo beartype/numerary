@@ -171,10 +171,7 @@ The standard library ~~picked the low hanging fruit~~ *provides [some simple pre
 Can we imitate those?
 
 ``` python
->>> try:
-...   from typing import Protocol, runtime_checkable
-... except ImportError:
-...   from typing_extensions import Protocol, runtime_checkable  # type: ignore [misc]
+>>> from typing import Protocol, runtime_checkable
 
 >>> @runtime_checkable
 ... class SupportsNumeratorDenominator(Protocol):

@@ -15,6 +15,10 @@
 
 # ``numerary`` release notes
 
+## [0.4.1](https://github.com/posita/numerary/releases/tag/v0.4.1)
+
+* Minor corrections to required Python version.
+
 ## [0.4.0](https://github.com/posita/numerary/releases/tag/v0.4.0)
 
 * Now relies on ``#!python beartype.typing.Protocol`` as the underlying caching protocol implementation.

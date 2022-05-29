@@ -4,7 +4,7 @@ repos:
     - id: check-hooks-apply
     - id: check-useless-excludes
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.2.0
     hooks:
     - id: end-of-file-fixer
       # See <https://docs.python.org/3/library/re.html#re.X>

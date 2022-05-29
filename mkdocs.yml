@@ -42,6 +42,8 @@ markdown_extensions:
   - pymdownx.snippets:
       check_paths: true
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.tilde
 
 plugins:
@@ -70,6 +72,7 @@ theme:
   name: "material"  # required by mkdocstrings
   features:
     - content.code.annotate
+    - content.tabs.link
     - navigation.expand
     - navigation.sections
     - toc.integrate

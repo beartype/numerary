@@ -299,7 +299,7 @@ Not very well, unfortunately, at least not on its own.
 ...   assert isinstance(arg, SupportsFloorCeil)
 ...   return __floor__(arg)
 
->>> my_floor_func(float(1.2))  # works in 3.7+
+>>> my_floor_func(float(1.2))  # works in 3.8+
 1
 
 ```
@@ -544,13 +544,12 @@ Alternately, you can download [the source](https://github.com/posita/numerary) a
 
 ``numerary`` requires a relatively modern version of Python:
 
-* [CPython](https://www.python.org/) (3.7+)
-* [PyPy](http://pypy.org/) (CPython 3.7+ compatible)
+* [CPython](https://www.python.org/) (3.8+)
+* [PyPy](http://pypy.org/) (CPython 3.8+ compatible)
 
 It has the following runtime dependencies:
 
-* [``typing-extensions``](https://pypi.org/project/typing-extensions/) (with Python <3.8)
-* [``beartype``](https://pypi.org/project/beartype/) for caching protocols (0.10.1+)
+* [``beartype``](https://pypi.org/project/beartype/) for caching protocols
   [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
 ``numerary`` will not use ``beartype`` internally unless the ``NUMERARY_BEARTYPE`` environment variable is set to a truthy[^6] value before ``numerary`` is loaded.
