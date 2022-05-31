@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://posita.github.io/numerary/0.4/whytho/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.13">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.16">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.e411adfe.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.1c3799f8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.cc9b2e1e.min.css">
@@ -655,13 +655,7 @@ Can we imitate those?</p>
 <span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
-<span class="o">...</span>   <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
-<span class="o">...</span> <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-<span class="o">...</span>   <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>  <span class="c1"># type: ignore [misc]</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="nd">@runtime_checkable</span>
 <span class="o">...</span> <span class="k">class</span> <span class="nc">SupportsNumeratorDenominator</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
@@ -710,7 +704,7 @@ First, let’s get a baseline.</p>
 <span class="mi">249</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">1.67</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.0/docs/perf_rational_baseline.ipy"><code>perf_rational_baseline.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.1/docs/perf_rational_baseline.ipy"><code>perf_rational_baseline.ipy</code></a></summary>
 
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -752,7 +746,7 @@ First, let’s get a baseline.</p>
 <span class="mf">10.5</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">171</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.0/docs/perf_rational_protocol.ipy"><code>perf_rational_protocol.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.1/docs/perf_rational_protocol.ipy"><code>perf_rational_protocol.ipy</code></a></summary>
 
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -820,7 +814,7 @@ How much worse would it be if we had enumerated all the dunder methods? 😰</p>
 <span class="mi">108</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">1.75</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.0/docs/perf_rational_big_protocol.ipy"><code>perf_rational_big_protocol.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.1/docs/perf_rational_big_protocol.ipy"><code>perf_rational_big_protocol.ipy</code></a></summary>
 
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1163,10 +1157,10 @@ I just gave you the <a href="https://pypi.org/project/beartype/">link</a>.
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate", "content.tabs.link", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.ed9748b7.min.js"></script>
+      <script src="../assets/javascripts/bundle.3a4b43e5.min.js"></script>
       
         <script src="../js/site.js"></script>
       

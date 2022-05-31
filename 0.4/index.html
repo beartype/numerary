@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://posita.github.io/numerary/0.4/">
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.13">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.16">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.e411adfe.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.1c3799f8.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.cc9b2e1e.min.css">
@@ -543,11 +543,11 @@ Please see the accompanying <code>LICENSE</code> file for rights and restriction
 All rights not expressly waived or licensed are reserved.
 If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.</em></p>
 <p><a href="https://github.com/posita/numerary/actions/workflows/unit-tests.yaml"><img alt="Tests" src="https://github.com/posita/numerary/actions/workflows/unit-tests.yaml/badge.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.4.0/"><img alt="Version" src="https://img.shields.io/pypi/v/numerary/0.4.0.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.4.0/"><img alt="Development Stage" src="https://img.shields.io/pypi/status/numerary/0.4.0.svg" /></a>
-<a href="http://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/pypi/l/numerary/0.4.0.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.4.0/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/numerary/0.4.0.svg" /></a>
-<a href="https://pypi.org/project/numerary/0.4.0/"><img alt="Supported Python Implementations" src="https://img.shields.io/pypi/implementation/numerary/0.4.0.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.4.1/"><img alt="Version" src="https://img.shields.io/pypi/v/numerary/0.4.1.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.4.1/"><img alt="Development Stage" src="https://img.shields.io/pypi/status/numerary/0.4.1.svg" /></a>
+<a href="http://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/pypi/l/numerary/0.4.1.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.4.1/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/numerary/0.4.1.svg" /></a>
+<a href="https://pypi.org/project/numerary/0.4.1/"><img alt="Supported Python Implementations" src="https://img.shields.io/pypi/implementation/numerary/0.4.1.svg" /></a>
 <a href="https://github.com/pre-commit/pre-commit"><img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&amp;logoColor=white" /></a>
 <a href="https://beartype.rtfd.io/"><img alt="Bear-ified™" src="https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg" /></a></p>
 <p>Are you defining a numeric interface that should work with more than just <code>int</code>s and <code>float</code>s?
@@ -872,7 +872,7 @@ Further, it performs these comparisons … Every. Single. 🤬ing. Time.</p>
 <span class="mi">199</span> <span class="n">ns</span> <span class="err">±</span> <span class="mf">1.63</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.0/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.1/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
 
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -971,7 +971,7 @@ Not very well, unfortunately, at least not on its own.</p>
 <span class="o">...</span>   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SupportsFloorCeil</span><span class="p">)</span>
 <span class="o">...</span>   <span class="k">return</span> <span class="n">__floor__</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">my_floor_func</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="mf">1.2</span><span class="p">))</span>  <span class="c1"># works in 3.7+</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_floor_func</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="mf">1.2</span><span class="p">))</span>  <span class="c1"># works in 3.8+</span>
 <span class="mi">1</span>
 </code></pre></div></td></tr></table></div>
 <p>This is largely a contrived example, since <code>math.floor</code> and <code>math.ceil</code> happily accept <code>SupportsFloat</code>, but it is useful for illustration.</p>
@@ -1243,7 +1243,7 @@ That’s completely off the beaten path and there are probably some gremlins hid
 This is probably fine as long as runtime comparisons remain limited to crude checks whether attributes merely exist.
 It would likely fail if runtime checking becomes more sophisticated, at which time, this implementation will need to be revisited.
 Hopefully by then, we can just delete <code>numerary</code> as the aspirationally unnecessary hack it is and move on with our lives.</p>
-<p>(See <a href="https://github.com/beartype/beartype/tree/main/beartype/typing"><code>beartype.typing</code></a> and <a href="https://github.com/posita/numerary/blob/v0.4.0/numerary/types.py"><code>numerary</code>’s extension</a> for details.)</p>
+<p>(See <a href="https://github.com/beartype/beartype/tree/main/beartype/typing"><code>beartype.typing</code></a> and <a href="https://github.com/posita/numerary/blob/v0.4.1/numerary/types.py"><code>numerary</code>’s extension</a> for details.)</p>
 <h2 id="license">License</h2>
 <p><code>numerary</code> is licensed under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.
 See the included <a href="https://posita.github.io/numerary/0.4/license/"><code>LICENSE</code></a> file for details.
@@ -1268,18 +1268,17 @@ Source code is <a href="https://github.com/posita/numerary">available on GitHub<
 <h3 id="requirements">Requirements</h3>
 <p><code>numerary</code> requires a relatively modern version of Python:</p>
 <ul>
-<li><a href="https://www.python.org/">CPython</a> (3.7+)</li>
-<li><a href="http://pypy.org/">PyPy</a> (CPython 3.7+ compatible)</li>
+<li><a href="https://www.python.org/">CPython</a> (3.8+)</li>
+<li><a href="http://pypy.org/">PyPy</a> (CPython 3.8+ compatible)</li>
 </ul>
 <p>It has the following runtime dependencies:</p>
 <ul>
-<li><a href="https://pypi.org/project/typing-extensions/"><code>typing-extensions</code></a> (with Python &lt;3.8)</li>
-<li><a href="https://pypi.org/project/beartype/"><code>beartype</code></a> for caching protocols (0.10.1+)
+<li><a href="https://pypi.org/project/beartype/"><code>beartype</code></a> for caching protocols
   <a href="https://beartype.rtfd.io/"><img alt="Bear-ified™" src="https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg" /></a></li>
 </ul>
 <p><code>numerary</code> will not use <code>beartype</code> internally unless the <code>NUMERARY_BEARTYPE</code> environment variable is set to a truthy<sup id="fnref:6"><a class="footnote-ref" href="#fn:6">3</a></sup> value before <code>numerary</code> is loaded.</p>
 <p>See the <a href="https://posita.github.io/numerary/0.4/contrib/#hacking-quick-start">hacking quick-start</a> for additional development and testing dependencies.</p>
-<h2 id="customers">Customers <a href="https://posita.github.io/numerary/"><img alt="numerary-encumbered" src="https://raw.githubusercontent.com/posita/numerary/v0.4.0/docs/numerary-encumbered.svg" /></a></h2>
+<h2 id="customers">Customers <a href="https://posita.github.io/numerary/"><img alt="numerary-encumbered" src="https://raw.githubusercontent.com/posita/numerary/v0.4.1/docs/numerary-encumbered.svg" /></a></h2>
 <ul>
 <li><a href="https://github.com/posita/dyce/"><code>dyce</code></a> - a pure-Python library for modeling arbitrarily complex dice mechanics and <del>mother</del> <em>birthing code base</em> of <code>numerary</code>!</li>
 <li><a href="https://github.com/antonagestam/phantom-types">👻 <code>phantom-types</code></a> - predicates and other type constraints without runtime overhead</li>
@@ -1394,10 +1393,10 @@ Am I right?&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": ["content.code.annotate", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["content.code.annotate", "content.tabs.link", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.ed9748b7.min.js"></script>
+      <script src="assets/javascripts/bundle.3a4b43e5.min.js"></script>
       
         <script src="js/site.js"></script>
       
