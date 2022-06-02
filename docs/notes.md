@@ -17,12 +17,13 @@
 
 ## [0.4.3](https://github.com/posita/numerary/releases/tag/v0.4.3)
 
-* Add work-around for [posita/numerary#16](https://github.com/posita/numerary/issues/16).
-* Allow deployments to PyPI from CI based on tags.
+* Migrates from [``setuptools_scm``](https://pypi.org/project/setuptools-scm/) to [``versioningit``](https://pypi.org/project/versioningit/) for more flexible version number formatting.
+* Adds work-around for [posita/numerary#16](https://github.com/posita/numerary/issues/16).
+* Allows deployments to PyPI from CI based on tags.
 
 ## [0.4.2](https://github.com/posita/numerary/releases/tag/v0.4.2)
 
-* Fix issue where ``numpy`` lacks ``float128`` on certain Windows installation.
+* Fixes issue where ``numpy`` lacks ``float128`` on certain Windows installation.
 
 ## [0.4.1](https://github.com/posita/numerary/releases/tag/v0.4.1)
 
