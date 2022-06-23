@@ -1691,40 +1691,49 @@ except Exception as exc:
     )
     logging.getLogger(__name__).debug(traceback.format_exc())
 else:
-    t: Type
+    t: Optional[Type]
 
-    for t in (
-        numpy.uint8,
-        numpy.uint16,
-        numpy.uint32,
-        numpy.uint64,
-        numpy.int8,
-        numpy.int16,
-        numpy.int32,
-        numpy.int64,
+    for t_name in (
+        "uint8",
+        "uint16",
+        "uint32",
+        "uint64",
+        "int8",
+        "int16",
+        "int32",
+        "int64",
     ):
-        SupportsFloorCeil.includes(t)
+        t = getattr(numpy, t_name, None)
 
-    for t in (
-        numpy.float16,
-        numpy.float32,
-        numpy.float64,
-        numpy.float128,
+        if t is not None:
+            SupportsFloorCeil.includes(t)
+
+    for t_name in (
+        "float16",
+        "float32",
+        "float64",
+        "float128",
     ):
-        SupportsFloorCeil.includes(t)
-        SupportsIntegralOps.excludes(t)
-        SupportsIntegralPow.excludes(t)
+        t = getattr(numpy, t_name, None)
+
+        if t is not None:
+            SupportsFloorCeil.includes(t)
+            SupportsIntegralOps.excludes(t)
+            SupportsIntegralPow.excludes(t)
 
     # numpy complex types define these methods, but only to raise exceptions
-    for t in (
-        numpy.csingle,
-        numpy.cdouble,
-        numpy.clongdouble,
+    for t_name in (
+        "csingle",
+        "cdouble",
+        "clongdouble",
     ):
-        SupportsDivmod.excludes(t)
-        SupportsRealOps.excludes(t)
-        SupportsIntegralOps.excludes(t)
-        SupportsIntegralPow.excludes(t)
+        t = getattr(numpy, t_name, None)
+
+        if t is not None:
+            SupportsDivmod.excludes(t)
+            SupportsRealOps.excludes(t)
+            SupportsIntegralOps.excludes(t)
+            SupportsIntegralPow.excludes(t)
 
 try:
     # Register known sympy exceptions

@@ -15,6 +15,10 @@
 
 # ``numerary`` release notes
 
+## [0.4.2](https://github.com/posita/numerary/releases/tag/v0.4.2)
+
+* Fix issue where ``numpy`` lacks ``float128`` on certain Windows installation.
+
 ## [0.4.1](https://github.com/posita/numerary/releases/tag/v0.4.1)
 
 * Minor corrections to required Python version.
