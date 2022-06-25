@@ -1119,6 +1119,7 @@ class RealLike(
     * [``SupportsRealOps``][numerary.types.SupportsRealOps]
     * [``SupportsComplexOps``][numerary.types.SupportsComplexOps]
     * [``SupportsComplexPow``][numerary.types.SupportsComplexPow]
+    * a ``__hash__`` method
 
     Basically:
 
@@ -1137,7 +1138,9 @@ class RealLike(
       Generic[_T_co],
       metaclass=CachingProtocolMeta,
     ):
-      pass
+      @abstractmethod
+      def __hash__(self) -> int:
+        pass
     ```
 
     This is intended as a practically useful, but incomplete list. To enforce
@@ -1187,6 +1190,7 @@ class RationalLike(
     * [``SupportsRealOps``][numerary.types.SupportsRealOps]
     * [``SupportsComplexOps``][numerary.types.SupportsComplexOps]
     * [``SupportsComplexPow``][numerary.types.SupportsComplexPow]
+    * a ``__hash__`` method
 
     Basically:
 
@@ -1206,7 +1210,9 @@ class RationalLike(
       Generic[_T_co],
       metaclass=CachingProtocolMeta,
     ):
-      pass
+      @abstractmethod
+      def __hash__(self) -> int:
+        pass
     ```
 
     This is intended as a practically useful, but incomplete list. To enforce
@@ -1272,7 +1278,9 @@ class RationalLikeMethods(
       Generic[_T_co],
       metaclass=CachingProtocolMeta,
     ):
-      pass
+      @abstractmethod
+      def __hash__(self) -> int:
+        pass
     ```
 
     This is probably not very useful on its own, but is important to the construction of
@@ -1339,6 +1347,7 @@ class IntegralLike(
     * [``SupportsIntegralPow``][numerary.types.SupportsIntegralPow]
     * [``SupportsRealOps``][numerary.types.SupportsRealOps]
     * [``SupportsComplexOps``][numerary.types.SupportsComplexOps]
+    * a ``__hash__`` method
 
     Basically:
 
@@ -1360,7 +1369,9 @@ class IntegralLike(
       Generic[_T_co],
       metaclass=CachingProtocolMeta,
     ):
-      pass
+      @abstractmethod
+      def __hash__(self) -> int:
+        pass
     ```
 
     This is intended as a practically useful, but incomplete list. To enforce
