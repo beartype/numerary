@@ -1124,18 +1124,18 @@ class RealLike(
     Basically:
 
     ``` python
-    from beartype.typing import Protocol, TypeVar
+    from beartype.typing import Protocol, TypeVar, runtime_checkable
     from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
+    @runtime_checkable
     class RealLike(
       SupportsAbs[T_co],
       SupportsFloat,
       SupportsRealOps[T_co],
       SupportsComplexOps[T_co],
       SupportsComplexPow[T_co],
-      Protocol,
-      Generic[_T_co],
+      Protocol[T_co],
       metaclass=CachingProtocolMeta,
     ):
       @abstractmethod
@@ -1195,10 +1195,11 @@ class RationalLike(
     Basically:
 
     ``` python
-    from beartype.typing import Protocol, TypeVar
+    from beartype.typing import Protocol, TypeVar, runtime_checkable
     from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
+    @runtime_checkable
     class RationalLike(
       SupportsAbs[T_co],
       SupportsFloat,
@@ -1206,8 +1207,7 @@ class RationalLike(
       SupportsRealOps[T_co],
       SupportsComplexOps[T_co],
       SupportsComplexPow[T_co],
-      Protocol,
-      Generic[_T_co],
+      Protocol[T_co],
       metaclass=CachingProtocolMeta,
     ):
       @abstractmethod
@@ -1263,10 +1263,11 @@ class RationalLikeMethods(
     Basically:
 
     ``` python
-    from beartype.typing import Protocol, TypeVar
+    from beartype.typing import Protocol, TypeVar, runtime_checkable
     from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
+    @runtime_checkable
     class RationalLikeMethods(
       SupportsAbs[T_co],
       SupportsFloat,
@@ -1274,8 +1275,7 @@ class RationalLikeMethods(
       SupportsRealOps[T_co],
       SupportsComplexOps[T_co],
       SupportsComplexPow[T_co],
-      Protocol,
-      Generic[_T_co],
+      Protocol[T_co],
       metaclass=CachingProtocolMeta,
     ):
       @abstractmethod
@@ -1352,10 +1352,11 @@ class IntegralLike(
     Basically:
 
     ``` python
-    from beartype.typing import Protocol, TypeVar
+    from beartype.typing import Protocol, TypeVar, runtime_checkable
     from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
+    @runtime_checkable
     class IntegralLike(
       SupportsAbs[T_co],
       SupportsFloat,
@@ -1365,8 +1366,7 @@ class IntegralLike(
       SupportsIntegralPow[T_co],
       SupportsRealOps[T_co],
       SupportsComplexOps[T_co],
-      Protocol,
-      Generic[_T_co],
+      Protocol[T_co],
       metaclass=CachingProtocolMeta,
     ):
       @abstractmethod
