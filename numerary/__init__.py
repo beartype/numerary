@@ -13,9 +13,9 @@ from beartype.typing import Tuple, Union
 from .types import *  # noqa: F401,F403
 
 __version__: Union[
+    Tuple[int, ...],
     Tuple[int, int, str],
     Tuple[int, int, str, str],
-    Tuple[int, int, int],
     Tuple[int, int, int, str],
     Tuple[int, int, int, str, str],
 ]
