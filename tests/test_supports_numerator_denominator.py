@@ -12,7 +12,7 @@ from decimal import Decimal
 from fractions import Fraction
 
 import pytest
-from beartype import beartype
+from beartype import beartype, roar
 from beartype.typing import cast
 
 from numerary.types import (
@@ -121,8 +121,6 @@ def test_numerator_denominator() -> None:
 
 
 def test_numerator_denominator_beartype() -> None:
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
-
     for good_val in (
         True,
         -273,
@@ -154,7 +152,9 @@ def test_numerator_denominator_beartype() -> None:
 
 
 def test_numerator_denominator_numpy() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
+
     uint8_val: SupportsNumeratorDenominator = numpy.uint8(2)
     uint16_val: SupportsNumeratorDenominator = numpy.uint16(273)
     uint32_val: SupportsNumeratorDenominator = numpy.uint32(273)
@@ -202,8 +202,8 @@ def test_numerator_denominator_numpy() -> None:
 
 
 def test_numerator_denominator_numpy_beartype() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
 
     for good_val in (
         numpy.uint8(2),
@@ -235,7 +235,9 @@ def test_numerator_denominator_numpy_beartype() -> None:
 
 
 def test_numerator_denominator_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
+
     integral_val: SupportsNumeratorDenominator = sympy.Integer(-273)
     rational_val: SupportsNumeratorDenominator = sympy.Rational(-27315, 100)
 
@@ -248,21 +250,17 @@ def test_numerator_denominator_sympy() -> None:
         assert denominator(good_val), f"{good_val!r}"
 
     # TODO(posita): These should not validate
-    float_val: SupportsNumeratorDenominatorMixedU = sympy.Float(-273.15)
     sym_val: SupportsNumeratorDenominatorMixedU = sympy.symbols("x")
 
-    for bad_val in (
-        float_val,
-        sym_val,
-    ):
+    for bad_val in (sym_val,):
         assert not isinstance(
             bad_val, SupportsNumeratorDenominatorMixedT
         ), f"{bad_val!r}"
 
 
 def test_numerator_denominator_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
 
     for good_val in (
         sympy.Rational(-27315, 100),

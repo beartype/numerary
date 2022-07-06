@@ -113,7 +113,9 @@ def test_trunc_beartype() -> None:
 
 
 def test_trunc_numpy() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
+
     float64_val: SupportsTrunc = numpy.float64(-273.15)
 
     # numpy.float64 seems to have a closer relationship to the native float than the
@@ -158,7 +160,9 @@ def test_trunc_numpy() -> None:
 
 
 def test_trunc_numpy_beartype() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
+
     roar = pytest.importorskip("beartype.roar", reason="requires beartype")
 
     # numpy.float64 seems to have a closer relationship to the native float than the
@@ -192,7 +196,9 @@ def test_trunc_numpy_beartype() -> None:
 
 
 def test_trunc_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
+
     integer_val: SupportsTrunc = sympy.Integer(-273)
     rational_val: SupportsTrunc = sympy.Rational(-27315, 100)
     float_val: SupportsTrunc = sympy.Float(-273.15)
@@ -217,7 +223,9 @@ def test_trunc_sympy() -> None:
 
 
 def test_trunc_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
+
     pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (

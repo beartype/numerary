@@ -12,7 +12,7 @@ from decimal import Decimal
 from fractions import Fraction
 
 import pytest
-from beartype import beartype
+from beartype import beartype, roar
 from beartype.typing import cast
 
 from numerary.types import (
@@ -97,8 +97,6 @@ def test_supports_real_imag() -> None:
 
 
 def test_supports_real_imag_beartype() -> None:
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
-
     for good_val in (
         True,
         -273,
@@ -133,7 +131,9 @@ def test_supports_real_imag_beartype() -> None:
 
 
 def test_supports_real_imag_numpy() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
+
     uint8_val: SupportsRealImag = numpy.uint8(2)
     uint16_val: SupportsRealImag = numpy.uint16(273)
     uint32_val: SupportsRealImag = numpy.uint32(273)
@@ -173,8 +173,8 @@ def test_supports_real_imag_numpy() -> None:
 
 
 def test_supports_real_imag_numpy_beartype() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
-    pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
 
     for good_val in (
         numpy.uint8(2),
@@ -197,7 +197,9 @@ def test_supports_real_imag_numpy_beartype() -> None:
 
 
 def test_supports_real_imag_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
+
     integer_val: SupportsRealImagAsMethod = sympy.Integer(-273)
     rational_val: SupportsRealImagAsMethod = sympy.Rational(-27315, 100)
     float_val: SupportsRealImagAsMethod = sympy.Float(-273.15)
@@ -215,8 +217,8 @@ def test_supports_real_imag_sympy() -> None:
 
 
 def test_supports_real_imag_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
-    pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
 
     for good_val in (
         sympy.Integer(-273),
@@ -228,25 +230,27 @@ def test_supports_real_imag_sympy_beartype() -> None:
 
 
 def test_supports_real_imag_sympy_false_positives() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
+
     # TODO(posita): These should not validate
     integer_val: SupportsRealImag = sympy.Integer(-273)
     rational_val: SupportsRealImag = sympy.Rational(-27315, 100)
-    float_val: SupportsRealImag = sympy.Float(-273.15)
+    # float_val: SupportsRealImag = sympy.Float(-273.15)
     sym_val: SupportsRealImag = sympy.symbols("x")
 
     for bad_val in (
         integer_val,
         rational_val,
-        float_val,
+        # float_val,
         sym_val,
     ):
         assert not isinstance(bad_val, SupportsRealImag), f"{bad_val!r}"
 
 
 def test_supports_real_imag_sympy_beartype_false_positives() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
 
     for lying_val in (
         # These have lied about supporting this interface when they registered

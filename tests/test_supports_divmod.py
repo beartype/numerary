@@ -12,7 +12,7 @@ from decimal import Decimal
 from fractions import Fraction
 
 import pytest
-from beartype import beartype
+from beartype import beartype, roar
 from beartype.typing import cast
 
 from numerary.types import SupportsDivmod
@@ -93,8 +93,6 @@ def test_supports_divmod() -> None:
 
 
 def test_supports_divmod_beartype() -> None:
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
-
     for good_val in (
         True,
         -273,
@@ -129,7 +127,9 @@ def test_supports_divmod_beartype() -> None:
 
 
 def test_supports_divmod_numpy() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
+
     uint8_val: SupportsDivmod = numpy.uint8(2)
     uint16_val: SupportsDivmod = numpy.uint16(273)
     uint32_val: SupportsDivmod = numpy.uint32(273)
@@ -174,8 +174,8 @@ def test_supports_divmod_numpy() -> None:
 
 
 def test_supports_divmod_numpy_beartype() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
 
     for good_val in (
         numpy.uint8(2),
@@ -203,7 +203,9 @@ def test_supports_divmod_numpy_beartype() -> None:
 
 
 def test_supports_divmod_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
+
     integer_val: SupportsDivmod = sympy.Integer(-273)
     rational_val: SupportsDivmod = sympy.Rational(-27315, 100)
     float_val: SupportsDivmod = sympy.Float(-273.15)
@@ -220,8 +222,8 @@ def test_supports_divmod_sympy() -> None:
 
 
 def test_supports_divmod_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
-    pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
 
     for good_val in (
         sympy.Integer(-273),

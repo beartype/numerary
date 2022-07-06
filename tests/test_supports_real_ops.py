@@ -12,7 +12,7 @@ from decimal import Decimal
 from fractions import Fraction
 
 import pytest
-from beartype import beartype
+from beartype import beartype, roar
 from beartype.typing import cast
 
 from numerary.types import SupportsRealOps
@@ -86,8 +86,6 @@ def test_supports_real_ops() -> None:
 
 
 def test_supports_real_ops_beartype() -> None:
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
-
     for good_val in (
         True,
         -273,
@@ -114,7 +112,9 @@ def test_supports_real_ops_beartype() -> None:
 
 
 def test_supports_real_ops_numpy() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
+
     uint8_val: SupportsRealOps = numpy.uint8(2)
     uint16_val: SupportsRealOps = numpy.uint16(273)
     uint32_val: SupportsRealOps = numpy.uint32(273)
@@ -160,8 +160,8 @@ def test_supports_real_ops_numpy() -> None:
 
 
 def test_supports_real_ops_numpy_beartype() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
 
     for good_val in (
         numpy.uint8(2),
@@ -189,7 +189,9 @@ def test_supports_real_ops_numpy_beartype() -> None:
 
 
 def test_supports_real_ops_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
+
     integer_val: SupportsRealOps = sympy.Integer(-273)
     rational_val: SupportsRealOps = sympy.Rational(-27315, 100)
     float_val: SupportsRealOps = sympy.Float(-273.15)
@@ -213,8 +215,8 @@ def test_supports_real_ops_sympy() -> None:
 
 
 def test_supports_real_ops_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
-    pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
 
     for good_val in (
         sympy.Integer(-273),

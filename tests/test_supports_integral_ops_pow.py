@@ -12,7 +12,7 @@ from decimal import Decimal
 from fractions import Fraction
 
 import pytest
-from beartype import beartype
+from beartype import beartype, roar
 from beartype.typing import cast
 
 from numerary.types import SupportsIntegralOps, SupportsIntegralPow
@@ -111,8 +111,6 @@ def test_supports_integral_ops_pow() -> None:
 
 
 def test_supports_integral_ops_pow_beartype() -> None:
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
-
     for good_val in (
         True,
         -273,
@@ -140,7 +138,9 @@ def test_supports_integral_ops_pow_beartype() -> None:
 
 
 def test_supports_integral_ops_pow_numpy() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
+
     uint8_val: SupportsIntegralOps = numpy.uint8(2)
     uint16_val: SupportsIntegralOps = numpy.uint16(273)
     uint32_val: SupportsIntegralOps = numpy.uint32(273)
@@ -230,8 +230,8 @@ def test_supports_integral_ops_pow_numpy() -> None:
 
 
 def test_supports_integral_ops_pow_numpy_beartype() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
 
     for good_val in (
         numpy.uint8(2),
@@ -260,7 +260,9 @@ def test_supports_integral_ops_pow_numpy_beartype() -> None:
 
 
 def test_supports_integral_ops_pow_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
+
     integral_val: SupportsIntegralOps = sympy.Integer(-273)
     _: SupportsIntegralPow
     _ = sympy.Integer(-273)
@@ -275,7 +277,6 @@ def test_supports_integral_ops_pow_sympy() -> None:
         assert good_val**1 == good_val, f"{good_val!r}"
 
     # TODO(posita): These should not validate
-    float_val: SupportsIntegralOps = sympy.Float(-273.15)
     rational_val: SupportsIntegralOps = sympy.Rational(-27315, 100)
     sym_val: SupportsIntegralOps = sympy.symbols("x")
     _ = sympy.Float(-273.15)
@@ -289,16 +290,13 @@ def test_supports_integral_ops_pow_sympy() -> None:
         with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
             lying_val << 0
 
-    for bad_val in (
-        float_val,
-        rational_val,
-    ):
+    for bad_val in (rational_val,):
         assert not isinstance(bad_val, SupportsIntegralOps), f"{bad_val!r}"
 
 
 def test_supports_integral_ops_pow_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
 
     for good_val in (sympy.Integer(-273),):
         supports_integral_ops_func(cast(SupportsIntegralOps, good_val))

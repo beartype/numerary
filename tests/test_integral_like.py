@@ -12,7 +12,7 @@ from decimal import Decimal
 from fractions import Fraction
 
 import pytest
-from beartype import beartype
+from beartype import beartype, roar
 from beartype.typing import cast
 
 from numerary import IntegralLike
@@ -102,8 +102,6 @@ def test_integral_like() -> None:
 
 
 def test_integral_like_beartype() -> None:
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
-
     for good_val in (
         True,
         -273,
@@ -192,7 +190,6 @@ def test_integral_like_numpy() -> None:
 
 def test_integral_like_numpy_beartype() -> None:
     numpy = pytest.importorskip("numpy", reason="requires numpy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (
         numpy.uint8(2),
@@ -259,7 +256,6 @@ def test_integral_like_sympy() -> None:
 
 def test_integral_like_sympy_beartype() -> None:
     sympy = pytest.importorskip("sympy", reason="requires sympy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
 
     for good_val in (sympy.Integer(-273),):
         integral_like_func(cast(IntegralLike, good_val))

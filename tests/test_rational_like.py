@@ -12,7 +12,7 @@ from decimal import Decimal
 from fractions import Fraction
 
 import pytest
-from beartype import beartype
+from beartype import beartype, roar
 from beartype.typing import cast
 
 from numerary.types import (
@@ -106,8 +106,6 @@ def test_rational_like() -> None:
 
 
 def test_rational_like_beartype() -> None:
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
-
     for good_val in (
         True,
         -273,
@@ -134,7 +132,9 @@ def test_rational_like_beartype() -> None:
 
 
 def test_rational_like_numpy() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
+
     uint8_val: RationalLike = numpy.uint8(2)
     uint16_val: RationalLike = numpy.uint16(273)
     uint32_val: RationalLike = numpy.uint32(273)
@@ -189,8 +189,8 @@ def test_rational_like_numpy() -> None:
 
 
 def test_rational_like_numpy_beartype() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
 
     for good_val in (
         numpy.uint8(2),
@@ -218,7 +218,9 @@ def test_rational_like_numpy_beartype() -> None:
 
 
 def test_rational_like_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
+
     integral_val: RationalLike = sympy.Integer(-273)
     rational_val: RationalLike = sympy.Rational(-27315, 100)
 
@@ -244,19 +246,15 @@ def test_rational_like_sympy() -> None:
         assert good_val.denominator, f"{good_val!r}"
 
     # TODO(posita): These should not validate
-    float_val: RationalLike = sympy.Float(-273.15)
     sym_val: RationalLike = sympy.symbols("x")
 
-    for bad_val in (
-        float_val,
-        sym_val,
-    ):
+    for bad_val in (sym_val,):
         assert not isinstance(bad_val, RationalLikeMixedT), f"{bad_val!r}"
 
 
 def test_rational_like_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
 
     for good_val in (
         sympy.Rational(-27315, 100),
