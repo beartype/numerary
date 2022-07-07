@@ -155,14 +155,22 @@ def test_numerator_denominator_numpy() -> None:
     pytest.importorskip("numpy", reason="requires numpy")
     import numpy
 
-    uint8_val: SupportsNumeratorDenominator = numpy.uint8(2)
-    uint16_val: SupportsNumeratorDenominator = numpy.uint16(273)
-    uint32_val: SupportsNumeratorDenominator = numpy.uint32(273)
-    uint64_val: SupportsNumeratorDenominator = numpy.uint64(273)
-    int8_val: SupportsNumeratorDenominator = numpy.int8(-2)
-    int16_val: SupportsNumeratorDenominator = numpy.int16(-273)
-    int32_val: SupportsNumeratorDenominator = numpy.int32(-273)
-    int64_val: SupportsNumeratorDenominator = numpy.int64(-273)
+    uint8_val = numpy.uint8(2)
+    assert isinstance(uint8_val, SupportsNumeratorDenominator)
+    uint16_val = numpy.uint16(273)
+    assert isinstance(uint16_val, SupportsNumeratorDenominator)
+    uint32_val = numpy.uint32(273)
+    assert isinstance(uint32_val, SupportsNumeratorDenominator)
+    uint64_val = numpy.uint64(273)
+    assert isinstance(uint64_val, SupportsNumeratorDenominator)
+    int8_val = numpy.int8(-2)
+    assert isinstance(int8_val, SupportsNumeratorDenominator)
+    int16_val = numpy.int16(-273)
+    assert isinstance(int16_val, SupportsNumeratorDenominator)
+    int32_val = numpy.int32(-273)
+    assert isinstance(int32_val, SupportsNumeratorDenominator)
+    int64_val = numpy.int64(-273)
+    assert isinstance(int64_val, SupportsNumeratorDenominator)
 
     for good_val in (
         uint8_val,
@@ -178,23 +186,14 @@ def test_numerator_denominator_numpy() -> None:
         assert numerator(good_val), f"{good_val!r}"
         assert denominator(good_val), f"{good_val!r}"
 
-    # TODO(posita): These should not validate
-    float16_val: SupportsNumeratorDenominatorMixedU = numpy.float16(-1.8)
-    float32_val: SupportsNumeratorDenominatorMixedU = numpy.float32(-273.15)
-    float64_val: SupportsNumeratorDenominatorMixedU = numpy.float64(-273.15)
-    float128_val: SupportsNumeratorDenominatorMixedU = numpy.float128(-273.15)
-    csingle_val: SupportsNumeratorDenominatorMixedU = numpy.csingle(-273.15)
-    cdouble_val: SupportsNumeratorDenominatorMixedU = numpy.cdouble(-273.15)
-    clongdouble_val: SupportsNumeratorDenominatorMixedU = numpy.clongdouble(-273.15)
-
     for bad_val in (
-        float16_val,
-        float32_val,
-        float64_val,
-        float128_val,
-        csingle_val,
-        cdouble_val,
-        clongdouble_val,
+        numpy.float16(-1.8),
+        numpy.float32(-273.15),
+        numpy.float64(-273.15),
+        numpy.float128(-273.15),
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(
             bad_val, SupportsNumeratorDenominatorMixedT
@@ -252,7 +251,10 @@ def test_numerator_denominator_sympy() -> None:
     # TODO(posita): These should not validate
     sym_val: SupportsNumeratorDenominatorMixedU = sympy.symbols("x")
 
-    for bad_val in (sym_val,):
+    for bad_val in (
+        sympy.Float(-273.15),
+        sym_val,
+    ):
         assert not isinstance(
             bad_val, SupportsNumeratorDenominatorMixedT
         ), f"{bad_val!r}"

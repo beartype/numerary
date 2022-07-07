@@ -160,15 +160,10 @@ def test_supports_divmod_numpy() -> None:
         assert isinstance(good_val, SupportsDivmod), f"{good_val!r}"
         assert divmod(good_val, good_val), f"{good_val!r}"
 
-    # TODO(posita): These should not validate
-    csingle_val: SupportsDivmod = numpy.csingle(-273.15)
-    cdouble_val: SupportsDivmod = numpy.cdouble(-273.15)
-    clongdouble_val: SupportsDivmod = numpy.clongdouble(-273.15)
-
     for bad_val in (
-        csingle_val,
-        cdouble_val,
-        clongdouble_val,
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsDivmod), f"{bad_val!r}"
 

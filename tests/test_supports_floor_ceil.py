@@ -125,14 +125,22 @@ def test_floor_ceil_numpy() -> None:
     pytest.importorskip("numpy", reason="requires numpy")
     import numpy
 
-    uint8_val: SupportsFloorCeil = numpy.uint8(2)
-    uint16_val: SupportsFloorCeil = numpy.uint16(273)
-    uint32_val: SupportsFloorCeil = numpy.uint32(273)
-    uint64_val: SupportsFloorCeil = numpy.uint64(273)
-    int8_val: SupportsFloorCeil = numpy.int8(-2)
-    int16_val: SupportsFloorCeil = numpy.int16(-273)
-    int32_val: SupportsFloorCeil = numpy.int32(-273)
-    int64_val: SupportsFloorCeil = numpy.int64(-273)
+    uint8_val = numpy.uint8(2)
+    assert isinstance(uint8_val, SupportsFloorCeil)
+    uint16_val = numpy.uint16(273)
+    assert isinstance(uint16_val, SupportsFloorCeil)
+    uint32_val = numpy.uint32(273)
+    assert isinstance(uint32_val, SupportsFloorCeil)
+    uint64_val = numpy.uint64(273)
+    assert isinstance(uint64_val, SupportsFloorCeil)
+    int8_val = numpy.int8(-2)
+    assert isinstance(int8_val, SupportsFloorCeil)
+    int16_val = numpy.int16(-273)
+    assert isinstance(int16_val, SupportsFloorCeil)
+    int32_val = numpy.int32(-273)
+    assert isinstance(int32_val, SupportsFloorCeil)
+    int64_val = numpy.int64(-273)
+    assert isinstance(int64_val, SupportsFloorCeil)
     float16_val: SupportsFloorCeil = numpy.float16(-1.8)
     float32_val: SupportsFloorCeil = numpy.float32(-273.15)
     float64_val: SupportsFloorCeil = numpy.float64(-273.15)
@@ -156,15 +164,10 @@ def test_floor_ceil_numpy() -> None:
         assert __floor__(good_val), f"{good_val!r}"
         assert __ceil__(good_val), f"{good_val!r}"
 
-    # TODO(posita): These should not validate
-    csingle_val: SupportsFloorCeil = numpy.csingle(-273.15)
-    cdouble_val: SupportsFloorCeil = numpy.cdouble(-273.15)
-    clongdouble_val: SupportsFloorCeil = numpy.clongdouble(-273.15)
-
     for bad_val in (
-        csingle_val,
-        cdouble_val,
-        clongdouble_val,
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsFloorCeil), f"{bad_val!r}"
 

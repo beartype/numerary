@@ -127,18 +127,30 @@ def test_real_like_numpy() -> None:
     pytest.importorskip("numpy", reason="requires numpy")
     import numpy
 
-    uint8_val: RealLike = numpy.uint8(2)
-    uint16_val: RealLike = numpy.uint16(273)
-    uint32_val: RealLike = numpy.uint32(273)
-    uint64_val: RealLike = numpy.uint64(273)
-    int8_val: RealLike = numpy.int8(-2)
-    int16_val: RealLike = numpy.int16(-273)
-    int32_val: RealLike = numpy.int32(-273)
-    int64_val: RealLike = numpy.int64(-273)
-    float16_val: RealLike = numpy.float16(-1.8)
-    float32_val: RealLike = numpy.float32(-273.15)
-    float64_val: RealLike = numpy.float64(-273.15)
-    float128_val: RealLike = numpy.float128(-273.15)
+    uint8_val = numpy.uint8(2)
+    assert isinstance(uint8_val, RealLike)
+    uint16_val = numpy.uint16(273)
+    assert isinstance(uint16_val, RealLike)
+    uint32_val = numpy.uint32(273)
+    assert isinstance(uint32_val, RealLike)
+    uint64_val = numpy.uint64(273)
+    assert isinstance(uint64_val, RealLike)
+    int8_val = numpy.int8(-2)
+    assert isinstance(int8_val, RealLike)
+    int16_val = numpy.int16(-273)
+    assert isinstance(int16_val, RealLike)
+    int32_val = numpy.int32(-273)
+    assert isinstance(int32_val, RealLike)
+    int64_val = numpy.int64(-273)
+    assert isinstance(int64_val, RealLike)
+    float16_val = numpy.float16(-1.8)
+    assert isinstance(float16_val, RealLike)
+    float32_val = numpy.float32(-273.15)
+    assert isinstance(float32_val, RealLike)
+    float64_val = numpy.float64(-273.15)
+    assert isinstance(float64_val, RealLike)
+    float128_val = numpy.float128(-273.15)
+    assert isinstance(float128_val, RealLike)
 
     for good_val in (
         uint8_val,
@@ -173,15 +185,10 @@ def test_real_like_numpy() -> None:
         assert good_val >= good_val - 1, f"{good_val!r}"
         assert good_val > good_val - 1, f"{good_val!r}"
 
-    # TODO(posita): These should not validate
-    csingle_val: RealLike = numpy.csingle(-273.15)
-    cdouble_val: RealLike = numpy.cdouble(-273.15)
-    clongdouble_val: RealLike = numpy.clongdouble(-273.15)
-
     for bad_val in (
-        csingle_val,
-        cdouble_val,
-        clongdouble_val,
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, RealLike), f"{bad_val!r}"
 

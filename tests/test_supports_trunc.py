@@ -125,36 +125,25 @@ def test_trunc_numpy() -> None:
         assert __trunc__(good_val), f"{good_val!r}"
 
     # TODO(posita): These should not validate
-    uint8_val: SupportsTrunc = numpy.uint8(2)
-    uint16_val: SupportsTrunc = numpy.uint16(273)
-    uint32_val: SupportsTrunc = numpy.uint32(273)
-    uint64_val: SupportsTrunc = numpy.uint64(273)
-    int8_val: SupportsTrunc = numpy.int8(-2)
-    int16_val: SupportsTrunc = numpy.int16(-273)
-    int32_val: SupportsTrunc = numpy.int32(-273)
-    int64_val: SupportsTrunc = numpy.int64(-273)
     float16_val: SupportsTrunc = numpy.float16(-1.8)
     float32_val: SupportsTrunc = numpy.float32(-273.15)
     float128_val: SupportsTrunc = numpy.float128(-273.15)
-    csingle_val: SupportsTrunc = numpy.csingle(-273.15)
-    cdouble_val: SupportsTrunc = numpy.cdouble(-273.15)
-    clongdouble_val: SupportsTrunc = numpy.clongdouble(-273.15)
 
     for bad_val in (
-        uint8_val,
-        uint16_val,
-        uint32_val,
-        uint64_val,
-        int8_val,
-        int16_val,
-        int32_val,
-        int64_val,
+        numpy.uint8(2),
+        numpy.uint16(273),
+        numpy.uint32(273),
+        numpy.uint64(273),
+        numpy.int8(-2),
+        numpy.int16(-273),
+        numpy.int32(-273),
+        numpy.int64(-273),
         float16_val,
         float32_val,
         float128_val,
-        csingle_val,
-        cdouble_val,
-        clongdouble_val,
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsTrunc), f"{bad_val!r}"
 

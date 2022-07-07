@@ -236,13 +236,12 @@ def test_supports_real_imag_sympy_false_positives() -> None:
     # TODO(posita): These should not validate
     integer_val: SupportsRealImag = sympy.Integer(-273)
     rational_val: SupportsRealImag = sympy.Rational(-27315, 100)
-    # float_val: SupportsRealImag = sympy.Float(-273.15)
     sym_val: SupportsRealImag = sympy.symbols("x")
 
     for bad_val in (
         integer_val,
         rational_val,
-        # float_val,
+        sympy.Float(-273.15),
         sym_val,
     ):
         assert not isinstance(bad_val, SupportsRealImag), f"{bad_val!r}"

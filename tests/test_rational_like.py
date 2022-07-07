@@ -135,14 +135,22 @@ def test_rational_like_numpy() -> None:
     pytest.importorskip("numpy", reason="requires numpy")
     import numpy
 
-    uint8_val: RationalLike = numpy.uint8(2)
-    uint16_val: RationalLike = numpy.uint16(273)
-    uint32_val: RationalLike = numpy.uint32(273)
-    uint64_val: RationalLike = numpy.uint64(273)
-    int8_val: RationalLike = numpy.int8(-2)
-    int16_val: RationalLike = numpy.int16(-273)
-    int32_val: RationalLike = numpy.int32(-273)
-    int64_val: RationalLike = numpy.int64(-273)
+    uint8_val = numpy.uint8(2)
+    assert isinstance(uint8_val, RationalLike)
+    uint16_val = numpy.uint16(273)
+    assert isinstance(uint16_val, RationalLike)
+    uint32_val = numpy.uint32(273)
+    assert isinstance(uint32_val, RationalLike)
+    uint64_val = numpy.uint64(273)
+    assert isinstance(uint64_val, RationalLike)
+    int8_val = numpy.int8(-2)
+    assert isinstance(int8_val, RationalLike)
+    int16_val = numpy.int16(-273)
+    assert isinstance(int16_val, RationalLike)
+    int32_val = numpy.int32(-273)
+    assert isinstance(int32_val, RationalLike)
+    int64_val = numpy.int64(-273)
+    assert isinstance(int64_val, RationalLike)
 
     for good_val in (
         uint8_val,
@@ -167,23 +175,14 @@ def test_rational_like_numpy() -> None:
         assert good_val.numerator, f"{good_val!r}"
         assert good_val.denominator, f"{good_val!r}"
 
-    # TODO(posita): These should not validate
-    float16_val: RationalLike = numpy.float16(-1.8)
-    float32_val: RationalLike = numpy.float32(-273.15)
-    float64_val: RationalLike = numpy.float64(-273.15)
-    float128_val: RationalLike = numpy.float128(-273.15)
-    csingle_val: RationalLike = numpy.csingle(-273.15)
-    cdouble_val: RationalLike = numpy.cdouble(-273.15)
-    clongdouble_val: RationalLike = numpy.clongdouble(-273.15)
-
     for bad_val in (
-        float16_val,
-        float32_val,
-        float64_val,
-        float128_val,
-        csingle_val,
-        cdouble_val,
-        clongdouble_val,
+        numpy.float16(-1.8),
+        numpy.float32(-273.15),
+        numpy.float64(-273.15),
+        numpy.float128(-273.15),
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, RationalLikeMixedT), f"{bad_val!r}"
 
@@ -248,7 +247,10 @@ def test_rational_like_sympy() -> None:
     # TODO(posita): These should not validate
     sym_val: RationalLike = sympy.symbols("x")
 
-    for bad_val in (sym_val,):
+    for bad_val in (
+        sympy.Float(-273.15),
+        sym_val,
+    ):
         assert not isinstance(bad_val, RationalLikeMixedT), f"{bad_val!r}"
 
 

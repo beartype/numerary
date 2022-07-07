@@ -115,18 +115,30 @@ def test_supports_real_ops_numpy() -> None:
     pytest.importorskip("numpy", reason="requires numpy")
     import numpy
 
-    uint8_val: SupportsRealOps = numpy.uint8(2)
-    uint16_val: SupportsRealOps = numpy.uint16(273)
-    uint32_val: SupportsRealOps = numpy.uint32(273)
-    uint64_val: SupportsRealOps = numpy.uint64(273)
-    int8_val: SupportsRealOps = numpy.int8(-2)
-    int16_val: SupportsRealOps = numpy.int16(-273)
-    int32_val: SupportsRealOps = numpy.int32(-273)
-    int64_val: SupportsRealOps = numpy.int64(-273)
-    float16_val: SupportsRealOps = numpy.float16(-1.8)
-    float32_val: SupportsRealOps = numpy.float32(-273.15)
-    float64_val: SupportsRealOps = numpy.float64(-273.15)
-    float128_val: SupportsRealOps = numpy.float128(-273.15)
+    uint8_val = numpy.uint8(2)
+    assert isinstance(uint8_val, SupportsRealOps)
+    uint16_val = numpy.uint16(273)
+    assert isinstance(uint16_val, SupportsRealOps)
+    uint32_val = numpy.uint32(273)
+    assert isinstance(uint32_val, SupportsRealOps)
+    uint64_val = numpy.uint64(273)
+    assert isinstance(uint64_val, SupportsRealOps)
+    int8_val = numpy.int8(-2)
+    assert isinstance(int8_val, SupportsRealOps)
+    int16_val = numpy.int16(-273)
+    assert isinstance(int16_val, SupportsRealOps)
+    int32_val = numpy.int32(-273)
+    assert isinstance(int32_val, SupportsRealOps)
+    int64_val = numpy.int64(-273)
+    assert isinstance(int64_val, SupportsRealOps)
+    float16_val = numpy.float16(-1.8)
+    assert isinstance(float16_val, SupportsRealOps)
+    float32_val = numpy.float32(-273.15)
+    assert isinstance(float32_val, SupportsRealOps)
+    float64_val = numpy.float64(-273.15)
+    assert isinstance(float64_val, SupportsRealOps)
+    float128_val = numpy.float128(-273.15)
+    assert isinstance(float128_val, SupportsRealOps)
 
     for good_val in (
         uint8_val,
@@ -146,15 +158,10 @@ def test_supports_real_ops_numpy() -> None:
         assert good_val <= good_val, f"{good_val!r}"
         assert good_val >= good_val, f"{good_val!r}"
 
-    # TODO(posita): These should not validate
-    csingle_val: SupportsRealOps = numpy.csingle(-273.15)
-    cdouble_val: SupportsRealOps = numpy.cdouble(-273.15)
-    clongdouble_val: SupportsRealOps = numpy.clongdouble(-273.15)
-
     for bad_val in (
-        csingle_val,
-        cdouble_val,
-        clongdouble_val,
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsRealOps), f"{bad_val!r}"
 

@@ -1746,6 +1746,7 @@ else:
             SupportsIntegralOps.excludes(t)
             SupportsIntegralPow.excludes(t)
 
+
 try:
     # Register known sympy exceptions
     import sympy

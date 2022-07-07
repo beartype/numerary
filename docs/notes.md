@@ -17,6 +17,7 @@
 
 ## [0.4.3](https://github.com/posita/numerary/releases/tag/v0.4.3)
 
+* Add work-around for [posita/numerary#16](https://github.com/posita/numerary/issues/16).
 * Allow deployments to PyPI from CI based on tags.
 
 ## [0.4.2](https://github.com/posita/numerary/releases/tag/v0.4.2)

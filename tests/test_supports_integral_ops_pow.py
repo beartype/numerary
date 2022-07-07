@@ -149,15 +149,6 @@ def test_supports_integral_ops_pow_numpy() -> None:
     int16_val: SupportsIntegralOps = numpy.int16(-273)
     int32_val: SupportsIntegralOps = numpy.int32(-273)
     int64_val: SupportsIntegralOps = numpy.int64(-273)
-    _: SupportsIntegralPow
-    _ = numpy.uint8(2)
-    _ = numpy.uint16(273)
-    _ = numpy.uint32(273)
-    _ = numpy.uint64(273)
-    _ = numpy.int8(-2)
-    _ = numpy.int16(-273)
-    _ = numpy.int32(-273)
-    _ = numpy.int64(-273)
 
     for good_val in (
         uint8_val,
@@ -186,46 +177,16 @@ def test_supports_integral_ops_pow_numpy() -> None:
         assert isinstance(good_val, SupportsIntegralPow), f"{good_val!r}"
         assert good_val**1 == good_val, f"{good_val!r}"
 
-    # TODO(posita): These should not validate
-    float16_val: SupportsIntegralOps = numpy.float16(-1.8)
-    float32_val: SupportsIntegralOps = numpy.float32(-273.15)
-    float64_val: SupportsIntegralOps = numpy.float64(-273.15)
-    float128_val: SupportsIntegralOps = numpy.float128(-273.15)
-    csingle_val: SupportsIntegralOps = numpy.csingle(-273.15)
-    cdouble_val: SupportsIntegralOps = numpy.cdouble(-273.15)
-    clongdouble_val: SupportsIntegralOps = numpy.clongdouble(-273.15)
-    _ = numpy.float16(-1.8)
-    _ = numpy.float32(-273.15)
-    _ = numpy.float64(-273.15)
-    _ = numpy.float128(-273.15)
-    _ = numpy.csingle(-273.15)
-    _ = numpy.cdouble(-273.15)
-    _ = numpy.clongdouble(-273.15)
-
     for bad_val in (
-        float16_val,
-        float32_val,
-        float64_val,
-        float128_val,
-        csingle_val,
-        cdouble_val,
-        clongdouble_val,
+        numpy.float16(-1.8),
+        numpy.float32(-273.15),
+        numpy.float64(-273.15),
+        numpy.float128(-273.15),
+        numpy.csingle(-273.15),
+        numpy.cdouble(-273.15),
+        numpy.clongdouble(-273.15),
     ):
         assert not isinstance(bad_val, SupportsIntegralOps), f"{bad_val!r}"
-
-        # These have, but don't implement these functions
-        with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
-            bad_val << 0
-
-        with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
-            bad_val >> 0
-
-        with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
-            bad_val & 0
-
-        with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
-            bad_val | 0
-
         assert not isinstance(bad_val, SupportsIntegralPow), f"{bad_val!r}"
 
 
@@ -290,7 +251,10 @@ def test_supports_integral_ops_pow_sympy() -> None:
         with pytest.raises(Exception):  # TypeError or beartype.roar.BeartypeException
             lying_val << 0
 
-    for bad_val in (rational_val,):
+    for bad_val in (
+        sympy.Float(-273.15),
+        rational_val,
+    ):
         assert not isinstance(bad_val, SupportsIntegralOps), f"{bad_val!r}"
 
 

@@ -208,9 +208,16 @@ False
 
 ```
 
-``numerary`` has default overrides to correct for known oddities with native types (like our old friend, ``complex``) and with popular libraries like [``numpy``](https://numpy.org/) and [``sympy``](https://www.sympy.org/).
+``numerary`` has default overrides to correct for known oddities with native types (like our old friend, ``complex``) and with popular libraries like [``numpy``](https://numpy.org/)[^2] and [``sympy``](https://www.sympy.org/).
 Others will be added as they are identified.
 If I’ve missed any, or if you would like ``numerary`` to support additional number implementations out of the box, please [let me know](https://posita.github.io/numerary/0.4/contrib/#starting-discussions-and-filing-issues).
+
+[^2]:
+
+    !!! bug
+
+        `numpy` no longer validates on assignment as it once did.
+        See [posita/numerary#16](https://github.com/posita/numerary/issues/16) for details.
 
 ## Performance Enhanced Protocols—A *different* kind of “PEP” for your step
 
@@ -355,9 +362,9 @@ In this particular case, ``numerary`` provides us with a defensive mechanism.
 At runtime, protocols match *names*, not *signatures*.
 For example, [``SupportsNumeratorDenominator``](https://posita.github.io/numerary/0.4/numerary.types/#numerary.types.SupportsNumeratorDenominator)’s  ``numerator`` and ``denominator`` *properties* will match [``sage.rings.integer.Integer``](https://doc.sagemath.org/html/en/reference/rings_standard/sage/rings/integer.html#sage.rings.integer.Integer)’s similarly named *[functions](https://trac.sagemath.org/ticket/28234)*.
 In other words, ``isinstance(sage_integer, SupportsNumeratorDenominator)`` will return ``True``.
-Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^5] not be caught by Mypy.
+Further, if the short-circuiting approach is used, because ``sage.rings.integer.Integer`` registers itself with the numeric tower, this *may*[^3] not be caught by Mypy.
 
-[^5]:
+[^3]:
 
     I say *may* because I don’t really understand how Sage’s number registrations work.
 
@@ -552,9 +559,9 @@ It has the following runtime dependencies:
 * [``beartype``](https://pypi.org/project/beartype/) for caching protocols
   [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
-``numerary`` will not use ``beartype`` internally unless the ``NUMERARY_BEARTYPE`` environment variable is set to a truthy[^6] value before ``numerary`` is loaded.
+``numerary`` will not use ``beartype`` internally unless the ``NUMERARY_BEARTYPE`` environment variable is set to a truthy[^4] value before ``numerary`` is loaded.
 
-[^6]:
+[^4]:
 
     I.E., one of: ``1``, ``on``, ``t``, ``true``, and ``yes``.
 
