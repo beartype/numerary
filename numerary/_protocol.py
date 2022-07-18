@@ -9,10 +9,9 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from typing import TYPE_CHECKING, Any, Dict, Set, Tuple, Type, TypeVar
 
-from beartype.typing import TYPE_CHECKING, Any, Dict
 from beartype.typing import Protocol as _BeartypeCachingProtocol
-from beartype.typing import Set, Tuple, Type, TypeVar
 
 __all__ = ("CachingProtocolMeta",)
 

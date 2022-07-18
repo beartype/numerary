@@ -36,9 +36,7 @@ from operator import (
     __truediv__,
     __xor__,
 )
-from typing import overload
-
-from beartype.typing import Any, Optional, Union
+from typing import Any, Optional, Union, overload
 
 from numerary.bt import beartype
 from numerary.types import SupportsInt

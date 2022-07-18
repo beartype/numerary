@@ -121,7 +121,7 @@ AssertionError
 For example, let’s say one wanted to ensure type compatibility with primitives that support both ``__abs__`` and ``__divmod__``.
 
 ``` python
->>> from beartype.typing import TypeVar
+>>> from typing import TypeVar
 >>> T_co = TypeVar("T_co", covariant=True)
 >>> from numerary.types import (
 ...   CachingProtocolMeta, Protocol, runtime_checkable,
@@ -297,7 +297,7 @@ Not very well, unfortunately, at least not on its own.
 ``Union``s allow a work-around.
 
 ``` python
->>> from beartype.typing import Union
+>>> from typing import Union
 >>> from numerary.types import SupportsFloorCeil, __floor__
 >>> SupportsFloorCeilU = Union[float, SupportsFloorCeil]
 

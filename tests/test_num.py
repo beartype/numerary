@@ -10,8 +10,7 @@ from __future__ import annotations
 
 import math
 import operator
-
-from beartype.typing import Callable, Tuple, TypeVar
+from typing import Callable, Tuple, TypeVar
 
 from .numberwang import (
     Numberwang,

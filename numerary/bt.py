@@ -9,8 +9,7 @@
 from __future__ import annotations
 
 import os
-
-from beartype.typing import Protocol, TypeVar, cast
+from typing import Protocol, TypeVar, cast
 
 __all__ = ("beartype",)
 

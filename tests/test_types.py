@@ -9,11 +9,11 @@
 from __future__ import annotations
 
 from abc import abstractmethod
+from typing import Tuple
 
 import pytest
 from beartype import beartype
 from beartype.roar import BeartypeException
-from beartype.typing import Tuple
 
 from numerary import IntegralLike, RealLike
 from numerary.types import CachingProtocolMeta, Protocol, runtime_checkable
@@ -67,11 +67,7 @@ def test_beartype_detection() -> None:
 
 
 def test_beartype_validators() -> None:
-    try:
-        from typing_extensions import Annotated
-    except ImportError:
-        from beartype.typing import Annotated  # type: ignore [no-redef]
-
+    from beartype.typing import Annotated
     from beartype.vale import Is
 
     NonZero = Annotated[IntegralLike, Is[lambda x: x != 0]]

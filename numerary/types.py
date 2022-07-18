@@ -15,17 +15,16 @@ import traceback
 from abc import abstractmethod
 from decimal import Decimal
 from fractions import Fraction
+from typing import TYPE_CHECKING, Any, Generic, Optional
 from typing import Protocol as _Protocol
-from typing import Type, overload
+from typing import Tuple, Type, TypeVar, Union, overload, runtime_checkable
 
-from beartype.typing import TYPE_CHECKING, Any, Generic, Optional
 from beartype.typing import SupportsAbs as _SupportsAbs
 from beartype.typing import SupportsComplex as _SupportsComplex
 from beartype.typing import SupportsFloat as _SupportsFloat
 from beartype.typing import SupportsIndex as _SupportsIndex
 from beartype.typing import SupportsInt as _SupportsInt
 from beartype.typing import SupportsRound as _SupportsRound
-from beartype.typing import Tuple, TypeVar, Union, runtime_checkable
 
 from ._protocol import CachingProtocolMeta
 from .bt import beartype
@@ -44,7 +43,7 @@ __all__ = (
 r"""
 <!-- BEGIN MONKEY PATCH --
 
->>> from beartype.typing import Any
+>>> from typing import Any
 >>> _: Any
 
   -- END MONKEY PATCH -->
@@ -177,7 +176,7 @@ class SupportsConjugate(
     version that defines the actual methods.)
 
     ``` python
-    >>> from beartype.typing import TypeVar
+    >>> from typing import TypeVar
     >>> from numerary.types import SupportsConjugate
     >>> MyConjugateT = TypeVar("MyConjugateT", bound=SupportsConjugate)
 
@@ -244,7 +243,7 @@ class SupportsRealImag(
     the raw, non-caching version that defines the actual methods.)
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsRealImag, real, imag
     >>> MyRealImagT = TypeVar("MyRealImagT", bound=SupportsRealImag)
 
@@ -300,7 +299,7 @@ class SupportsRealImagAsMethod(
     helper functions.
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsRealImagAsMethod, real, imag
     >>> MyRealImagAsMethodT = TypeVar("MyRealImagAsMethodT", bound=SupportsRealImagAsMethod)
 
@@ -368,7 +367,7 @@ class SupportsTrunc(
     that defines the actual methods.)
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsTrunc, __trunc__
     >>> MyTruncT = TypeVar("MyTruncT", bound=SupportsTrunc)
 
@@ -445,7 +444,7 @@ class SupportsFloorCeil(
         [``__ceil__``][numerary.types.__ceil__] helper functions.
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsFloorCeil, __ceil__, __floor__
     >>> MyFloorCeilT = TypeVar("MyFloorCeilT", bound=SupportsFloorCeil)
 
@@ -521,7 +520,7 @@ class SupportsDivmod(
     version that defines the actual methods.)
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsDivmod
     >>> MyDivmodT = TypeVar("MyDivmodT", bound=SupportsDivmod)
 
@@ -590,7 +589,7 @@ class SupportsNumeratorDenominator(
     is the raw, non-caching version that defines the actual properties.)
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsNumeratorDenominator, denominator, numerator
     >>> MyNumDenomT = TypeVar("MyNumDenomT", bound=SupportsNumeratorDenominator)
 
@@ -743,7 +742,7 @@ class SupportsComplexOps(
     non-caching version that defines the actual methods.)
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsComplexOps
     >>> MyComplexOpsT = TypeVar("MyComplexOpsT", bound=SupportsComplexOps)
 
@@ -808,7 +807,7 @@ class SupportsComplexPow(
     non-caching version that defines the actual methods.)
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsComplexPow
     >>> MyComplexPowT = TypeVar("MyComplexPowT", bound=SupportsComplexPow)
 
@@ -900,7 +899,7 @@ class SupportsRealOps(
     version that defines the actual methods.)
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsRealOps
     >>> MyRealOpsT = TypeVar("MyRealOpsT", bound=SupportsRealOps)
 
@@ -1007,7 +1006,7 @@ class SupportsIntegralOps(
     non-caching version that defines the actual methods.)
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsIntegralOps
     >>> MyIntegralOpsT = TypeVar("MyIntegralOpsT", bound=SupportsIntegralOps)
 
@@ -1069,7 +1068,7 @@ class SupportsIntegralPow(
     non-caching version that defines the actual methods.)
 
     ``` python
-    >>> from beartype.typing import Any, Tuple, TypeVar
+    >>> from typing import Any, Tuple, TypeVar
     >>> from numerary.types import SupportsIntegralPow
     >>> MyIntegralPowT = TypeVar("MyIntegralPowT", bound=SupportsIntegralPow)
 
@@ -1124,7 +1123,8 @@ class RealLike(
     Basically:
 
     ``` python
-    from beartype.typing import Protocol, TypeVar, runtime_checkable
+    from typing import TypeVar, runtime_checkable
+    from beartype.typing import Protocol
     from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
@@ -1195,7 +1195,8 @@ class RationalLike(
     Basically:
 
     ``` python
-    from beartype.typing import Protocol, TypeVar, runtime_checkable
+    from typing TypeVar, runtime_checkable
+    from beartype.typing import Protocol
     from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
@@ -1263,7 +1264,8 @@ class RationalLikeMethods(
     Basically:
 
     ``` python
-    from beartype.typing import Protocol, TypeVar, runtime_checkable
+    from typing TypeVar, runtime_checkable
+    from beartype.typing import Protocol
     from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
@@ -1352,7 +1354,8 @@ class IntegralLike(
     Basically:
 
     ``` python
-    from beartype.typing import Protocol, TypeVar, runtime_checkable
+    from typing TypeVar, runtime_checkable
+    from beartype.typing import Protocol
     from numerary.types import CachingProtocolMeta, Supports…
     T_co = TypeVar("T_co", covariant=True)
 
