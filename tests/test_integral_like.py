@@ -128,7 +128,9 @@ def test_integral_like_beartype() -> None:
 
 
 def test_integral_like_numpy() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
+
     uint8_val: IntegralLike = numpy.uint8(2)
     uint16_val: IntegralLike = numpy.uint16(273)
     uint32_val: IntegralLike = numpy.uint32(273)
@@ -167,14 +169,13 @@ def test_integral_like_numpy() -> None:
             assert good_val & 0 == 0, f"{good_val!r}"
             assert good_val | 0 == good_val, f"{good_val!r}"
 
-    # TODO(posita): These should not validate
-    float16_val: IntegralLike = numpy.float16(-1.8)
-    float32_val: IntegralLike = numpy.float32(-273.15)
-    float64_val: IntegralLike = numpy.float64(-273.15)
-    float128_val: IntegralLike = numpy.float128(-273.15)
-    csingle_val: IntegralLike = numpy.csingle(-273.15)
-    cdouble_val: IntegralLike = numpy.cdouble(-273.15)
-    clongdouble_val: IntegralLike = numpy.clongdouble(-273.15)
+    float16_val: IntegralLike = numpy.float16(-1.8)  # type: ignore [assignment]
+    float32_val: IntegralLike = numpy.float32(-273.15)  # type: ignore [assignment]
+    float64_val: IntegralLike = numpy.float64(-273.15)  # type: ignore [assignment]
+    float128_val: IntegralLike = numpy.float128(-273.15)  # type: ignore [assignment]
+    csingle_val: IntegralLike = numpy.csingle(-273.15)  # type: ignore [assignment]
+    cdouble_val: IntegralLike = numpy.cdouble(-273.15)  # type: ignore [assignment]
+    clongdouble_val: IntegralLike = numpy.clongdouble(-273.15)  # type: ignore [assignment]
 
     for bad_val in (
         float16_val,
@@ -189,7 +190,8 @@ def test_integral_like_numpy() -> None:
 
 
 def test_integral_like_numpy_beartype() -> None:
-    numpy = pytest.importorskip("numpy", reason="requires numpy")
+    pytest.importorskip("numpy", reason="requires numpy")
+    import numpy
 
     for good_val in (
         numpy.uint8(2),
@@ -217,7 +219,9 @@ def test_integral_like_numpy_beartype() -> None:
 
 
 def test_integral_like_sympy() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
+
     integral_val: IntegralLike = sympy.Integer(-273)
 
     for good_val in (integral_val,):
@@ -240,8 +244,8 @@ def test_integral_like_sympy() -> None:
         assert good_val & 0 == 0, f"{good_val!r}"
         assert good_val | 0 == good_val, f"{good_val!r}"
 
+    float_val: IntegralLike = sympy.Float(-273.15)  # type: ignore [assignment]
     # TODO(posita): These should not validate
-    float_val: IntegralLike = sympy.Float(-273.15)
     rational_val: IntegralLike = sympy.Rational(-27315, 100)
     sym_val: IntegralLike = sympy.symbols("x")
 
@@ -255,7 +259,8 @@ def test_integral_like_sympy() -> None:
 
 
 def test_integral_like_sympy_beartype() -> None:
-    sympy = pytest.importorskip("sympy", reason="requires sympy")
+    pytest.importorskip("sympy", reason="requires sympy")
+    import sympy
 
     for good_val in (sympy.Integer(-273),):
         integral_like_func(cast(IntegralLike, good_val))

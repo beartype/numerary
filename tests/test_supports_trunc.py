@@ -13,7 +13,7 @@ from fractions import Fraction
 from typing import cast
 
 import pytest
-from beartype import beartype
+from beartype import beartype, roar
 
 from numerary.types import SupportsTrunc, __trunc__
 
@@ -85,8 +85,6 @@ def test_trunc() -> None:
 
 
 def test_trunc_beartype() -> None:
-    roar = pytest.importorskip("beartype.roar", reason="requires beartype")
-
     for good_val in (
         True,
         -273,
