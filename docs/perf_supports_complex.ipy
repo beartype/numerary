@@ -16,6 +16,6 @@ for v in vals:
     _SupportsComplexOps,
     SupportsComplexOps,
   ):
-    print(f"%timeit isinstance({type(v).__module__}.{type(v).__name__}({v}), {t.__name__})")
+    print(f"%timeit isinstance({v!r}, {t.__name__})")
     %timeit isinstance(v, t)
   print()

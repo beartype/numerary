@@ -12,7 +12,7 @@ import logging
 import math
 import sys
 import traceback
-from abc import abstractmethod
+from abc import abstractmethod, abstractproperty
 from decimal import Decimal
 from fractions import Fraction
 from typing import TYPE_CHECKING, Any, Generic, Optional
@@ -218,11 +218,11 @@ class _SupportsRealImag(_Protocol):
     The non-caching version of [``SupportsRealImag``][numerary.types.SupportsRealImag].
     """
 
-    @property
+    @abstractproperty
     def real(self) -> Any:
         pass
 
-    @property
+    @abstractproperty
     def imag(self) -> Any:
         pass
 
@@ -563,11 +563,11 @@ class _SupportsNumeratorDenominator(_Protocol):
     [``SupportsNumeratorDenominator``][numerary.types.SupportsNumeratorDenominator].
     """
 
-    @property
+    @abstractproperty
     def numerator(self) -> int:
         pass
 
-    @property
+    @abstractproperty
     def denominator(self) -> int:
         pass
 
@@ -1083,7 +1083,7 @@ class SupportsIntegralPow(
     >>> integral_pow_my_thing(sympy.Integer(3))
     1
     >>> type(_)
-    <class 'int'>
+    <class 'sympy.core.numbers.One'>
 
     >>> # error: Value of type variable "MyIntegralPowT" of "integral_pow_my_thing" cannot be "str"
     >>> integral_pow_my_thing("not-a-number")  # type: ignore [type-var]

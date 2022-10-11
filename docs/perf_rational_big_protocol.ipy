@@ -1,22 +1,22 @@
+from abc import abstractproperty
 from fractions import Fraction
-from numbers import Rational
-from numerary.types import (  # "raw" (non-caching) versions
-  _SupportsComplexOps,
-  _SupportsConjugate,
-  _SupportsFloorCeil,
-  _SupportsDivmod,
-  _SupportsRealImag,
-  _SupportsRealOps,
-  _SupportsTrunc,
-)
 from typing import (
   Any,
   Protocol,
   SupportsAbs,
-  SupportsFloat,
   SupportsComplex,
+  SupportsFloat,
   SupportsRound,
   runtime_checkable,
+)
+from numerary.types import (  # "raw" (non-caching) versions
+  _SupportsComplexOps,
+  _SupportsConjugate,
+  _SupportsDivmod,
+  _SupportsFloorCeil,
+  _SupportsRealImag,
+  _SupportsRealOps,
+  _SupportsTrunc,
 )
 
 one_int = 1
@@ -40,15 +40,13 @@ class SupportsLotsOfNumberStuff(
   Protocol,
 ):
   __slots__: Any = ()
-  @property
+  @abstractproperty
   def numerator(self) -> int:
     pass
-  @property
+  @abstractproperty
   def denominator(self) -> int:
     pass
 
-t = SupportsLotsOfNumberStuff
-
 for v in vals:
-  print(f"%timeit isinstance({type(v).__module__}.{type(v).__name__}({v}), {t.__name__})")
-  %timeit isinstance(v, t)
+  print(f"%timeit isinstance({v!r}, SupportsLotsOfNumberStuff)")
+  %timeit isinstance(v, SupportsLotsOfNumberStuff)

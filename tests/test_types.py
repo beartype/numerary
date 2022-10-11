@@ -68,9 +68,9 @@ def test_beartype_detection() -> None:
 
 def test_beartype_validators() -> None:
     try:
-        from beartype.typing import Annotated
+        from typing import Annotated
     except ImportError:
-        pytest.skip("requires beartype.typing.Annotated")
+        pytest.skip("requires typing.Annotated")
 
         raise
 

@@ -11,8 +11,6 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import TYPE_CHECKING, Any, Dict, Set, Tuple, Type, TypeVar
 
-from beartype.typing import Protocol as _BeartypeCachingProtocol
-
 __all__ = ("CachingProtocolMeta",)
 
 
@@ -28,7 +26,9 @@ if TYPE_CHECKING:
     # <https://github.com/python/mypy/issues/11614>.
     from abc import ABCMeta as _BeartypeCachingProtocolMeta
 else:
-    _BeartypeCachingProtocolMeta = type(_BeartypeCachingProtocol)
+    from beartype.typing import Protocol as _BeartypeProtocol
+
+    _BeartypeCachingProtocolMeta = type(_BeartypeProtocol)
 
 
 class CachingProtocolMeta(_BeartypeCachingProtocolMeta):

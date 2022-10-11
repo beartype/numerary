@@ -131,14 +131,14 @@ def test_integral_like_numpy() -> None:
     pytest.importorskip("numpy", reason="requires numpy")
     import numpy
 
-    uint8_val: IntegralLike = numpy.uint8(2)
-    uint16_val: IntegralLike = numpy.uint16(273)
-    uint32_val: IntegralLike = numpy.uint32(273)
-    uint64_val: IntegralLike = numpy.uint64(273)
-    int8_val: IntegralLike = numpy.int8(-2)
-    int16_val: IntegralLike = numpy.int16(-273)
-    int32_val: IntegralLike = numpy.int32(-273)
-    int64_val: IntegralLike = numpy.int64(-273)
+    uint8_val: IntegralLike = numpy.uint8(2)  # type: ignore [assignment]
+    uint16_val: IntegralLike = numpy.uint16(273)  # type: ignore [assignment]
+    uint32_val: IntegralLike = numpy.uint32(273)  # type: ignore [assignment]
+    uint64_val: IntegralLike = numpy.uint64(273)  # type: ignore [assignment]
+    int8_val: IntegralLike = numpy.int8(-2)  # type: ignore [assignment]
+    int16_val: IntegralLike = numpy.int16(-273)  # type: ignore [assignment]
+    int32_val: IntegralLike = numpy.int32(-273)  # type: ignore [assignment]
+    int64_val: IntegralLike = numpy.int64(-273)  # type: ignore [assignment]
 
     for good_val in (
         uint8_val,
