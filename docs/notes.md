@@ -18,8 +18,9 @@
 ## [0.4.3](https://github.com/posita/numerary/releases/tag/v0.4.3)
 
 * Migrates from [``setuptools_scm``](https://pypi.org/project/setuptools-scm/) to [``versioningit``](https://pypi.org/project/versioningit/) for more flexible version number formatting.
-* Adds work-around for [posita/numerary#16](https://github.com/posita/numerary/issues/16).
+* Adds work-around for ``numpy``’s typing updates ([posita/numerary#16](https://github.com/posita/numerary/issues/16)).
 * Allows deployments to PyPI from CI based on tags.
+* Exposes ``CachingProtocolMeta`` ([posita/numerary#15](https://github.com/posita/numerary/issues/15)).
 
 ## [0.4.2](https://github.com/posita/numerary/releases/tag/v0.4.2)
 
@@ -33,12 +34,12 @@
 
 * Now relies on ``#!python beartype.typing.Protocol`` as the underlying caching protocol implementation.
   This means that ``beartype`` has emerged as ``numerary``’s sole runtime dependency.
-  (``numerary`` still layers on its own runtime override mechanism via [CachingProtocolMeta][numerary._protocol.CachingProtocolMeta], which derives from ``beartype``’s.)
+  (``numerary`` still layers on its own runtime override mechanism via [CachingProtocolMeta][numerary.protocol.CachingProtocolMeta], which derives from ``beartype``’s.)
   It also means that ``numerary`` loses Python 3.7 support, but that was largely illusory anyway.
 
   This decision was not made lightly.
   ``numerary`` is intended as a temporary work-around.
-  It’s obsolescence will be something to celebrate.
+  Its obsolescence will be something to celebrate.
   Caching protocols, however, have much broader performance applications.
   They deserve more.
   ``beartype`` will provide what ``numerary`` was never meant to: a loving, stable, and permanent home.
@@ -46,7 +47,7 @@
 ## [0.3.0](https://github.com/posita/numerary/releases/tag/v0.3.0)
 
 * ~~Removes misleading advice that SCUs offer a performance benefit over merely using caching protocols.
-  They *could* under very specific circumstances (where ``numerary`` probably isn’t going to be helpful anyway), but not always, and probably aren’t worth the trouble if performance is the only concern.~~
+  They *could* under very specific circumstances (where ``numerary`` probably will not help anyway), but not always, and probably aren’t worth the trouble if performance is the only concern.~~
   Actually, removes SCUs altogether and documents a surgical example for those rare occasions where it might be needed.
 * Finally removes ``SupportsNumeratorDenominatorProperties`` as promised.
 
@@ -77,9 +78,9 @@
 
 ## [0.1.0](https://github.com/posita/numerary/releases/tag/v0.1.0)
 
-* Adds [``CachingProtocolMeta.includes``][numerary._protocol.CachingProtocolMeta.includes],
-  [``CachingProtocolMeta.excludes``][numerary._protocol.CachingProtocolMeta.excludes], and
-  [``CachingProtocolMeta.reset_for``][numerary._protocol.CachingProtocolMeta.reset_for]
+* Adds [``CachingProtocolMeta.includes``][numerary.protocol.CachingProtocolMeta.includes],
+  [``CachingProtocolMeta.excludes``][numerary.protocol.CachingProtocolMeta.excludes], and
+  [``CachingProtocolMeta.reset_for``][numerary.protocol.CachingProtocolMeta.reset_for]
   cache override functions.
 * Retires ``…SCT`` tuples as unnecessary, especially in light of cache overrides.
   (Runtime ``isinstance`` protocol checking is fast enough.)
