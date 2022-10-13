@@ -17,8 +17,6 @@ class SupportsNumeratorDenominator(Protocol):
   def denominator(self) -> int:
     pass
 
-t = SupportsNumeratorDenominator
-
 for v in vals:
-  print(f"%timeit isinstance({type(v).__module__}.{type(v).__name__}({v}), {t.__name__})")
-  %timeit isinstance(v, t)
+  print(f"%timeit isinstance({v!r}, SupportsNumeratorDenominator)")
+  %timeit isinstance(v, SupportsNumeratorDenominator)

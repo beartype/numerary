@@ -2,37 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://posita.github.io/numerary/0.4/</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-10-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://posita.github.io/numerary/0.4/contrib/</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-10-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://posita.github.io/numerary/0.4/license/</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-10-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://posita.github.io/numerary/0.4/notes/</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-10-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://posita.github.io/numerary/0.4/numerary/</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-10-13</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://posita.github.io/numerary/0.4/numerary.protocol/</loc>
+         <lastmod>2022-10-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://posita.github.io/numerary/0.4/numerary.types/</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-10-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://posita.github.io/numerary/0.4/whytho/</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-10-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
