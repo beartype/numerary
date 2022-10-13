@@ -18,11 +18,11 @@ All rights not expressly waived or licensed are reserved.
 If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.*
 
 [![Tests](https://github.com/posita/numerary/actions/workflows/on-push.yaml/badge.svg)](https://github.com/posita/numerary/actions/workflows/on-push.yaml)
-[![Version](https://img.shields.io/pypi/v/numerary/0.4.2.svg)](https://pypi.org/project/numerary/0.4.2/)
-[![Development Stage](https://img.shields.io/pypi/status/numerary/0.4.2.svg)](https://pypi.org/project/numerary/0.4.2/)
-[![License](https://img.shields.io/pypi/l/numerary/0.4.2.svg)](http://opensource.org/licenses/MIT)
-[![Supported Python Versions](https://img.shields.io/pypi/pyversions/numerary/0.4.2.svg)](https://pypi.org/project/numerary/0.4.2/)
-[![Supported Python Implementations](https://img.shields.io/pypi/implementation/numerary/0.4.2.svg)](https://pypi.org/project/numerary/0.4.2/)
+[![Version](https://img.shields.io/pypi/v/numerary/0.4.3.svg)](https://pypi.org/project/numerary/0.4.3/)
+[![Development Stage](https://img.shields.io/pypi/status/numerary/0.4.3.svg)](https://pypi.org/project/numerary/0.4.3/)
+[![License](https://img.shields.io/pypi/l/numerary/0.4.3.svg)](http://opensource.org/licenses/MIT)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/numerary/0.4.3.svg)](https://pypi.org/project/numerary/0.4.3/)
+[![Supported Python Implementations](https://img.shields.io/pypi/implementation/numerary/0.4.3.svg)](https://pypi.org/project/numerary/0.4.3/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Bear-ified™](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.rtfd.io/)
 
@@ -262,7 +262,7 @@ These offer significant performance improvements, especially where protocols def
 ```
 
 <details>
-<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.2/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
+<summary>Source: <a href="https://github.com/posita/numerary/blob/v0.4.3/docs/perf_supports_complex.ipy"><code>perf_supports_complex.ipy</code></a></summary>
 
 ``` python
 --8<-- "docs/perf_supports_complex.ipy"
@@ -521,7 +521,7 @@ This is probably fine as long as runtime comparisons remain limited to crude che
 It would likely fail if runtime checking becomes more sophisticated, at which time, this implementation will need to be revisited.
 Hopefully by then, we can just delete ``numerary`` as the aspirationally unnecessary hack it is and move on with our lives.
 
-(See [``beartype.typing``](https://github.com/beartype/beartype/tree/main/beartype/typing) and [``numerary``’s extension](https://github.com/posita/numerary/blob/v0.4.2/numerary/types.py) for details.)
+(See [``beartype.typing``](https://github.com/beartype/beartype/tree/main/beartype/typing) and [``numerary``’s extension](https://github.com/posita/numerary/blob/v0.4.3/numerary/types.py) for details.)
 
 ## License
 
@@ -568,7 +568,7 @@ It has the following runtime dependencies:
 
 See the [hacking quick-start](https://posita.github.io/numerary/0.4/contrib/#hacking-quick-start) for additional development and testing dependencies.
 
-## Customers [![``numerary``-encumbered](https://raw.githubusercontent.com/posita/numerary/v0.4.2/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
+## Customers [![``numerary``-encumbered](https://raw.githubusercontent.com/posita/numerary/v0.4.3/docs/numerary-encumbered.svg)](https://posita.github.io/numerary/)
 
 * [``dyce``](https://github.com/posita/dyce/) - a pure-Python library for modeling arbitrarily complex dice mechanics and ~~mother~~ *birthing code base* of ``numerary``!
 * [👻 ``phantom-types``](https://github.com/antonagestam/phantom-types) - predicates and other type constraints without runtime overhead
