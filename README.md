@@ -17,7 +17,7 @@ Please see the accompanying ``LICENSE`` file for rights and restrictions governi
 All rights not expressly waived or licensed are reserved.
 If that file is missing or appears to be modified from its original, then please contact the author before viewing or using this software in any capacity.*
 
-[![Tests](https://github.com/posita/numerary/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/posita/numerary/actions/workflows/unit-tests.yaml)
+[![Tests](https://github.com/posita/numerary/actions/workflows/on-push.yaml/badge.svg)](https://github.com/posita/numerary/actions/workflows/on-push.yaml)
 [![Version](https://img.shields.io/pypi/v/numerary/0.4.2.svg)](https://pypi.org/project/numerary/0.4.2/)
 [![Development Stage](https://img.shields.io/pypi/status/numerary/0.4.2.svg)](https://pypi.org/project/numerary/0.4.2/)
 [![License](https://img.shields.io/pypi/l/numerary/0.4.2.svg)](http://opensource.org/licenses/MIT)
