@@ -276,7 +276,7 @@ That seems as good a place as any to tackle next.
 >>> try:
 ...   from typing import Protocol, runtime_checkable
 ... except ImportError:
-...   from typing_extensions import Protocol, runtime_checkable  # type: ignore [misc]
+...   from typing_extensions import Protocol, runtime_checkable  # type: ignore [assignment]
 
 >>> from abc import abstractmethod
 >>> from typing import Any

@@ -1431,7 +1431,7 @@ def real(operand: SupportsRealImagMixedU):
 
         return real_part
     elif hasattr(operand, "real"):
-        return operand.real  # type: ignore [union-attr]
+        return operand.real
     else:
         raise TypeError(f"{operand!r} has no real or as_real_imag")
 
@@ -1461,7 +1461,7 @@ def imag(operand: SupportsRealImagMixedU):
 
         return imag_part
     elif hasattr(operand, "imag"):
-        return operand.imag  # type: ignore [union-attr]
+        return operand.imag
     else:
         raise TypeError(f"{operand!r} has no real or as_real_imag")
 
