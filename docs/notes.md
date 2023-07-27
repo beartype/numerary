@@ -15,6 +15,10 @@
 
 # ``numerary`` release notes
 
+## [0.4.4](https://github.com/posita/numerary/releases/tag/v0.4.4)
+
+* Fixes guerrilla patching of ``#!python RationalLikeMethods.__doc__`` to work with ``python -OO`.
+
 ## [0.4.3](https://github.com/posita/numerary/releases/tag/v0.4.3)
 
 * Migrates from [``setuptools_scm``](https://pypi.org/project/setuptools-scm/) to [``versioningit``](https://pypi.org/project/versioningit/) for more flexible version number formatting.

@@ -1313,14 +1313,15 @@ rf"""
 {RationalLikeMixedT!r}
 """
 assert RationalLikeMixedU.__args__ == RationalLikeMixedT  # type: ignore [attr-defined]
-assert RationalLikeMethods.__doc__
-RationalLikeMethods.__doc__ += rf"""
 
-    ``` python
-    RationalLikeMixedU = {RationalLikeMixedU!r}
-    RationalLikeMixedT = ({", ".join(cls.__name__ for cls in  RationalLikeMixedT)})
-    ```
-"""
+if RationalLikeMethods.__doc__:
+    RationalLikeMethods.__doc__ += rf"""
+
+        ``` python
+        RationalLikeMixedU = {RationalLikeMixedU!r}
+        RationalLikeMixedT = ({", ".join(cls.__name__ for cls in  RationalLikeMixedT)})
+        ```
+    """
 
 
 @runtime_checkable
