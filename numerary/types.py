@@ -1607,7 +1607,7 @@ def __floor__(operand: Union[SupportsFloat, SupportsFloorCeil]):
 
     ```
     """
-    return math.floor(operand)  # type: ignore [arg-type]
+    return math.floor(operand)
 
 
 @beartype
@@ -1631,7 +1631,7 @@ def __ceil__(operand: Union[SupportsFloat, SupportsFloorCeil]):
 
     ```
     """
-    return math.ceil(operand)  # type: ignore [arg-type]
+    return math.ceil(operand)
 
 
 @beartype
