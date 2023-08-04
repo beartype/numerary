@@ -6,8 +6,6 @@
 # software in any capacity.
 # ======================================================================================
 
-from __future__ import annotations
-
 from decimal import Decimal
 from enum import IntEnum, IntFlag, auto
 from math import ceil, floor, trunc
@@ -593,19 +591,19 @@ class NumberwangBase:
             return NotImplemented
 
     @beartype
-    def __neg__(self) -> NumberwangBase:
+    def __neg__(self) -> "NumberwangBase":
         return type(self)(__neg__(self.val))
 
     @beartype
-    def __pos__(self) -> NumberwangBase:
+    def __pos__(self) -> "NumberwangBase":
         return type(self)(__pos__(self.val))
 
     @beartype
-    def __abs__(self) -> NumberwangBase:
+    def __abs__(self) -> "NumberwangBase":
         return type(self)(__abs__(self.val))
 
     @beartype
-    def __invert__(self) -> NumberwangBase:
+    def __invert__(self) -> "NumberwangBase":
         return type(self)(__invert__(self.val))
 
     @beartype
@@ -939,15 +937,15 @@ class Wangernumb:
             return val
 
     @beartype
-    def __neg__(self) -> Wangernumb:
+    def __neg__(self) -> "Wangernumb":
         return type(self)(__neg__(self.val))
 
     @beartype
-    def __pos__(self) -> Wangernumb:
+    def __pos__(self) -> "Wangernumb":
         return type(self)(__pos__(self.val))
 
     @beartype
-    def __abs__(self) -> Wangernumb:
+    def __abs__(self) -> "Wangernumb":
         return type(self)(__abs__(self.val))
 
     @beartype

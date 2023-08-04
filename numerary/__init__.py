@@ -6,8 +6,6 @@
 # software in any capacity.
 # ======================================================================================
 
-from __future__ import annotations
-
 from typing import Tuple, Union
 
 from .types import *  # noqa: F401,F403

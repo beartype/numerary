@@ -6,8 +6,6 @@
 # software in any capacity.
 # ======================================================================================
 
-from __future__ import annotations
-
 from collections import defaultdict
 from typing import TYPE_CHECKING, Any, Dict, Set, Tuple, Type, TypeVar
 
@@ -41,7 +39,7 @@ class CachingProtocolMeta(_BeartypeCachingProtocolMeta):
     """
 
     _abc_inst_check_cache_overridden: Dict[Type, bool]
-    _abc_inst_check_cache_listeners: Set[CachingProtocolMeta]
+    _abc_inst_check_cache_listeners: Set["CachingProtocolMeta"]
 
     # Defined in beartype.typing.Protocol from which we inherit
     _abc_inst_check_cache: Dict[type, bool]
