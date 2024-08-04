@@ -170,8 +170,8 @@ class SupportsConjugate(
     A caching ABC defining the [``conjugate``
     method](https://docs.python.org/3/library/numbers.html#numbers.Complex.conjugate).
 
-    ([``_SupportsConjugate``][numerary.types._SupportsConjugate] is the raw, non-caching
-    version that defines the actual methods.)
+    (``_SupportsConjugate`` is the raw, non-caching version that defines the actual
+    methods.)
 
     ``` python
     >>> from typing import TypeVar
@@ -237,8 +237,8 @@ class SupportsRealImag(
     [``imag``](https://docs.python.org/3/library/numbers.html#numbers.Complex.imag)
     properties.
 
-    ([``_SupportsRealImag``][numerary.types._SupportsRealImag] is
-    the raw, non-caching version that defines the actual methods.)
+    (``_SupportsRealImag`` is the raw, non-caching version that defines the actual
+    methods.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
@@ -290,8 +290,8 @@ class SupportsRealImagAsMethod(
     r"""
     A caching ABC defining the ``#!python as_real_imag`` method that returns a 2-tuple.
 
-    ([``_SupportsRealImagAsMethod``][numerary.types._SupportsRealImagAsMethod]
-    is the raw, non-caching version that defines the actual methods.)
+    (``_SupportsRealImagAsMethod`` is the raw, non-caching version that defines the
+    actual methods.)
 
     See also the [``real``][numerary.types.real] and [``imag``][numerary.types.imag]
     helper functions.
@@ -361,8 +361,8 @@ class SupportsTrunc(
 
     See also the [``__trunc__`` helper function][numerary.types.__trunc__].
 
-    ([``_SupportsTrunc``][numerary.types._SupportsTrunc] is the raw, non-caching version
-    that defines the actual methods.)
+    (``_SupportsTrunc`` is the raw, non-caching version that defines the actual
+    methods.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
@@ -428,8 +428,8 @@ class SupportsFloorCeil(
     [``__ceil__``](https://docs.python.org/3/reference/datamodel.html#object.__ceil__)
     methods.
 
-    ([``_SupportsFloorCeil``][numerary.types._SupportsFloorCeil] is the raw, non-caching
-    version that defines the actual methods.)
+    (``_SupportsFloorCeil`` is the raw, non-caching version that defines the actual
+    methods.)
 
     !!! note
 
@@ -514,8 +514,8 @@ class SupportsDivmod(
     [``__rdivmod__``](https://docs.python.org/3/reference/datamodel.html#object.__rdivmod__)
     methods. Each returns a 2-tuple of covariants.
 
-    ([``_SupportsDivmod``][numerary.types._SupportsDivmod] is the raw, non-caching
-    version that defines the actual methods.)
+    (``_SupportsDivmod`` is the raw, non-caching version that defines the actual
+    methods.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
@@ -583,8 +583,8 @@ class SupportsNumeratorDenominator(
     [``denominator``](https://docs.python.org/3/library/numbers.html#numbers.Rational.denominator)
     properties.
 
-    ([``_SupportsNumeratorDenominator``][numerary.types._SupportsNumeratorDenominator]
-    is the raw, non-caching version that defines the actual properties.)
+    (``_SupportsNumeratorDenominator`` is the raw, non-caching version that defines the
+    actual properties.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
@@ -647,8 +647,8 @@ class SupportsNumeratorDenominatorMethods(
     A caching ABC defining ``#!python numerator`` and ``#!python denominator`` methods.
     Each returns a [``SupportsInt``][numerary.types.SupportsInt].
 
-    ([``_SupportsNumeratorDenominatorMethods``][numerary.types._SupportsNumeratorDenominatorMethods]
-    is the raw, non-caching version that defines the actual methods.)
+    (``_SupportsNumeratorDenominatorMethods`` is the raw, non-caching version that
+    defines the actual methods.)
 
     See also the [``numerator``][numerary.types.numerator] and
     [``denominator``][numerary.types.denominator] helper functions.
@@ -679,8 +679,7 @@ class _SupportsComplexOps(
     Generic[_T_co],
 ):
     r"""
-    The non-caching version of
-    [``SupportsComplexOps``][numerary.types.SupportsComplexOps].
+    The non-caching version of ``SupportsComplexOps``.
     """
 
     @abstractmethod
@@ -736,8 +735,8 @@ class SupportsComplexOps(
     methods](https://docs.python.org/3/library/numbers.html#numbers.Complex) with
     covariant return values.
 
-    ([``_SupportsComplexOps``][numerary.types._SupportsComplexOps] is the raw,
-    non-caching version that defines the actual methods.)
+    (``_SupportsComplexOps`` is the raw, non-caching version that defines the actual
+    methods.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
@@ -801,8 +800,8 @@ class SupportsComplexPow(
     [``__pow__``](https://docs.python.org/3/reference/datamodel.html#object.__pow__) and
     [``__rpow__``](https://docs.python.org/3/reference/datamodel.html#object.__rpow__).
 
-    ([``_SupportsComplexPow``][numerary.types._SupportsComplexPow] is the raw,
-    non-caching version that defines the actual methods.)
+    (``_SupportsComplexPow`` is the raw, non-caching version that defines the actual
+    methods.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
@@ -893,8 +892,8 @@ class SupportsRealOps(
     methods](https://docs.python.org/3/library/numbers.html#numbers.Real) with covariant
     return values.
 
-    ([``_SupportsRealOps``][numerary.types._SupportsRealOps] is the raw, non-caching
-    version that defines the actual methods.)
+    (``_SupportsRealOps`` is the raw, non-caching version that defines the actual
+    methods.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
@@ -1000,8 +999,8 @@ class SupportsIntegralOps(
     methods](https://docs.python.org/3/library/numbers.html#numbers.Integral) with
     covariant return values.
 
-    ([``_SupportsIntegralOps``][numerary.types._SupportsIntegralOps] is the raw,
-    non-caching version that defines the actual methods.)
+    (``_SupportsIntegralOps`` is the raw, non-caching version that defines the actual
+    methods.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
@@ -1062,8 +1061,8 @@ class SupportsIntegralPow(
     [``__rpow__``](https://docs.python.org/3/reference/datamodel.html#object.__rpow__)
     methods.
 
-    ([``_SupportsIntegralPow``][numerary.types._SupportsIntegralPow] is the raw,
-    non-caching version that defines the actual methods.)
+    (``_SupportsIntegralPow`` is the raw, non-caching version that defines the actual
+    methods.)
 
     ``` python
     >>> from typing import Any, Tuple, TypeVar
@@ -1317,7 +1316,7 @@ if RationalLikeMethods.__doc__:
 
         ``` python
         RationalLikeMixedU = {RationalLikeMixedU!r}
-        RationalLikeMixedT = ({", ".join(cls.__name__ for cls in  RationalLikeMixedT)})
+        RationalLikeMixedT = ({", ".join(cls.__name__ for cls in RationalLikeMixedT)})
         ```
     """
 
@@ -1468,20 +1467,19 @@ def imag(operand: SupportsRealImagMixedU):
 # TODO(posita): Are these sufficient? Could these be more specific? See:
 # <https://github.com/python/typeshed/issues/6303#issuecomment-969392257>.
 @overload
-def __pow__(arg: Union[SupportsComplexPow, SupportsIntegralPow], exponent: Any) -> Any:
-    ...
+def __pow__(
+    arg: Union[SupportsComplexPow, SupportsIntegralPow], exponent: Any
+) -> Any: ...
 
 
 @overload
 def __pow__(
     arg: Union[SupportsComplexPow, SupportsIntegralPow], exponent: Any, modulus: None
-) -> Any:
-    ...
+) -> Any: ...
 
 
 @overload
-def __pow__(arg: SupportsIntegralPow, exponent: Any, modulus: Any) -> Any:
-    ...
+def __pow__(arg: SupportsIntegralPow, exponent: Any, modulus: Any) -> Any: ...
 
 
 @beartype

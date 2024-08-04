@@ -45,9 +45,9 @@ except ValueError:
             f"""unrecognized value ({_NUMERARY_BEARTYPE}) for NUMERARY_BEARTYPE environment variable (should be "{'", "'.join(_truthy + _falsy)}", or an integer)"""
         )
 
-if not TYPE_CHECKING and _use_beartype_internally:
+if TYPE_CHECKING or not _use_beartype_internally:
+    beartype = identity
+else:
     from beartype import beartype as _beartype
 
     beartype = _beartype
-else:
-    beartype = identity

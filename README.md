@@ -307,7 +307,7 @@ Not very well, unfortunately, at least not on its own.
 ...   assert isinstance(arg, SupportsFloorCeil)
 ...   return __floor__(arg)
 
->>> my_floor_func(float(1.2))  # works in 3.8+
+>>> my_floor_func(float(1.2))  # works in 3.9+
 1
 
 ```
@@ -552,8 +552,8 @@ Alternately, you can download [the source](https://github.com/posita/numerary) a
 
 ``numerary`` requires a relatively modern version of Python:
 
-* [CPython](https://www.python.org/) (3.8+)
-* [PyPy](http://pypy.org/) (CPython 3.8+ compatible)
+* [CPython](https://www.python.org/) (3.9+)
+* ~~[PyPy](http://pypy.org/) (CPython 3.9+ compatible)~~ *See [beartype/beartype#324](https://github.com/beartype/beartype/issues/324)*
 
 It has the following runtime dependencies:
 

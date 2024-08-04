@@ -117,16 +117,14 @@ class NumberwangBase:
         return hash((type(self).__name__, self.val))
 
     @overload
-    def __add__(self, other: _IntegralT) -> _IntegralT:  # type: ignore[misc]
+    def __add__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [overload-overlap]
         ...
 
     @overload
-    def __add__(self, other: _RealT) -> _RealT:
-        ...
+    def __add__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __add__(self, other: Decimal) -> Decimal:
-        ...
+    def __add__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __add__(self, other):
@@ -145,16 +143,14 @@ class NumberwangBase:
             return __add__(self.val, other)
 
     @overload
-    def __radd__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
+    def __radd__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [overload-overlap]
         ...
 
     @overload
-    def __radd__(self, other: _RealT) -> _RealT:
-        ...
+    def __radd__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __radd__(self, other: Decimal) -> Decimal:
-        ...
+    def __radd__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __radd__(self, other):
@@ -173,16 +169,14 @@ class NumberwangBase:
             return __add__(other, self.val)
 
     @overload
-    def __sub__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
+    def __sub__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [overload-overlap]
         ...
 
     @overload
-    def __sub__(self, other: _RealT) -> _RealT:
-        ...
+    def __sub__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __sub__(self, other: Decimal) -> Decimal:
-        ...
+    def __sub__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __sub__(self, other):
@@ -201,16 +195,14 @@ class NumberwangBase:
             return __sub__(self.val, other)
 
     @overload
-    def __rsub__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
+    def __rsub__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [overload-overlap]
         ...
 
     @overload
-    def __rsub__(self, other: _RealT) -> _RealT:
-        ...
+    def __rsub__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rsub__(self, other: Decimal) -> Decimal:
-        ...
+    def __rsub__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rsub__(self, other):
@@ -229,16 +221,14 @@ class NumberwangBase:
             return __sub__(other, self.val)
 
     @overload
-    def __mul__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
+    def __mul__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [overload-overlap]
         ...
 
     @overload
-    def __mul__(self, other: _RealT) -> _RealT:
-        ...
+    def __mul__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __mul__(self, other: Decimal) -> Decimal:
-        ...
+    def __mul__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __mul__(self, other):
@@ -257,16 +247,14 @@ class NumberwangBase:
             return __mul__(self.val, other)
 
     @overload
-    def __rmul__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
+    def __rmul__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [overload-overlap]
         ...
 
     @overload
-    def __rmul__(self, other: _RealT) -> _RealT:
-        ...
+    def __rmul__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rmul__(self, other: Decimal) -> Decimal:
-        ...
+    def __rmul__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rmul__(self, other):
@@ -285,12 +273,10 @@ class NumberwangBase:
             return __mul__(other, self.val)
 
     @overload
-    def __truediv__(self, other: _RealT) -> _RealT:
-        ...
+    def __truediv__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __truediv__(self, other: Decimal) -> Decimal:
-        ...
+    def __truediv__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __truediv__(self, other):
@@ -307,12 +293,10 @@ class NumberwangBase:
             return __truediv__(self.val, other)
 
     @overload
-    def __rtruediv__(self, other: _RealT) -> _RealT:
-        ...
+    def __rtruediv__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rtruediv__(self, other: Decimal) -> Decimal:
-        ...
+    def __rtruediv__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rtruediv__(self, other):
@@ -329,16 +313,14 @@ class NumberwangBase:
             return __truediv__(other, self.val)
 
     @overload
-    def __floordiv__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
+    def __floordiv__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [overload-overlap]
         ...
 
     @overload
-    def __floordiv__(self, other: _RealT) -> _RealT:
-        ...
+    def __floordiv__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __floordiv__(self, other: Decimal) -> Decimal:
-        ...
+    def __floordiv__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __floordiv__(self, other):
@@ -357,16 +339,14 @@ class NumberwangBase:
             return __floordiv__(self.val, other)
 
     @overload
-    def __rfloordiv__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
+    def __rfloordiv__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [overload-overlap]
         ...
 
     @overload
-    def __rfloordiv__(self, other: _RealT) -> _RealT:  # type: ignore [misc]
-        ...
+    def __rfloordiv__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rfloordiv__(self, other: Decimal) -> Decimal:
-        ...
+    def __rfloordiv__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rfloordiv__(self, other):
@@ -385,16 +365,14 @@ class NumberwangBase:
             return __floordiv__(other, self.val)
 
     @overload
-    def __mod__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
+    def __mod__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [overload-overlap]
         ...
 
     @overload
-    def __mod__(self, other: _RealT) -> _RealT:
-        ...
+    def __mod__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __mod__(self, other: Decimal) -> Decimal:
-        ...
+    def __mod__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __mod__(self, other):
@@ -413,16 +391,14 @@ class NumberwangBase:
             return __mod__(self.val, other)
 
     @overload
-    def __rmod__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [misc]
+    def __rmod__(self, other: _IntegralT) -> _IntegralT:  # type: ignore [overload-overlap]
         ...
 
     @overload
-    def __rmod__(self, other: _RealT) -> _RealT:
-        ...
+    def __rmod__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rmod__(self, other: Decimal) -> Decimal:
-        ...
+    def __rmod__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rmod__(self, other):
@@ -441,18 +417,15 @@ class NumberwangBase:
             return __mod__(other, self.val)
 
     @overload
-    def __pow__(  # type: ignore [misc]
+    def __pow__(  # type: ignore [overload-overlap]
         self, other: _IntegralT, modulo: Optional[_IntegralT] = None
-    ) -> _IntegralT:
-        ...
+    ) -> _IntegralT: ...
 
     @overload
-    def __pow__(self, other: _RealT) -> _RealT:
-        ...
+    def __pow__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __pow__(self, other: Decimal) -> Decimal:
-        ...
+    def __pow__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __pow__(self, other, modulo=None):
@@ -471,18 +444,15 @@ class NumberwangBase:
             return pow(self.val, other, modulo)
 
     @overload
-    def __rpow__(  # type: ignore [misc]
+    def __rpow__(  # type: ignore [overload-overlap]
         self, other: _IntegralT, modulo: Optional[_IntegralT] = None
-    ) -> _IntegralT:
-        ...
+    ) -> _IntegralT: ...
 
     @overload
-    def __rpow__(self, other: _RealT) -> _RealT:
-        ...
+    def __rpow__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rpow__(self, other: Decimal) -> Decimal:
-        ...
+    def __rpow__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rpow__(self, other, modulo=None):
@@ -723,12 +693,10 @@ class Wangernumb:
         return hash(self.val)
 
     @overload
-    def __add__(self, other: _RealT) -> _RealT:
-        ...
+    def __add__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __add__(self, other: Decimal) -> Decimal:
-        ...
+    def __add__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __add__(self, other):
@@ -738,12 +706,10 @@ class Wangernumb:
             return __add__(self.val, other)
 
     @overload
-    def __radd__(self, other: _RealT) -> _RealT:
-        ...
+    def __radd__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __radd__(self, other: Decimal) -> Decimal:
-        ...
+    def __radd__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __radd__(self, other):
@@ -753,12 +719,10 @@ class Wangernumb:
             return __add__(other, self.val)
 
     @overload
-    def __sub__(self, other: _RealT) -> _RealT:
-        ...
+    def __sub__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __sub__(self, other: Decimal) -> Decimal:
-        ...
+    def __sub__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __sub__(self, other):
@@ -768,12 +732,10 @@ class Wangernumb:
             return __sub__(self.val, other)
 
     @overload
-    def __rsub__(self, other: _RealT) -> _RealT:
-        ...
+    def __rsub__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rsub__(self, other: Decimal) -> Decimal:
-        ...
+    def __rsub__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rsub__(self, other):
@@ -783,12 +745,10 @@ class Wangernumb:
             return __sub__(other, self.val)
 
     @overload
-    def __mul__(self, other: _RealT) -> _RealT:
-        ...
+    def __mul__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __mul__(self, other: Decimal) -> Decimal:
-        ...
+    def __mul__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __mul__(self, other):
@@ -798,12 +758,10 @@ class Wangernumb:
             return __mul__(self.val, other)
 
     @overload
-    def __rmul__(self, other: _RealT) -> _RealT:
-        ...
+    def __rmul__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rmul__(self, other: Decimal) -> Decimal:
-        ...
+    def __rmul__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rmul__(self, other):
@@ -813,12 +771,10 @@ class Wangernumb:
             return __mul__(other, self.val)
 
     @overload
-    def __truediv__(self, other: _RealT) -> _RealT:
-        ...
+    def __truediv__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __truediv__(self, other: Decimal) -> Decimal:
-        ...
+    def __truediv__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __truediv__(self, other):
@@ -828,12 +784,10 @@ class Wangernumb:
             return __truediv__(self.val, other)
 
     @overload
-    def __rtruediv__(self, other: _RealT) -> _RealT:
-        ...
+    def __rtruediv__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rtruediv__(self, other: Decimal) -> Decimal:
-        ...
+    def __rtruediv__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rtruediv__(self, other):
@@ -843,12 +797,10 @@ class Wangernumb:
             return __truediv__(other, self.val)
 
     @overload
-    def __floordiv__(self, other: _RealT) -> _RealT:
-        ...
+    def __floordiv__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __floordiv__(self, other: Decimal) -> Decimal:
-        ...
+    def __floordiv__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __floordiv__(self, other):
@@ -858,12 +810,10 @@ class Wangernumb:
             return __floordiv__(self.val, other)
 
     @overload
-    def __rfloordiv__(self, other: _RealT) -> _RealT:  # type: ignore [misc]
-        ...
+    def __rfloordiv__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rfloordiv__(self, other: Decimal) -> Decimal:
-        ...
+    def __rfloordiv__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rfloordiv__(self, other):
@@ -873,12 +823,10 @@ class Wangernumb:
             return __floordiv__(other, self.val)
 
     @overload
-    def __mod__(self, other: _RealT) -> _RealT:
-        ...
+    def __mod__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __mod__(self, other: Decimal) -> Decimal:
-        ...
+    def __mod__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __mod__(self, other):
@@ -888,12 +836,10 @@ class Wangernumb:
             return __mod__(self.val, other)
 
     @overload
-    def __rmod__(self, other: _RealT) -> _RealT:
-        ...
+    def __rmod__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rmod__(self, other: Decimal) -> Decimal:
-        ...
+    def __rmod__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rmod__(self, other):
@@ -903,12 +849,10 @@ class Wangernumb:
             return __mod__(other, self.val)
 
     @overload
-    def __pow__(self, other: _RealT) -> _RealT:
-        ...
+    def __pow__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __pow__(self, other: Decimal) -> Decimal:
-        ...
+    def __pow__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __pow__(self, other):
@@ -920,12 +864,10 @@ class Wangernumb:
             return val
 
     @overload
-    def __rpow__(self, other: _RealT) -> _RealT:
-        ...
+    def __rpow__(self, other: _RealT) -> _RealT: ...
 
     @overload
-    def __rpow__(self, other: Decimal) -> Decimal:
-        ...
+    def __rpow__(self, other: Decimal) -> Decimal: ...
 
     @beartype
     def __rpow__(self, other):
@@ -953,12 +895,10 @@ class Wangernumb:
         return self.val
 
     @overload
-    def __round__(self) -> int:
-        ...
+    def __round__(self) -> int: ...
 
     @overload
-    def __round__(self, ndigits: _IntegralT) -> float:
-        ...
+    def __round__(self, ndigits: _IntegralT) -> float: ...
 
     @beartype
     def __round__(self, ndigits: Optional[_IntegralT] = None) -> Union[int, float]:
