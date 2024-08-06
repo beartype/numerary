@@ -7,7 +7,7 @@
 # ======================================================================================
 
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any, Dict, Set, Tuple, Type, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 __all__ = ("CachingProtocolMeta",)
 
@@ -15,7 +15,6 @@ __all__ = ("CachingProtocolMeta",)
 # ---- Types ---------------------------------------------------------------------------
 
 
-_T_co = TypeVar("_T_co", covariant=True)
 _TT = TypeVar("_TT", bound="CachingProtocolMeta")
 
 
@@ -38,17 +37,17 @@ class CachingProtocolMeta(_BeartypeCachingProtocolMeta):
     overriding runtime checks.
     """
 
-    _abc_inst_check_cache_overridden: Dict[Type, bool]
-    _abc_inst_check_cache_listeners: Set["CachingProtocolMeta"]
+    _abc_inst_check_cache_overridden: dict[type, bool]
+    _abc_inst_check_cache_listeners: set["CachingProtocolMeta"]
 
     # Defined in beartype.typing.Protocol from which we inherit
-    _abc_inst_check_cache: Dict[type, bool]
+    _abc_inst_check_cache: dict[type, bool]
 
     def __new__(
-        mcls: Type[_TT],
+        mcls: type[_TT],
         name: str,
-        bases: Tuple[Type, ...],
-        namespace: Dict[str, Any],
+        bases: tuple[type, ...],
+        namespace: dict[str, Any],
         **kw: Any,
     ) -> _TT:
         cls = super().__new__(mcls, name, bases, namespace, **kw)
@@ -65,7 +64,7 @@ class CachingProtocolMeta(_BeartypeCachingProtocolMeta):
 
         return cls
 
-    def includes(cls, inst_t: Type) -> None:
+    def includes(cls, inst_t: type) -> None:
         r"""
         Registers *inst_t* as supporting the interface in the runtime type-checking cache.
         This overrides any prior cached value.
@@ -107,7 +106,7 @@ class CachingProtocolMeta(_BeartypeCachingProtocolMeta):
         cls._abc_inst_check_cache_overridden[inst_t] = True
         cls._dirty_for(inst_t)
 
-    def excludes(cls, inst_t: Type) -> None:
+    def excludes(cls, inst_t: type) -> None:
         r"""
         Registers *inst_t* as supporting the interface in the runtime type-checking cache.
         This overrides any prior cached value.
@@ -150,7 +149,7 @@ class CachingProtocolMeta(_BeartypeCachingProtocolMeta):
         cls._abc_inst_check_cache_overridden[inst_t] = True
         cls._dirty_for(inst_t)
 
-    def reset_for(cls, inst_t: Type) -> None:
+    def reset_for(cls, inst_t: type) -> None:
         r"""
         Clears any cached instance check for *inst_t*.
         """
@@ -159,7 +158,7 @@ class CachingProtocolMeta(_BeartypeCachingProtocolMeta):
             del cls._abc_inst_check_cache_overridden[inst_t]
             cls._dirty_for(inst_t)
 
-    def _dirty_for(cls, inst_t: Type) -> None:
+    def _dirty_for(cls, inst_t: type) -> None:
         for inheriting_cls in cls._abc_inst_check_cache_listeners:
             if (
                 inst_t in inheriting_cls._abc_inst_check_cache

@@ -8,7 +8,7 @@
 
 import math
 import operator
-from typing import Callable, Tuple, TypeVar
+from typing import Callable, TypeVar
 
 from .numberwang import (
     Numberwang,
@@ -33,7 +33,7 @@ _BinaryOperatorT = Callable[[_T_co, _T_co], _T_co]
 # ---- Data ----------------------------------------------------------------------------
 
 
-BINOPS_REAL: Tuple[_BinaryOperatorT, ...] = (
+BINOPS_REAL: tuple[_BinaryOperatorT, ...] = (
     operator.__add__,
     operator.__eq__,
     operator.__floordiv__,
@@ -49,7 +49,7 @@ BINOPS_REAL: Tuple[_BinaryOperatorT, ...] = (
     operator.__truediv__,
 )
 
-BINOPS_INTEGRAL: Tuple[_BinaryOperatorT, ...] = (
+BINOPS_INTEGRAL: tuple[_BinaryOperatorT, ...] = (
     operator.__and__,
     operator.__lshift__,
     operator.__or__,
@@ -57,7 +57,7 @@ BINOPS_INTEGRAL: Tuple[_BinaryOperatorT, ...] = (
     operator.__xor__,
 )
 
-UNOPS_REAL: Tuple[_UnaryOperatorT, ...] = (
+UNOPS_REAL: tuple[_UnaryOperatorT, ...] = (
     int,
     round,
     math.ceil,
@@ -68,14 +68,14 @@ UNOPS_REAL: Tuple[_UnaryOperatorT, ...] = (
     operator.__pos__,
 )
 
-UNOPS_REAL_DERIVED: Tuple[_UnaryOperatorT, ...] = UNOPS_REAL + (
+UNOPS_REAL_DERIVED: tuple[_UnaryOperatorT, ...] = UNOPS_REAL + (
     complex,
     float,
 )
 
-UNOPS_INTEGRAL: Tuple[_UnaryOperatorT, ...] = (operator.__invert__,)
+UNOPS_INTEGRAL: tuple[_UnaryOperatorT, ...] = (operator.__invert__,)
 
-UNOPS_INTEGRAL_DERIVED: Tuple[_UnaryOperatorT, ...] = UNOPS_INTEGRAL + (
+UNOPS_INTEGRAL_DERIVED: tuple[_UnaryOperatorT, ...] = UNOPS_INTEGRAL + (
     operator.__index__,
 )
 

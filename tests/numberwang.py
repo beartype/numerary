@@ -894,6 +894,10 @@ class Wangernumb:
     def __float__(self) -> float:
         return self.val
 
+    @beartype
+    def __int__(self) -> int:
+        return int(self.val)
+
     @overload
     def __round__(self) -> int: ...
 

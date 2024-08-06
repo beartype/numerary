@@ -7,7 +7,6 @@
 # ======================================================================================
 
 from abc import abstractmethod
-from typing import Tuple
 
 import pytest
 from beartype import beartype
@@ -57,7 +56,7 @@ def test_beartype_detection() -> None:
         _real_like_identity("-273")  # type: ignore [arg-type]
 
     @beartype
-    def _lies_all_lies(arg: RealLike) -> Tuple[str]:
+    def _lies_all_lies(arg: RealLike) -> tuple[str]:
         return (arg,)  # type: ignore [return-value]
 
     with pytest.raises(BeartypeException):
@@ -87,7 +86,7 @@ def test_beartype_validators() -> None:
         _divide_it(0, "1")  # type: ignore [arg-type]
 
     If = Annotated[
-        Tuple[str, ...],
+        tuple[str, ...],
         Is[
             lambda x: x
             == (
@@ -98,7 +97,7 @@ def test_beartype_validators() -> None:
     ]
 
     @beartype
-    def _if(lines: If) -> Tuple[str, ...]:
+    def _if(lines: If) -> tuple[str, ...]:
         return (
             "If you can meet with Triumph and Disaster",
             "And treat those two impostors just the same;",
