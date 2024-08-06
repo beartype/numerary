@@ -6,17 +6,17 @@
 # software in any capacity.
 # ======================================================================================
 
-from typing import Tuple, Union
+from typing import Union
 
 from .types import *  # noqa: F401,F403
 
 __all__ = ()
 
 _VersionT = Union[
-    Tuple[int, int, int],
-    Tuple[int, int, int, str],
-    Tuple[int, int, int, str, str],
-    Tuple[int, int, int, str, str, str],
+    tuple[int, int, int],
+    tuple[int, int, int, str],
+    tuple[int, int, int, str, str],
+    tuple[int, int, int, str, str, str],
 ]
 
 __version__: _VersionT

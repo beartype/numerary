@@ -76,7 +76,7 @@ jobs:
         [ -f "dist/${PKG}-${VERS_PATCH}-py3-none-any.whl" ]
         (
           . .tox/check/bin/activate
-          mike deploy --rebase --update-aliases "${VERS}" latest
+          mike deploy --update-aliases "${VERS}" latest
         )
     - name: publish to test PyPI
       uses: pypa/gh-action-pypi-publish@release/v1

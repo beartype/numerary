@@ -15,7 +15,7 @@ from decimal import Decimal
 from fractions import Fraction
 from typing import TYPE_CHECKING, Any, Generic, Optional
 from typing import Protocol as _Protocol
-from typing import Tuple, Type, TypeVar, Union, overload, runtime_checkable
+from typing import TypeVar, Union, overload, runtime_checkable
 
 from beartype.typing import SupportsAbs as _SupportsAbs
 from beartype.typing import SupportsComplex as _SupportsComplex
@@ -241,11 +241,11 @@ class SupportsRealImag(
     methods.)
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import Any, TypeVar
     >>> from numerary.types import SupportsRealImag, real, imag
     >>> MyRealImagT = TypeVar("MyRealImagT", bound=SupportsRealImag)
 
-    >>> def real_imag_my_thing(arg: MyRealImagT) -> Tuple[Any, Any]:
+    >>> def real_imag_my_thing(arg: MyRealImagT) -> tuple[Any, Any]:
     ...   assert isinstance(arg, SupportsRealImag)
     ...   return (real(arg), imag(arg))
 
@@ -277,7 +277,7 @@ class _SupportsRealImagAsMethod(_Protocol):
     """
 
     @abstractmethod
-    def as_real_imag(self) -> Tuple[Any, Any]:
+    def as_real_imag(self) -> tuple[Any, Any]:
         pass
 
 
@@ -297,11 +297,11 @@ class SupportsRealImagAsMethod(
     helper functions.
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import Any, TypeVar
     >>> from numerary.types import SupportsRealImagAsMethod, real, imag
     >>> MyRealImagAsMethodT = TypeVar("MyRealImagAsMethodT", bound=SupportsRealImagAsMethod)
 
-    >>> def as_real_imag_my_thing(arg: MyRealImagAsMethodT) -> Tuple[Any, Any]:
+    >>> def as_real_imag_my_thing(arg: MyRealImagAsMethodT) -> tuple[Any, Any]:
     ...   assert isinstance(arg, SupportsRealImagAsMethod)
     ...   return (real(arg), imag(arg))
 
@@ -365,11 +365,11 @@ class SupportsTrunc(
     methods.)
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import Any, TypeVar
     >>> from numerary.types import SupportsTrunc, __trunc__
     >>> MyTruncT = TypeVar("MyTruncT", bound=SupportsTrunc)
 
-    >>> def trunc_my_thing(arg: MyTruncT) -> Tuple[Any, Any]:
+    >>> def trunc_my_thing(arg: MyTruncT) -> tuple[Any, Any]:
     ...   assert isinstance(arg, SupportsTrunc)
     ...   return __trunc__(arg)
 
@@ -442,11 +442,11 @@ class SupportsFloorCeil(
         [``__ceil__``][numerary.types.__ceil__] helper functions.
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import TypeVar
     >>> from numerary.types import SupportsFloorCeil, __ceil__, __floor__
     >>> MyFloorCeilT = TypeVar("MyFloorCeilT", bound=SupportsFloorCeil)
 
-    >>> def floor_ceil_my_thing(arg: MyFloorCeilT) -> Tuple[int, int]:
+    >>> def floor_ceil_my_thing(arg: MyFloorCeilT) -> tuple[int, int]:
     ...   assert isinstance(arg, SupportsFloorCeil)
     ...   return __floor__(arg), __ceil__(arg)
 
@@ -492,11 +492,11 @@ class _SupportsDivmod(
     """
 
     @abstractmethod
-    def __divmod__(self, other: Any) -> Tuple[_T_co, _T_co]:
+    def __divmod__(self, other: Any) -> tuple[_T_co, _T_co]:
         pass
 
     @abstractmethod
-    def __rdivmod__(self, other: Any) -> Tuple[_T_co, _T_co]:
+    def __rdivmod__(self, other: Any) -> tuple[_T_co, _T_co]:
         pass
 
 
@@ -518,11 +518,11 @@ class SupportsDivmod(
     methods.)
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import Any, TypeVar
     >>> from numerary.types import SupportsDivmod
     >>> MyDivmodT = TypeVar("MyDivmodT", bound=SupportsDivmod)
 
-    >>> def divmod_my_thing(arg: MyDivmodT, other: Any) -> Tuple[MyDivmodT, MyDivmodT]:
+    >>> def divmod_my_thing(arg: MyDivmodT, other: Any) -> tuple[MyDivmodT, MyDivmodT]:
     ...   assert isinstance(arg, SupportsDivmod)
     ...   return divmod(arg, other)
 
@@ -587,11 +587,11 @@ class SupportsNumeratorDenominator(
     actual properties.)
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import TypeVar
     >>> from numerary.types import SupportsNumeratorDenominator, denominator, numerator
     >>> MyNumDenomT = TypeVar("MyNumDenomT", bound=SupportsNumeratorDenominator)
 
-    >>> def num_denom_my_thing(arg: MyNumDenomT) -> Tuple[int, int]:
+    >>> def num_denom_my_thing(arg: MyNumDenomT) -> tuple[int, int]:
     ...   assert isinstance(arg, SupportsNumeratorDenominator)
     ...   return numerator(arg), denominator(arg)
 
@@ -739,7 +739,7 @@ class SupportsComplexOps(
     methods.)
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import TypeVar
     >>> from numerary.types import SupportsComplexOps
     >>> MyComplexOpsT = TypeVar("MyComplexOpsT", bound=SupportsComplexOps)
 
@@ -804,7 +804,7 @@ class SupportsComplexPow(
     methods.)
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import TypeVar
     >>> from numerary.types import SupportsComplexPow
     >>> MyComplexPowT = TypeVar("MyComplexPowT", bound=SupportsComplexPow)
 
@@ -896,7 +896,7 @@ class SupportsRealOps(
     methods.)
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import Any, TypeVar
     >>> from numerary.types import SupportsRealOps
     >>> MyRealOpsT = TypeVar("MyRealOpsT", bound=SupportsRealOps)
 
@@ -1003,7 +1003,7 @@ class SupportsIntegralOps(
     methods.)
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import TypeVar
     >>> from numerary.types import SupportsIntegralOps
     >>> MyIntegralOpsT = TypeVar("MyIntegralOpsT", bound=SupportsIntegralOps)
 
@@ -1065,7 +1065,7 @@ class SupportsIntegralPow(
     methods.)
 
     ``` python
-    >>> from typing import Any, Tuple, TypeVar
+    >>> from typing import TypeVar
     >>> from numerary.types import SupportsIntegralPow
     >>> MyIntegralPowT = TypeVar("MyIntegralPowT", bound=SupportsIntegralPow)
 
@@ -1702,7 +1702,7 @@ except Exception as exc:
     )
     logging.getLogger(__name__).debug(traceback.format_exc())
 else:
-    t: Optional[Type]
+    t: Optional[type]
 
     for t_name in (
         "uint8",
